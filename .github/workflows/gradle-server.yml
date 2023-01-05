@@ -49,7 +49,6 @@ jobs:
       shell: bash
       working-directory: ${{ env.working-directory }}
     
-
     # Access Key와 Secret Access Key를 통해 권한을 확인합니다.
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
