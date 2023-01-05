@@ -10,7 +10,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -31,10 +31,17 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+        
+      # 연결 권한 설정
+    - name: Run chmod to make gradlew executable
+      run: chmod +x ./gradlew
+      working-directory: ${{ env.working-directory }}
+
+     # 빌드
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: build
+      run: ./gradlew clean build
+      working-directory: ${{ env.working-directory }}
+     
 
     # build한 후 프로젝트를 압축합니다.
     - name: Make zip file
@@ -42,11 +49,7 @@ jobs:
       shell: bash
       working-directory: ${{ env.working-directory }}
     
-    # 연결 권한 설정
-    - name: Run chmod to make gradlew executable
-      run: chmod +x ./gradlew
-      working-directory: ${{ env.working-directory }}
-    
+
     # Access Key와 Secret Access Key를 통해 권한을 확인합니다.
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -57,7 +60,8 @@ jobs:
 
     # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./41mainproject23-deploy.zip s3://$S3_BUCKET_NAME/41-mainproject-23-deploy.zip
+      run: aws s3 cp --region ap-northeast-2 ./41-mainproject23-deploy.zip s3://$S3_BUCKET_NAME/41-mainproject-23-deploy.zip
+      working-directory: ${{ env.working-directory }}
 
     # CodeDeploy에게 배포 명령을 내립니다.
     - name: Code Deploy
