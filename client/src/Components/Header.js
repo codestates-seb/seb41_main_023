@@ -8,6 +8,13 @@ const Header = ({ login }) => {
     navigate(path);
   };
 
+  const handleSignout = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      //로그아웃 요청
+      navigate("/");
+    }
+  };
+
   return (
     <HeadContainer>
       <LeftSection>
@@ -20,7 +27,7 @@ const Header = ({ login }) => {
             <button onClick={() => handleNavigate("/user/:memberId")}>
               프로필 이미지
             </button>
-            <button>Sign out</button>
+            <button onClick={handleSignout}>Sign out</button>
           </>
         ) : (
           <>
@@ -46,8 +53,6 @@ const Header = ({ login }) => {
 export default Header;
 
 const HeadContainer = styled.div`
-  /* width: 95vw; */
-  height: 5vh;
   background-color: slategray;
 
   display: flex;
