@@ -10,7 +10,7 @@ const HeadContainer = styled.div`
   justify-content: space-between;
 `;
 
-const Left_Section = styled.div`
+const LeftSection = styled.div`
   display: flex;
   margin: 20px;
 
@@ -18,7 +18,7 @@ const Left_Section = styled.div`
     cursor: pointer;
   }
 `;
-const Right_Section = styled.div`
+const RightSection = styled.div`
   display: flex;
 
   > button {
@@ -34,11 +34,11 @@ const Header = () => {
   };
   return (
     <HeadContainer>
-      <Left_Section>
+      <LeftSection>
         <button onClick={() => handleNavigate("/")}>로고</button>
         <button onClick={() => handleNavigate("/blog")}>Travel Logs</button>
-      </Left_Section>
-      <Right_Section>
+      </LeftSection>
+      <RightSection>
         <button
           className="login_button"
           onClick={() => handleNavigate("/login")}
@@ -51,7 +51,7 @@ const Header = () => {
         >
           Sign Up
         </button>
-      </Right_Section>
+      </RightSection>
     </HeadContainer>
   );
 };
