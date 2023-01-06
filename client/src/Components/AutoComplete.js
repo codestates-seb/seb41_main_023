@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import escapeRegExp from "lodash.escaperegexp";
 
 const AutoCompleteContainer = styled.div`
   > div > input {
@@ -23,10 +24,59 @@ const deselectedOptions = [
 const DropDownContainer = styled.div`
   > li {
     cursor: pointer;
+    list-style: none;
   }
 `;
 
 const Autocomplete = ({ handleDestination }) => {
+  const reESC = /[\\^$.*+?()[\]{}|]/g;
+  const reChar = /[가-힣]/;
+  const reJa = /[ㄱ-ㅎ]/;
+  const offset = 44032;
+
+  const orderOffest = [
+    ["ㄱ", 44032],
+    ["ㄲ", 44620],
+    ["ㄴ", 45208],
+    ["ㄷ", 45796],
+    ["ㄸ", 46384],
+    ["ㄹ", 46972],
+    ["ㅁ", 47560],
+    ["ㅂ", 48148],
+    ["ㅃ", 48736],
+    ["ㅅ", 49324],
+  ];
+
+  const con2syl = Object.fromEntries(orderOffest);
+  const pattern = (ch) => {
+    let r;
+    if (reJa.test(ch)) {
+      const begin =
+        con2syl[ch] || (ch.charCodeAt(0) - 12613) * 588 + con2syl["ㅅ"];
+      const end = begin + 587;
+      r = `[${ch}\\u${begin.toString(16)}-\\u${end.toString(16)}]`;
+    } else if (reChar.test(ch)) {
+      const chCode = ch.charCodeAt(0) - offset;
+      if (chCode % 28 > 0) return ch;
+      const begin = Math.floor(chCode / 28) * 28 + offset;
+      const end = begin + 27;
+      r = `[\\u${begin.toString(16)}-\\u${end.toString(16)}]`;
+    } else r = ch.replace(reESC, "\\$&");
+    return `(${r})`;
+  };
+
+  /**
+   *
+   * @param {string} inputValue 입력값
+   * @param {string} target 리스트 중 1
+   */
+
+  const isInitialMatch = (inputValue, target) => {
+    const reg = new RegExp(inputValue.split("").map(pattern).join(".*?"), "i");
+    const matches = reg.exec(target);
+    return Boolean(matches);
+  };
+
   const [hasText, setHasText] = useState(false);
   // input에 입력값이 존재하는지 확인하는 용도
   const [inputValue, setInputValue] = useState("");
@@ -34,20 +84,40 @@ const Autocomplete = ({ handleDestination }) => {
   const [options, setOptions] = useState(deselectedOptions);
   // 자동완성으로 보여줄 값들을 저장하는 용도
 
+  /**
+   * @param {array} deselectedOptions 리스트
+   * @param {string} inputValue 입력 값
+   * @returns 자동완성으로 보여줄 값
+   */
+
+  const matchStock = (deselectedOptions, inputValue) => {
+    if (!inputValue) {
+      return [];
+    }
+
+    if (!isNaN(Number(inputValue)) && inputValue.length < 3) {
+      return [];
+    }
+
+    return deselectedOptions
+      .filter((option) => {
+        return isInitialMatch(inputValue, option);
+      })
+      .map((stock) => {
+        return stock;
+      });
+  };
+
   useEffect(() => {
     if (inputValue === "") {
       setHasText(false);
       setOptions([]);
     } else {
-      setOptions(
-        deselectedOptions.filter((option) => {
-          return option.includes(inputValue);
-        })
-      );
+      setOptions(matchStock(deselectedOptions, inputValue));
       handleDestination(inputValue);
     }
   }, [inputValue]);
-  // input을 입력할 때마다, input을 포함(includes)한 요소들만 모아 options 배열 업데이트
+  // input을 입력할 때마다, input을 포함한 요소들만 모아 options 배열 업데이트
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
