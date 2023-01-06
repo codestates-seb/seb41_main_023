@@ -103,8 +103,8 @@ const Autocomplete = ({ handleDestination }) => {
       .filter((option) => {
         return isInitialMatch(inputValue, option);
       })
-      .map((stock) => {
-        return stock;
+      .map((option) => {
+        return option;
       });
   };
 

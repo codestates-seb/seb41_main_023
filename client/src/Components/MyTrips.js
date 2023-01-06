@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const TripListContainer = styled.div`
+const MyTripsContainer = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -14,7 +14,8 @@ const TripListContainer = styled.div`
   }
 `;
 
-const TripList = () => {
+//axios.get
+const MyTrips = () => {
   const dummyItineraryList = [
     {
       image: "image",
@@ -33,8 +34,9 @@ const TripList = () => {
       destination: "Seoul",
     },
   ];
+
   return (
-    <TripListContainer>
+    <MyTripsContainer>
       <h2>My Trips</h2>
       <div className="contents">
         {dummyItineraryList.map((el) => (
@@ -49,8 +51,8 @@ const TripList = () => {
           </div>
         ))}
       </div>
-    </TripListContainer>
+    </MyTripsContainer>
   );
 };
 
-export default TripList;
+export default MyTrips;

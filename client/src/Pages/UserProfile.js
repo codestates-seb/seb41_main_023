@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import Header from "../Components/Header";
-import TripList from "../Components/TripList";
+import TripList from "../Components/MyTrips";
 
 const UserProfileContainer = styled.div`
   display: flex;
