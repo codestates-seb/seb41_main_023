@@ -7,7 +7,7 @@ import Header from "../Components/Header";
 import Calendar from "../Components/Calendar";
 import Autocomplete from "../Components/AutoComplete";
 
-const Home = () => {
+const Home = ({ login }) => {
   const navigate = useNavigate();
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDate, setStartDate] = useState("Start date");
@@ -31,15 +31,18 @@ const Home = () => {
 
   const handleSubmit = (destination, startDate, endDate) => {
     console.log(destination, startDate, endDate);
+
     //장소, 날짜를 입력 받아 post 요청?
-    //전송 후 /itinerary/:itineraryId 로 이동
+    {
+      login ? navigate("/itinerary/:itineraryId") : navigate("/login");
+    }
   };
 
   return (
     <HomeContainer>
-      <Header />
+      <Header login={login || false} />
       <TopSection>
-        <div>Where do you want to travel?</div>
+        <h1>Where do you want to travel?</h1>
       </TopSection>
       <BottomSection>
         <Autocomplete handleDestination={handleDestination} />
@@ -60,9 +63,7 @@ const Home = () => {
 
 export default Home;
 
-const HomeContainer = styled.div`
-  height: 100vh;
-`;
+const HomeContainer = styled.div``;
 
 const TopSection = styled.div``;
 const BottomSection = styled.div`
