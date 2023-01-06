@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import Home from "./Pages/Home";
 import Main from "./Pages/Main";
+import UserProfile from "./Pages/UserProfile";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
