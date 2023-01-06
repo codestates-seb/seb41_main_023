@@ -53,6 +53,8 @@ const UserProfileContainer = styled.div`
 `;
 
 const UserProfile = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Header login={true} />
@@ -60,20 +62,22 @@ const UserProfile = () => {
         <div className="user_profile">
           <div className="user_meta">
             <div className="user_meta_left">
-              <div>프로필 사진</div>
+              <div>프로필 이미지</div>
             </div>
             <div className="user_meta_right">
-              <div>유저 이름</div>
+              <div>유저 아이디</div>
               <div>유저 이메일</div>
             </div>
           </div>
           <div className="user_edit">
-            <button>edit profile</button>
-            <button>sign out</button>
+            <button onClick={() => navigate("/user/:memberId/edit")}>
+              edit profile
+            </button>
+            <button>sign out 필요한가..?</button>
           </div>
         </div>
         <div className="map">
-          지도 영역
+          지도 영역 : 방문한 도시 색칠...?
           <div>0 cities</div>
           <div>0 trips</div>
         </div>
