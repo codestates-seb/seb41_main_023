@@ -21,7 +21,6 @@ const Calendar = ({ handleDate }) => {
   ]);
 
   useEffect(() => {
-    // console.log("ㅠㅠ");
     handleDate(date);
   }, [date[0].startDate, date[0].endDate]);
 
