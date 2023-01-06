@@ -26,10 +26,14 @@
 - FE 에서 PR 할 경우 [FE] 를 붙인 후 PR
 - BE 에서 PR 할 경우 [BE] 를 붙인 후 PR
 
-- 개인 branch => dev branch 로 PR 하는 경우
+- 개인 branch => (소속)_feature branch 로 PR 하는 경우
     - "[소속] (Commit 분류): PR 내용" 의 형태로 작성
     - 예 ) [FE] Feat: 첫번째 커밋입니다.
   
+- (소속)_feature branch => dev branch 로 PR 하는 경우
+    - "[소속] (MainMerge): PR 내용" 의 형태로 작성
+    - 예 ) [BE] merge: dev에 bak_feature 머지합니다.
+  
 - dev branch => main branch 로 PR 하는 경우
-  - "[dev] (Commit 분류): PR 내용" 의 형태로 작성
-  - 예 ) [dev] Docs: Readme 파일 수정본입니다.
+  - "[dev] (MainMerge): PR 내용" 의 형태로 작성
+  - 예 ) [dev] MainMerge: Main에 dev 머지합니다.
