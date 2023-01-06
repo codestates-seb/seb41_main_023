@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Home from "../Pages/Home";
-import TripList from "../Components/TripList";
+import TripList from "../Components/MyTrips";
 
 const MainContainer = styled.div``;
 
