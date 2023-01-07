@@ -6,6 +6,8 @@ import com.newyear.mainproject.security.filter.JwtVerificationFilter;
 import com.newyear.mainproject.security.handler.MemberAuthenticationFailureHandler;
 import com.newyear.mainproject.security.handler.MemberAuthenticationSuccessHandler;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
+import com.newyear.mainproject.security.logout.RedisUtil;
+import com.newyear.mainproject.security.logout.RefreshTokenRepository;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,13 +32,18 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
+    private final RedisUtil redisUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public SecurityConfiguration(JwtTokenizer jwtTokenizer,
                                  MemberRepository memberRepository,
-                                 CustomAuthorityUtils authorityUtils) {
+                                 CustomAuthorityUtils authorityUtils, RedisUtil redisUtil,
+                                 RefreshTokenRepository refreshTokenRepository) {
         this.jwtTokenizer = jwtTokenizer;
         this.memberRepository = memberRepository;
         this.authorityUtils = authorityUtils;
+        this.redisUtil = redisUtil;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @Bean
@@ -63,9 +70,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/members/signup", "/members/login").permitAll()
                         .antMatchers(HttpMethod.PATCH, "/members/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/members/logout").permitAll()
                         .antMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
                         .antMatchers(HttpMethod.GET, "/", "/members/**").permitAll() //추후 추가하기
-                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
+//                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
                         .antMatchers("/h2/**").permitAll() // h2 콘솔 사용을 위한 설정
                         .anyRequest().authenticated()
                 );
@@ -90,18 +98,20 @@ public class SecurityConfiguration {
 
     }
 
+    //JwtAuthenticationFilter를 등록하는 역할
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity>{
         @Override
         public void configure(HttpSecurity builder) throws Exception{
 
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, memberRepository);
+            //wtAuthenticationFilter를 생성하면서 JwtAuthenticationFilter에서 사용되는 AuthenticationManager와 JwtTokenizer를 DI해줌
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, memberRepository, redisUtil, refreshTokenRepository);
             jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils, redisUtil, refreshTokenRepository);
 
             builder
                     .addFilter(jwtAuthenticationFilter)
