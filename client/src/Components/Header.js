@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Header = ({ login }) => {
   const navigate = useNavigate();
@@ -10,8 +11,15 @@ const Header = ({ login }) => {
 
   const handleSignout = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      //로그아웃 요청
-      navigate("/");
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/members/logout`, {
+          headers: {
+            // Authorization: token,
+            withCredentials: true,
+          },
+        })
+        .then((res) => console.log(res))
+        .then((res) => navigate("/"));
     }
   };
 
