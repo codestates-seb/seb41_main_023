@@ -36,7 +36,7 @@ const DropDownContainer = styled.div`
   }
 `;
 
-const Autocomplete = ({ handleDestination }) => {
+const Autocomplete = ({ handleDestination, inputRef }) => {
   const reESC = /[\\^$.*+?()[\]{}|]/g;
   const reChar = /[가-힣]/;
   const reJa = /[ㄱ-ㅎ]/;
@@ -172,6 +172,7 @@ const Autocomplete = ({ handleDestination }) => {
           value={inputValue}
           placeholder="Search Destination ex. 서울, 부산..."
           onKeyDown={handleKeyDown}
+          ref={inputRef}
         ></input>
       </div>
       {hasText && (
@@ -195,8 +196,6 @@ export const DropDown = ({ options, handleComboBox, activeSuggestion }) => {
         if (index === activeSuggestion) {
           className = "active";
         }
-        console.log(index === activeSuggestion);
-        console.log(className);
         return (
           <li
             key={option}

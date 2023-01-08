@@ -73,7 +73,7 @@ const UserProfile = () => {
             <button onClick={() => navigate("/user/:memberId/edit")}>
               edit profile
             </button>
-            <button>sign out 필요한가..?</button>
+            <button>sign out?</button>
           </div>
         </div>
         <div className="map">

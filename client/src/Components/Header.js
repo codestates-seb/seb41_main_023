@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useEffect } from "react";
 
 const Header = ({ login }) => {
   const navigate = useNavigate();
@@ -23,6 +24,21 @@ const Header = ({ login }) => {
     }
   };
 
+  //프로필 이미지 axios 요청
+  //  useEffect(() => {
+  // axios
+  //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
+  //     headers: {
+  //       Authorization: token,
+  //       withCredentials: true,
+  //     },
+  //   })
+  //   .then((res) => {
+  //   console.log(res)
+  //   })
+  //   .catch((err) => console.log("error"));
+  //  }, []);
+
   return (
     <HeadContainer>
       <LeftSection>
@@ -32,9 +48,11 @@ const Header = ({ login }) => {
       <RightSection>
         {login ? (
           <>
-            <button onClick={() => handleNavigate("/user/:memberId")}>
-              프로필 이미지
-            </button>
+            <img
+              onClick={() => handleNavigate("/user/:memberId")}
+              alt="profile_image"
+              src="https://picsum.photos/50"
+            />
             <button onClick={handleSignout}>Sign out</button>
           </>
         ) : (
@@ -78,7 +96,7 @@ const LeftSection = styled.div`
 const RightSection = styled.div`
   display: flex;
 
-  > button {
+  > * {
     cursor: pointer;
   }
 `;

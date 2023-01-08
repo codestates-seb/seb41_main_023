@@ -1,12 +1,17 @@
 import styled from "styled-components";
 
-import { useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Modal from "../Components/Modal";
 
-const General = ({ handleChange, handleSubmit, emailValid, isvalid }) => {
-  const inputFocus = useRef(null);
+const General = ({
+  handleChange,
+  handleSubmit,
+  emailValid,
+  isvalid,
+  nameRef,
+  emailRef,
+}) => {
   return (
     <GeneralContainer>
       <div className="input_area">
@@ -15,14 +20,14 @@ const General = ({ handleChange, handleSubmit, emailValid, isvalid }) => {
           onChange={handleChange}
           name="id"
           id="username"
-          autoFocus
+          ref={nameRef}
         ></input>
         <div>Email</div>
         <input
           onChange={handleChange}
           name="email"
           id="email"
-          autoFocus
+          ref={emailRef}
         ></input>
         {emailValid && <span>{isvalid}</span>}
       </div>
