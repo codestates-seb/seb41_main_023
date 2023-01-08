@@ -12,13 +12,40 @@ import javax.validation.constraints.Positive;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class ExpenseDto {
-    private long expenseId;
 
-    @NotBlank
-    private String item;
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Post {
+        @NotBlank
+        private String item;
 
-    @NotNull @Positive
-    private int price;
+        @NotNull @Positive
+        private int price;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class Patch {
+        private long expenseId;
+
+        @NotBlank
+        private String item;
+
+        @NotNull @Positive
+        private int price;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Response {
+        private long expenseId;
+        private String item;
+        private int price;
+    }
+
 }
