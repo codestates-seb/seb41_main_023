@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import escapeRegExp from "lodash.escaperegexp";
 
 const AutoCompleteContainer = styled.div`
   > div > input {
