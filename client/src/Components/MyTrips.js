@@ -18,7 +18,7 @@ const MyTripsContainer = styled.div`
 const MyTrips = () => {
   const dummyItineraryList = [
     {
-      image: "image",
+      image: "https://picsum.photos/200",
       title: "Trip to Seoul",
       startDate: "Jan 31",
       endDate: "Feb 18",
@@ -26,7 +26,7 @@ const MyTrips = () => {
       destination: "Seoul",
     },
     {
-      image: "image",
+      image: "https://picsum.photos/200",
       title: "Trip to Seoul",
       startDate: "Jan 9",
       endDate: "Jan 18",
@@ -41,7 +41,7 @@ const MyTrips = () => {
       <div className="contents">
         {dummyItineraryList.map((el) => (
           <div>
-            <div>{el.image}</div>
+            <img alt="place_image" src={el.image} />
             <div>{el.title}</div>
             <div>
               {el.startDate} - {el.endDate}

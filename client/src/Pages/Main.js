@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Home from "../Pages/Home";
-import TripList from "../Components/MyTrips";
+import MyTrips from "../Components/MyTrips";
 
 const MainContainer = styled.div``;
 
@@ -16,7 +16,7 @@ const Main = () => {
       <Home login={true} />
       <Content>
         <TripContainer>
-          <TripList />
+          <MyTrips />
         </TripContainer>
         <BlogContainer>
           <h2>My logs</h2>

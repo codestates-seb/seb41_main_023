@@ -1,6 +1,5 @@
 import axios from "axios";
 import styled from "styled-components";
-
 import { useState, useRef, useCallback } from "react";
 
 import Header from "../Components/Header";
@@ -19,9 +18,17 @@ const UserProfileEdit = () => {
     profile: "https://picsum.photos/200",
   });
 
+  const [submitInfo, setSubmitInfo] = useState({
+    id: "",
+    email: "",
+  });
+
+  const nameRef = useRef([]);
+  const emailRef = useRef([]);
+
   const handleChange = (e) => {
-    setInfo({
-      ...info,
+    setSubmitInfo({
+      ...submitInfo,
       [e.target.name]: e.target.value,
     });
   };
@@ -49,11 +56,18 @@ const UserProfileEdit = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!submitInfo.id) {
+      nameRef.current.focus();
+    } else if (!submitInfo.email) {
+      emailRef.current.focus();
+    }
+    //유저 이름 혹은 이메일이 빈 경우 포커싱
+
     const emailRegex =
       /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     //최소 8자, 하나의 이상의 대소문자 및 하나의 숫자, 하나의 특수문자
 
-    const emailValueCheck = emailRegex.test(info.email);
+    const emailValueCheck = emailRegex.test(submitInfo.email);
 
     const data = {
       id: info.id,
@@ -93,6 +107,8 @@ const UserProfileEdit = () => {
           handleSubmit={handleSubmit}
           emailValid={emailValid}
           isvalid={isvalid}
+          nameRef={nameRef}
+          emailRef={emailRef}
         />
       ),
     },

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import moment from "moment";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Header from "../Components/Header";
@@ -13,6 +13,9 @@ const Home = ({ login }) => {
   const [startDate, setStartDate] = useState("Start date");
   const [endDate, setEndDate] = useState("End date");
   const [destination, setDestination] = useState("");
+
+  const inputRef = useRef([]);
+  const inputCalendarRef = useRef([]);
 
   const handleDate = (date) => {
     setStartDate(moment(date[0].startDate).format("MMM Do YY"));
@@ -33,10 +36,15 @@ const Home = ({ login }) => {
     console.log(destination, startDate, endDate);
     //속초 Jan 10th 23 Jan 20th 23
 
-    //장소, 날짜를 입력 받아 post 요청?
-    {
-      login ? navigate("/itinerary/:itineraryId") : navigate("/login");
+    //장소가 입력되지 않았을 때 포커싱
+    if (destination.length <= 1) {
+      inputRef.current.focus();
+    } else if (startDate === "Start date" || endDate === "End date") {
+      inputCalendarRef.current.focus();
     }
+    //장소, 날짜를 입력 받아 post 요청?
+
+    // login ? navigate("/itinerary/:itineraryId") : navigate("/login");
   };
 
   return (
@@ -46,10 +54,14 @@ const Home = ({ login }) => {
         <h1>Where do you want to travel?</h1>
       </TopSection>
       <BottomSection>
-        <Autocomplete handleDestination={handleDestination} />
+        <Autocomplete
+          handleDestination={handleDestination}
+          inputRef={inputRef}
+        />
         <button
           className="calendar"
           onClick={() => setShowCalendar(!showCalendar)}
+          ref={inputCalendarRef}
         >
           {startDate} → {endDate}
         </button>
@@ -72,6 +84,10 @@ const BottomSection = styled.div`
 
   > button {
     cursor: pointer;
+  }
+
+  > button:focus {
+    border-color: pink;
   }
   > .calendar {
     background-color: white;
