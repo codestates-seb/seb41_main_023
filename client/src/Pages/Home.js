@@ -31,6 +31,7 @@ const Home = ({ login }) => {
 
   const handleSubmit = (destination, startDate, endDate) => {
     console.log(destination, startDate, endDate);
+    //속초 Jan 10th 23 Jan 20th 23
 
     //장소, 날짜를 입력 받아 post 요청?
     {

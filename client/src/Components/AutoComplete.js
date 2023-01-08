@@ -25,6 +25,15 @@ const DropDownContainer = styled.div`
   > li {
     cursor: pointer;
     list-style: none;
+
+    border: 1px solid #999;
+    border-top-width: 0;
+
+    &.active {
+      background-color: grey;
+      color: #fff;
+      font-weight: 700;
+    }
   }
 `;
 
@@ -78,11 +87,10 @@ const Autocomplete = ({ handleDestination }) => {
   };
 
   const [hasText, setHasText] = useState(false);
-  // input에 입력값이 존재하는지 확인하는 용도
   const [inputValue, setInputValue] = useState("");
-  // 입력 받은 input값을 저장하는 용도
   const [options, setOptions] = useState(deselectedOptions);
-  // 자동완성으로 보여줄 값들을 저장하는 용도
+
+  const [activeSuggestion, setActiveSuggestion] = useState(0);
 
   /**
    * @param {array} deselectedOptions 리스트
@@ -131,6 +139,31 @@ const Autocomplete = ({ handleDestination }) => {
   };
   // 보여지는 자동완성 값 중 하나를 클릭하면 해당 값이 input에 할당
 
+  const handleKeyDown = (e) => {
+    //enter 키를 누르면 input 값이 활성화된 옵션으로 변경
+    if (e.keyCode === 13) {
+      setInputValue(options[activeSuggestion]);
+      setActiveSuggestion(0);
+      setHasText(false);
+    }
+
+    // arrow 키를 누르면 활성화된 옵션 -1
+    else if (e.keyCode === 38) {
+      if (activeSuggestion === 0) {
+        return;
+      }
+      setActiveSuggestion(activeSuggestion - 1);
+    }
+
+    // arrow 키를 누르면 활성화된 옵션 +1
+    else if (e.keyCode === 40) {
+      if (activeSuggestion - 1 === options.length) {
+        return;
+      }
+      setActiveSuggestion(activeSuggestion + 1);
+    }
+  };
+
   return (
     <AutoCompleteContainer>
       <div>
@@ -139,22 +172,38 @@ const Autocomplete = ({ handleDestination }) => {
           onChange={handleInputChange}
           value={inputValue}
           placeholder="Search Destination ex. 서울, 부산..."
+          onKeyDown={handleKeyDown}
         ></input>
       </div>
       {hasText && (
-        <DropDown options={options} handleComboBox={handleDropDownClick} />
+        <DropDown
+          options={options}
+          handleComboBox={handleDropDownClick}
+          activeSuggestion={activeSuggestion}
+        />
       )}
     </AutoCompleteContainer>
   );
 };
 
 /* 자동완성 배열(options)에 들어간 값들이 드롭다운으로 보여지는 부분 */
-export const DropDown = ({ options, handleComboBox }) => {
+export const DropDown = ({ options, handleComboBox, activeSuggestion }) => {
   return (
     <DropDownContainer>
       {options.map((option, index) => {
+        let className;
+
+        if (index === activeSuggestion) {
+          className = "active";
+        }
+        console.log(index === activeSuggestion);
+        console.log(className);
         return (
-          <li key={index} onClick={() => handleComboBox(option)}>
+          <li
+            key={option}
+            onClick={() => handleComboBox(option)}
+            className={className}
+          >
             {option}
           </li>
         );
