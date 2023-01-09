@@ -88,7 +88,7 @@ const ModalWrapper = styled.div`
     width: 432px;
     height: 16px;
     margin-bottom: 50px;
-    font-size: 17px;
+    font-size: 14px;
     line-height: 17px;
     color: #3b4045;
   }
@@ -97,29 +97,32 @@ const ModalWrapper = styled.div`
     flex-direction: row;
     > p > .btn {
       background-color: #d0393e;
+      color: white;
       line-height: 10px;
       box-shadow: rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset;
-      padding: 10px;
-      margin: 4px;
+      padding: 15px 10px;
+      margin: 0px;
       &:hover {
         background-color: #c22e32;
+        cursor: pointer;
       }
+      border: none;
+      border-radius: 5px;
     }
     > .cancle_text {
-      width: 64px;
-      padding: 10px;
-      margin: 4px;
+      width: 50px;
+      height: 10px;
+      padding: 15px 20px;
+      margin: 13px 20px;
       font-size: 13px;
-      line-height: 15px;
+      line-height: 10px;
       text-align: center;
-      border-radius: 3px;
+      border-radius: 5px;
       color: #6a737c;
       cursor: pointer;
       &:hover {
         color: #525960;
         background-color: #f8f9f9;
-
-        box-shadow: rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset;
       }
     }
   }

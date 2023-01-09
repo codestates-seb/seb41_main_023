@@ -1,42 +1,31 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const AutoCompleteContainer = styled.div`
-  > div > input {
-    width: 300px;
-    padding: 10px;
-  }
-`;
-
-const deselectedOptions = [
-  "서울",
-  "부산",
-  "제주",
-  "강릉",
-  "속초",
-  "양양",
-  "전주",
-  "수원",
-  "제천",
-];
-
-const DropDownContainer = styled.div`
-  > li {
-    cursor: pointer;
-    list-style: none;
-
-    border: 1px solid #999;
-    border-top-width: 0;
-
-    &.active {
-      background-color: grey;
-      color: #fff;
-      font-weight: 700;
-    }
-  }
-`;
+// const mapCity = deselectedOptions.map((el) => el.cityName);
 
 const Autocomplete = ({ handleDestination, inputRef }) => {
+  const [city, setCity] = useState();
+
+  // console.log("city : " + city);
+
+  // useEffect(() => {
+  //   axios({
+  //     url: `${process.env.REACT_APP_API_URL}/city`,
+  //     method: "GET",
+  //     headers: {
+  //       withCredentials: true,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //        setCity(res.data.map((el)=>el.cityName))
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, []);
+
   const reESC = /[\\^$.*+?()[\]{}|]/g;
   const reChar = /[가-힣]/;
   const reJa = /[ㄱ-ㅎ]/;
@@ -87,17 +76,17 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
 
   const [hasText, setHasText] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [options, setOptions] = useState(deselectedOptions);
+  const [options, setOptions] = useState(city);
 
   const [activeSuggestion, setActiveSuggestion] = useState(0);
 
   /**
-   * @param {array} deselectedOptions 리스트
+   * @param {array} city 리스트
    * @param {string} inputValue 입력 값
    * @returns 자동완성으로 보여줄 값
    */
 
-  const matchStock = (deselectedOptions, inputValue) => {
+  const matchStock = (city, inputValue) => {
     if (!inputValue) {
       return [];
     }
@@ -106,13 +95,14 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
       return [];
     }
 
-    return deselectedOptions
+    return city
       .filter((option) => {
         return isInitialMatch(inputValue, option);
       })
       .map((option) => {
         return option;
-      });
+      })
+      .slice(0, 7);
   };
 
   useEffect(() => {
@@ -120,7 +110,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
       setHasText(false);
       setOptions([]);
     } else {
-      setOptions(matchStock(deselectedOptions, inputValue));
+      setOptions(matchStock(city, inputValue));
       handleDestination(inputValue);
     }
   }, [inputValue]);
@@ -156,24 +146,35 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
 
     // arrow 키를 누르면 활성화된 옵션 +1
     else if (e.keyCode === 40) {
-      if (activeSuggestion - 1 === options.length) {
+      if (activeSuggestion === options.length - 1) {
         return;
       }
       setActiveSuggestion(activeSuggestion + 1);
     }
   };
 
+  // x 버튼 누르면 초기화
+  const handleClear = () => {
+    setActiveSuggestion(0);
+    setInputValue("");
+  };
+
   return (
     <AutoCompleteContainer>
       <div>
-        <input
-          type="search"
-          onChange={handleInputChange}
-          value={inputValue}
-          placeholder="Search Destination ex. 서울, 부산..."
-          onKeyDown={handleKeyDown}
-          ref={inputRef}
-        ></input>
+        <div className="search">
+          <input
+            // type="search"
+            onChange={handleInputChange}
+            value={inputValue}
+            placeholder="Search Destination ex. 서울, 부산..."
+            onKeyDown={handleKeyDown}
+            ref={inputRef}
+          ></input>
+          <div className="clearbtn" onClick={handleClear}>
+            x
+          </div>
+        </div>
       </div>
       {hasText && (
         <DropDown
@@ -211,3 +212,42 @@ export const DropDown = ({ options, handleComboBox, activeSuggestion }) => {
 };
 
 export default Autocomplete;
+
+const AutoCompleteContainer = styled.div`
+  > div > div {
+    &.search {
+      display: flex;
+      position: relative;
+    }
+
+    > input {
+      width: 300px;
+      padding: 10px;
+    }
+
+    > .clearbtn {
+      color: red;
+      position: absolute;
+      top: 10px;
+      right: 0;
+      width: 30px;
+      cursor: pointer;
+    }
+  }
+`;
+
+const DropDownContainer = styled.div`
+  > li {
+    cursor: pointer;
+    list-style: none;
+
+    border: 1px solid #999;
+    border-top-width: 0;
+
+    &.active {
+      background-color: grey;
+      color: #fff;
+      font-weight: 700;
+    }
+  }
+`;

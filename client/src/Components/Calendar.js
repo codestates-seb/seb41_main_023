@@ -12,6 +12,7 @@ const CalendarContainer = styled.div`
 `;
 const Calendar = ({ handleDate }) => {
   const tomorrow = moment().add(1, "d").toDate();
+
   const [date, setDate] = useState([
     {
       startDate: tomorrow,
@@ -23,9 +24,6 @@ const Calendar = ({ handleDate }) => {
   useEffect(() => {
     handleDate(date);
   }, [date[0].startDate, date[0].endDate]);
-
-  // console.log("시작 날짜 : " + date[0].startDate);
-  // console.log("종료 날짜 : " + date[0].endDate);
 
   return (
     <>
