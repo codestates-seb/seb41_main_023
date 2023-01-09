@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class BudgetDto {
     @NoArgsConstructor
     public static class Post {
         @NotNull
-        @Positive
+        @Min(0) // 일정 등록시 초기 셋팅
         private int expectedBudget;
     }
 
@@ -29,8 +30,9 @@ public class BudgetDto {
     @NoArgsConstructor
     public static class Patch {
         private long budgetId;
+        @NotNull
+        @Positive(message = "예산은 0원보다 커야합니다.")
         private int expectedBudget;
-        private ExpenseDto expense;
     }
 
     //조회시
@@ -42,7 +44,7 @@ public class BudgetDto {
         private long budgetId;
         private int expectedBudget;
         private int totalExpenses;
-        private List<ExpenseDto> expenses = new ArrayList<>();
+        private List<ExpenseDto.Response> expenses = new ArrayList<>();
     }
 
     @Getter @Setter
