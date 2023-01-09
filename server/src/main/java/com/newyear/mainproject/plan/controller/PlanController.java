@@ -4,7 +4,7 @@ import com.newyear.mainproject.dto.SingleResponseDto;
 import com.newyear.mainproject.plan.dto.PlanDto;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.mapper.PlanMapper;
-import com.newyear.mainproject.plan.serivce.PlanService;
+import com.newyear.mainproject.plan.service.PlanService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,4 +60,16 @@ public class PlanController {
         planService.deletePlan(planId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
+    /**
+     * 해당 여행일정에 대한 세부 일정 조회
+     */
+    @GetMapping("/{plan-id}")
+    public ResponseEntity getPlan(@PathVariable("plan-id") @Positive Long planId) {
+        Plan plan = planService.findPlan(planId);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(planMapper.planToPlaceDetailResponseDto(plan)), HttpStatus.OK);
+    }
+
 }

@@ -17,25 +17,15 @@ public class BudgetService {
     private final BudgetRepository budgetRepository;
 
     public Budget createBudget(Budget budget) {
-        if (budget.getExpectedBudget() <= 0) throw new BusinessLogicException(ExceptionCode.INVALID_VALUES);
         return budgetRepository.save(budget);
     }
 
     public void editBudget(Budget budget) {
         Budget findBudget = findVerifiedBudget(budget.getBudgetId());
 
-        //budget 수정 요청시
-        if (budget.getExpenses().isEmpty()) {
-            //0원 이하시 exception
-            if (budget.getExpectedBudget() <= 0) throw new BusinessLogicException(ExceptionCode.INVALID_VALUES);
-            findBudget.setExpectedBudget(budget.getExpectedBudget());
-        } else {
-            //expense 등록시
-            int size = budget.getExpenses().size()-1;
-            //-원 이하시 exception
-            if (budget.getExpenses().get(size).getPrice() <= 0) throw new BusinessLogicException(ExceptionCode.INVALID_VALUES);
-            findBudget.setExpenses(budget.getExpenses());
-        }
+        Optional.of(budget.getExpectedBudget())
+                .ifPresent(findBudget::setExpectedBudget);
+
         budgetRepository.save(findBudget);
     }
 
