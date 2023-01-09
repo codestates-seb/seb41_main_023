@@ -3,21 +3,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const MyTripsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  margin: 20px;
-
-  .contents {
-    display: flex;
-    > div {
-      margin: 20px;
-      cursor: pointer;
-    }
-  }
-`;
-
 const MyTrips = () => {
   const dummyItineraryList = [
     {
@@ -73,12 +58,14 @@ const MyTrips = () => {
               src={el.image}
               onClick={() => navigate(`/itinerary/${el.planId}`)}
             />
-            <div>{el.title}</div>
-            <div>
-              {el.startDate} - {el.endDate}
+            <div className="meta_title">{el.planTitle}</div>
+            <div className="meta_content">
+              <div>
+                {el.startDate} - {el.endDate}
+              </div>
+              <div>{el.plans} places</div>
+              <div>{el.cityName}</div>
             </div>
-            <div>{el.plans} places</div>
-            <div>{el.cityName}</div>
           </div>
         ))}
       </div>
@@ -87,3 +74,34 @@ const MyTrips = () => {
 };
 
 export default MyTrips;
+
+const MyTripsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  margin: 20px;
+
+  .contents {
+    display: flex;
+
+    > div {
+      margin: 20px 17px 10px 0;
+      cursor: pointer;
+
+      > img {
+        border-radius: 7px;
+      }
+
+      > .meta_title {
+        margin: 5px;
+        font-size: 15px;
+      }
+
+      > .meta_content {
+        margin: 5px;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+`;

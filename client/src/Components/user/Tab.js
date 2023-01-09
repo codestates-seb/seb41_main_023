@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 import Modal from "./Modal";
 
+// const [token, setToken] = useState();
+//const [memberId,setMemberId] = useState();
+
 const General = ({ handleChange, handleSubmit, nameRef }) => {
   return (
     <GeneralContainer>
@@ -25,31 +28,73 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
 };
 
 const Password = () => {
+  //기존 비밀번호와 일치하는지 확인해야함
+  const [inputs, setInputs] = useState({
+    originPassword: "",
+    newPassword: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const data = {
+      ...inputs,
+      [name]: value,
+    };
+
+    setInputs(data);
+  };
+
+  const submitPassword = () => {
+    console.log("change!");
+    //새 비밀번호 유효성 검사 필요
+    // axios
+    //   .patch(`${process.env.REACT_APP_API_URL}/members/password/1`, {
+    //     headers: {
+    //       Authorization: token,
+    //       withCredentials: true,
+    //     },
+    //     data : {
+    //       originPassword : inputs.originPassword,
+    //       password : inputs.newPassword
+    // }
+    //   })
+    //   .then((res) => {
+    //     alert("비밀번호가 변경되었습니다.");
+    //     window.location.reload();
+    //   })
+    //   .catch((err) => console.log("error"));
+  };
+
   return (
     <PasswordContainer>
       <div className="input_area">
         <div>Old password</div>
-        <input></input>
+        <input
+          type="password"
+          name="originPassword"
+          value={inputs.originPassword}
+          onChange={handleChange}
+        ></input>
         <div>New password</div>
-        <input></input>
+        <input
+          type="password"
+          name="newPassword"
+          value={inputs.newPassword}
+          onChange={handleChange}
+        ></input>
         <div>
           Passwords must contain at least eight characters, including at least 1
           letter and 1 number.
         </div>
       </div>
       <div className="submit_area">
-        <button>Save Changes</button>
+        <button onClick={submitPassword}>Save Changes</button>
       </div>
     </PasswordContainer>
   );
 };
 
 const DeleteAccount = ({ modal, setModal }) => {
-  // const [token, setToken] = useState();
-
-  //memberId
-  //const [memberId,setMemberId] = useState();
-
   const navigate = useNavigate();
   const handleDeleteAccount = () => {
     // axios
@@ -66,7 +111,7 @@ const DeleteAccount = ({ modal, setModal }) => {
     //     window.location.reload();
     //   })
     //   .catch((err) => console.log("error"));
-    // console.log("계정 삭제!");
+    console.log("계정 삭제!");
   };
   return (
     <>

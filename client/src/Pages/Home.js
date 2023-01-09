@@ -77,39 +77,75 @@ const Home = ({ login }) => {
   };
 
   return (
-    <HomeContainer>
+    <HomeContainer className={login ? "login" : false}>
       <Header login={login || false} />
-      <TopSection>
+      <TopSection className={login ? "login" : false}>
         <h1>Where do you want to travel?</h1>
       </TopSection>
-      <BottomSection>
+      <BottomSection className={login ? "login" : false}>
         <Autocomplete
+          className="autocomplete"
           handleDestination={handleDestination}
           inputRef={inputRef}
         />
         <button
-          className="calendar"
+          className="calendarbtn"
           onClick={() => setShowCalendar(!showCalendar)}
           ref={inputCalendarRef}
         >
           {startDate} → {endDate}
         </button>
-        <button onClick={() => handleSubmit(destination, startDate, endDate)}>
+        <button
+          className="submitbtn"
+          onClick={() => handleSubmit(destination, startDate, endDate)}
+        >
           Start Planning
         </button>
       </BottomSection>
-      {showCalendar && <Calendar handleDate={handleDate} />}
+      {showCalendar && <Calendar handleDate={handleDate} login={login} />}
     </HomeContainer>
   );
 };
 
 export default Home;
 
-const HomeContainer = styled.div``;
+const HomeContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 
-const TopSection = styled.div``;
+  &.login {
+    position: relative;
+  }
+`;
+
+const TopSection = styled.div`
+  position: absolute;
+
+  top: 40%;
+  left: 5%;
+
+  &.login {
+    position: relative;
+    left: 20px;
+  }
+`;
 const BottomSection = styled.div`
   display: flex;
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  > * {
+    margin-right: 12px;
+    border-radius: 6px;
+  }
+
+  &.login {
+    position: relative;
+    left: 20px;
+  }
 
   > button {
     cursor: pointer;
@@ -118,7 +154,26 @@ const BottomSection = styled.div`
   > button:focus {
     border-color: pink;
   }
-  > .calendar {
+  > .calendarbtn {
     background-color: white;
+    width: 200px;
+    max-height: 38px;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: left;
+    padding-left: 12px;
+  }
+
+  > .submitbtn {
+    max-height: 38px;
+    background-color: slategray;
+    border: none;
+    color: white;
+    font-size: 12px;
+
+    padding: 10px 20px;
+
+    :hover {
+      background-color: blueviolet;
+    }
   }
 `;

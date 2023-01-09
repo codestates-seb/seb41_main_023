@@ -79,7 +79,7 @@ const Header = ({ login }) => {
 export default Header;
 
 const HeadContainer = styled.div`
-  background-color: slategray;
+  /* background-color: slategray; */
 
   display: flex;
   justify-content: space-between;
@@ -98,5 +98,31 @@ const RightSection = styled.div`
 
   > * {
     cursor: pointer;
+  }
+
+  > img {
+    margin: 15px 0 10px 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  > button {
+    white-space: nowrap;
+    border: none;
+    border-radius: 0;
+    margin: 0 15px;
+    padding: 1px 0;
+
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    background-color: transparent;
+    &:hover {
+      text-decoration: underline;
+      text-underline-position: under;
+    }
   }
 `;
