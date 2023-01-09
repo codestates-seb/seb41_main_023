@@ -1,6 +1,7 @@
 package com.newyear.mainproject.plan.controller;
 
 import com.newyear.mainproject.dto.SingleResponseDto;
+import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.plan.dto.PlanDto;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.mapper.PlanMapper;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping("/plans")
@@ -21,10 +23,12 @@ import javax.validation.constraints.Positive;
 public class PlanController {
     private final PlanService planService;
     private final PlanMapper planMapper;
+    private final MemberService memberService;
 
-    public PlanController(PlanService planService, PlanMapper planMapper) {
+    public PlanController(PlanService planService, PlanMapper planMapper, MemberService memberService) {
         this.planService = planService;
         this.planMapper = planMapper;
+        this.memberService = memberService;
     }
 
     /**
@@ -72,4 +76,14 @@ public class PlanController {
                 new SingleResponseDto<>(planMapper.planToPlaceDetailResponseDto(plan)), HttpStatus.OK);
     }
 
+    /**
+     * 해당 유저가 작성한 일정 조회
+     */
+    @GetMapping
+    public ResponseEntity getPlans(){
+        List<Plan> planList = planService.findPlans(memberService.getLoginMember());
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(planMapper.plansToPlanResponseDtos(planList)), HttpStatus.OK);
+    }
 }
