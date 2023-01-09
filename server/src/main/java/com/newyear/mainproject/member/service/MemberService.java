@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -105,6 +107,18 @@ public class MemberService {
             throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_STATUS);
         }
 
+        return member;
+    }
+
+    private String findLoginMemberEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+    // 로그인 유저 얻기
+    public Member getLoginMember() {
+        Optional<Member> optionalMember = memberRepository.findByEmail(findLoginMemberEmail());
+        Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return member;
     }
 

@@ -1,6 +1,8 @@
 package com.newyear.mainproject.plan.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.newyear.mainproject.member.entity.Member;
+import com.newyear.mainproject.place.entity.Place;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +24,7 @@ public class Plan {
     @Column(nullable = false)
     private String planTitle; // 일정 제목
 
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, updatable = false)
     private String cityName; // 지역 이름
 
     @Column(nullable = false)
@@ -31,7 +33,20 @@ public class Plan {
     @Column(nullable = false)
     private String endDate; // 여행 끝 일자
 
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     @JsonIgnore
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
-    private List<PlanDate> planDates = new ArrayList<>();
+    private List<PlanDates> planDates = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+    private List<Place> places = new ArrayList<>();
+
 }
