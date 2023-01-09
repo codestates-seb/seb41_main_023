@@ -86,5 +86,4 @@ public class PlanController {
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.plansToPlanResponseDtos(planList)), HttpStatus.OK);
     }
-
 }
