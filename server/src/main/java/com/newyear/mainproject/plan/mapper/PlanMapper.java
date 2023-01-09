@@ -55,22 +55,6 @@ public interface PlanMapper {
 
     PlanDto.PlanDatesResponse planDatesToPlanDateResponseDto(PlanDates planDates);
 
-
-    PlanDto.Response planToPlanResponseDto(Plan plan);
-    default PlanDto.PlaceDetailResponse planToPlaceDetailResponseDto(Plan plan){
-        PlanDto.PlaceDetailResponse response = new PlanDto.PlaceDetailResponse();
-        response.setPlanId(plan.getPlanId());
-        response.setCityName(plan.getCityName());
-        response.setPlanTitle(plan.getPlanTitle());
-        response.setStartDate(plan.getStartDate());
-        response.setEndDate(plan.getEndDate());
-        response.setPlanDates(planDateToPlanDateResponseDtos(plan.getPlanDates()));
-        response.setPlaces(placesToPlaceResponseDtos(plan.getPlaces()));
-        return response;
-    }
-
-    PlanDto.PlanDatesResponse planDatesToPlanDateResponseDto(PlanDates planDates);
-    
     default List<PlanDto.PlanDatesResponse> planDateToPlanDateResponseDtos(List<PlanDates> planDates) {
         return planDates
                 .stream()
