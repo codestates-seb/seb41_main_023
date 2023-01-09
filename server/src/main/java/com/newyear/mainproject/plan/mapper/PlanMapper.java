@@ -26,6 +26,21 @@ public interface PlanMapper {
     Plan planPatchDtoToPlan(PlanDto.Patch patch);
 
     PlanDto.Response planToPlanResponseDto(Plan plan);
+
+    default List<PlanDto.Response> plansToPlanResponseDtos(List<Plan> plans){
+        return plans
+                .stream()
+                .map(plan -> PlanDto.Response
+                        .builder()
+                        .planId(plan.getPlanId())
+                        .planTitle(plan.getPlanTitle())
+                        .startDate(plan.getStartDate())
+                        .endDate(plan.getEndDate())
+                        .cityName(plan.getCityName())
+                        .plans(plan.getPlaces().size())
+                        .build()
+                ).collect(Collectors.toList());
+    }
     default PlanDto.PlaceDetailResponse planToPlaceDetailResponseDto(Plan plan){
         PlanDto.PlaceDetailResponse response = new PlanDto.PlaceDetailResponse();
         response.setPlanId(plan.getPlanId());

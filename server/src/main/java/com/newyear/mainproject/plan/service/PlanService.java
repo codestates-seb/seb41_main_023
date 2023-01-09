@@ -2,6 +2,7 @@ package com.newyear.mainproject.plan.service;
 
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
+import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.entity.PlanDates;
@@ -93,5 +94,12 @@ public class PlanService {
     public PlanDates findPlanDates(Long planDataId) {
         Optional<PlanDates> optionalPlanDates = planDateRepository.findById(planDataId);
         return optionalPlanDates.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PLAN_NOT_FOUND));
+    }
+
+    /**
+     * 해당 유저가 작성한 일정 조회
+     */
+    public List<Plan> findPlans(Member member){
+        return planRepository.findAllByMember(member);
     }
 }
