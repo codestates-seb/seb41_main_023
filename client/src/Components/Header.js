@@ -42,7 +42,11 @@ const Header = ({ login }) => {
   return (
     <HeadContainer>
       <LeftSection>
-        <button onClick={() => handleNavigate("/")}>로고</button>
+        <img
+          alt="logo_image"
+          src="https://picsum.photos/40"
+          onClick={() => handleNavigate("/")}
+        />
         <button onClick={() => handleNavigate("/blog")}>Travel Logs</button>
       </LeftSection>
       <RightSection>
@@ -88,9 +92,26 @@ const HeadContainer = styled.div`
 const LeftSection = styled.div`
   display: flex;
   margin: 20px;
+  cursor: pointer;
+
+  > img {
+    margin-right: 15px;
+    border-radius: 50%;
+  }
 
   > button {
+    border: none;
+    background-color: transparent;
     cursor: pointer;
+    font-size: 13px;
+    letter-spacing: 1px;
+
+    padding: 1px 0;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-position: under;
+    }
   }
 `;
 const RightSection = styled.div`
@@ -101,7 +122,7 @@ const RightSection = styled.div`
   }
 
   > img {
-    margin: 15px 0 10px 0;
+    margin: 20px 0;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -111,7 +132,7 @@ const RightSection = styled.div`
     white-space: nowrap;
     border: none;
     border-radius: 0;
-    margin: 0 15px;
+    margin: 20px 15px;
     padding: 1px 0;
 
     font-size: 12px;
