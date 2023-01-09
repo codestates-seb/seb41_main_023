@@ -1,17 +1,11 @@
+import axios from "axios";
 import styled from "styled-components";
-
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Modal from "../Components/Modal";
+import Modal from "./Modal";
 
-const General = ({
-  handleChange,
-  handleSubmit,
-  emailValid,
-  isvalid,
-  nameRef,
-  emailRef,
-}) => {
+const General = ({ handleChange, handleSubmit, nameRef }) => {
   return (
     <GeneralContainer>
       <div className="input_area">
@@ -22,14 +16,6 @@ const General = ({
           id="username"
           ref={nameRef}
         ></input>
-        <div>Email</div>
-        <input
-          onChange={handleChange}
-          name="email"
-          id="email"
-          ref={emailRef}
-        ></input>
-        {emailValid && <span>{isvalid}</span>}
       </div>
       <div className="submit_area">
         <button onClick={handleSubmit}>Save Changes</button>
@@ -61,6 +47,9 @@ const Password = () => {
 const DeleteAccount = ({ modal, setModal }) => {
   // const [token, setToken] = useState();
 
+  //memberId
+  //const [memberId,setMemberId] = useState();
+
   const navigate = useNavigate();
   const handleDeleteAccount = () => {
     // axios
@@ -77,7 +66,7 @@ const DeleteAccount = ({ modal, setModal }) => {
     //     window.location.reload();
     //   })
     //   .catch((err) => console.log("error"));
-    console.log("계정 삭제!");
+    // console.log("계정 삭제!");
   };
   return (
     <>

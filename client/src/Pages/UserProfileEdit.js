@@ -3,28 +3,25 @@ import styled from "styled-components";
 import { useState, useRef, useCallback } from "react";
 
 import Header from "../Components/Header";
-import { General, Password, DeleteAccount } from "../Components/Tab";
+import { General, Password, DeleteAccount } from "../Components/user/Tab";
 
 const UserProfileEdit = () => {
   const [currentTab, clickTab] = useState(0);
   const [modal, setModal] = useState(false);
 
-  const [emailValid, setEmailValid] = useState("");
-  const [isvalid, setIsValid] = useState("");
-
-  const [info, setInfo] = useState({
-    id: "ID",
-    email: "email@google.com",
+  const [userInfo, setUserInfo] = useState({
+    memberId: 1,
+    email: "1234@gmail.com",
+    displayName: "1234",
+    memberStatus: "활동중",
     profile: "https://picsum.photos/200",
   });
 
   const [submitInfo, setSubmitInfo] = useState({
     id: "",
-    email: "",
   });
 
   const nameRef = useRef([]);
-  const emailRef = useRef([]);
 
   const handleChange = (e) => {
     setSubmitInfo({
@@ -32,6 +29,7 @@ const UserProfileEdit = () => {
       [e.target.name]: e.target.value,
     });
   };
+
   // const params = useParams();
   // const [memberId, setMemberId] = useState(params?);
 
@@ -58,43 +56,31 @@ const UserProfileEdit = () => {
 
     if (!submitInfo.id) {
       nameRef.current.focus();
-    } else if (!submitInfo.email) {
-      emailRef.current.focus();
-    }
-    //유저 이름 혹은 이메일이 빈 경우 포커싱
-
-    const emailRegex =
-      /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    //최소 8자, 하나의 이상의 대소문자 및 하나의 숫자, 하나의 특수문자
-
-    const emailValueCheck = emailRegex.test(submitInfo.email);
-
-    const data = {
-      id: info.id,
-      email: info.email,
-    };
-
-    if (!emailValueCheck || info.email.trim() === "") {
-      setIsValid("The email is not a valid email address.");
-      setEmailValid("valid");
     } else {
-      setIsValid("");
-      console.log("edit!");
-      // axios
-      // .patch(
-      // `${process.env.REACT_APP_API_URL}/members/1`,
-      // {
-      //   ...data,
-      // }
-      // {
-      //   headers: {
-      //     Authorization: token,
-      //   },
-      // }
-      // )
-      // .then((res) => {
-      //   window.location.reload();
-      // });
+      const data = {
+        id: submitInfo.id,
+      };
+
+      console.log(data);
+
+      if (window.confirm("수정사항을 저장하시겠습니까?")) {
+        console.log("edit! ");
+        // axios
+        // .patch(
+        // `${process.env.REACT_APP_API_URL}/members/1`,
+        // {
+        //   ...data,
+        // }
+        // {
+        //   headers: {
+        //     Authorization: token,
+        //   },
+        // }
+        // )
+        // .then((res) => {
+        //   window.location.reload();
+        // });
+      }
     }
   };
 
@@ -105,10 +91,7 @@ const UserProfileEdit = () => {
         <General
           handleChange={handleChange}
           handleSubmit={handleSubmit}
-          emailValid={emailValid}
-          isvalid={isvalid}
           nameRef={nameRef}
-          emailRef={emailRef}
         />
       ),
     },
@@ -182,12 +165,12 @@ const UserProfileEdit = () => {
       <UserMetaContainer>
         <div className="user_meta">
           <div className="user_meta_left">
-            <img alt="profile" src={info.profile} />
+            <img alt="profile" src={userInfo.profile} />
             <SettingUserThumbnail />
           </div>
           <div className="user_meta_right">
-            <div>{info.id}</div>
-            <div>{info.email}</div>
+            <div>{userInfo.displayName}</div>
+            <div>{userInfo.email}</div>
           </div>
         </div>
       </UserMetaContainer>

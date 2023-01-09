@@ -1,6 +1,8 @@
-import styled from "styled-components";
+import axios from "axios";
 import moment from "moment";
+import styled from "styled-components";
 import { useState, useRef } from "react";
+import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 import Header from "../Components/Header";
@@ -17,9 +19,19 @@ const Home = ({ login }) => {
   const inputRef = useRef([]);
   const inputCalendarRef = useRef([]);
 
+  const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
+  const [token, setIsToken] = useState();
+
+  //토큰 설정
+  // useEffect(() => {
+  //   if (cookies.accessToken) {
+  //     setIsToken(cookies.accessToken.token);
+  //   }
+  // }, []);
+
   const handleDate = (date) => {
-    setStartDate(moment(date[0].startDate).format("MMM Do YY"));
-    setEndDate(moment(date[0].endDate).format("MMM Do YY"));
+    setStartDate(moment(date[0].startDate).format("YYYY-MM-DD"));
+    setEndDate(moment(date[0].endDate).format("YYYY-MM-DD"));
   };
 
   const handleDestination = (destination) => {
@@ -33,18 +45,35 @@ const Home = ({ login }) => {
    */
 
   const handleSubmit = (destination, startDate, endDate) => {
-    console.log(destination, startDate, endDate);
-    //속초 Jan 10th 23 Jan 20th 23
+    // console.log(destination, startDate, endDate);
 
     //장소가 입력되지 않았을 때 포커싱
     if (destination.length <= 1) {
       inputRef.current.focus();
     } else if (startDate === "Start date" || endDate === "End date") {
       inputCalendarRef.current.focus();
+    } else {
+      const data = {
+        cityName: destination,
+        startDate: startDate,
+        endDate: endDate,
+      };
+      if (login) {
+        axios
+          .post(`${process.env.REACT_APP_API_URL}/plans`, {
+            headers: {
+              // Authorization: token,
+              withCredentials: true,
+            },
+            data: data,
+          })
+          .then((res) => console.log(res))
+          .then((res) => navigate(`/itinerary/${res.data.planId}`));
+      } else {
+        localStorage.setItem("plan", JSON.stringify(data));
+        navigate("/login");
+      }
     }
-    //장소, 날짜를 입력 받아 post 요청?
-
-    // login ? navigate("/itinerary/:itineraryId") : navigate("/login");
   };
 
   return (
