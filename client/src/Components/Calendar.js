@@ -9,8 +9,17 @@ import { DateRange } from "react-date-range";
 const CalendarContainer = styled.div`
   display: flex;
   flex-direction: row;
+
+  position: absolute;
+  top: 55%;
+  left: 15%;
+
+  &.login {
+    position: absolute;
+    top: 110%;
+  }
 `;
-const Calendar = ({ handleDate }) => {
+const Calendar = ({ handleDate, login }) => {
   const tomorrow = moment().add(1, "d").toDate();
 
   const [date, setDate] = useState([
@@ -27,7 +36,7 @@ const Calendar = ({ handleDate }) => {
 
   return (
     <>
-      <CalendarContainer>
+      <CalendarContainer className={login ? "login" : null}>
         <DateRange
           editableDateInputs={true}
           onChange={(item) => setDate([item.selection])}

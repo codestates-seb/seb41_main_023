@@ -115,10 +115,11 @@ const ModalWrapper = styled.div`
       padding: 15px 20px;
       margin: 13px 20px;
       font-size: 13px;
-      line-height: 10px;
+      line-height: 15px;
       text-align: center;
       border-radius: 5px;
       color: #6a737c;
+      background-color: #3b4045;
       cursor: pointer;
       &:hover {
         color: #525960;

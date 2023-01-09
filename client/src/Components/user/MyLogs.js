@@ -3,21 +3,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const MyTripsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  margin: 20px;
-
-  .contents {
-    display: flex;
-    > div {
-      margin: 20px;
-      cursor: pointer;
-    }
-  }
-`;
-
 //axios.get
 const MyLogs = () => {
   const dummy = [
@@ -73,11 +58,17 @@ const MyLogs = () => {
               src={el.image}
               onClick={() => navigate("/board/:boardId")}
             />
-            <div>{el.title}</div>
-            <div>{/* {el.startDate} - {el.endDate} */}</div>
-            {/* <div>{el.profile_image}</div> */}
-            <div>{el.displayName} </div>
-            <div>{el.checkLikes}</div>
+            <div className="meta_title">{el.title}</div>
+            <div className="meta_content">
+              {/* {el.startDate} - {el.endDate} */}
+            </div>
+            <div className="meta_profile">
+              {/* <div>{el.profile_image}</div> */}
+              <div>{el.displayName} </div>
+            </div>
+            <div className={el.checkLikes ? "meta_likes likes" : "meta_likes"}>
+              ♡
+            </div>
           </div>
         ))}
       </div>
@@ -86,3 +77,50 @@ const MyLogs = () => {
 };
 
 export default MyLogs;
+
+const MyTripsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  margin: 20px;
+
+  .contents {
+    display: flex;
+    > div {
+      margin: 20px 17px 10px 0;
+      cursor: pointer;
+      position: relative;
+
+      > img {
+        border-radius: 7px;
+      }
+
+      > .meta_title {
+        margin: 5px;
+        font-size: 15px;
+      }
+
+      > .meta_content {
+        margin: 5px;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.5);
+      }
+
+      > .meta_profile {
+        font-size: 15px;
+      }
+
+      > .meta_likes {
+        position: absolute;
+        top: 3%;
+        left: 85%;
+        color: black;
+        font-size: 20px;
+      }
+
+      > .likes {
+        color: red;
+      }
+    }
+  }
+`;

@@ -223,10 +223,12 @@ const AutoCompleteContainer = styled.div`
     > input {
       width: 300px;
       padding: 10px;
+
+      border-radius: 6px;
     }
 
     > .clearbtn {
-      color: red;
+      color: grey;
       position: absolute;
       top: 10px;
       right: 0;
