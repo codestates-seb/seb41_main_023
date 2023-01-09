@@ -37,7 +37,7 @@ public interface PlanMapper {
                         .startDate(plan.getStartDate())
                         .endDate(plan.getEndDate())
                         .cityName(plan.getCityName())
-                        .plans(plan.getPlaces().size())
+                        .placesCount(plan.getPlaces().size())
                         .build()
                 ).collect(Collectors.toList());
     }
