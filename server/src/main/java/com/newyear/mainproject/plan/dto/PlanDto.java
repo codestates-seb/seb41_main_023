@@ -38,7 +38,7 @@ public class PlanDto {
         private String planTitle;
         private String startDate;
         private String endDate;
-        private Integer plans;
+        private Integer placesCount;
     }
 
     @Getter
