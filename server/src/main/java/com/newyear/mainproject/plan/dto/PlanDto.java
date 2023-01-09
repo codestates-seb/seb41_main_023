@@ -1,9 +1,10 @@
 package com.newyear.mainproject.plan.dto;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.newyear.mainproject.place.dto.PlaceDto;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlanDto {
 
@@ -27,10 +28,34 @@ public class PlanDto {
     }
 
     @Getter
+    @Setter
     public static class Response {
         private Long planId;
-        private String planName;
+        private String cityName;
+        private String planTitle;
         private String startDate;
         private String endDate;
+    }
+
+    @Getter
+    @Setter
+    public static class PlaceDetailResponse {
+        private Long planId;
+        private String cityName;
+        private String planTitle;
+        private String startDate;
+        private String endDate;
+
+        private List<PlanDatesResponse> planDates = new ArrayList<>();
+        private List<PlaceDto.Response> places = new ArrayList<>();
+    }
+
+    @Builder
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class PlanDatesResponse {
+        private Long planDateId;
+        private String planDate;
     }
 }
