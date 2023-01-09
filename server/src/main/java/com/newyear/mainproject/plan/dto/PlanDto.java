@@ -1,5 +1,6 @@
 package com.newyear.mainproject.plan.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.newyear.mainproject.place.dto.PlaceDto;
 import lombok.*;
 
@@ -27,14 +28,17 @@ public class PlanDto {
         private String endDate;
     }
 
+    @Builder
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL) // response null 필드 제외
     public static class Response {
         private Long planId;
         private String cityName;
         private String planTitle;
         private String startDate;
         private String endDate;
+        private Integer placesCount;
     }
 
     @Getter
