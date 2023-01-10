@@ -13,6 +13,7 @@ const EditBudget = ({
   const handleInputBudget = (e) => {
     setInputBudget(e.target.value);
   };
+
   return (
     <>
       {editBudget ? (
