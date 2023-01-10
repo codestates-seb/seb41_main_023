@@ -1,5 +1,7 @@
 package com.newyear.mainproject.security.handler;
 
+import com.newyear.mainproject.exception.BusinessLogicException;
+import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
@@ -43,25 +45,15 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         try {
             Member findMember = memberRepository.findByEmail(email).get();
-            redirect(request, response, findMember.getEmail());
+
+            //OAuth로그인시 이미 가입된 이메일일 경우 (비밀번호가 null값으로 필터링)사이트 이용 불가
+            if(findMember.getPassword() == null) redirect(request, response, findMember.getEmail());
+            else throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
         catch (NoSuchElementException e){
             saveMember(email, name); //db에 저장
             redirect(request, response, email);
         }
-
-//        Member findMember = memberRepository.findByEmail(email).get();
-//        if(findMember.getEmail() == email){
-//            System.out.println(email);
-//            redirect(request, response, findMember.getEmail());
-//        }
-//        else {
-//            saveMember(email, name);
-//            redirect(request, response, email);
-//        }; // DB에 저장
-
-
-//        redirect(request, response, findMember.getEmail());  // Access Token과 Refresh Token을 생성해서 Frontend 애플리케이션에게 전달하기 위해 Redirect
     }
 
     private void saveMember(String email, String name) {

@@ -70,7 +70,21 @@ public class MemberController {
         }
         else throw new BusinessLogicException(ExceptionCode.INVALID_PASSWORD);
 
-        return new ResponseEntity(HttpStatus.CREATED); // 나중에 response 바꾸거나 안나오게 변경
+        Member member = memberService.findMember(patch.getMemberId());
+
+        MemberDto.Response response = mapper.memberToMemberResponseDto(member);
+
+        return new ResponseEntity(response, HttpStatus.CREATED); // 나중에 response 바꾸거나 안나오게 변경
+    }
+
+    @PatchMapping("/displayName/{member-id}")
+    public ResponseEntity patchDisplayName(@PathVariable("member-id") @Positive long memberId,
+                                           @Valid @RequestBody MemberDto.PatchDisplayName patch){
+
+        patch.setMemberId(memberId);
+        Member member = memberService.updateDisplayName(mapper.memberPatchDisplayNameToMember(patch));
+        MemberDto.Response response = mapper.memberToMemberResponseDto(member);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/{member-id}")
@@ -87,6 +101,14 @@ public class MemberController {
         List<Member> members = pageMembers.getContent();
 
         return new ResponseEntity(new MultiResponseDto<>(mapper.membersToResponseDto(members), pageMembers), HttpStatus.OK);
+    }
+
+    @GetMapping("/userProfile/{member-id}")
+    public ResponseEntity getUserProfile(@PathVariable("member-id") @Positive long memberId){
+
+        Member member = memberService.findMember(memberId);
+        MemberDto.userProfile response = mapper.memberToUserProfileDto(member);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")

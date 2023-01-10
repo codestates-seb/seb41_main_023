@@ -73,6 +73,15 @@ public class MemberService {
         return memberRepository.save(findMember);
     }
 
+    public Member updateDisplayName(Member member){
+        Member findMember = findVerifiedMember(member.getMemberId());
+
+        Optional.ofNullable(member.getDisplayName())
+                .ifPresent(name -> findMember.setDisplayName(name));
+
+        return memberRepository.save(findMember);
+    }
+
     public Member findMember(long memberId){
         return findVerifiedMember(memberId);
     }
