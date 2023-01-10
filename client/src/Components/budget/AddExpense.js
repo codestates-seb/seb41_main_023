@@ -12,9 +12,11 @@ const AddExpense = ({
     item: "",
   });
 
+  // 입력 값 변경
   const handleInputs = (e) => {
     setInput({ [e.name]: e.target.value });
   };
+
   return (
     <>
       {addBudgetModal ? (

@@ -28,6 +28,7 @@ const MyLogs = () => {
 
   const navigate = useNavigate();
   const [logList, setLogList] = useState(dummy);
+
   const [token, setToken] = useState();
   const [memberId, setMemberId] = useState();
 

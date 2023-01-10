@@ -9,6 +9,7 @@ import AddExpense from "./AddExpense";
 //예산 식별자 필요
 
 const Budget = () => {
+  // 더미
   const dummybudget = {
     budgetId: 1,
     expectedBudget: 20000,
@@ -29,6 +30,7 @@ const Budget = () => {
     ],
   };
 
+  //예산, 비용, 유저 정보
   const [budget, setBudget] = useState(dummybudget);
   const [expenses, setExpences] = useState(dummybudget.expenses);
   const [userInfo, setUserInfo] = useState({
@@ -39,10 +41,11 @@ const Budget = () => {
     memberStatus: "활동중",
   });
 
+  // 토큰, 유저 id
   // const [token, setToken] = useState();
-  //const [memberId,setMemberId] = useState();
+  // const [memberId,setMemberId] = useState();
 
-  //토큰 설정
+  // 토큰 설정
   // useEffect(() => {
   //   if (cookies.accessToken) {
   //     setToken(cookies.accessToken.token)
@@ -51,13 +54,13 @@ const Budget = () => {
 
   //memberId 설정
 
-  /* 예산 수정 모달 */
+  // 예산 수정 모달
   const [editBudget, setEditBudget] = useState(false);
 
-  /* 비용 추가 모달 */
+  // 비용 추가 모달
   const [addBudgetModal, setAddBudgetModal] = useState(false);
 
-  /* 유저 정보 조회 */
+  // 유저 정보 조회
   //  useEffect(() => {
   // axios
   //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
@@ -72,7 +75,7 @@ const Budget = () => {
   //   .catch((err) => console.log("error"));
   //  }, []);
 
-  /* 예산 정보 조회 */
+  // 예산 정보 조회
   //  useEffect(() => {
   // axios
   //   .get(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
@@ -88,7 +91,7 @@ const Budget = () => {
   //   .catch((err) => console.log("error"));
   //  }, []);
 
-  /* 예산 수정 요청 */
+  // 예산 수정 요청
   const handleEditBudget = (inputBudget) => {
     if (inputBudget < 1) {
       window.confirm("예산은 1원 이상이어야 합니다.");
@@ -112,7 +115,7 @@ const Budget = () => {
     //   .catch((err) => console.log("error"));
   };
 
-  /* 비용 추가 요청 */
+  // 비용 추가 요청
   const handleAddExpense = () => {};
 
   return (
@@ -136,7 +139,6 @@ const Budget = () => {
         <AddExpense
           addBudgetModal={addBudgetModal}
           setAddBudgetModal={setAddBudgetModal}
-          // originBudget={budget.expectedBudget}
           handleAddExpense={handleAddExpense}
         />
       </MiddleArea>

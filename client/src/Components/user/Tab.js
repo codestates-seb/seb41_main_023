@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 
 // const [token, setToken] = useState();
-//const [memberId,setMemberId] = useState();
+// const [memberId,setMemberId] = useState();
 
-//토큰 설정
+// 토큰 설정
 // useEffect(() => {
 //   if (cookies.accessToken) {
 //     setToken(cookies.accessToken.token)
@@ -19,7 +19,7 @@ import Modal from "./Modal";
 
 //memberId 설정
 
-/* 유저이름 수정 */
+// 유저이름 수정
 const General = ({ handleChange, handleSubmit, nameRef }) => {
   return (
     <GeneralContainer>
@@ -39,7 +39,7 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
   );
 };
 
-/* 비밀번호 수정 */
+// 비밀번호 수정
 const Password = () => {
   const [inputs, setInputs] = useState({
     originPassword: "",
@@ -57,13 +57,6 @@ const Password = () => {
   };
 
   const submitPassword = () => {
-    //0. origin password가 현재 비밀번호와 일치해야 함
-
-    //1. 기존 비밀번호와 달라야 함
-    // if (inputs.originPassword === inputs.newPassword) {
-    //   return window.alert("기존 비밀번호와 다른 비밀번호를 입력해주세요.");
-    // }
-
     //유효성 검사(숫자, 영문, 특수문자 조합한 8~20자리)
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&#]{8,}$/i;
@@ -72,9 +65,10 @@ const Password = () => {
     if (!passwordValueCheck) {
       return;
     }
+
     console.log("change!");
 
-    /* 비밀번호 변경 요청 */
+    // 비밀번호 변경 요청
     // axios
     //   .patch(`${process.env.REACT_APP_API_URL}/members/password/${memberId}`, {
     //     headers: {
@@ -115,8 +109,8 @@ const Password = () => {
           onChange={handleChange}
         ></input>
         <div>
-          비밀번호는 8자 이상이어야 하며, 숫자, 영문, 특수문자를 모두 포함해야
-          합니다.
+          숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를
+          입력하세요.
         </div>
       </div>
       <div className="submit_area">
@@ -146,6 +140,7 @@ const DeleteAccount = ({ modal, setModal }) => {
     //   .catch((err) => console.log("error"));
     console.log("계정 삭제!");
   };
+
   return (
     <>
       {modal ? (

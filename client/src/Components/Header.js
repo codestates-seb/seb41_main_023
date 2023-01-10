@@ -8,16 +8,16 @@ const Header = ({ login }) => {
   const [memberId, setMemberId] = useState();
   const navigate = useNavigate();
 
-  //토큰 설정
+  // 토큰 설정
   // useEffect(() => {
   //   if (cookies.accessToken) {
   //     setToken(cookies.accessToken.token);
   //   }
   // }, []);
 
-  //memberId 설정
+  // memberId 설정
 
-  //프로필 이미지 axios 요청
+  // 유저 프로필 요청
   //  useEffect(() => {
   // axios
   //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
@@ -36,6 +36,7 @@ const Header = ({ login }) => {
     navigate(path);
   };
 
+  // 로그아웃
   const handleSignout = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
       axios
