@@ -10,6 +10,7 @@ import com.newyear.mainproject.security.jwt.JwtTokenizer;
 import com.newyear.mainproject.security.logout.RedisUtil;
 import com.newyear.mainproject.security.logout.RefreshToken;
 import com.newyear.mainproject.security.logout.RefreshTokenRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,22 +27,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
     private final MemberRepository memberRepository;
-    private final RedisUtil redisUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
-                                   JwtTokenizer jwtTokenizer, MemberRepository memberRepository,
-                                   RedisUtil redisUtil, RefreshTokenRepository refreshTokenRepository) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenizer = jwtTokenizer;
-        this.memberRepository = memberRepository;
-        this.redisUtil = redisUtil;
-        this.refreshTokenRepository = refreshTokenRepository;
-    }
+    private final RedisUtil redisUtil;
+
+    private final RefreshTokenRepository refreshTokenRepository;
 
     //메서드 내부에서 인증을 시도하는 로직
     @SneakyThrows
@@ -90,6 +84,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //Refresh Token은 Access Token이 만료될 경우, Access Token을 새로 발급받기 위한 용도이며
         //Refresh Token을 Access Token과 함께 클라이언트에게 제공할 지 여부는 애플리케이션의 요구 사항에 따라 달라질 수 있음
         response.setHeader("Refresh", refreshToken);
+
+//        if(member.getMemberStatus() == Member.MemberStatus.MEMBER_QUIT){
+//            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+//        }
+
+        //login 했을때 body로 회원ID 보여주기
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(
+                "{\"" + "memberId" + "\":" + member.getMemberId() + "}"
+        );
 
 
 
