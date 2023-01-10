@@ -3,6 +3,8 @@ import moment from "moment";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 
+import EditBudget from "./EditBudget";
+
 //예산 식별자 필요
 
 const Budget = () => {
@@ -48,6 +50,9 @@ const Budget = () => {
 
   //memberId 설정
 
+  //예산 수정 모달
+  const [editBudget, setEditBudget] = useState(false);
+
   /* 유저 정보 조회 */
   //  useEffect(() => {
   // axios
@@ -79,12 +84,41 @@ const Budget = () => {
   //   .catch((err) => console.log("error"));
   //  }, []);
 
+  /* 예산 수정 요청 */
+  const handleEditBudget = (inputBudget) => {
+    if (inputBudget < 1) {
+      window.confirm("예산은 1원 이상이어야 합니다.");
+    }
+    // axios
+    //   .patch(`${process.env.REACT_APP_API_URL}/budget/${budget/budgetId}`, {
+    //     headers: {
+    //       Authorization: token,
+    //       withCredentials: true,
+    //     },
+    //    data : {
+    //    expectedBudget  : inputBudget
+    //    }
+    //   })
+    //   .then((res) => {
+    //    setBudget(res.data.expectedBudget);
+    //   })
+    //  .then((res) => {
+    //    setEditBudget(false)
+    //  })
+    //   .catch((err) => console.log("error"));
+  };
+
   return (
     <BudgetContainer>
       <div>Budgeting</div>
       <TopArea>
         <div>My current budget</div>
-        <div>Edit budget</div>
+        <EditBudget
+          editBudget={editBudget}
+          setEditBudget={setEditBudget}
+          originBudget={budget.expectedBudget}
+          handleEditBudget={handleEditBudget}
+        />
       </TopArea>
       <div className="budget">
         $ {budget.expectedBudget.toLocaleString("ko-KR")}

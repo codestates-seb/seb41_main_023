@@ -4,7 +4,7 @@ import Home from "../Pages/Home";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
 
-// import Budget from "../Components/Buget";
+// import Budget from "../Components/budget/Buget";
 
 const MainContainer = styled.div``;
 
