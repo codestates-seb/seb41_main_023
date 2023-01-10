@@ -14,9 +14,21 @@ public interface MemberMapper {
 
     Member memberPatchPasswordToMember(MemberDto.PatchPassword patchPassword);
 
+    Member memberPatchDisplayNameToMember(MemberDto.PatchDisplayName patchDisplayName);
+
     List<MemberDto.Response> membersToResponseDto(List<Member> members);
 
 //    MemberDto.Response memberToMemberResponseDto(Member member);
+
+    default MemberDto.userProfile memberToUserProfileDto(Member member){
+        MemberDto.userProfile response = new MemberDto.userProfile();
+        response.setEmail(member.getEmail());
+        response.setDisplayName(member.getDisplayName());
+        //이미지 추가
+
+        return response;
+
+    }
 
     default MemberDto.Response memberToMemberResponseDto(Member member){
         MemberDto.Response response = new MemberDto.Response();

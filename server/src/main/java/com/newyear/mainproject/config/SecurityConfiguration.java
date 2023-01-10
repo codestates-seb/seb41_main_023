@@ -72,15 +72,15 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/members/signup", "/members/login").permitAll()
-                        .antMatchers(HttpMethod.PATCH, "/members/**").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/members/logout").permitAll()
                         .antMatchers(HttpMethod.GET, "/members").hasAnyRole("ADMIN", "USER")
-                        .antMatchers(HttpMethod.GET, "/", "/members/**", "/city").permitAll() //추후 추가하기
+                        .antMatchers(HttpMethod.GET, "/", "/members/**", "/city", "/board", "/board/**").permitAll() //추후 추가하기
                         .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
                         .antMatchers("/h2/**").permitAll() // h2 콘솔 사용을 위한 설정
                         .anyRequest()
-                                .permitAll()
-//                        .authenticated()
+//                                .permitAll()
+                        .authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository, refreshTokenRepository))
