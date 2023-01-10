@@ -2,8 +2,12 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import { data } from "../dummyCity";
+
 const Autocomplete = ({ handleDestination, inputRef }) => {
-  const [city, setCity] = useState();
+  const dummyCity = data.map((el) => el.cityName);
+  const [city, setCity] = useState(dummyCity);
+  // console.log(city);
 
   /* 도시 정보 조회 */
   // useEffect(() => {
@@ -184,6 +188,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
 
 /* 자동완성 배열(options)에 들어간 값들이 드롭다운으로 보여지는 부분 */
 export const DropDown = ({ options, handleComboBox, activeSuggestion }) => {
+  console.log(options);
   return (
     <DropDownContainer>
       {options.map((option, index) => {

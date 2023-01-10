@@ -97,7 +97,7 @@ const Budget = () => {
       window.confirm("예산은 1원 이상이어야 합니다.");
     }
     // axios
-    //   .patch(`${process.env.REACT_APP_API_URL}/budget/${budget/budgetId}`, {
+    //   .patch(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
     //     headers: {
     //       Authorization: token,
     //       withCredentials: true,
@@ -116,7 +116,29 @@ const Budget = () => {
   };
 
   // 비용 추가 요청
-  const handleAddExpense = () => {};
+  const handleAddExpense = (price, selectedCategory, item) => {
+    console.log(price, selectedCategory, item);
+
+    // axios
+    //   .post(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
+    //     headers: {
+    //       Authorization: token,
+    //       withCredentials: true,
+    //     },
+    //    data : {
+    //    category  : selectedCategory,
+    //    item  : item,
+    //    price  : price,
+    //    }
+    //   })
+    //   .then((res) => {
+    //    setExpences([...expences,res.data]); //비용에 추가
+    //   })
+    //  .then((res) => {
+    //    리로드??
+    //  })
+    //   .catch((err) => console.log("error"));
+  };
 
   return (
     <BudgetContainer>

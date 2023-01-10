@@ -1,21 +1,40 @@
 import axios from "axios";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import DropDown from "./Dropdown";
 
 const AddExpense = ({
   addBudgetModal,
   setAddBudgetModal,
   handleAddExpense,
 }) => {
-  const [input, setInput] = useState({
+  const [inputs, setInputs] = useState({
     price: 0,
     item: "",
   });
 
-  // 입력 값 변경
-  const handleInputs = (e) => {
-    setInput({ [e.name]: e.target.value });
+  // 드롭다운 활성화
+  const [dropDown, setDropDown] = useState(false);
+
+  //카테고리 선택
+  const [selectedCategory, setSelectedCategory] = useState();
+
+  //카테고리 변경
+  const handleCategory = (el) => {
+    setSelectedCategory(el);
+    setDropDown(false);
   };
+
+  // 지출 비용, 지출 항목 변경
+  const handleInputs = (e) => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
+  };
+
+  //해당 날짜에 추가된 장소 불러오기
+  // useEffect(()=>{
+
+  // })
 
   return (
     <>
@@ -34,26 +53,28 @@ const AddExpense = ({
             </div>
             <input
               className="content"
-              placeholder="비용을 입력해주세요"
+              placeholder="지출 금액을 입력해주세요."
               name="price"
-              value={input.price}
+              value={inputs.price}
               onChange={handleInputs}
             />
+            <div className="content" onClick={() => setDropDown(!dropDown)}>
+              {selectedCategory}
+            </div>
             <input
               className="content"
+              placeholder="지출 항목을 입력해주세요."
               name="item"
-              value={input.item}
+              value={inputs.item}
               onChange={handleInputs}
-            />
-            <input
-              className="content"
-              placeholder="Add description"
-              // name="item"
-
-              // onChange={handleInputs}
             />
             <div className="submit_frame">
-              <button className="btn" onClick={() => handleAddExpense(input)}>
+              <button
+                className="btn"
+                onClick={() =>
+                  handleAddExpense(inputs.price, selectedCategory, inputs.item)
+                }
+              >
                 Add expense
               </button>
               <div
@@ -65,6 +86,9 @@ const AddExpense = ({
             </div>
           </ModalWrapper>
         </ModalContainer>
+      ) : null}
+      {dropDown ? (
+        <DropDown setDropDown={setDropDown} handleCategory={handleCategory} />
       ) : null}
       <AddExpenseBtn
         onClick={() => {
