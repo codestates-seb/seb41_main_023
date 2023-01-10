@@ -46,6 +46,16 @@ public class MemberDto {
         private String originPassword;
     }
 
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Delete{
+        @NotBlank
+        private String accessToken;
+        @NotBlank
+        private String refreshToken;
+    }
+
     @Getter @Setter
     @AllArgsConstructor
     @NoArgsConstructor
@@ -55,7 +65,6 @@ public class MemberDto {
         private String displayName;
         //        private String profileImage;
         private Member.MemberStatus memberStatus;
-
         public String getMemberStatus() {
             return memberStatus.getStatus();
         }

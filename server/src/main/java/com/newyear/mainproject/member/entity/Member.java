@@ -16,13 +16,13 @@ public class Member{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long memberId;
 
-    @Column(nullable = false)
+    @Column(nullable = false) //updatable = false 추가하기
     private String email;
 
     @Column(nullable = false)
     private String displayName;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100)
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
