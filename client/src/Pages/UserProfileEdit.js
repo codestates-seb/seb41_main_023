@@ -43,7 +43,7 @@ const UserProfileEdit = () => {
   };
 
   // const params = useParams();
-  // const [memberId, setMemberId] = useState(params?);
+  // const [memberId, setMemberId]
 
   //기존 유저 정보 get 요청
   // useEffect(() => {
@@ -79,7 +79,7 @@ const UserProfileEdit = () => {
         console.log("edit! ");
         // axios
         // .patch(
-        // `${process.env.REACT_APP_API_URL}/members/${memberId}`,
+        // `${process.env.REACT_APP_API_URL}/members/displayName/${memberId}`,
         // {
         //   ...data,
         // }
