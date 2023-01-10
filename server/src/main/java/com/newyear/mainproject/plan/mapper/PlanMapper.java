@@ -5,9 +5,11 @@ import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.plan.dto.PlanDto;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.entity.PlanDates;
+import com.newyear.mainproject.util.DateCalculation;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,9 +23,23 @@ public interface PlanMapper {
         plan.setEndDate(post.getEndDate());
         plan.setPlanTitle("Trip to "+ post.getCityName());
 
+        plan.setPlanDates(planDatesToPlanPlanDates(plan));
+
         return plan;
     }
-    Plan planPatchDtoToPlan(PlanDto.Patch patch);
+    default Plan planPatchDtoToPlan(PlanDto.Patch patch) {
+        Plan plan = new Plan();
+
+        plan.setPlanId(patch.getPlanId());
+        plan.setPlanTitle(patch.getPlanTitle());
+        plan.setStartDate(patch.getStartDate());
+        plan.setEndDate(patch.getEndDate());
+
+        plan.setPlanDates(planDatesToPlanPlanDates(plan));
+
+        return plan;
+
+    }
 
     PlanDto.Response planToPlanResponseDto(Plan plan);
 
@@ -51,6 +67,24 @@ public interface PlanMapper {
         response.setPlanDates(planDateToPlanDateResponseDtos(plan.getPlanDates()));
         response.setPlaces(placesToPlaceResponseDtos(plan.getPlaces()));
         return response;
+    }
+
+    //plan 에 planDates 넣어주기 위한 메소드(중복 방지)
+    default List<PlanDates> planDatesToPlanPlanDates(Plan plan) {
+        List<String> dateList = DateCalculation.dateCal(plan.getStartDate(), plan.getEndDate());
+
+        //일정 등록하면서 동시에 plan_date 테이블에 값 저장
+        List<PlanDates> planDatesList = new ArrayList<>();
+
+        for(String date : dateList) {
+            PlanDates planDates = new PlanDates();
+            planDates.setPlanDate(date); // 시작일정-끝일정 사이의 일정들을 전부 등록
+            planDates.setPlan(plan);
+            plan.setPlanDates(planDates.getPlan().getPlanDates());
+            planDatesList.add(planDates);
+        }
+
+        return planDatesList;
     }
 
     PlanDto.PlanDatesResponse planDatesToPlanDateResponseDto(PlanDates planDates);
