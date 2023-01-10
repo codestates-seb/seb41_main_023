@@ -20,8 +20,8 @@ function App() {
               <Route path="/signup" element={<SignUpPage setIsLoggedIn={setIsLoggedIn}/>}/>
               <Route path="/user/:memberId" element={<UserProfile/>}/>
               <Route path="/user/:memberId/edit" element={<UserProfileEdit/>}/>
-              {/* <Route path="/itinerary/:itineraryId" element={<Itinerary/>}/> */}
-              {/* <Route path="/blog" element={<Blog/>}/> */}
+              <Route path="/itinerary/:itineraryId" element={<Itinerary/>}/>
+              <Route path="/blog" element={<Blog/>}/>
             </Routes>
       </>
     );
