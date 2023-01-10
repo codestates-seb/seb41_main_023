@@ -22,6 +22,9 @@ public class Expenses extends Auditable {
     @Column(nullable = false)
     private int price;
 
+    @Column(nullable = false)
+    private String category;
+
     @ManyToOne
     @JoinColumn(name = "budget_id")
     private Budget budget;
