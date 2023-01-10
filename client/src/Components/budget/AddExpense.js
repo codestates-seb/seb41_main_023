@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import DropDown from "./Dropdown";
 
 const AddExpense = ({
-  addBudgetModal,
-  setAddBudgetModal,
+  addExpenseModal,
+  setAddExpenseModal,
   handleAddExpense,
 }) => {
   const [inputs, setInputs] = useState({
@@ -31,22 +31,17 @@ const AddExpense = ({
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
-  //해당 날짜에 추가된 장소 불러오기
-  // useEffect(()=>{
-
-  // })
-
   return (
     <>
-      {addBudgetModal ? (
-        <ModalContainer onClick={() => setAddBudgetModal(false)}>
+      {addExpenseModal ? (
+        <ModalContainer onClick={() => setAddExpenseModal(false)}>
           {/*/모달 창 내부에서 닫히지 않도록 이벤트 버블링 방지 */}
           <ModalWrapper onClick={(e) => e.stopPropagation()}>
             <div className="title_frame">
               <div className="title">Add Expense</div>
               <div
                 className="cancle_button"
-                onClick={() => setAddBudgetModal(false)}
+                onClick={() => setAddExpenseModal(false)}
               >
                 ❌
               </div>
@@ -79,7 +74,7 @@ const AddExpense = ({
               </button>
               <div
                 className="cancle_text"
-                onClick={() => setAddBudgetModal(false)}
+                onClick={() => setAddExpenseModal(false)}
               >
                 Cancle
               </div>
@@ -92,7 +87,7 @@ const AddExpense = ({
       ) : null}
       <AddExpenseBtn
         onClick={() => {
-          setAddBudgetModal(!addBudgetModal);
+          setAddExpenseModal(!addExpenseModal);
         }}
       >
         Add Expense
@@ -155,7 +150,6 @@ const ModalWrapper = styled.div`
 
       cursor: pointer;
       color: #6a737c;
-      /* background-color: #3b4045; */
     }
   }
   > .content {

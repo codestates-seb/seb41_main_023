@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import EditBudget from "./EditBudget";
 import AddExpense from "./AddExpense";
+import DeleteExpense from "./DeleteExpense";
 
 //예산 식별자 필요
 
@@ -58,7 +59,10 @@ const Budget = () => {
   const [editBudget, setEditBudget] = useState(false);
 
   // 비용 추가 모달
-  const [addBudgetModal, setAddBudgetModal] = useState(false);
+  const [addExpenseModal, setAddExpenseModal] = useState(false);
+
+  //비용 삭제 모달
+  const [deleteExpenseModal, setDeleteExpenseModal] = useState(false);
 
   // 유저 정보 조회
   //  useEffect(() => {
@@ -120,7 +124,7 @@ const Budget = () => {
     console.log(price, selectedCategory, item);
 
     // axios
-    //   .post(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
+    //   .post(`${process.env.REACT_APP_API_URL}/expenses/budget/${budgetId}`, {
     //     headers: {
     //       Authorization: token,
     //       withCredentials: true,
@@ -138,6 +142,24 @@ const Budget = () => {
     //    리로드??
     //  })
     //   .catch((err) => console.log("error"));
+  };
+
+  // 비용 삭제 요청
+  const handleDeleteExpense = () => {
+    console.log("비용 삭제!");
+    // axios
+    //   .delete(`${process.env.REACT_APP_API_URL}/expenses/${budgetId}`, {
+    //     headers: {
+    //       Authorization: token,
+    //       withCredentials: true,
+    //     }
+    //   })
+    //   .then(() => {
+    //    비용 목록 다시 요청?? 리로드?
+    //    setDeleteExpenseModal(false)
+    //   })
+    //   .catch((err) => console.log("error"));
+    setDeleteExpenseModal(false);
   };
 
   return (
@@ -159,8 +181,8 @@ const Budget = () => {
       <MiddleArea>
         <div>Expenses</div>
         <AddExpense
-          addBudgetModal={addBudgetModal}
-          setAddBudgetModal={setAddBudgetModal}
+          addExpenseModal={addExpenseModal}
+          setAddExpenseModal={setAddExpenseModal}
           handleAddExpense={handleAddExpense}
         />
       </MiddleArea>
@@ -180,6 +202,18 @@ const Budget = () => {
             <div className="bottom_right">
               <div className="meta_user_expense">
                 $ {el.price.toLocaleString("ko-KR")}
+              </div>
+              <div className="delete_expense">
+                <div onClick={() => setDeleteExpenseModal(!deleteExpenseModal)}>
+                  ❌
+                </div>
+                {deleteExpenseModal ? (
+                  <DeleteExpense
+                    handleDeleteExpense={handleDeleteExpense}
+                    setDeleteExpenseModal={setDeleteExpenseModal}
+                    deleteExpenseModal={deleteExpenseModal}
+                  />
+                ) : null}
               </div>
             </div>
           </BottomArea>
@@ -231,6 +265,21 @@ const BottomArea = styled.div`
     .meta_user_bottom {
       display: flex;
       flex-direction: row;
+    }
+  }
+
+  .bottom_right {
+    display: flex;
+    > * {
+      margin-right: 5px;
+    }
+    .delete_expense {
+      opacity: 0;
+
+      :hover {
+        opacity: 1;
+        cursor: pointer;
+      }
     }
   }
 `;
