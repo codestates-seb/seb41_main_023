@@ -64,4 +64,12 @@ public class PlaceController {
         placeService.deletePlace(placeId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
+
+    //게시판 desc 설정
+    @PatchMapping("/desc")
+    public ResponseEntity patchPlaceDescription(@RequestBody PlaceDto.PatchDesc patchDesc) {
+        placeService.updatePlaceDesc(placeMapper.patchDescToPlaces(patchDesc.getPlaceDesc()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

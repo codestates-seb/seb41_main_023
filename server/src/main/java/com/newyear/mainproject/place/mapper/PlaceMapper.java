@@ -7,6 +7,8 @@ import com.newyear.mainproject.plan.service.PlanService;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PlaceMapper {
     default Place placePostDtoToPlace(PlaceDto.Post post, PlanService planService) {
@@ -23,4 +25,7 @@ public interface PlaceMapper {
 
     Place placePatchDtoToPlace(PlaceDto.Patch patch);
     PlaceDto.Response placeToPlaceResponseDto(Place place);
+
+    //게시판 desc
+    List<Place> patchDescToPlaces(List<PlaceDto.PatchPlaceDesc> patchDesc);
 }

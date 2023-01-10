@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.newyear.mainproject.plan.dto.PlanDto;
 import lombok.*;
 
+import java.util.List;
+
 public class PlaceDto {
 
     @Getter
@@ -37,4 +39,21 @@ public class PlaceDto {
         private String startTime;
         private String endTime;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class PatchDesc {
+        private List<PatchPlaceDesc> placeDesc;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PatchPlaceDesc {
+        private Long placeId;
+        private String description;
+    }
+
 }
