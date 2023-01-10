@@ -29,12 +29,12 @@ public class ExpenseController {
         return new ResponseEntity<>(mapper.expensesToResponseDto(expense), HttpStatus.OK);
     }
 
-    @PatchMapping("/edit/{expense-id}")
+    @PatchMapping("/{expense-id}")
     public ResponseEntity patchExpense(@PathVariable("expense-id") @Positive long expenseId,
                                        @RequestBody @Valid ExpenseDto.Patch patch) {
         patch.setExpenseId(expenseId);
-        expenseService.updateExpense(mapper.patchDtoToExpenses(patch));
-        return new ResponseEntity<>(HttpStatus.OK);
+        Expenses expense = expenseService.updateExpense(mapper.patchDtoToExpenses(patch));
+        return new ResponseEntity<>(mapper.expensesToResponseDto(expense), HttpStatus.OK);
     }
 
     @DeleteMapping("{expense-id}")
