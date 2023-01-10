@@ -46,6 +46,14 @@ public class MemberDto {
         private String originPassword;
     }
 
+    @Getter @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class PatchDisplayName{
+        private long memberId;
+        private String displayName;
+    }
+
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
@@ -54,6 +62,15 @@ public class MemberDto {
         private String accessToken;
         @NotBlank
         private String refreshToken;
+    }
+
+    @Getter @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class userProfile{
+        private String email;
+        private String displayName;
+        //프로필이미지
     }
 
     @Getter @Setter

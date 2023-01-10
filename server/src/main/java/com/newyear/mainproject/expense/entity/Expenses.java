@@ -1,5 +1,6 @@
 package com.newyear.mainproject.expense.entity;
 
+import com.newyear.mainproject.audit.Auditable;
 import com.newyear.mainproject.budget.entity.Budget;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Getter @Setter
 @Entity
 @NoArgsConstructor
-public class Expenses {
+public class Expenses extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long expenseId;

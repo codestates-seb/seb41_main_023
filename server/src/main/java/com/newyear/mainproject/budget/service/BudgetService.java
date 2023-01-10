@@ -20,15 +20,16 @@ public class BudgetService {
         return budgetRepository.save(budget);
     }
 
-    public void editBudget(Budget budget) {
+    public Budget editBudget(Budget budget) {
         Budget findBudget = findVerifiedBudget(budget.getBudgetId());
 
         Optional.of(budget.getExpectedBudget())
                 .ifPresent(findBudget::setExpectedBudget);
 
-        budgetRepository.save(findBudget);
+        return budgetRepository.save(findBudget);
     }
 
+    @Transactional(readOnly = true)
     public Budget findBudget(long budgetId) {
         return findVerifiedBudget(budgetId);
     }
