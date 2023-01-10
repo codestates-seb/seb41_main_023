@@ -79,14 +79,15 @@ public interface PlanMapper {
         for(String date : dateList) {
             PlanDates planDates = new PlanDates();
             planDates.setPlanDate(date); // 시작일정-끝일정 사이의 일정들을 전부 등록
+            planDates.setSubTitle(null);
             planDates.setPlan(plan);
-            plan.setPlanDates(planDates.getPlan().getPlanDates());
             planDatesList.add(planDates);
         }
 
         return planDatesList;
     }
 
+    PlanDates planDatesPatchToPlanDates(PlanDto.PatchPlanDatesSubTitle patch);
     PlanDto.PlanDatesResponse planDatesToPlanDateResponseDto(PlanDates planDates);
 
     default List<PlanDto.PlanDatesResponse> planDateToPlanDateResponseDtos(List<PlanDates> planDates) {
@@ -96,6 +97,7 @@ public interface PlanMapper {
                         .builder()
                         .planDateId(planDate.getPlanDateId())
                         .planDate(planDate.getPlanDate())
+                        .subTitle(planDate.getSubTitle())
                         .build())
                 .collect(Collectors.toList());
     }
