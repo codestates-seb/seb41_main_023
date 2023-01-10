@@ -3,8 +3,7 @@ package com.newyear.mainproject.config;
 import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.filter.JwtAuthenticationFilter;
 import com.newyear.mainproject.security.filter.JwtVerificationFilter;
-import com.newyear.mainproject.security.handler.MemberAuthenticationFailureHandler;
-import com.newyear.mainproject.security.handler.MemberAuthenticationSuccessHandler;
+import com.newyear.mainproject.security.handler.*;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
 import com.newyear.mainproject.security.logout.RedisUtil;
 import com.newyear.mainproject.security.logout.RefreshTokenRepository;
@@ -57,6 +56,10 @@ public class SecurityConfiguration {
                 .and()
                 .formLogin().disable() // 로그인 관련 페이지 설정. disable시 작동하지 않음
                 .httpBasic().disable() // Http basic Auth  기반으로 로그인 인증창이 뜸.  disable 시에 인증창 뜨지 않음.
+                .exceptionHandling()
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+                .accessDeniedHandler(new MemberAccessDeniedHandler())
+                .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
@@ -71,11 +74,16 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.POST, "/members/signup", "/members/login").permitAll()
                         .antMatchers(HttpMethod.PATCH, "/members/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/members/logout").permitAll()
-                        .antMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
-                        .antMatchers(HttpMethod.GET, "/", "/members/**").permitAll() //추후 추가하기
-//                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/members").hasAnyRole("ADMIN", "USER")
+                        .antMatchers(HttpMethod.GET, "/", "/members/**", "/city").permitAll() //추후 추가하기
+                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
                         .antMatchers("/h2/**").permitAll() // h2 콘솔 사용을 위한 설정
-                        .anyRequest().authenticated()
+                        .anyRequest()
+                                .permitAll()
+//                        .authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository, refreshTokenRepository))
                 );
         return http.build();
 
