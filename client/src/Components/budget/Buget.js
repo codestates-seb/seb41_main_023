@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import EditBudget from "./EditBudget";
+import AddExpense from "./AddExpense";
 
 //예산 식별자 필요
 
@@ -50,8 +51,11 @@ const Budget = () => {
 
   //memberId 설정
 
-  //예산 수정 모달
+  /* 예산 수정 모달 */
   const [editBudget, setEditBudget] = useState(false);
+
+  /* 비용 추가 모달 */
+  const [addBudgetModal, setAddBudgetModal] = useState(false);
 
   /* 유저 정보 조회 */
   //  useEffect(() => {
@@ -71,7 +75,7 @@ const Budget = () => {
   /* 예산 정보 조회 */
   //  useEffect(() => {
   // axios
-  //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
+  //   .get(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
   //     headers: {
   //       Authorization: token,
   //       withCredentials: true,
@@ -108,6 +112,9 @@ const Budget = () => {
     //   .catch((err) => console.log("error"));
   };
 
+  /* 비용 추가 요청 */
+  const handleAddExpense = () => {};
+
   return (
     <BudgetContainer>
       <div>Budgeting</div>
@@ -126,7 +133,12 @@ const Budget = () => {
       <hr />
       <MiddleArea>
         <div>Expenses</div>
-        <button>Add expenses</button>
+        <AddExpense
+          addBudgetModal={addBudgetModal}
+          setAddBudgetModal={setAddBudgetModal}
+          // originBudget={budget.expectedBudget}
+          handleAddExpense={handleAddExpense}
+        />
       </MiddleArea>
       {expenses.map((el) => {
         return (
