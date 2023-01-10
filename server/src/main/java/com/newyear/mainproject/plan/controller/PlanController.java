@@ -4,6 +4,7 @@ import com.newyear.mainproject.dto.SingleResponseDto;
 import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.plan.dto.PlanDto;
 import com.newyear.mainproject.plan.entity.Plan;
+import com.newyear.mainproject.plan.entity.PlanDates;
 import com.newyear.mainproject.plan.mapper.PlanMapper;
 import com.newyear.mainproject.plan.service.PlanService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +38,8 @@ public class PlanController {
     @PostMapping
     public ResponseEntity postPlan(@Valid @RequestBody PlanDto.Post post) {
         Plan plan = planService.createPlan(planMapper.planPostDtoToPlan(post));
+        planService.createPlanDate(plan);//PlanDates 생성 시, update 문 실행 방지 Plan 등록 후 - PlanDates 등록
 
-        planService.savePlanDates(plan);//PlanDates 생성 시, update 문 실행 방지 Plan 등록 후 - PlanDates 등록
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.planToPlanResponseDto(plan)), HttpStatus.CREATED);
     }
@@ -50,8 +51,16 @@ public class PlanController {
     public ResponseEntity patchPlan(@PathVariable("plan-id") @Positive Long planId,
                                     @Valid @RequestBody PlanDto.Patch patch) {
         patch.setPlanId(planId);
-        Plan plan = planService.updatePlan(planMapper.planPatchDtoToPlan(patch));
-        planService.savePlanDates(plan); //PlanDates 생성 시, update 문 실행 방지 Plan 등록 후 - PlanDates 등록
+        Plan originPlan = planService.findPlan(planId);
+        Plan patchPlan = planMapper.planPatchDtoToPlan(patch);
+
+        //쓸데없는 delete 명령문 낭비를 방지하기 위해 PlanDate 값이 (하나 이상) 달라야 삭제 + 생성 처리
+        if(!originPlan.getStartDate().equals(patchPlan.getStartDate()) || !originPlan.getEndDate().equals(patchPlan.getEndDate())) {
+            planService.deletePlanDate(originPlan);
+            planService.updatePlanDate(patchPlan); //PlanDates 생성 시, update 문 실행 방지 Plan 등록 후 - PlanDates 등록
+        }
+
+        Plan plan = planService.updatePlan(patchPlan);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.planToPlanResponseDto(plan)), HttpStatus.OK);
@@ -86,5 +95,18 @@ public class PlanController {
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.plansToPlanResponseDtos(planList)), HttpStatus.OK);
+    }
+
+    /**
+     * 각각 일정의 SubTitle 수정
+     */
+    @PatchMapping("/date/title/{plan-date-id}")
+    public ResponseEntity patchPlanDateSubTitle(@PathVariable("plan-date-id") @Positive Long planDateId,
+                                                @Valid @RequestBody PlanDto.PatchPlanDatesSubTitle patch) {
+        patch.setPlanDateId(planDateId);
+        PlanDates planDates = planService.updatePlanDateSubTitle(planMapper.planDatesPatchToPlanDates(patch));
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(planMapper.planDatesToPlanDateResponseDto(planDates)), HttpStatus.OK);
     }
 }
