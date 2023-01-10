@@ -25,6 +25,15 @@ const clientId = process.env.REACT_APP_CLIENT_ID;
 const SignUpPage = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
+  const uref = useRef();
+  const eref = useRef();
+  const pref = useRef();
+
+  // 렌더링 될때 username input으로 focus
+  useEffect(() => {
+    uref.current.focus();
+  }, []);
+
   //let accessToken = gapi.auth.getToken().access_token;
 
   // useEffect(() => {
@@ -38,14 +47,14 @@ const SignUpPage = ({ setIsLoggedIn }) => {
   // });
 
   // 이름, 이메일, 비밀번호
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // success, error 메세지
-  const [nameMessage, setNameMessage] = useState('');
-  const [emailMessage, setEmailMessage] = useState('');
-  const [passwordMessage, setPasswordMessage] = useState('');
+  const [nameMessage, setNameMessage] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
 
   // 유효성 검사
   const [isName, setIsName] = useState(false);
@@ -63,6 +72,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
       });
       navigate("/login");
       alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+
     } catch (err) {
       console.error(err);
       if (err.response.status === 404) alert("페이지를 찾을 수 없습니다.");
@@ -93,106 +103,128 @@ const SignUpPage = ({ setIsLoggedIn }) => {
     setUserName(e.target.value);
 
     if (!nameRegex.test(e.target.value)) {
-      setNameMessage('영문과 한글 또는 숫자를 3~20자리로 입력하세요.');
+      setNameMessage("영문과 한글 또는 숫자를 3~20자리로 입력하세요.");
       setIsName(false);
     } else {
-      setNameMessage('올바른 이름입니다.');
+      setNameMessage("올바른 이름입니다.");
       setIsName(true);
     }
   }, []);
 
   // email
   const onChangeEmail = useCallback((e) => {
-    const emailRegex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    const emailRegex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     setEmail(e.target.value);
-    
+
     if (!emailRegex.test(e.target.value)) {
-      setEmailMessage('이메일 형식을 확인해주세요.');
+      setEmailMessage("이메일 형식을 확인해주세요.");
       setIsEmail(false);
     } else {
-      setEmailMessage('올바른 이메일입니다.');
+      setEmailMessage("올바른 이메일입니다.");
       setIsEmail(true);
     }
   }, []);
-  
+
   // password
   const onChangePassword = useCallback((e) => {
-    const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
+    const passwordRegex =
+      /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
     setPassword(e.target.value);
 
     if (!passwordRegex.test(e.target.value)) {
-      setPasswordMessage('숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.');
+      setPasswordMessage(
+        "숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요."
+      );
       setIsPassword(false);
     } else {
-      setPasswordMessage('올바른 비밀번호입니다.');
+      setPasswordMessage("올바른 비밀번호입니다.");
       setIsPassword(true);
     }
   }, []);
 
+  // username 입력 후 enter 누르면 email input으로 focus
+  const usernameEnter = (e) => {
+    if (e.key === "Enter") eref.current.focus();
+  };
 
-    return (
-      <>
-        <SignUpStyle>
-          <Link to="/"><button>Logo</button></Link>
-          <Link to="/blog"><button>Travel logs</button></Link>
+  // email 'enter' -> pw
+  const emailEnter = (e) => {
+    if (e.key === "Enter") pref.current.focus();
+  };
 
-          <div>Welcome to </div>
-          <div>Sign up to save your trips in </div>
+  // pw 'enter' -> Sign up
+  const pwEnter = (e) => {
+    if (e.key === "Enter") onSignUp();
+  };
 
-          <div>Username</div>
-          <input
-            type="name"
-            placeholder="Type Username and press 'Enter'"
-            onChange={onChangeName}
-            //onKeyDown={displayEnter}
-            //ref={dref}
-          />
-          {userName.length > 0 && (
-            <span className={`message${isName ? "success" : "error"}`}>
-              {nameMessage}
-            </span>
-          )}
+  return (
+    <>
+      <SignUpStyle>
+        <Link to="/">
+          <button>Logo</button>
+        </Link>
+        <Link to="/blog">
+          <button>Travel logs</button>
+        </Link>
 
-          <div>Email</div>
-          <input
-            type="email"
-            placeholder="Type Email and press 'Enter'"
-            onChange={onChangeEmail}
-            //onKeyDown={emailEnter}
-            //ref={eref}
-          />
-          {email.length > 0 && (
-            <span className={`message${isEmail ? "success" : "error"}`}>
-              {emailMessage}
-            </span>
-          )}
+        <div>Welcome to </div>
+        <div>Sign up to save your trips in </div>
 
-          <div>Password</div>
-          <input
-            type="password"
-            placeholder="Type Password and press 'Enter'"
-            onChange={onChangePassword}
-            //onKeyDown={pwEnter}
-            //ref={pref}
-          />
-          {password.length > 0 && (
-            <span className={`message${isPassword ? "success" : "error"}`}>
-              {passwordMessage}
-            </span>
-          )}
+        <div>Username</div>
+        <input
+          type="name"
+          placeholder="Type Username and press 'Enter'"
+          onChange={onChangeName}
+          onKeyDown={usernameEnter}
+          ref={uref}
+        />
+        {userName.length > 0 && (
+          <span className={`message${isName ? "success" : "error"}`}>
+            {nameMessage}
+          </span>
+        )}
 
-          <button onClick={onSignUp}>Sign up</button>
-          {/* <GLogin setIsLoggedIn={setIsLoggedIn} />
+        <div>Email</div>
+        <input
+          type="email"
+          placeholder="Type Email and press 'Enter'"
+          onChange={onChangeEmail}
+          onKeyDown={emailEnter}
+          ref={eref}
+        />
+        {email.length > 0 && (
+          <span className={`message${isEmail ? "success" : "error"}`}>
+            {emailMessage}
+          </span>
+        )}
+
+        <div>Password</div>
+        <input
+          type="password"
+          placeholder="Type Password and press 'Enter'"
+          onChange={onChangePassword}
+          onKeyDown={pwEnter}
+          ref={pref}
+        />
+        {password.length > 0 && (
+          <span className={`message${isPassword ? "success" : "error"}`}>
+            {passwordMessage}
+          </span>
+        )}
+
+        <button onClick={onSignUp}>Sign up</button>
+        {/* <GLogin setIsLoggedIn={setIsLoggedIn} />
           <GLogout setIsLoggedIn={setIsLoggedIn} /> */}
 
-          <div>
-            Already a member?<Link to="/login">Sign in</Link>
-          </div>
-        </SignUpStyle>
+        <div>
+          Already a member?<Link to="/login">Sign in</Link>
+        </div>
+      </SignUpStyle>
 
-        <BackgroundImgStyle />
-      </>
-    );
+      <BackgroundImgStyle />
+    </>
+  );
 }
 
 export default SignUpPage;
