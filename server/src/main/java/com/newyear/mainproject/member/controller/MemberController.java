@@ -8,6 +8,11 @@ import com.newyear.mainproject.member.dto.MemberDto;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.mapper.MemberMapper;
 import com.newyear.mainproject.member.service.MemberService;
+import com.newyear.mainproject.security.jwt.JwtTokenizer;
+import com.newyear.mainproject.security.logout.RedisUtil;
+import com.newyear.mainproject.security.logout.RefreshToken;
+import com.newyear.mainproject.security.logout.RefreshTokenRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +25,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/members")
 @Validated
 public class MemberController {
@@ -28,12 +34,9 @@ public class MemberController {
     private final MemberMapper mapper;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
-
-    public MemberController(MemberMapper mapper, MemberService memberService, PasswordEncoder passwordEncoder) {
-        this.mapper = mapper;
-        this.memberService = memberService;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final JwtTokenizer jwtTokenizer;
+    private final RedisUtil redisUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
     @PostMapping("/signup")
@@ -87,8 +90,18 @@ public class MemberController {
     }
 
     @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId){
-        memberService.deleteMember(memberId);
+    public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId,
+                                       @RequestBody MemberDto.Delete delete){
+//        memberService.deleteMember(memberId);
+
+        String accessToken = delete.getAccessToken().replace("Bearer ", "");
+        String refreshToken = delete.getRefreshToken();
+//        String key = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+
+        RefreshToken findRefreshToken = refreshTokenRepository.findByRefreshToken(refreshToken);
+        redisUtil.setBlackList(accessToken, "access_token", jwtTokenizer.getBlacklistTime(findRefreshToken.getEndedAt()));
+
+        refreshTokenRepository.delete(findRefreshToken);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
