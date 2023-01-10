@@ -37,8 +37,8 @@ public class PlanController {
     @PostMapping
     public ResponseEntity postPlan(@Valid @RequestBody PlanDto.Post post) {
         Plan plan = planService.createPlan(planMapper.planPostDtoToPlan(post));
-        planService.createPlanDate(plan); // 일정에서 등록한 여행 시작일자 ~ 여행 끝 일자들의 리스트를 테이블에 저장
 
+        planService.savePlanDates(plan);//PlanDates 생성 시, update 문 실행 방지 Plan 등록 후 - PlanDates 등록
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.planToPlanResponseDto(plan)), HttpStatus.CREATED);
     }
@@ -51,7 +51,8 @@ public class PlanController {
                                     @Valid @RequestBody PlanDto.Patch patch) {
         patch.setPlanId(planId);
         Plan plan = planService.updatePlan(planMapper.planPatchDtoToPlan(patch));
-        planService.createPlanDate(plan); // 일정에서 등록한 여행 시작일자 ~ 여행 끝 일자들의 리스트를 테이블에 저장
+        planService.savePlanDates(plan); //PlanDates 생성 시, update 문 실행 방지 Plan 등록 후 - PlanDates 등록
+
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.planToPlanResponseDto(plan)), HttpStatus.OK);
     }
