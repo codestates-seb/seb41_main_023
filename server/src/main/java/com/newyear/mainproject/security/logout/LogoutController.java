@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogoutController{
     private final JwtTokenizer jwtTokenizer;
     private final RedisUtil redisUtil;
-
     private final RefreshTokenRepository refreshTokenRepository;
 
     @PostMapping("/logout")
