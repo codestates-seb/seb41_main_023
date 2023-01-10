@@ -20,6 +20,9 @@ public class ExpenseDto {
 
         @NotNull @Positive
         private int price;
+
+        @NotBlank
+        private String category;
     }
 
     @Getter
@@ -33,6 +36,9 @@ public class ExpenseDto {
 
         @NotNull @Positive
         private int price;
+
+        @NotBlank
+        private String category;
     }
 
     @Getter
@@ -43,6 +49,7 @@ public class ExpenseDto {
         private long expenseId;
         private String item;
         private int price;
+        private String category;
         private String createdAt;
     }
 
