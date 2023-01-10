@@ -27,6 +27,14 @@ const MyTrips = () => {
 
   const navigate = useNavigate();
   const [tripList, setTripList] = useState(dummyItineraryList);
+  const [token, setToken] = useState();
+
+  //토큰 설정
+  // useEffect(() => {
+  //   if (cookies.accessToken) {
+  //     setToken(cookies.accessToken.token);
+  //   }
+  // }, []);
 
   //전체 일정 조회
   // useEffect(() => {

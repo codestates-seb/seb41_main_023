@@ -1,10 +1,36 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Header = ({ login }) => {
+  const [token, setToken] = useState();
+  const [memberId, setMemberId] = useState();
   const navigate = useNavigate();
+
+  //토큰 설정
+  // useEffect(() => {
+  //   if (cookies.accessToken) {
+  //     setToken(cookies.accessToken.token);
+  //   }
+  // }, []);
+
+  //memberId 설정
+
+  //프로필 이미지 axios 요청
+  //  useEffect(() => {
+  // axios
+  //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
+  //     headers: {
+  //       Authorization: token,
+  //       withCredentials: true,
+  //     },
+  //   })
+  //   .then((res) => {
+  //   console.log(res)
+  //   })
+  //   .catch((err) => console.log("error"));
+  //  }, []);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -23,21 +49,6 @@ const Header = ({ login }) => {
         .then((res) => navigate("/"));
     }
   };
-
-  //프로필 이미지 axios 요청
-  //  useEffect(() => {
-  // axios
-  //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
-  //     headers: {
-  //       Authorization: token,
-  //       withCredentials: true,
-  //     },
-  //   })
-  //   .then((res) => {
-  //   console.log(res)
-  //   })
-  //   .catch((err) => console.log("error"));
-  //  }, []);
 
   return (
     <HeadContainer>
