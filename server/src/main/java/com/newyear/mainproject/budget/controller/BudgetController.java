@@ -28,12 +28,12 @@ public class BudgetController {
         return new ResponseEntity<>(mapper.budgetToSimpleResponse(budget), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/edit/{budget-id}")
+    @PatchMapping("/{budget-id}")
     public ResponseEntity patchBudget(@PathVariable("budget-id") @Positive long budgetId,
                                       @RequestBody @Valid BudgetDto.Patch patch) {
         patch.setBudgetId(budgetId);
-        budgetService.editBudget(mapper.patchDtoToBudget(patch));
-        return new ResponseEntity<>(HttpStatus.OK);
+        Budget budget = budgetService.editBudget(mapper.patchDtoToBudget(patch));
+        return new ResponseEntity<>(mapper.budgetToSimpleResponse(budget), HttpStatus.OK);
     }
 
     @DeleteMapping("{budget-id}")
