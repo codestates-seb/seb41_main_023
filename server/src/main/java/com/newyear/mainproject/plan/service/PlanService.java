@@ -8,7 +8,6 @@ import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.entity.PlanDates;
 import com.newyear.mainproject.plan.repository.PlanDateRepository;
 import com.newyear.mainproject.plan.repository.PlanRepository;
-import com.newyear.mainproject.util.DateCalculation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -35,11 +34,17 @@ public class PlanService {
         return planRepository.save(plan);
     }
 
+    public void savePlanDates(Plan plan) {
+        //일정 생성과 동시에 날짜 나눠서 테이블에 값 넣음
+        planDateRepository.saveAll(plan.getPlanDates());
+    }
+
     /**
      * 일정 수정
      */
     public Plan updatePlan(Plan plan) {
         Plan findPlan = findVerifiedPlan(plan.getPlanId());
+
         //일정 수정하면서 동시에 같은 plan_id 값을 가진 plan_date 의 값들이 수정 - 삭제 후 다시 생성
         planDateRepository.deleteAllByPlan(plan);
 
@@ -52,21 +57,6 @@ public class PlanService {
         return planRepository.save(findPlan);
     }
 
-    /**
-     * 일정-날짜 등록
-     */
-    public void createPlanDate(Plan plan) {
-        List<String> dateList = DateCalculation.dateCal(plan.getStartDate(), plan.getEndDate());
-        System.out.println(dateList.size());
-        //일정 등록하면서 동시에 plan_date 테이블에 값 저장
-
-        for(String date : dateList) {
-            PlanDates planDate = new PlanDates();
-            planDate.setPlanDate(date); // 시작일정-끝일정 사이의 일정들을 전부 등록
-            planDate.setPlan(plan);
-            planDateRepository.save(planDate);
-        }
-    }
 
     /**
      * 일정 삭제

@@ -39,6 +39,8 @@ public class PlanDto {
         private String startDate;
         private String endDate;
         private Integer placesCount;
+
+        private List<PlanDto.PlanDatesResponse> planDates;
     }
 
     @Getter

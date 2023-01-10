@@ -43,6 +43,7 @@ public class ExpenseDto {
         private long expenseId;
         private String item;
         private int price;
+        private String createdAt;
     }
 
 }

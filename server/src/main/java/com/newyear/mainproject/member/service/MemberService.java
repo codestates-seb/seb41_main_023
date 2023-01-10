@@ -1,10 +1,13 @@
 package com.newyear.mainproject.member.service;
 
+import com.newyear.mainproject.board.repository.BoardRepository;
+import com.newyear.mainproject.comment.repository.CommentRepository;
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,19 +22,13 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
-
-    public MemberService(MemberRepository memberRepository,
-                         PasswordEncoder passwordEncoder,
-                         CustomAuthorityUtils authorityUtils) {
-        this.memberRepository = memberRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authorityUtils = authorityUtils;
-    }
+    private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     public Member createMember(Member member){
         verifyExistsEmail(member.getEmail());
@@ -85,10 +82,14 @@ public class MemberService {
                 Sort.by("memberId").descending()));
     }
 
-    public void deleteMember(long memberId){
+    public void deleteMember(long memberId) {
         Member member = findVerifiedMember(memberId);
         member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
         memberRepository.save(member);
+
+        //회원 탈퇴시 board, comment 삭제
+        boardRepository.deleteAll(member.getBoards());
+        commentRepository.deleteAll(member.getComments());
     }
 
     private void verifyExistsEmail(String email){
@@ -121,5 +122,4 @@ public class MemberService {
         Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return member;
     }
-
 }

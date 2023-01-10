@@ -17,7 +17,7 @@ public interface BudgetMapper {
         response.setBudgetId(budget.getBudgetId());
         response.setExpectedBudget(budget.getExpectedBudget());
         budget.getExpenses().forEach(expense -> {
-            ExpenseDto.Response expenseDto = new ExpenseDto.Response(expense.getExpenseId(), expense.getItem(), expense.getPrice());
+            ExpenseDto.Response expenseDto = new ExpenseDto.Response(expense.getExpenseId(), expense.getItem(), expense.getPrice(), expense.getCreatedAt().toString().substring(0, 10));
                 response.setTotalExpenses(expense.getPrice() + response.getTotalExpenses());
                 response.getExpenses().add(expenseDto);
             }

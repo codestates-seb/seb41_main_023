@@ -11,5 +11,21 @@ public interface ExpenseMapper {
 
     Expenses patchDtoToExpenses(ExpenseDto.Patch patch);
 
-    ExpenseDto.Response expensesToResponseDto(Expenses expenses);
+    default ExpenseDto.Response expensesToResponseDto(Expenses expenses) {
+        if ( expenses == null ) {
+            return null;
+        }
+
+        ExpenseDto.Response response = new ExpenseDto.Response();
+
+        if ( expenses.getExpenseId() != null ) {
+            response.setExpenseId( expenses.getExpenseId() );
+        }
+        response.setItem( expenses.getItem() );
+        response.setPrice( expenses.getPrice() );
+        if ( expenses.getCreatedAt() != null ) {
+            response.setCreatedAt(expenses.getCreatedAt().toString().substring(0, 10));
+        }
+        return response;
+    }
 }

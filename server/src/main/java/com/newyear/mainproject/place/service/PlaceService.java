@@ -8,6 +8,7 @@ import com.newyear.mainproject.plan.service.PlanService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,5 +64,16 @@ public class PlaceService {
     private Place findVerifiedPlace(Long placeId) {
         Optional<Place> optionalPlace = placeRepository.findById(placeId);
         return optionalPlace.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PLACE_NOT_FOUND));
+    }
+
+    //게시판 - 장소에 대한 desc 저장
+    public void updatePlaceDesc(List<Place> place) {
+        for (Place value : place) {
+            Place findPlace = findVerifiedPlace(value.getPlaceId());
+            Optional.ofNullable(value.getDescription())
+                    .ifPresent(findPlace::setDescription);
+
+            placeRepository.save(findPlace);
+        }
     }
 }
