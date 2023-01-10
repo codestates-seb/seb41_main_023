@@ -41,7 +41,6 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
 
 /* 비밀번호 수정 */
 const Password = () => {
-  //기존 비밀번호와 일치하는지 확인해야함
   const [inputs, setInputs] = useState({
     originPassword: "",
     newPassword: "",

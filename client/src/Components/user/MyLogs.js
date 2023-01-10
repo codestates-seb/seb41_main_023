@@ -64,7 +64,7 @@ const MyLogs = () => {
       <h2>My Logs</h2>
       <div className="contents">
         {logList.map((el) => (
-          <div>
+          <div key={el.boardId}>
             <img
               alt="place_image"
               src={el.image}

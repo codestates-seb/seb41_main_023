@@ -4,6 +4,8 @@ import Home from "../Pages/Home";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
 
+// import Budget from "../Components/Buget";
+
 const MainContainer = styled.div``;
 
 const Content = styled.div``;
@@ -25,6 +27,7 @@ const Main = () => {
         <ExploreContainer>
           <h2>Explore</h2>
         </ExploreContainer>
+        {/* <Budget /> */}
       </Content>
     </MainContainer>
   );
