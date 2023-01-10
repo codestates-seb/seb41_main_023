@@ -60,7 +60,7 @@ const MyTrips = () => {
       <h2>My Trips</h2>
       <div className="contents">
         {tripList.map((el) => (
-          <div>
+          <div key={el.planId}>
             <img
               alt="place_image"
               src={el.image}
