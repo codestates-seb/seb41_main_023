@@ -4,7 +4,6 @@ import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.place.repository.PlaceRepository;
-import com.newyear.mainproject.plan.service.PlanService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,7 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
-    public PlaceService(PlaceRepository placeRepository, PlanService planService) {
+    public PlaceService(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
     }
 
@@ -41,7 +40,6 @@ public class PlaceService {
         Optional.ofNullable(place.getExpense())
                 .ifPresent(expense -> findPlace.setExpense(expense));
 
-
         Optional.ofNullable(place.getStartTime())
                 .ifPresent(startTime -> findPlace.setStartTime(startTime));
         Optional.ofNullable(place.getEndTime())
@@ -56,6 +54,13 @@ public class PlaceService {
     public void deletePlace(Long placeId) {
         Place findPlace = findVerifiedPlace(placeId);
         placeRepository.delete(findPlace);
+    }
+
+    /**
+     * 해당 장소 조회
+     */
+    public Place findPlace(Long placeId) {
+        return findVerifiedPlace(placeId);
     }
 
     /**

@@ -6,6 +6,8 @@ import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.expense.entity.Expenses;
 import com.newyear.mainproject.expense.repository.ExpenseRepository;
+import com.newyear.mainproject.place.entity.Place;
+import com.newyear.mainproject.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +21,19 @@ public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final BudgetService budgetService;
+    private final PlaceService placeService;
 
-    public Expenses createExpense(Expenses expenses, long budgetId) {
+    public Expenses createExpense(Expenses expenses, long budgetId, long placeId) {
         Budget budget = budgetService.findBudget(budgetId);
         expenses.setBudget(budget);
+
+        //장소 연결
+        Place place = placeService.findPlace(placeId);
+        expenses.setPlace(place);
+
+        place.setExpense(expenses.getPrice());
+        placeService.updatePlace(place);
+
         return expenseRepository.save(expenses);
     }
 

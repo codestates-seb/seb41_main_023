@@ -2,6 +2,7 @@ package com.newyear.mainproject.expense.entity;
 
 import com.newyear.mainproject.audit.Auditable;
 import com.newyear.mainproject.budget.entity.Budget;
+import com.newyear.mainproject.place.entity.Place;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,10 @@ public class Expenses extends Auditable {
     @ManyToOne
     @JoinColumn(name = "budget_id")
     private Budget budget;
+
+    @ManyToOne
+    @JoinColumn(name = "place_id")
+    private Place place;
 
     public void setBudget(Budget budget) {
         this.budget = budget;
