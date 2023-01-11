@@ -10,6 +10,8 @@ const Header = ({ login }) => {
   const [cookies, setCookie] = useCookies(["accessToken"]);
   const navigate = useNavigate();
 
+  const [userProfile, setUserProfile] = useState("https://picsum.photos/50");
+
   // 토큰 설정
   // useEffect(() => {
   //   if (cookies.accessToken) {
@@ -21,6 +23,7 @@ const Header = ({ login }) => {
 
   // 유저 프로필 요청
   //  useEffect(() => {
+  //   if (memberId) {
   // axios
   //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
   //     headers: {
@@ -32,7 +35,24 @@ const Header = ({ login }) => {
   //   console.log(res)
   //   })
   //   .catch((err) => console.log("error"));
-  //  }, []);
+  //      }
+  //  }, [memberId]);
+
+  // 프로필 이미지 요청
+  // useEffect(() => {
+  //     axios
+  //       .get(`${process.env.REACT_APP_API_URL}/member/profile`, {
+  //         headers: {
+  //           Authorization: token,
+  //           withCredentials: true,
+  //         },
+  //       })
+  //       .then((res) => res.data.data)
+  //       .then((res) => {
+  //         setUserProfile(res);
+  //       });
+  //   }
+  // }, []);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -69,7 +89,7 @@ const Header = ({ login }) => {
             <img
               onClick={() => handleNavigate("/user/:memberId")}
               alt="profile_image"
-              src="https://picsum.photos/50"
+              src={userProfile}
             />
             <button onClick={handleSignout}>Sign out</button>
           </>

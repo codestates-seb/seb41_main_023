@@ -77,6 +77,22 @@ const UserProfile = () => {
   //     });
   // }, []);
 
+  // 로그아웃 요청
+  const handleSignout = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/members/logout`, {
+          headers: {
+            // Authorization: token,
+            withCredentials: true,
+          },
+        })
+        .then((res) => console.log(res))
+        .then((res) => navigate("/"));
+      //쿠키 삭제 필요
+    }
+  };
+
   return (
     <>
       <Header login={true} />
@@ -95,7 +111,9 @@ const UserProfile = () => {
             <button onClick={() => navigate("/user/:memberId/edit")}>
               edit profile
             </button>
-            <button>sign out?</button>
+            <button className="sign_out" onClick={handleSignout}>
+              sign out
+            </button>
           </div>
         </div>
         <div className="map">
@@ -172,6 +190,10 @@ const UserProfileContainer = styled.div`
         padding: 10px 0;
         background-color: transparent;
         cursor: pointer;
+      }
+
+      > .sign_out {
+        color: rgba(0, 0, 0, 0.5);
       }
     }
   }
