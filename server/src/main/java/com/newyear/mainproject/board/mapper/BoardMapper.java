@@ -3,6 +3,7 @@ package com.newyear.mainproject.board.mapper;
 import com.newyear.mainproject.board.dto.BoardDto;
 import com.newyear.mainproject.board.entity.Board;
 import com.newyear.mainproject.board.likes.Likes;
+import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.entity.PlanDates;
@@ -43,9 +44,10 @@ public interface BoardMapper {
         //일정과 연결
         Plan plan = board.getPlan();
         List<BoardDto.Days> days = newDays(plan);
+        Member member = board.getMember();
 
         return new BoardDto.ResponseDetails(board.getBoardId(), board.getTitle(), board.getContent(), board.getLikes().size(),
-                board.getViews(), createdAt, board.getMember().getMemberId(), board.getMember().getDisplayName(), checkLikes(board),
+                board.getViews(), createdAt, member.getMemberId(), member.getDisplayName(), member.getProfileImage(), checkLikes(board),
                 plan.getPlanId(), plan.getCityName(), days);
     }
 
@@ -58,9 +60,6 @@ public interface BoardMapper {
     }
 
     default List<BoardDto.Response> boardsToBoardResponseDto(List<Board> boards) {
-        if ( boards == null ) {
-            return null;
-        }
 
         List<BoardDto.Response> list = new ArrayList<>( boards.size() );
         for ( Board board : boards ) {
@@ -71,10 +70,12 @@ public interface BoardMapper {
             LocalDate endDate = LocalDate.parse(end, DateTimeFormatter.ISO_DATE);
 
             String period = startDate.getMonth().toString().substring(0, 3) + " " + start.substring(8) + " - " +
-                    endDate.getMonth().toString().substring(0, 3) + " " + end.substring(8);
+                    endDate.getMonth().toString().substring(0, 3) + " " + end.substring(8) + ", " + endDate.getYear();
+
+            Member member = board.getMember();
 
             list.add(new BoardDto.Response(board.getBoardId(), board.getTitle(), board.getLikes().size(),
-                board.getViews(), board.getMember().getMemberId(), board.getMember().getDisplayName(), checkLikes(board), period));
+                board.getViews(), member.getMemberId(), member.getDisplayName(), member.getProfileImage(), checkLikes(board), period));
         }
         return list;
     }
