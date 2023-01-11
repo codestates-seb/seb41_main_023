@@ -23,11 +23,11 @@ public class ExpenseController {
     private final ExpenseService expenseService;
 
     @PostMapping("/budget/{budget-id}/places/{place-id}")
-    public ResponseEntity postExpensePlan(@RequestBody @Valid ExpenseDto.Post post,
+    public ResponseEntity postExpensePlace(@RequestBody @Valid ExpenseDto.Post post,
                                       @PathVariable("budget-id") long budgetId,
                                       @PathVariable("place-id") long placeId) {
         Expenses expense = expenseService.createExpensePlan(mapper.postDtoToExpenses(post), budgetId, placeId);
-        return new ResponseEntity<>(mapper.expensesToResponseDto(expense), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.expensesToPlaceResponseDto(expense), HttpStatus.OK);
     }
 
     @PostMapping("/budget/{budget-id}")
@@ -37,12 +37,12 @@ public class ExpenseController {
         return new ResponseEntity<>(mapper.expensesToResponseDto(expense), HttpStatus.OK);
     }
     @PatchMapping("/{expense-id}/places/{place-id}")
-    public ResponseEntity patchExpense(@PathVariable("expense-id") @Positive long expenseId,
+    public ResponseEntity patchExpensePlace(@PathVariable("expense-id") @Positive long expenseId,
                                        @PathVariable("place-id") long placeId,
                                        @RequestBody @Valid ExpenseDto.Patch patch) {
         patch.setExpenseId(expenseId);
         Expenses expense = expenseService.updateExpensePlan(mapper.patchDtoToExpenses(patch), placeId);
-        return new ResponseEntity<>(mapper.expensesToResponseDto(expense), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.expensesToPlaceResponseDto(expense), HttpStatus.OK);
     }
 
     @PatchMapping("/{expense-id}")
@@ -51,6 +51,13 @@ public class ExpenseController {
         patch.setExpenseId(expenseId);
         Expenses expense = expenseService.updateExpense(mapper.patchDtoToExpenses(patch));
         return new ResponseEntity<>(mapper.expensesToResponseDto(expense), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{expense-id}/places/{place-id}")
+    public ResponseEntity deleteExpensePlace(@PathVariable("expense-id") @Positive long expenseId,
+                                            @PathVariable("place-id") long placeId) {
+        expenseService.deleteExpensePlan(expenseId, placeId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("{expense-id}")
