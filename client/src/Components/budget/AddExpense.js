@@ -1,21 +1,14 @@
-import axios from "axios";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import DropDown from "./Dropdown";
+import Category from "./Category";
 
-const AddExpense = ({
-  addExpenseModal,
-  setAddExpenseModal,
-  handleAddExpense,
-}) => {
-  const [inputs, setInputs] = useState({
-    price: 0,
-    item: "",
-  });
+const AddExpense = (props) => {
+  const { addExpenseModal, setAddExpenseModal, handleAddExpense } = props;
+  const [inputs, setInputs] = useState({ price: "", item: "" });
 
-  // 드롭다운 활성화
-  const [dropDown, setDropDown] = useState(false);
+  // 카테고리 모달창 활성화
+  const [category, setCategory] = useState(false);
 
   //카테고리 선택
   const [selectedCategory, setSelectedCategory] = useState();
@@ -23,37 +16,47 @@ const AddExpense = ({
   //카테고리 변경
   const handleCategory = (el) => {
     setSelectedCategory(el);
-    setDropDown(false);
+    setCategory(false);
   };
 
-  // 지출 비용, 지출 항목 변경
+  // 지출 금액, 지출 항목 변경
   const handleInputs = (e) => {
+    // 지출 금액에 숫자 외의 입력 값은 ""로 대체
+    if (e.target.name === "price") {
+      const value = e.target.value;
+      const onlyNumber = value.replace(/[^0-9]/g, "");
+      return setInputs({ ...inputs, [e.target.name]: onlyNumber });
+    }
     setInputs({ ...inputs, [e.target.name]: e.target.value });
+  };
+
+  //입력창 초기화
+  const handleClear = () => {
+    setInputs({ price: "", item: "" });
+    setSelectedCategory();
+    setAddExpenseModal(false);
   };
 
   return (
     <>
       {addExpenseModal ? (
         <ModalContainer onClick={() => setAddExpenseModal(false)}>
-          {/*/모달 창 내부에서 닫히지 않도록 이벤트 버블링 방지 */}
           <ModalWrapper onClick={(e) => e.stopPropagation()}>
             <div className="title_frame">
               <div className="title">Add Expense</div>
-              <div
-                className="cancle_button"
-                onClick={() => setAddExpenseModal(false)}
-              >
+              <div className="cancle_button" onClick={handleClear}>
                 ❌
               </div>
             </div>
             <input
+              type="text"
               className="content"
               placeholder="지출 금액을 입력해주세요."
               name="price"
               value={inputs.price}
               onChange={handleInputs}
             />
-            <div className="content" onClick={() => setDropDown(!dropDown)}>
+            <div className="content" onClick={() => setCategory(!category)}>
               {selectedCategory}
             </div>
             <input
@@ -72,18 +75,16 @@ const AddExpense = ({
               >
                 Add expense
               </button>
-              <div
-                className="cancle_text"
-                onClick={() => setAddExpenseModal(false)}
-              >
+              <div className="cancle_text" onClick={handleClear}>
                 Cancle
               </div>
             </div>
           </ModalWrapper>
         </ModalContainer>
       ) : null}
-      {dropDown ? (
-        <DropDown setDropDown={setDropDown} handleCategory={handleCategory} />
+
+      {category ? (
+        <Category setCategory={setCategory} handleCategory={handleCategory} />
       ) : null}
       <AddExpenseBtn
         onClick={() => {

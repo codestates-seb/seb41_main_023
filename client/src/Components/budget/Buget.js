@@ -7,8 +7,6 @@ import EditBudget from "./EditBudget";
 import AddExpense from "./AddExpense";
 import DeleteExpense from "./DeleteExpense";
 
-//예산 식별자 필요
-
 const Budget = () => {
   // 더미
   const dummybudget = {
@@ -55,6 +53,8 @@ const Budget = () => {
 
   //memberId 설정
 
+  //budgetId 필요
+
   // 예산 수정 모달
   const [editBudget, setEditBudget] = useState(false);
 
@@ -98,8 +98,9 @@ const Budget = () => {
   // 예산 수정 요청
   const handleEditBudget = (inputBudget) => {
     if (inputBudget < 1) {
-      window.confirm("예산은 1원 이상이어야 합니다.");
+      return alert("예산은 1원 이상이어야 합니다.");
     }
+    console.log("예산 수정!");
     // axios
     //   .patch(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
     //     headers: {
@@ -117,11 +118,16 @@ const Budget = () => {
     //    setEditBudget(false)
     //  })
     //   .catch((err) => console.log("error"));
+    setEditBudget(false);
   };
 
   // 비용 추가 요청
   const handleAddExpense = (price, selectedCategory, item) => {
     console.log(price, selectedCategory, item);
+
+    if (price < 1) {
+      return alert("지출 금액은 1원 이상이어야 합니다.");
+    }
 
     // axios
     //   .post(`${process.env.REACT_APP_API_URL}/expenses/budget/${budgetId}`, {
@@ -140,15 +146,18 @@ const Budget = () => {
     //   })
     //  .then((res) => {
     //    리로드??
+    // setAddExpenseModal(false)
     //  })
     //   .catch((err) => console.log("error"));
+    setAddExpenseModal(false);
   };
 
   // 비용 삭제 요청
-  const handleDeleteExpense = () => {
+  const handleDeleteExpense = (expenseId) => {
     console.log("비용 삭제!");
+    // console.log(expenseId);
     // axios
-    //   .delete(`${process.env.REACT_APP_API_URL}/expenses/${budgetId}`, {
+    //   .delete(`${process.env.REACT_APP_API_URL}/expenses/${expenseId}`, {
     //     headers: {
     //       Authorization: token,
     //       withCredentials: true,
@@ -209,6 +218,7 @@ const Budget = () => {
                 </div>
                 {deleteExpenseModal ? (
                   <DeleteExpense
+                    expenseId={el.expenseId}
                     handleDeleteExpense={handleDeleteExpense}
                     setDeleteExpenseModal={setDeleteExpenseModal}
                     deleteExpenseModal={deleteExpenseModal}

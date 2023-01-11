@@ -1,13 +1,8 @@
-import axios from "axios";
 import styled from "styled-components";
 import { useState } from "react";
 
-const EditBudget = ({
-  editBudget,
-  setEditBudget,
-  handleEditBudget,
-  originBudget,
-}) => {
+const EditBudget = (props) => {
+  const { editBudget, setEditBudget, handleEditBudget, originBudget } = props;
   const [inputBudget, setInputBudget] = useState(originBudget);
 
   const handleInputBudget = (e) => {
@@ -18,7 +13,6 @@ const EditBudget = ({
     <>
       {editBudget ? (
         <ModalContainer onClick={() => setEditBudget(false)}>
-          {/*/모달 창 내부에서 닫히지 않도록 이벤트 버블링 방지 */}
           <ModalWrapper onClick={(e) => e.stopPropagation()}>
             <div className="title_frame">
               <div className="title">Set Budget</div>
