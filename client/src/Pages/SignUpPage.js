@@ -113,8 +113,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
 
   // email
   const onChangeEmail = useCallback((e) => {
-    const emailRegex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    const emailRegex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     setEmail(e.target.value);
 
     if (!emailRegex.test(e.target.value)) {
@@ -128,14 +127,11 @@ const SignUpPage = ({ setIsLoggedIn }) => {
 
   // password
   const onChangePassword = useCallback((e) => {
-    const passwordRegex =
-      /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
     setPassword(e.target.value);
 
     if (!passwordRegex.test(e.target.value)) {
-      setPasswordMessage(
-        "숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요."
-      );
+      setPasswordMessage("숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.");
       setIsPassword(false);
     } else {
       setPasswordMessage("올바른 비밀번호입니다.");
@@ -143,7 +139,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
     }
   }, []);
 
-  // username 입력 후 enter 누르면 email input으로 focus
+  // username 'enter' -> email
   const usernameEnter = (e) => {
     if (e.key === "Enter") eref.current.focus();
   };

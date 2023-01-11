@@ -5,7 +5,6 @@ import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from "react-router-dom";
 import GLogin from "../Components/GLogin";
 import GLogout from "../Components/GLogout"
-import { gapi } from "gapi-script"; 
 
 const SignUpStyle = styled.div`
     width: 50vw;
@@ -33,15 +32,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
     eref.current.focus();
   }, []);
 
-  //   useEffect(() => {
-  //     const start = () => {
-  //     gapi.client.init({
-  //       clientId: clientId,
-  //       scope: ""
-  //     })
-  //   };
-  //   gapi.load("client:auth2", start);
-  // });
+
 
   // 이메일, 비밀번호
   const [email, setEmail] = useState("");
@@ -175,8 +166,8 @@ const LoginPage = ({ setIsLoggedIn }) => {
         )}
 
         <button onClick={onLogin}>sign in</button>
-        {/* <GLogin setIsLoggedIn={setIsLoggedIn}/>
-          <GLogout setIsLoggedIn={setIsLoggedIn}/> */}
+        <GLogin setIsLoggedIn={setIsLoggedIn}/>
+          <GLogout setIsLoggedIn={setIsLoggedIn}/>
 
         <div>
           Not a member? <Link to="/signup">Sign up</Link>
