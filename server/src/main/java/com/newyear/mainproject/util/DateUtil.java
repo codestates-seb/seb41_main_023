@@ -1,7 +1,11 @@
 package com.newyear.mainproject.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.Locale;
 
 public class DateUtil {
     public static final int SEC = 60;
@@ -38,6 +42,32 @@ public class DateUtil {
 
         diffTime = diffTime / MONTH;
         return diffTime + "years ago";
+    }
+
+    public static String convertStringToDateFormatV1(String date) throws ParseException {
+        SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("en", "US"));
+        SimpleDateFormat newDtFormat = new SimpleDateFormat("MMM dd", new Locale("en", "US"));
+        Date formatDate = dtFormat.parse(date);
+
+        return newDtFormat.format(formatDate);
+    }
+
+    public static String convertStringToDateFormatV2(String date) throws ParseException {
+        SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("en", "US"));
+        SimpleDateFormat newDtFormat1 = new SimpleDateFormat("EEEE, MMMM", new Locale("en", "US"));
+        SimpleDateFormat newDtFormat2 = new SimpleDateFormat("d", new Locale("en", "US"));
+
+        Date formatDate = dtFormat.parse(date);
+
+        String weekMonth = newDtFormat1.format(formatDate);
+        String day = newDtFormat2.format(formatDate);
+
+        if(day.equals("1") || day.equals("21")) day += "st";
+        else if(day.equals("2") || day.equals("22")) day +="nd";
+        else if(day.equals("3") || day.equals("23")) day += "rd";
+        else day += "th";
+
+        return (weekMonth + " " + day);
     }
 }
 

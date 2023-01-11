@@ -1,5 +1,6 @@
 package com.newyear.mainproject.plan.controller;
 
+import com.newyear.mainproject.budget.service.BudgetService;
 import com.newyear.mainproject.dto.SingleResponseDto;
 import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.plan.dto.PlanDto;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -25,11 +27,14 @@ public class PlanController {
     private final PlanService planService;
     private final PlanMapper planMapper;
     private final MemberService memberService;
+    private final BudgetService budgetService;
 
-    public PlanController(PlanService planService, PlanMapper planMapper, MemberService memberService) {
+
+    public PlanController(PlanService planService, PlanMapper planMapper, MemberService memberService, BudgetService budgetService) {
         this.planService = planService;
         this.planMapper = planMapper;
         this.memberService = memberService;
+        this.budgetService = budgetService;
     }
 
     /**
@@ -39,6 +44,10 @@ public class PlanController {
     public ResponseEntity postPlan(@Valid @RequestBody PlanDto.Post post) {
         Plan plan = planService.createPlan(planMapper.planPostDtoToPlan(post));
         planService.createPlanDate(plan);//PlanDates 생성 시, update 문 실행 방지 Plan 등록 후 - PlanDates 등록
+
+        //일정 등록과 동시에 예산 초기 세팅
+        budgetService.createBudget(plan.getBudget());
+
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.planToPlanResponseDto(plan)), HttpStatus.CREATED);
@@ -79,7 +88,7 @@ public class PlanController {
      * 해당 여행일정에 대한 세부 일정 조회
      */
     @GetMapping("/{plan-id}")
-    public ResponseEntity getPlan(@PathVariable("plan-id") @Positive Long planId) {
+    public ResponseEntity getPlan(@PathVariable("plan-id") @Positive Long planId) throws ParseException {
         Plan plan = planService.findPlan(planId);
 
         return new ResponseEntity<>(
@@ -102,7 +111,9 @@ public class PlanController {
      */
     @PatchMapping("/date/title/{plan-date-id}")
     public ResponseEntity patchPlanDateSubTitle(@PathVariable("plan-date-id") @Positive Long planDateId,
-                                                @Valid @RequestBody PlanDto.PatchPlanDatesSubTitle patch) {
+
+                                                @Valid @RequestBody PlanDto.PatchPlanDatesSubTitle patch) throws ParseException {
+
         patch.setPlanDateId(planDateId);
         PlanDates planDates = planService.updatePlanDateSubTitle(planMapper.planDatesPatchToPlanDates(patch));
 

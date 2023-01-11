@@ -22,10 +22,11 @@ public class ExpenseController {
     private final ExpenseMapper mapper;
     private final ExpenseService expenseService;
 
-    @PostMapping("/budget/{budget-id}")
+    @PostMapping("/budget/{budget-id}/places/{place-id}")
     public ResponseEntity postExpense(@RequestBody @Valid ExpenseDto.Post post,
-                                      @PathVariable("budget-id") long budgetId) {
-        Expenses expense = expenseService.createExpense(mapper.postDtoToExpenses(post), budgetId);
+                                      @PathVariable("budget-id") long budgetId,
+                                      @PathVariable("place-id") long placeId) {
+        Expenses expense = expenseService.createExpense(mapper.postDtoToExpenses(post), budgetId, placeId);
         return new ResponseEntity<>(mapper.expensesToResponseDto(expense), HttpStatus.OK);
     }
 
