@@ -82,6 +82,16 @@ public class ExpenseService {
         expenseRepository.delete(findExpense);
     }
 
+    public void deleteExpensePlan(long expenseId, long placeId) {
+        Expenses findExpense = findExistExpense(expenseId);
+
+        //장소 연결
+        Place place = placeService.findPlace(placeId);
+        place.setExpense(null);
+        placeService.updatePlace(place);
+        expenseRepository.delete(findExpense);
+    }
+
     private Expenses findExistExpense(long expenseId) {
         return expenseRepository.findById(expenseId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.EXPENSE_NOT_FOUND));

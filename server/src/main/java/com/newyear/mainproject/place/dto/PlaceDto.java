@@ -40,6 +40,13 @@ public class PlaceDto {
         private String endTime;
     }
 
+
+    @Getter
+    @Setter
+    public static class SimpleResponse {
+        private Long placeId;
+        private String placeName;
+    }
     @Getter
     @Setter
     @NoArgsConstructor
