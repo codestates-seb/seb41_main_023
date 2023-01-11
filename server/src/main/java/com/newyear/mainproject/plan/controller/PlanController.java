@@ -48,6 +48,7 @@ public class PlanController {
         //일정 등록과 동시에 예산 초기 세팅
         budgetService.createBudget(plan.getBudget());
 
+
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.planToPlanResponseDto(plan)), HttpStatus.CREATED);
     }
@@ -110,7 +111,9 @@ public class PlanController {
      */
     @PatchMapping("/date/title/{plan-date-id}")
     public ResponseEntity patchPlanDateSubTitle(@PathVariable("plan-date-id") @Positive Long planDateId,
+
                                                 @Valid @RequestBody PlanDto.PatchPlanDatesSubTitle patch) throws ParseException {
+
         patch.setPlanDateId(planDateId);
         PlanDates planDates = planService.updatePlanDateSubTitle(planMapper.planDatesPatchToPlanDates(patch));
 
