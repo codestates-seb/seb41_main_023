@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class CommentDto {
 
@@ -35,13 +35,14 @@ public class CommentDto {
         private String comment;
         private String createdAt;
         private String displayName;
+        private String profileImage;
     }
 
     @Getter @Setter
     @NoArgsConstructor
     public static class simpleResponse {
         private long commentId;
-        private LocalDateTime createdAt;
+        private LocalDate createdAt;
     }
 
 }
