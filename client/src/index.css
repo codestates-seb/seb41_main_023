@@ -1,3 +1,73 @@
-body {
-    margin: 0;
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+
+:root {
+  /* color - grayscale */
+  --white: white;
+  --light-gray-1: #fafafa;
+  --light-gray-2: #f2f2f2;
+  --light-gray-3: #e8e8e8;
+  --light-gray-4: #e0e0e0;
+  --light: #757575;
+  --dark-gray-3: #5c5c5c;
+  --dark-gray-2: #424242;
+  --dark-gray-1: #292929;
+  --black: #0f0f0f;
+
+  /* color - primary */
+  --primary-blue-bright: #2d7ff9;
+  --primary-blue: #1283da;
+  --primary-blue-dark: #2750ae;
+  --primary-blue-light-1: #9cc7ff;
+  --primary-blue-light-2: #cfdfff;
+
+  /* color - danger, red */
+  --red: #ca3521;
+  --red-dark-1: #ae2a19;
+  --red-dark-2: #601e16;
+
+  /* font-size - text */
+  --small-text-size: 11px;
+  --default-text-size: 13px;
+  --large-text-size: 15px;
+  --x-large-text-size: 17px;
+
+  /* line-height - text */
+  --small-text-line-height: 14px;
+  --default-text-line-height: 16px;
+  --large-text-line-height: 20px;
+  --x-large-text-line-height: 24px;
+
+  /* font-size - heading */
+  --x-small-heading-font-size: 15px;
+  --small-heading-font-size: 17px;
+  --default-heading-font-size: 21px;
+  --large-heading-font-size: 23px;
+  --x-large-heading-font-size: 27px;
+  --xx-large-heading-font-size: 35px;
+
+  /* line-height - heading */
+  --x-small-heading-line-height: 22px;
+  --small-heading-line-height: 24px;
+  --default-heading-line-height: 26px;
+  --large-heading-line-height: 29px;
+  --x-large-heading-line-height: 34px;
+  --xx-large-heading-line-height: 44px;
+
+  /* spacing */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 16px;
+  --spacing-4: 32px;
+  --spacing-5: 64px;
+  --spacing-6: 128px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--default-text-size);
+  line-height: var(--default-text-line-height);
+  color: var(--dark-gray-2);
 }
