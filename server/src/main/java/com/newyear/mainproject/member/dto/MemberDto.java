@@ -71,16 +71,17 @@ public class MemberDto {
         private String email;
         private String displayName;
         //프로필이미지
+        private String profileImage;
     }
 
     @Getter @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Response{
+    public static class Response {
         private long memberId;
         private String email;
         private String displayName;
-        //        private String profileImage;
+        private String profileImage;
         private Member.MemberStatus memberStatus;
         public String getMemberStatus() {
             return memberStatus.getStatus();

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.List;
 
 public class BoardDto {
@@ -45,6 +46,7 @@ public class BoardDto {
         //회원 정보
         private long memberId;
         private String displayName;
+        private String profileImage;
         //로그인 회원의 좋아요 여부
         private boolean checkLikes;
         //일정 - date
@@ -56,6 +58,7 @@ public class BoardDto {
     @NoArgsConstructor
     public static class SimpleResponse {
         private long boardId;
+        private LocalDate createdAt;
     }
 
     // 한 게시물 클릭시
@@ -72,6 +75,7 @@ public class BoardDto {
         //회원 정보
         private long memberId;
         private String displayName;
+        private String profileImage;
         //로그인 회원의 좋아요 여부
         private boolean checkLikes;
         //plan
