@@ -8,6 +8,7 @@ import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.entity.PlanDates;
 import com.newyear.mainproject.plan.repository.PlanDateRepository;
 import com.newyear.mainproject.plan.repository.PlanRepository;
+import com.newyear.mainproject.util.DateCalculation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -34,19 +35,11 @@ public class PlanService {
         return planRepository.save(plan);
     }
 
-    public void savePlanDates(Plan plan) {
-        //일정 생성과 동시에 날짜 나눠서 테이블에 값 넣음
-        planDateRepository.saveAll(plan.getPlanDates());
-    }
-
     /**
      * 일정 수정
      */
     public Plan updatePlan(Plan plan) {
         Plan findPlan = findVerifiedPlan(plan.getPlanId());
-
-        //일정 수정하면서 동시에 같은 plan_id 값을 가진 plan_date 의 값들이 수정 - 삭제 후 다시 생성
-        planDateRepository.deleteAllByPlan(plan);
 
         Optional.ofNullable(plan.getPlanTitle())
                 .ifPresent(planTitle -> findPlan.setPlanTitle(planTitle));
@@ -56,6 +49,49 @@ public class PlanService {
                 .ifPresent(endDate -> findPlan.setEndDate(endDate));
         return planRepository.save(findPlan);
     }
+
+    /**
+     * 각 날짜 subTitle 수정
+     */
+    public PlanDates updatePlanDateSubTitle(PlanDates planDates) {
+        PlanDates findPlanDate = findPlanDates(planDates.getPlanDateId());
+
+        Optional.ofNullable(planDates.getSubTitle())
+                .ifPresent(subTitle -> findPlanDate.setSubTitle(subTitle));
+
+        return planDateRepository.save(findPlanDate);
+    }
+
+    /**
+     * 일정-날짜 등록
+     */
+
+    public void createPlanDate(Plan plan) {
+        //일정 생성과 동시에 날짜 나눠서 테이블에 값 넣음
+        planDateRepository.saveAll(plan.getPlanDates());
+    }
+
+    /**
+     * 일정-날짜 수정, 삭제
+     * 동시에 같은 plan_id 값을 가진 plan_date 의 값들이 수정 - 삭제 후 다시 생성
+     * 같은 값이면 삭제 안되도록 처리
+     */
+
+    public void updatePlanDate(Plan plan) {
+        List<String> dateList = DateCalculation.dateCal(plan.getStartDate(), plan.getEndDate());
+
+        for(String date : dateList) {
+            PlanDates planDate = new PlanDates();
+            planDate.setPlanDate(date); // 시작일정-끝일정 사이의 일정들을 전부 등록
+            planDate.setPlan(plan);
+            planDateRepository.save(planDate);
+        }
+    }
+
+    public void deletePlanDate(Plan plan) {
+        planDateRepository.deleteAllByPlan(plan);
+    }
+
 
 
     /**
@@ -83,7 +119,7 @@ public class PlanService {
 
     public PlanDates findPlanDates(Long planDataId) {
         Optional<PlanDates> optionalPlanDates = planDateRepository.findById(planDataId);
-        return optionalPlanDates.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PLAN_NOT_FOUND));
+        return optionalPlanDates.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PLAN_DATE_NOT_FOUND));
     }
 
     /**
