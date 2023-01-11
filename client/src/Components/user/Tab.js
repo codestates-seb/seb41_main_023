@@ -3,12 +3,14 @@
 import axios from "axios";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+// import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 import Modal from "./Modal";
 
 // const [token, setToken] = useState();
 // const [memberId,setMemberId] = useState();
+// const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
 
 // 토큰 설정
 // useEffect(() => {
@@ -132,7 +134,7 @@ const DeleteAccount = ({ modal, setModal }) => {
     //     },
     //   })
     //   .then((res) => {
-    //     removeCookie("쿠키 이름");
+    //     removeCookie("accessToken");
     //     alert("그동안 이용해주셔서 감사합니다.");
     //     navigate("/");
     //     window.location.reload();

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-const DropDown = ({ setDropDown, handleCategory }) => {
-  //드롭다운 목록
-  const dropDownList = [
+const Category = ({ setCategory, handleCategory }) => {
+  //카테고리 목록
+  const categoryList = [
     "Flight",
     "Lodging",
     "Car Rental",
@@ -18,20 +18,19 @@ const DropDown = ({ setDropDown, handleCategory }) => {
   ];
 
   return (
-    <ModalContainer onClick={() => setDropDown(false)}>
-      {/*/모달 창 내부에서 닫히지 않도록 이벤트 버블링 방지 */}
+    <ModalContainer onClick={() => setCategory(false)}>
       <ModalWrapper onClick={(e) => e.stopPropagation()}>
         <div className="title_frame">
           <div className="title">Select Category</div>
-          <div className="cancle_button" onClick={() => setDropDown(false)}>
+          <div className="cancle_button" onClick={() => setCategory(false)}>
             ❌
           </div>
         </div>
-        <div className="dropdown_list">
-          {dropDownList.map((el, idx) => (
+        <div className="category_list">
+          {categoryList.map((el, idx) => (
             <div
               key={idx}
-              className="dropdown_item"
+              className="category_item"
               onClick={() => handleCategory(el)}
             >
               {el}
@@ -43,7 +42,7 @@ const DropDown = ({ setDropDown, handleCategory }) => {
   );
 };
 
-export default DropDown;
+export default Category;
 
 const ModalContainer = styled.div`
   background: rgba(0, 0, 0, 0.5);
@@ -99,12 +98,12 @@ const ModalWrapper = styled.div`
       margin-top: 4px;
     }
   }
-  > .dropdown_list {
+  > .category_list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    > .dropdown_item {
+    > .category_item {
       margin: 5px;
       padding: 15px;
       border: 1px solid #6a737c;

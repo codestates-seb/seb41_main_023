@@ -2,9 +2,7 @@ import styled from "styled-components";
 
 const Modal = (props) => {
   return (
-    // 모달 창 외부 클릭 시 닫힘
     <ModalContainer onClick={() => props.setModal(false)}>
-      {/*/모달 창 내부에서 닫히지 않도록 이벤트 버블링 방지 */}
       <ModalWrapper onClick={(e) => e.stopPropagation()}>
         <div className="title_frame">
           <div className="title">{props.title}</div>
@@ -32,7 +30,6 @@ export default Modal;
 
 const ModalContainer = styled.div`
   background: rgba(0, 0, 0, 0.5);
-  /* display: none; */
   position: fixed;
   top: 0;
   left: 0;

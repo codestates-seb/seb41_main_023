@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 
 const Header = ({ login }) => {
   const [token, setToken] = useState();
   const [memberId, setMemberId] = useState();
+  const [cookies, setCookie] = useCookies(["accessToken"]);
   const navigate = useNavigate();
 
   // 토큰 설정
@@ -95,8 +97,6 @@ const Header = ({ login }) => {
 export default Header;
 
 const HeadContainer = styled.div`
-  /* background-color: slategray; */
-
   display: flex;
   justify-content: space-between;
 `;
