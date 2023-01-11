@@ -7,6 +7,7 @@ import Home from "./Pages/Home";
 import Main from "./Pages/Main";
 import UserProfile from "./Pages/UserProfile";
 import UserProfileEdit from "./Pages/UserProfileEdit";
+import Itinerary from "./Pages/Itinerary";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,7 +22,7 @@ function App() {
               <Route path="/user/:memberId" element={<UserProfile/>}/>
               <Route path="/user/:memberId/edit" element={<UserProfileEdit/>}/>
               <Route path="/itinerary/:itineraryId" element={<Itinerary/>}/>
-              <Route path="/blog" element={<Blog/>}/>
+              {/*<Route path="/blog" element={<Blog/>}/>*/}
             </Routes>
       </>
     );
