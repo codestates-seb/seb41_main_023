@@ -1,30 +1,25 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useEffect } from "react";
+import { useCookies } from "react-cookie";
+import { useEffect, useState } from "react";
 
 const Header = ({ login }) => {
+  const [token, setToken] = useState();
+  const [memberId, setMemberId] = useState();
+  const [cookies, setCookie] = useCookies(["accessToken"]);
   const navigate = useNavigate();
 
-  const handleNavigate = (path) => {
-    navigate(path);
-  };
+  // 토큰 설정
+  // useEffect(() => {
+  //   if (cookies.accessToken) {
+  //     setToken(cookies.accessToken.token);
+  //   }
+  // }, []);
 
-  const handleSignout = () => {
-    if (window.confirm("로그아웃 하시겠습니까?")) {
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/members/logout`, {
-          headers: {
-            // Authorization: token,
-            withCredentials: true,
-          },
-        })
-        .then((res) => console.log(res))
-        .then((res) => navigate("/"));
-    }
-  };
+  // memberId 설정
 
-  //프로필 이미지 axios 요청
+  // 유저 프로필 요청
   //  useEffect(() => {
   // axios
   //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
@@ -38,6 +33,25 @@ const Header = ({ login }) => {
   //   })
   //   .catch((err) => console.log("error"));
   //  }, []);
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
+  // 로그아웃
+  const handleSignout = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/members/logout`, {
+          headers: {
+            // Authorization: token,
+            withCredentials: true,
+          },
+        })
+        .then((res) => console.log(res))
+        .then((res) => navigate("/"));
+    }
+  };
 
   return (
     <HeadContainer>
@@ -83,8 +97,6 @@ const Header = ({ login }) => {
 export default Header;
 
 const HeadContainer = styled.div`
-  /* background-color: slategray; */
-
   display: flex;
   justify-content: space-between;
 `;

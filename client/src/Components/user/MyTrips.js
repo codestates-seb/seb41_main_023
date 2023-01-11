@@ -27,8 +27,16 @@ const MyTrips = () => {
 
   const navigate = useNavigate();
   const [tripList, setTripList] = useState(dummyItineraryList);
+  const [token, setToken] = useState();
 
-  //전체 일정 조회
+  // 토큰 설정
+  // useEffect(() => {
+  //   if (cookies.accessToken) {
+  //     setToken(cookies.accessToken.token);
+  //   }
+  // }, []);
+
+  // 전체 일정 조회
   // useEffect(() => {
   //   axios({
   //     url: `${process.env.REACT_APP_API_URL}/plans`,
@@ -52,7 +60,7 @@ const MyTrips = () => {
       <h2>My Trips</h2>
       <div className="contents">
         {tripList.map((el) => (
-          <div>
+          <div key={el.planId}>
             <img
               alt="place_image"
               src={el.image}

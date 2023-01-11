@@ -9,6 +9,18 @@ const UserProfileEdit = () => {
   const [currentTab, clickTab] = useState(0);
   const [modal, setModal] = useState(false);
 
+  const [token, setToken] = useState();
+  const [memberId, setMemberId] = useState();
+
+  //토큰 설정
+  // useEffect(() => {
+  //   if (cookies.accessToken) {
+  //     setToken(cookies.accessToken.token);
+  //   }
+  // }, []);
+
+  //memberId 설정
+
   const [userInfo, setUserInfo] = useState({
     memberId: 1,
     email: "1234@gmail.com",
@@ -31,7 +43,7 @@ const UserProfileEdit = () => {
   };
 
   // const params = useParams();
-  // const [memberId, setMemberId] = useState(params?);
+  // const [memberId, setMemberId]
 
   //기존 유저 정보 get 요청
   // useEffect(() => {
@@ -61,13 +73,13 @@ const UserProfileEdit = () => {
         id: submitInfo.id,
       };
 
-      console.log(data);
+      // console.log(data);
 
       if (window.confirm("수정사항을 저장하시겠습니까?")) {
         console.log("edit! ");
         // axios
         // .patch(
-        // `${process.env.REACT_APP_API_URL}/members/1`,
+        // `${process.env.REACT_APP_API_URL}/members/displayName/${memberId}`,
         // {
         //   ...data,
         // }
@@ -120,7 +132,7 @@ const UserProfileEdit = () => {
       formData.append("image", e.target.files[0]);
 
       axios({
-        url: `${process.env.REACT_APP_API_URL}`,
+        url: `${process.env.REACT_APP_API_URL}`, //url 수정필요
         method: "POST",
         data: formData,
         headers: {

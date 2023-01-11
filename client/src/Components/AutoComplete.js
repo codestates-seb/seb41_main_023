@@ -2,13 +2,14 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-// const mapCity = deselectedOptions.map((el) => el.cityName);
+import { data } from "../dummyCity";
 
 const Autocomplete = ({ handleDestination, inputRef }) => {
-  const [city, setCity] = useState();
+  const dummyCity = data.map((el) => el.cityName);
+  const [city, setCity] = useState(dummyCity);
+  // console.log(city);
 
-  // console.log("city : " + city);
-
+  /* 도시 정보 조회 */
   // useEffect(() => {
   //   axios({
   //     url: `${process.env.REACT_APP_API_URL}/city`,
@@ -63,7 +64,6 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
   };
 
   /**
-   *
    * @param {string} inputValue 입력값
    * @param {string} target 리스트 중 1
    */
@@ -164,7 +164,6 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
       <div>
         <div className="search">
           <input
-            // type="search"
             onChange={handleInputChange}
             value={inputValue}
             placeholder="Search Destination ex. 서울, 부산..."
@@ -189,6 +188,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
 
 /* 자동완성 배열(options)에 들어간 값들이 드롭다운으로 보여지는 부분 */
 export const DropDown = ({ options, handleComboBox, activeSuggestion }) => {
+  console.log(options);
   return (
     <DropDownContainer>
       {options.map((option, index) => {

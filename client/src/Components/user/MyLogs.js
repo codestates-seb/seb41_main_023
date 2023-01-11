@@ -25,13 +25,26 @@ const MyLogs = () => {
       checkLikes: false,
     },
   ];
+
   const navigate = useNavigate();
   const [logList, setLogList] = useState(dummy);
+
+  const [token, setToken] = useState();
+  const [memberId, setMemberId] = useState();
+
+  //토큰 설정
+  // useEffect(() => {
+  //   if (cookies.accessToken) {
+  //     setToken(cookies.accessToken.token);
+  //   }
+  // }, []);
+
+  //memberId 설정
 
   //회원의 전체 게시글 조회
   // useEffect(() => {
   //   axios({
-  //     url: `${process.env.REACT_APP_API_URL}/board/user/1`,
+  //     url: `${process.env.REACT_APP_API_URL}/board/user/${memberId}`,
   //     method: "GET",
   //     headers: {
   //        Authorization: token,
@@ -52,7 +65,7 @@ const MyLogs = () => {
       <h2>My Logs</h2>
       <div className="contents">
         {logList.map((el) => (
-          <div>
+          <div key={el.boardId}>
             <img
               alt="place_image"
               src={el.image}

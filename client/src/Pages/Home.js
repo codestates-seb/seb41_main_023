@@ -67,7 +67,6 @@ const Home = ({ login }) => {
             },
             data: data,
           })
-          .then((res) => console.log(res))
           .then((res) => navigate(`/itinerary/${res.data.planId}`));
       } else {
         localStorage.setItem("plan", JSON.stringify(data));

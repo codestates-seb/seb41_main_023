@@ -1,13 +1,27 @@
+/* 유저이름, 비밀번호 수정, 계정 삭제 */
+
 import axios from "axios";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+// import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 import Modal from "./Modal";
 
 // const [token, setToken] = useState();
-//const [memberId,setMemberId] = useState();
+// const [memberId,setMemberId] = useState();
+// const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
 
+// 토큰 설정
+// useEffect(() => {
+//   if (cookies.accessToken) {
+//     setToken(cookies.accessToken.token)
+//   }
+// }, []);
+
+//memberId 설정
+
+// 유저이름 수정
 const General = ({ handleChange, handleSubmit, nameRef }) => {
   return (
     <GeneralContainer>
@@ -27,8 +41,8 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
   );
 };
 
+// 비밀번호 수정
 const Password = () => {
-  //기존 비밀번호와 일치하는지 확인해야함
   const [inputs, setInputs] = useState({
     originPassword: "",
     newPassword: "",
@@ -45,10 +59,20 @@ const Password = () => {
   };
 
   const submitPassword = () => {
+    //유효성 검사(숫자, 영문, 특수문자 조합한 8~20자리)
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&#]{8,}$/i;
+
+    const passwordValueCheck = passwordRegex.test(inputs.newPassword);
+    if (!passwordValueCheck) {
+      return;
+    }
+
     console.log("change!");
-    //새 비밀번호 유효성 검사 필요
+
+    // 비밀번호 변경 요청
     // axios
-    //   .patch(`${process.env.REACT_APP_API_URL}/members/password/1`, {
+    //   .patch(`${process.env.REACT_APP_API_URL}/members/password/${memberId}`, {
     //     headers: {
     //       Authorization: token,
     //       withCredentials: true,
@@ -60,6 +84,10 @@ const Password = () => {
     //   })
     //   .then((res) => {
     //     alert("비밀번호가 변경되었습니다.");
+    // setInputs({
+    //   originPassword: "",
+    //   newPassword: "",
+    // });
     //     window.location.reload();
     //   })
     //   .catch((err) => console.log("error"));
@@ -83,8 +111,8 @@ const Password = () => {
           onChange={handleChange}
         ></input>
         <div>
-          Passwords must contain at least eight characters, including at least 1
-          letter and 1 number.
+          숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를
+          입력하세요.
         </div>
       </div>
       <div className="submit_area">
@@ -94,6 +122,7 @@ const Password = () => {
   );
 };
 
+/* 계정 삭제 */
 const DeleteAccount = ({ modal, setModal }) => {
   const navigate = useNavigate();
   const handleDeleteAccount = () => {
@@ -105,7 +134,7 @@ const DeleteAccount = ({ modal, setModal }) => {
     //     },
     //   })
     //   .then((res) => {
-    //     // removeCookie("쿠키 이름");
+    //     removeCookie("accessToken");
     //     alert("그동안 이용해주셔서 감사합니다.");
     //     navigate("/");
     //     window.location.reload();
@@ -113,6 +142,7 @@ const DeleteAccount = ({ modal, setModal }) => {
     //   .catch((err) => console.log("error"));
     console.log("계정 삭제!");
   };
+
   return (
     <>
       {modal ? (
