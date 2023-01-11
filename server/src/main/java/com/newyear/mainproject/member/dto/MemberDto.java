@@ -68,6 +68,7 @@ public class MemberDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class userProfile{
+        private long memberId;
         private String email;
         private String displayName;
         //프로필이미지
