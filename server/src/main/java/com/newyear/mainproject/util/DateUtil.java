@@ -46,7 +46,8 @@ public class DateUtil {
 
     public static String convertStringToDateFormatV1(String date) throws ParseException {
         SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("en", "US"));
-        SimpleDateFormat newDtFormat = new SimpleDateFormat("MMM dd", new Locale("en", "US"));
+        SimpleDateFormat newDtFormat = new SimpleDateFormat("MMM dd, yyyy", new Locale("en", "US"));
+
         Date formatDate = dtFormat.parse(date);
 
         return newDtFormat.format(formatDate);
