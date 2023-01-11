@@ -3,9 +3,9 @@ import axios from "axios";
 import { Link } from 'react-router-dom';
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import GLogin from "../Components/GLogin";
-import GLogout from "../Components/GLogout"
-import { gapi } from "gapi-script";
+// import GLogin from "../Components/GLogin";
+// import GLogout from "../Components/GLogout"
+// import { gapi } from "gapi-script";
 
 const SignUpStyle = styled.div`
     width: 50vw;
