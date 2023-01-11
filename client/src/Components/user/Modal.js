@@ -45,8 +45,8 @@ const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 100%;
-  width: 430px;
-  height: 200px;
+  width: 470px;
+  height: 250px;
   z-index: 1050;
 
   display: flex;
@@ -64,7 +64,7 @@ const ModalWrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 50px;
-    width: 432px;
+    width: 430px;
     height: 31px;
     font-size: 13px;
     > .title {
@@ -110,7 +110,7 @@ const ModalWrapper = styled.div`
       width: 50px;
       height: 10px;
       padding: 15px 20px;
-      margin: 13px 20px;
+
       font-size: 13px;
       line-height: 15px;
       text-align: center;

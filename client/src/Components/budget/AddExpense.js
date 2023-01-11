@@ -117,7 +117,7 @@ const ModalWrapper = styled.div`
   transform: translate(-50%, -50%);
   max-width: 100%;
   z-index: 1050;
-  width: 250px;
+  width: 300px;
   display: flex;
   flex-direction: column;
 
@@ -155,12 +155,12 @@ const ModalWrapper = styled.div`
   }
   > .content {
     width: 230px;
-    height: 20px;
+    height: 35px;
 
     margin-bottom: 12px;
     padding: 7px 10px;
 
-    border-radius: 7px;
+    border-radius: 5px;
     border: 1px solid #3b4045;
 
     font-size: 14px;
@@ -187,8 +187,8 @@ const ModalWrapper = styled.div`
       border-radius: 5px;
     }
     > .cancle_text {
-      width: 50px;
-      height: 10px;
+      width: 70px;
+      height: 40px;
       padding: 15px 10px;
       margin: 0 10px;
 
