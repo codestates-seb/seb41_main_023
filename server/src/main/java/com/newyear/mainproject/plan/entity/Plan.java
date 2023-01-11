@@ -42,11 +42,11 @@ public class Plan {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.REMOVE)
     private List<PlanDates> planDates = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.REMOVE)
     private List<Place> places = new ArrayList<>();
 
 }

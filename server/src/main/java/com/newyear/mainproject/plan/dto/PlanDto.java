@@ -55,6 +55,13 @@ public class PlanDto {
         private List<PlanDatesResponse> planDates = new ArrayList<>();
         private List<PlaceDto.Response> places = new ArrayList<>();
     }
+    @Getter
+    @Setter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class PatchPlanDatesSubTitle {
+        private Long planDateId;
+        private String subTitle;
+    }
 
     @Builder
     @Getter
@@ -63,5 +70,6 @@ public class PlanDto {
     public static class PlanDatesResponse {
         private Long planDateId;
         private String planDate;
+        private String subTitle;
     }
 }
