@@ -40,6 +40,7 @@ public enum ExceptionCode {
     //plan
     PLAN_NOT_PATCHED(403, "Plan not patched"),
     PLAN_NOT_FOUND(404, "Plan Not Found"),
+    PLAN_DATE_NOT_FOUND(404, "Plan Date Not Found"),
     PLAN_CHECK_EXISTS(409, "Plan Check exists"),
 
     //city

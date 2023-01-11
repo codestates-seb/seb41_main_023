@@ -20,8 +20,10 @@ public class PlanDates {
     @Column(nullable = false)
     private String planDate; //시작 일자 - 종료 일자 사이의 각각 일자들
 
+    private String subTitle;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "planDates", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "planDates", cascade = CascadeType.REMOVE)
     private List<Place> places = new ArrayList<>();
 
     @ManyToOne

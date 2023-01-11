@@ -33,6 +33,9 @@ public class ExpenseService {
                 .ifPresent(findExpenses::setItem);
         Optional.of(expenses.getPrice())
                 .ifPresent(findExpenses::setPrice);
+        Optional.ofNullable(expenses.getCategory())
+                .ifPresent(findExpenses::setCategory);
+
         return expenseRepository.save(findExpenses);
     }
 
