@@ -62,8 +62,7 @@ const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 100%;
-  /* width: 430px;
-  height: 200px; */
+  max-width: 500px;
   z-index: 1050;
 
   display: flex;
@@ -105,16 +104,15 @@ const ModalWrapper = styled.div`
     justify-content: center;
     > .category_item {
       margin: 5px;
-      padding: 15px;
+      padding: 10px;
       border: 1px solid #6a737c;
-      border-radius: 7px;
+      border-radius: 5px;
       background-color: snow;
 
-      width: 90px;
-      height: 20px;
+      width: 120px;
+      height: 40px;
 
       text-align: center;
-      line-height: 20px;
       white-space: nowrap;
 
       cursor: pointer;
