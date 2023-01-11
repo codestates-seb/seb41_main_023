@@ -1,0 +1,70 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+
+  datasource:
+    url: jdbc:mysql://${RDS_ENDPOINT}/mainproject?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false&pinGlobalTxToPhysicalConnection=true
+    username: ${RDS_MYSQL_ADMIN_ID}
+    password: ${RDS_MYSQL_ADMIN_PW}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+      defer-datasource-initialization: true #city 테이블 위해 추가
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+    sql:
+      init:
+        data-locations: classpath*:db/h2/data.sql
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_SECRET}
+            scope:
+              - email
+              - profile
+logging:
+  level:
+    org:
+      springframework:
+        orm:
+          jpa: DEBUG
+server:
+  servlet:
+    encoding:
+      force-response: true
+  port: 8080
+  netty:
+    max-initial-line-length:
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
+
+#config:
+  #domain: ${AWS_S3}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3: #버킷이름
+      bucket: ${S3_BUCKET}
+    region: #S3 지역
+      static: ap-northeast-2
+    stack:
+      auto: false

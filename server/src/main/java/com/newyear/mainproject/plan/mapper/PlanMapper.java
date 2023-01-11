@@ -1,14 +1,17 @@
 package com.newyear.mainproject.plan.mapper;
 
+import com.newyear.mainproject.budget.entity.Budget;
 import com.newyear.mainproject.place.dto.PlaceDto;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.plan.dto.PlanDto;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.entity.PlanDates;
 import com.newyear.mainproject.util.DateCalculation;
+import com.newyear.mainproject.util.DateUtil;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +27,12 @@ public interface PlanMapper {
         plan.setPlanTitle("Trip to "+ post.getCityName());
 
         plan.setPlanDates(planDatesToPlanPlanDates(plan));
+
+        //예산 연결
+        Budget budget = new Budget();
+        budget.setExpectedBudget(0);
+        budget.setPlan(plan);
+        plan.setBudget(budget);
 
         return plan;
     }
@@ -46,28 +55,36 @@ public interface PlanMapper {
     default List<PlanDto.Response> plansToPlanResponseDtos(List<Plan> plans){
         return plans
                 .stream()
-                .map(plan -> PlanDto.Response
-                        .builder()
-                        .planId(plan.getPlanId())
-                        .planTitle(plan.getPlanTitle())
-                        .startDate(plan.getStartDate())
-                        .endDate(plan.getEndDate())
-                        .cityName(plan.getCityName())
-                        .placesCount(plan.getPlaces().size())
-                        .build()
+                .map(plan -> {
+                            try {
+                                return PlanDto.Response
+                                        .builder()
+                                        .planId(plan.getPlanId())
+                                        .planTitle(plan.getPlanTitle())
+                                        .startDate(DateUtil.convertStringToDateFormatV1(plan.getStartDate()))
+                                        .endDate(DateUtil.convertStringToDateFormatV1(plan.getEndDate()))
+                                        .cityName(plan.getCityName())
+                                        .placesCount(plan.getPlaces().size())
+                                        .build();
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                 ).collect(Collectors.toList());
     }
-    default PlanDto.PlaceDetailResponse planToPlaceDetailResponseDto(Plan plan){
-        PlanDto.PlaceDetailResponse response = new PlanDto.PlaceDetailResponse();
+    default PlanDto.PlanDatePlaceDetailResponse planToPlaceDetailResponseDto(Plan plan) throws ParseException {
+        PlanDto.PlanDatePlaceDetailResponse response = new PlanDto.PlanDatePlaceDetailResponse();
         response.setPlanId(plan.getPlanId());
         response.setCityName(plan.getCityName());
         response.setPlanTitle(plan.getPlanTitle());
-        response.setStartDate(plan.getStartDate());
-        response.setEndDate(plan.getEndDate());
+        response.setStartDate(DateUtil.convertStringToDateFormatV1(plan.getStartDate()));
+        response.setEndDate(DateUtil.convertStringToDateFormatV1(plan.getEndDate()));
         response.setPlanDates(planDateToPlanDateResponseDtos(plan.getPlanDates()));
         response.setPlaces(placesToPlaceResponseDtos(plan.getPlaces()));
         return response;
     }
+
+
 
     //plan 에 planDates 넣어주기 위한 메소드(중복 방지)
     default List<PlanDates> planDatesToPlanPlanDates(Plan plan) {
@@ -88,31 +105,55 @@ public interface PlanMapper {
     }
 
     PlanDates planDatesPatchToPlanDates(PlanDto.PatchPlanDatesSubTitle patch);
-    PlanDto.PlanDatesResponse planDatesToPlanDateResponseDto(PlanDates planDates);
 
-    default List<PlanDto.PlanDatesResponse> planDateToPlanDateResponseDtos(List<PlanDates> planDates) {
-        return planDates
-                .stream()
-                .map(planDate -> PlanDto.PlanDatesResponse
-                        .builder()
-                        .planDateId(planDate.getPlanDateId())
-                        .planDate(planDate.getPlanDate())
-                        .subTitle(planDate.getSubTitle())
-                        .build())
-                .collect(Collectors.toList());
+
+    //리스트용
+    default PlanDto.PlanDatesResponse planDatesToPlanDateResponseDto(PlanDates planDates) throws ParseException {
+
+        PlanDto.PlanDatesResponse planDatesResponse = new PlanDto.PlanDatesResponse();
+        planDatesResponse.setPlanDateId(planDates.getPlanDateId());
+        planDatesResponse.setPlanDate(DateUtil.convertStringToDateFormatV1(planDates.getPlanDate()));
+        planDatesResponse.setSubTitle(planDates.getSubTitle());
+
+        return planDatesResponse;
+    }
+
+    default PlanDto.PlanDatesResponse planDatesToPlanDateResponseDtoV2(PlanDates planDates) throws ParseException {
+
+        PlanDto.PlanDatesResponse planDatesResponse = new PlanDto.PlanDatesResponse();
+        planDatesResponse.setPlanDateId(planDates.getPlanDateId());
+        planDatesResponse.setPlanDate(DateUtil.convertStringToDateFormatV2(planDates.getPlanDate()));
+        planDatesResponse.setSubTitle(planDates.getSubTitle());
+
+        return planDatesResponse;
+    }
+
+    default List<PlanDto.PlanDatesResponse> planDateToPlanDateResponseDtos(List<PlanDates> planDates) throws ParseException {
+        List<PlanDto.PlanDatesResponse> list = new ArrayList<>();
+        for ( PlanDates planDates1 : planDates ) {
+            list.add( planDatesToPlanDateResponseDto( planDates1 ) );
+
+        }
+        return list;
     }
     default List<PlaceDto.Response> placesToPlaceResponseDtos(List<Place> places) {
         return places
                 .stream()
-                .map(place -> PlaceDto.Response
-                        .builder()
-                        .placeId(place.getPlaceId())
-                        .placeName(place.getPlaceName())
-                        .expense(place.getExpense())
-                        .startTime(place.getStartTime())
-                        .endTime(place.getEndTime())
-                        .planDates(planDatesToPlanDateResponseDto(place.getPlanDates()))
-                        .build())
+                .map(place -> {
+                    try {
+                        return PlaceDto.Response
+                                .builder()
+                                .placeId(place.getPlaceId())
+                                .placeName(place.getPlaceName())
+                                .expense(place.getExpense())
+                                .startTime(place.getStartTime())
+                                .endTime(place.getEndTime())
+                                .planDates(planDatesToPlanDateResponseDtoV2(place.getPlanDates()))
+                                .build();
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 }

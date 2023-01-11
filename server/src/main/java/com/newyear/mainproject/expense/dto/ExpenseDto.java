@@ -1,5 +1,6 @@
 package com.newyear.mainproject.expense.dto;
 
+import com.newyear.mainproject.place.dto.PlaceDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,6 +52,19 @@ public class ExpenseDto {
         private int price;
         private String category;
         private String createdAt;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PlaceResponse {
+        private long expenseId;
+        private String item;
+        private int price;
+        private String category;
+        private String createdAt;
+        private PlaceDto.SimpleResponse places;
     }
 
 }
