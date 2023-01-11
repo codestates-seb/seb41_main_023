@@ -23,7 +23,13 @@ public class ExpenseService {
     private final BudgetService budgetService;
     private final PlaceService placeService;
 
-    public Expenses createExpense(Expenses expenses, long budgetId, long placeId) {
+    public Expenses createExpense(Expenses expenses, long budgetId) {
+        Budget budget = budgetService.findBudget(budgetId);
+        expenses.setBudget(budget);
+        return expenseRepository.save(expenses);
+    }
+
+    public Expenses createExpensePlan(Expenses expenses, long budgetId, long placeId) {
         Budget budget = budgetService.findBudget(budgetId);
         expenses.setBudget(budget);
 
@@ -46,6 +52,27 @@ public class ExpenseService {
                 .ifPresent(findExpenses::setPrice);
         Optional.ofNullable(expenses.getCategory())
                 .ifPresent(findExpenses::setCategory);
+
+        return expenseRepository.save(findExpenses);
+    }
+
+
+    public Expenses updateExpensePlan(Expenses expenses, long placeId) {
+        Expenses findExpenses = findExistExpense(expenses.getExpenseId());
+
+        Optional.ofNullable(expenses.getItem())
+                .ifPresent(findExpenses::setItem);
+        Optional.of(expenses.getPrice())
+                .ifPresent(findExpenses::setPrice);
+        Optional.ofNullable(expenses.getCategory())
+                .ifPresent(findExpenses::setCategory);
+
+        //장소 연결
+        Place place = placeService.findPlace(placeId);
+        expenses.setPlace(place);
+
+        place.setExpense(expenses.getPrice());
+        placeService.updatePlace(place);
 
         return expenseRepository.save(findExpenses);
     }
