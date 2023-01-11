@@ -1,6 +1,7 @@
 package com.newyear.mainproject.plan.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.newyear.mainproject.budget.entity.Budget;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.place.entity.Place;
 import lombok.Getter;
@@ -48,5 +49,9 @@ public class Plan {
     @JsonIgnore
     @OneToMany(mappedBy = "plan", cascade = CascadeType.REMOVE)
     private List<Place> places = new ArrayList<>();
+
+    @OneToOne(mappedBy = "plan", cascade = CascadeType.PERSIST)
+    private Budget budget;
+
 
 }

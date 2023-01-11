@@ -25,7 +25,7 @@ public interface MemberMapper {
         response.setEmail(member.getEmail());
         response.setDisplayName(member.getDisplayName());
         //이미지 추가
-
+        response.setProfileImage(member.getProfileImage());
         return response;
 
     }
@@ -36,6 +36,7 @@ public interface MemberMapper {
         response.setDisplayName(member.getDisplayName());
         response.setMemberStatus(member.getMemberStatus());
         response.setEmail(member.getEmail());
+        response.setProfileImage(member.getProfileImage());
 
         return response;
     }

@@ -1,5 +1,6 @@
 package com.newyear.mainproject.place.entity;
 
+import com.newyear.mainproject.expense.entity.Expenses;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.entity.PlanDates;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -37,6 +40,13 @@ public class Place {
     @ManyToOne
     @JoinColumn(name = "plan_id")
     private Plan plan;
+
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
+    private List<Expenses> expenses = new ArrayList<>();
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
 
     public void setPlanDate(PlanDates planDates) {
         this.planDates = planDates;

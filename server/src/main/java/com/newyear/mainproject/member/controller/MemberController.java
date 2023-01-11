@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -37,7 +38,6 @@ public class MemberController {
     private final JwtTokenizer jwtTokenizer;
     private final RedisUtil redisUtil;
     private final RefreshTokenRepository refreshTokenRepository;
-
 
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post post){
@@ -114,7 +114,7 @@ public class MemberController {
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId,
                                        @RequestBody MemberDto.Delete delete){
-//        memberService.deleteMember(memberId);
+        memberService.deleteMember(memberId);
 
         String accessToken = delete.getAccessToken().replace("Bearer ", "");
         String refreshToken = delete.getRefreshToken();
@@ -126,5 +126,13 @@ public class MemberController {
         refreshTokenRepository.delete(findRefreshToken);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //회원 프로필 이미지
+    @GetMapping("/{member-id}/profile")
+    public ResponseEntity updateUserProfile(@PathVariable("member-id") @Positive long memberId,
+                                            MultipartFile multipartFile) throws Exception {
+        Member member = memberService.editProfileImage(multipartFile, memberId);
+        return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
     }
 }

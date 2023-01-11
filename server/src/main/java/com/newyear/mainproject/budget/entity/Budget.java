@@ -1,6 +1,7 @@
 package com.newyear.mainproject.budget.entity;
 
 import com.newyear.mainproject.expense.entity.Expenses;
+import com.newyear.mainproject.plan.entity.Plan;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,10 @@ public class Budget {
 
     @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
     private List<Expenses> expenses = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "plan_id")
+    private Plan plan;
 
     public void addExpense(Expenses expense) {
         expenses.add(expense);
