@@ -27,6 +27,12 @@ public class Member{
     @Column(length = 100)
     private String password;
 
+    @Column(nullable = false)
+    private String profileImage;
+
+    @Column(nullable = false)
+    private String profileKey;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
