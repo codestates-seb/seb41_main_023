@@ -102,7 +102,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
       .map((option) => {
         return option;
       })
-      .slice(0, 7);
+      .slice(0, 5);
   };
 
   useEffect(() => {
