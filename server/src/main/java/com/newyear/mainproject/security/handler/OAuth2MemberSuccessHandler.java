@@ -38,6 +38,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String email = String.valueOf(oAuth2User.getAttributes().get("email")); //  Authentication 객체로부터 얻어낸 OAuth2User 객체로부터 Resource Owner의 이메일 주소를 얻음
         String name = String.valueOf(oAuth2User.getAttributes().get("name"));
+        String profileImage = String.valueOf(oAuth2User.getAttributes().get("picture"));
         System.out.println(email);
 
 //        List<String> authorities = authorityUtils.createRoles(email); // CustomAuthorityUtils를 이용해 권한 정보를 생성
@@ -51,16 +52,18 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
             else throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
         catch (NoSuchElementException e){
-            saveMember(email, name); //db에 저장
+            saveMember(email, name, profileImage); //db에 저장
             redirect(request, response, email);
         }
     }
 
-    private void saveMember(String email, String name) {
+    private void saveMember(String email, String name, String profileImage) {
 
         Member member = new Member();
         member.setEmail(email);
         member.setDisplayName(name);
+        member.setProfileKey("GOOGLE");
+        member.setProfileImage(profileImage);
         memberRepository.save(member);
     }
 
