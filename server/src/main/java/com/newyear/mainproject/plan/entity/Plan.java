@@ -50,8 +50,7 @@ public class Plan {
     @OneToMany(mappedBy = "plan", cascade = CascadeType.REMOVE)
     private List<Place> places = new ArrayList<>();
 
-    @OneToOne(mappedBy = "plan", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "plan", cascade = CascadeType.ALL)
     private Budget budget;
-
 
 }

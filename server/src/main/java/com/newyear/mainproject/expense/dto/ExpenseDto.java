@@ -1,5 +1,6 @@
 package com.newyear.mainproject.expense.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.newyear.mainproject.place.dto.PlaceDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -58,6 +59,15 @@ public class ExpenseDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class SimpleResponse {
+        private long expenseId;
+        private int price;
+    }
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL) // response null 필드 제외
     public static class PlaceResponse {
         private long expenseId;
         private String item;

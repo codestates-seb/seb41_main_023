@@ -22,47 +22,26 @@ public class ExpenseController {
     private final ExpenseMapper mapper;
     private final ExpenseService expenseService;
 
-    @PostMapping("/budget/{budget-id}/places/{place-id}")
-    public ResponseEntity postExpensePlace(@RequestBody @Valid ExpenseDto.Post post,
+    @PostMapping(value = {"/budget/{budget-id}", "/budget/{budget-id}/places/{place-id}"})
+    public ResponseEntity postExpenseAndPlace(@RequestBody @Valid ExpenseDto.Post post,
                                       @PathVariable("budget-id") long budgetId,
-                                      @PathVariable("place-id") long placeId) {
-        Expenses expense = expenseService.createExpensePlan(mapper.postDtoToExpenses(post), budgetId, placeId);
-        return new ResponseEntity<>(mapper.expensesToPlaceResponseDto(expense), HttpStatus.OK);
-    }
-
-    @PostMapping("/budget/{budget-id}")
-    public ResponseEntity postExpense(@RequestBody @Valid ExpenseDto.Post post,
-                                      @PathVariable("budget-id") long budgetId) {
-        Expenses expense = expenseService.createExpense(mapper.postDtoToExpenses(post), budgetId);
-        return new ResponseEntity<>(mapper.expensesToResponseDto(expense), HttpStatus.OK);
-    }
-    @PatchMapping("/{expense-id}/places/{place-id}")
-    public ResponseEntity patchExpensePlace(@PathVariable("expense-id") @Positive long expenseId,
-                                       @PathVariable("place-id") long placeId,
-                                       @RequestBody @Valid ExpenseDto.Patch patch) {
-        patch.setExpenseId(expenseId);
-        Expenses expense = expenseService.updateExpensePlan(mapper.patchDtoToExpenses(patch), placeId);
+                                      @PathVariable(required = false, value = "place-id") Long placeId) {
+        Expenses expense = expenseService.createExpense(mapper.postDtoToExpenses(post), budgetId, placeId);
         return new ResponseEntity<>(mapper.expensesToPlaceResponseDto(expense), HttpStatus.OK);
     }
 
     @PatchMapping("/{expense-id}")
-    public ResponseEntity patchExpense(@PathVariable("expense-id") @Positive long expenseId,
-                                       @RequestBody @Valid ExpenseDto.Patch patch) {
+    public ResponseEntity patchExpenseAndPlace(@RequestBody @Valid ExpenseDto.Patch patch,
+                                            @PathVariable("expense-id") @Positive long expenseId) {
         patch.setExpenseId(expenseId);
         Expenses expense = expenseService.updateExpense(mapper.patchDtoToExpenses(patch));
-        return new ResponseEntity<>(mapper.expensesToResponseDto(expense), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.expensesToPlaceResponseDto(expense), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{expense-id}/places/{place-id}")
-    public ResponseEntity deleteExpensePlace(@PathVariable("expense-id") @Positive long expenseId,
-                                            @PathVariable("place-id") long placeId) {
-        expenseService.deleteExpensePlan(expenseId, placeId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @DeleteMapping("{expense-id}")
-    public ResponseEntity deleteExpense(@PathVariable("expense-id") @Positive long expenseId) {
+    @DeleteMapping(value = {"/{expense-id}"})
+    public ResponseEntity deleteExpenseAndPlace(@PathVariable("expense-id") @Positive long expenseId) {
         expenseService.deleteExpense(expenseId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }

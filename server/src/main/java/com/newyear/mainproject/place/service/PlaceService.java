@@ -35,11 +35,6 @@ public class PlaceService {
 
         Optional.ofNullable(place.getPlaceName())
                 .ifPresent(placeName -> findPlace.setPlaceName(placeName));
-        //장소에서 예산 등록했을 때 처리
-
-        Optional.ofNullable(place.getExpense())
-                .ifPresent(expense -> findPlace.setExpense(expense));
-
         Optional.ofNullable(place.getStartTime())
                 .ifPresent(startTime -> findPlace.setStartTime(startTime));
         Optional.ofNullable(place.getEndTime())
