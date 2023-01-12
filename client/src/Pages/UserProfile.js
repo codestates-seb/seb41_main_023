@@ -1,95 +1,57 @@
-import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import Header from "../Components/Header";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
+import { getData } from "../Util/api";
 import { useState, useEffect } from "react";
+import { getCookie, removeCookie } from "../Util/Cookies";
+import { postData } from "../Util/api";
 
 const UserProfile = () => {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState({
-    memberId: 1,
-    email: "1234@gmail.com",
-    displayName: "1234",
-    memberStatus: "활동중",
-    profile: "https://picsum.photos/50",
-  });
+  const [userInfo, setUserInfo] = useState({});
 
   const [tripList, setTripList] = useState();
 
   //일정 개수
   const [trips, setTrips] = useState(0);
 
-  const [token, setToken] = useState();
-  const [memberId, setMemberId] = useState();
+  const token = getCookie("accessToken");
+  const refreshToken = localStorage.getItem("refresh-token");
+  const memberId = getCookie("memberId");
 
-  //토큰 설정
-  // useEffect(() => {
-  //   if (cookies.accessToken) {
-  //     setToken(cookies.accessToken.token);
-  //   }
-  // }, []);
+  // 유저 정보 조회
+  const getUserInfo = async () => {
+    const data = await getData(`/members/${memberId}`);
+    setUserInfo(data);
+  };
 
-  //memberId 설정
+  // 여행 정보 조회
+  const getUserPlans = async () => {
+    const data = await getData(`/plans`);
+    setTrips(data.data.length);
+    setTripList(data);
+  };
 
-  //유저 정보 조회
-  // useEffect(() => {
-  //   axios({
-  //     url: `${process.env.REACT_APP_API_URL}/members/${memberId}`,
-  //     method: "GET",
-  //     data: formData,
-  //     headers: {
-  //       // Authorization: token,
-  //       withCredentials: true,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //        setUserInfo(res.data)
-  //
-  //     })
-
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
-
-  //유저 여행 정보 조회(방문도시 수, 여행 수)
-  // useEffect(() => {
-  //   axios({
-  //     url: `${process.env.REACT_APP_API_URL}/plans`,
-  //     method: "GET",
-  //     data: formData,
-  //     headers: {
-  //        Authorization: token,
-  //       withCredentials: true,
-  //     },
-  //   })
-  //     .then((respresonse) => {
-  //       console.log(res.data);
-  //        setTripList(res.data);
-  //      setTrips(res.data.length);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    getUserInfo();
+    getUserPlans();
+  }, []);
 
   // 로그아웃 요청
-  const handleSignout = () => {
+  const handleSignout = async () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/members/logout`, {
-          headers: {
-            // Authorization: token,
-            withCredentials: true,
-          },
-        })
-        .then((res) => console.log(res))
-        .then((res) => navigate("/"));
-      //쿠키 삭제 필요
+      await postData("/members/logout", {
+        accessToken: token,
+        refreshToken: refreshToken,
+      }).then((res) => {
+        removeCookie("accessToken");
+        removeCookie("memberId");
+        localStorage.removeItem("refresh-token");
+        navigate("/");
+      });
     }
   };
 

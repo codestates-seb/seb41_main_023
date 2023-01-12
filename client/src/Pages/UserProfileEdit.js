@@ -1,38 +1,25 @@
 import axios from "axios";
 import styled from "styled-components";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 import Header from "../Components/Header";
+import { getData, patchData } from "../Util/api";
+import { getCookie } from "../Util/Cookies";
+
 import { General, Password, DeleteAccount } from "../Components/user/Tab";
 
 const UserProfileEdit = () => {
+  const memberId = getCookie("memberId");
   const [currentTab, clickTab] = useState(0);
   const [modal, setModal] = useState(false);
 
-  const [token, setToken] = useState();
-  const [memberId, setMemberId] = useState();
-
-  //토큰 설정
-  // useEffect(() => {
-  //   if (cookies.accessToken) {
-  //     setToken(cookies.accessToken.token);
-  //   }
-  // }, []);
-
-  //memberId 설정
-
-  const [userInfo, setUserInfo] = useState({
-    memberId: 1,
-    email: "1234@gmail.com",
-    displayName: "1234",
-    memberStatus: "활동중",
-  });
+  const [userInfo, setUserInfo] = useState({});
 
   const [submitInfo, setSubmitInfo] = useState({
     id: "",
   });
 
-  const [userProfile, setUserProfile] = useState("https://picsum.photos/200");
+  const [userProfile, setUserProfile] = useState("");
 
   const nameRef = useRef([]);
 
@@ -43,39 +30,21 @@ const UserProfileEdit = () => {
     });
   };
 
-  //기존 유저 정보 get 요청
-  // useEffect(() => {
-  //   if (memberId) {
-  //     axios
-  //       .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
-  //         headers: {
-  //           Authorization: token,
-  //           withCredentials: true,
-  //         },
-  //       })
-  //       .then((res) => res.data.data)
-  //       .then((res) => {
-  //         setInfo(res);
-  //       });
-  //   }
-  // }, [memberId]);
+  const getUserInfo = async () => {
+    const data = await getData(`/members/${memberId}`);
+    setUserInfo(data);
+  };
 
-  // 프로필 이미지 요청
-  // useEffect(() => {
-  //   if (memberId) {
-  //     axios
-  //       .get(`${process.env.REACT_APP_API_URL}/member/profile`, {
-  //         headers: {
-  //           Authorization: token,
-  //           withCredentials: true,
-  //         },
-  //       })
-  //       .then((res) => res.data.data)
-  //       .then((res) => {
-  //         setUserProfile(res);
-  //       });
-  //   }
-  // }, [memberId]);
+  // const getUserProfile = async () => {
+  //   const data = await getData(`/members/${memberId}/profile`);
+  //   console.log(data);
+  //   // setUserProfile(data);
+  // };
+
+  useEffect(() => {
+    getUserInfo();
+    // getUserProfile();
+  }, []);
 
   //유저 정보 patch 요청
   const handleSubmit = (e) => {
@@ -85,26 +54,17 @@ const UserProfileEdit = () => {
       nameRef.current.focus();
     } else {
       const data = {
-        id: submitInfo.id,
+        displayName: submitInfo.id,
       };
 
       if (window.confirm("수정사항을 저장하시겠습니까?")) {
-        console.log("edit! ");
-        // axios
-        // .patch(
-        // `${process.env.REACT_APP_API_URL}/members/displayName/${memberId}`,
-        // {
-        //   ...data,
-        // }
-        // {
-        //   headers: {
-        //     Authorization: token,
-        //   },
-        // }
-        // )
-        // .then((res) => {
-        //   window.location.reload();
-        // });
+        patchData(`/members/displayName/${memberId}`, {
+          ...data,
+        }).then((res) => {
+          setUserInfo({ ...userInfo, displayName: res.data.displayName });
+          //input 창 초기화..
+          nameRef.current.value = "";
+        });
       }
     }
   };
@@ -136,7 +96,6 @@ const UserProfileEdit = () => {
         return;
       }
 
-
       if (window.confirm("프로필을 변경하시겠습니까?")) {
         const formData = new FormData();
         //formData.append : FormData 객체안에 이미 키가 존재하면 그 키에 새로운 값을 추가하고, 키가 없으면 추가
@@ -147,7 +106,7 @@ const UserProfileEdit = () => {
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: token,
+            // Authorization: token,
           },
         })
           .then((response) => {
