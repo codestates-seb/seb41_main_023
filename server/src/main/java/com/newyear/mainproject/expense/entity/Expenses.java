@@ -30,7 +30,7 @@ public class Expenses extends Auditable {
     @JoinColumn(name = "budget_id")
     private Budget budget;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "place_id")
     private Place place;
 
