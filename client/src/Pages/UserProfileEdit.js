@@ -121,10 +121,6 @@ const UserProfileEdit = () => {
       ),
     },
     { name: "Password", content: <Password /> },
-    {
-      name: "Delete account",
-      content: <DeleteAccount modal={modal} setModal={setModal} />,
-    },
   ];
 
   const selectMenuHandler = (index) => {
@@ -140,24 +136,27 @@ const UserProfileEdit = () => {
         return;
       }
 
-      const formData = new FormData();
-      //formData.append : FormData 객체안에 이미 키가 존재하면 그 키에 새로운 값을 추가하고, 키가 없으면 추가
-      formData.append("image", e.target.files[0]);
-      axios({
-        url: `${process.env.REACT_APP_API_URL}/member/profile`, //url 수정필요
-        method: "POST",
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: token,
-        },
-      })
-        .then((response) => {
-          setUserProfile(response.data);
+
+      if (window.confirm("프로필을 변경하시겠습니까?")) {
+        const formData = new FormData();
+        //formData.append : FormData 객체안에 이미 키가 존재하면 그 키에 새로운 값을 추가하고, 키가 없으면 추가
+        formData.append("image", e.target.files[0]);
+        axios({
+          url: `${process.env.REACT_APP_API_URL}/member/profile`, //url 수정필요
+          method: "POST",
+          data: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
         })
-        .catch((error) => {
-          console.error(error);
-        });
+          .then((response) => {
+            setUserProfile(response.data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
     }, []);
 
     const onUploadImageButtonClick = useCallback(() => {
@@ -176,8 +175,12 @@ const UserProfileEdit = () => {
           ref={inputRef}
           onChange={onUploadImage}
         />
-        <button label="이미지 업로드" onClick={onUploadImageButtonClick}>
-          이미지 업로드
+        <button
+          className="upload_Image"
+          label="Edit image"
+          onClick={onUploadImageButtonClick}
+        >
+          edit image
         </button>
       </SettingUserThumbnailContainer>
     );
@@ -189,11 +192,15 @@ const UserProfileEdit = () => {
       <UserMetaContainer>
         <div className="user_meta">
           <div className="user_meta_left">
-            <img alt="profile" src={userProfile} />
+            <img
+              className="profile_image"
+              alt="profile_image"
+              src={userProfile}
+            />
             <SettingUserThumbnail />
           </div>
           <div className="user_meta_right">
-            <div>{userInfo.displayName}</div>
+            <div className="display_name">{userInfo.displayName}</div>
             <div>{userInfo.email}</div>
           </div>
         </div>
@@ -206,12 +213,15 @@ const UserProfileEdit = () => {
               className={index === currentTab ? "submenu focused" : "submenu"}
               onClick={() => {
                 selectMenuHandler(index);
-                if (el.name === "Delete account") setModal(true);
               }}
             >
               {el.name}
             </li>
           ))}
+          <li onClick={() => setModal(true)}>Delete account</li>
+          <li>
+            <DeleteAccount modal={modal} setModal={setModal} />
+          </li>
         </TabMenu>
         <div>{menuArr[currentTab].content}</div>
       </SideBar>
@@ -231,14 +241,32 @@ const UserMetaContainer = styled.div`
     flex-direction: row;
 
     .user_meta_left {
+      position: relative;
       display: flex;
       flex-direction: column;
-      align-items: center;
 
       margin-right: 20px;
+
       > img {
         width: 150px;
         height: 150px;
+        border-radius: 50%;
+        :hover {
+          transition: 0.5s ease;
+          filter: brightness(70%);
+        }
+      }
+    }
+
+    .user_meta_right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .display_name {
+        font-size: 19px;
+        font-weight: 600;
+        margin-bottom: 5px;
       }
     }
   }
@@ -261,5 +289,23 @@ const TabMenu = styled.div`
 const SettingUserThumbnailContainer = styled.div`
   > input {
     display: none;
+  }
+
+  > button {
+    border: none;
+    background: transparent;
+    color: white;
+
+    position: absolute;
+    opacity: 0;
+    top: 78%;
+    left: 27%;
+
+    cursor: pointer;
+
+    ${UserMetaContainer} > div :hover & {
+      opacity: 1;
+      transition: 0.5s ease;
+    }
   }
 `;

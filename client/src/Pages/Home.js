@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 import styled from "styled-components";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +18,7 @@ const Home = ({ login }) => {
 
   const inputRef = useRef([]);
   const inputCalendarRef = useRef([]);
+  const calenderRef = useRef();
 
   const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
   const [token, setIsToken] = useState();
@@ -28,6 +29,21 @@ const Home = ({ login }) => {
   //     setIsToken(cookies.accessToken.token);
   //   }
   // }, []);
+
+  //달력 외부 영역 클릭 시 닫힘
+  const handleClickOutside = (e) => {
+    if (showCalendar && !calenderRef.current.contains(e.target)) {
+      setShowCalendar(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showCalendar)
+      document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showCalendar]);
 
   const handleDate = (date) => {
     setStartDate(moment(date[0].startDate).format("YYYY-MM-DD"));
@@ -44,6 +60,7 @@ const Home = ({ login }) => {
    *  @param {string} endDate 종료 날짜
    */
 
+  // 일정 생성 요청
   const handleSubmit = (destination, startDate, endDate) => {
     // console.log(destination, startDate, endDate);
 
@@ -101,7 +118,13 @@ const Home = ({ login }) => {
           Start Planning
         </button>
       </BottomSection>
-      {showCalendar && <Calendar handleDate={handleDate} login={login} />}
+      {showCalendar && (
+        <Calendar
+          calenderRef={calenderRef}
+          handleDate={handleDate}
+          login={login}
+        />
+      )}
     </HomeContainer>
   );
 };
