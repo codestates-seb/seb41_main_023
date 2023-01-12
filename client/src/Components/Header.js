@@ -1,16 +1,16 @@
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useCookies } from "react-cookie";
-import { useEffect, useState } from "react";
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import { useEffect, useState } from 'react';
 
 const Header = ({ login }) => {
   const [token, setToken] = useState();
   const [memberId, setMemberId] = useState();
-  const [cookies, setCookie] = useCookies(["accessToken"]);
+  const [cookies, setCookie] = useCookies(['accessToken']);
   const navigate = useNavigate();
 
-  const [userProfile, setUserProfile] = useState("https://picsum.photos/50");
+  const [userProfile, setUserProfile] = useState('https://picsum.photos/50');
 
   // 토큰 설정
   // useEffect(() => {
@@ -60,7 +60,7 @@ const Header = ({ login }) => {
 
   // 로그아웃
   const handleSignout = () => {
-    if (window.confirm("로그아웃 하시겠습니까?")) {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
       axios
         .post(`${process.env.REACT_APP_API_URL}/members/logout`, {
           headers: {
@@ -69,25 +69,22 @@ const Header = ({ login }) => {
           },
         })
         .then((res) => console.log(res))
-        .then((res) => navigate("/"));
+        .then((res) => navigate('/'));
     }
   };
 
   return (
     <HeadContainer>
       <LeftSection>
-        <img
-          alt="logo_image"
-          src="https://picsum.photos/40"
-          onClick={() => handleNavigate("/")}
-        />
-        <button onClick={() => handleNavigate("/blog")}>Travel Logs</button>
+        <div className='header__logo' onClick={() => handleNavigate('/')}>website name</div>
+        {/* <img alt="logo_image" src="https://picsum.photos/40" onClick={() => handleNavigate('/')} /> */}
+        <button className='button--default button--subtle' onClick={() => handleNavigate('/blog')}>Travel Logs</button>
       </LeftSection>
       <RightSection>
         {login ? (
           <>
             <img
-              onClick={() => handleNavigate("/user/:memberId")}
+              onClick={() => handleNavigate('/user/:memberId')}
               alt="profile_image"
               src={userProfile}
             />
@@ -95,16 +92,10 @@ const Header = ({ login }) => {
           </>
         ) : (
           <>
-            <button
-              className="login_button"
-              onClick={() => handleNavigate("/login")}
-            >
+            <button className="button--default" onClick={() => handleNavigate('/login')}>
               Log In
             </button>
-            <button
-              className="signup_button"
-              onClick={() => handleNavigate("/signup")}
-            >
+            <button className="button--primary" onClick={() => handleNavigate('/signup')}>
               Sign Up
             </button>
           </>
@@ -117,39 +108,31 @@ const Header = ({ login }) => {
 export default Header;
 
 const HeadContainer = styled.div`
+  position: fixed; 
   display: flex;
   justify-content: space-between;
+  margin: 0 50px;
+  width: calc(100vw - 100px); 
+  height: 60px;
+  /* background-color: violet; */
+  z-index: 9999;
 `;
 
 const LeftSection = styled.div`
   display: flex;
-  margin: 20px;
-  cursor: pointer;
+  align-items: center;
+  gap: 24px;
 
-  > img {
-    margin-right: 15px;
-    border-radius: 50%;
-  }
-
-  > button {
-    border: none;
-    background-color: transparent;
+  .header__logo {
     cursor: pointer;
-    font-size: 13px;
-    letter-spacing: 1px;
-
-    padding: 1px 0;
-
-    &:hover {
-      text-decoration: underline;
-      text-underline-position: under;
-    }
   }
 `;
 const RightSection = styled.div`
   display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
 
-  > * {
+  /* > * {
     cursor: pointer;
   }
 
@@ -158,9 +141,9 @@ const RightSection = styled.div`
     width: 40px;
     height: 40px;
     border-radius: 50%;
-  }
+  } */
 
-  > button {
+  /* > button {
     white-space: nowrap;
     border: none;
     border-radius: 0;
@@ -177,5 +160,5 @@ const RightSection = styled.div`
       text-decoration: underline;
       text-underline-position: under;
     }
-  }
+  } */
 `;

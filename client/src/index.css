@@ -1,5 +1,3 @@
-@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
-
 :root {
   /* color - grayscale */
   --white: white;
@@ -7,6 +5,7 @@
   --light-gray-2: #f2f2f2;
   --light-gray-3: #e8e8e8;
   --light-gray-4: #e0e0e0;
+  --light-gray-5: #d1d1d1;
   --light: #757575;
   --dark-gray-3: #5c5c5c;
   --dark-gray-2: #424242;
@@ -19,6 +18,7 @@
   --primary-blue-dark: #2750ae;
   --primary-blue-light-1: #9cc7ff;
   --primary-blue-light-2: #cfdfff;
+  --primary-blue-light-3: #EAF1FF;
 
   /* color - danger, red */
   --red: #ca3521;
@@ -70,4 +70,89 @@
   font-size: var(--default-text-size);
   line-height: var(--default-text-line-height);
   color: var(--dark-gray-2);
+}
+
+input {
+  outline: 0;
+}
+
+input:focus {
+  border-color: var(--primary-blue-light-1);
+  box-shadow: 0 0 0 var(--spacing-1) rgba(156, 199, 255, .5);
+}
+
+input::placeholder {
+  color: var(--light);
+}
+
+.input--large-icon {
+  padding: 15px 12px; 
+  padding-left: 42px; 
+  font-size: var(--large-text-size);
+  line-height: 18px;
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px; 
+}
+
+.svg-icon--20 {
+  display: flex;
+  justify-items: center;
+  position: absolute;
+  margin: auto 0;
+  margin-left: 12px;
+  height: 100%;
+  width: 24px;
+  top: 0;
+}
+
+button {
+  outline: 0;
+  border: 0; 
+  cursor: pointer;
+  transition: all .1s ease-in;
+}
+
+.button--primary {
+  padding: 10px 14px; 
+  font-weight: 500;
+  background-color: var(--primary-blue-bright);
+  color: var(--white);
+  border-radius: 3px;
+}
+
+.button--primary:hover {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+.button--primary:active {
+  background-color: var(--primary-blue-dark);
+  border-color: var(--primary-blue-dark);
+}
+
+.button--primary-large {
+  padding: 15px 18px;
+  font-size: var(--large-text-size);
+  line-height: 18px;
+  font-weight: 500;
+  border: 1px solid var(--primary-blue-bright);
+}
+
+.button--default {
+  padding: 10px 14px; 
+  background-color: transparent;
+  font-weight: 500; 
+  border-radius: 3px; 
+}
+
+.button--default:hover {
+  background-color: var(--light-gray-3);
+}
+
+.button--default:active {
+  background-color: var(--light-gray-4);
+}
+
+.button--subtle {
+  font-weight: 400; 
 }

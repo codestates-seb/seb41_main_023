@@ -1,8 +1,8 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import styled from "styled-components";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
-import { data } from "../dummyCity";
+import { data } from '../dummyCity';
 
 const Autocomplete = ({ handleDestination, inputRef }) => {
   const dummyCity = data.map((el) => el.cityName);
@@ -33,24 +33,23 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
   const offset = 44032;
 
   const orderOffest = [
-    ["ㄱ", 44032],
-    ["ㄲ", 44620],
-    ["ㄴ", 45208],
-    ["ㄷ", 45796],
-    ["ㄸ", 46384],
-    ["ㄹ", 46972],
-    ["ㅁ", 47560],
-    ["ㅂ", 48148],
-    ["ㅃ", 48736],
-    ["ㅅ", 49324],
+    ['ㄱ', 44032],
+    ['ㄲ', 44620],
+    ['ㄴ', 45208],
+    ['ㄷ', 45796],
+    ['ㄸ', 46384],
+    ['ㄹ', 46972],
+    ['ㅁ', 47560],
+    ['ㅂ', 48148],
+    ['ㅃ', 48736],
+    ['ㅅ', 49324],
   ];
 
   const con2syl = Object.fromEntries(orderOffest);
   const pattern = (ch) => {
     let r;
     if (reJa.test(ch)) {
-      const begin =
-        con2syl[ch] || (ch.charCodeAt(0) - 12613) * 588 + con2syl["ㅅ"];
+      const begin = con2syl[ch] || (ch.charCodeAt(0) - 12613) * 588 + con2syl['ㅅ'];
       const end = begin + 587;
       r = `[${ch}\\u${begin.toString(16)}-\\u${end.toString(16)}]`;
     } else if (reChar.test(ch)) {
@@ -59,7 +58,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
       const begin = Math.floor(chCode / 28) * 28 + offset;
       const end = begin + 27;
       r = `[\\u${begin.toString(16)}-\\u${end.toString(16)}]`;
-    } else r = ch.replace(reESC, "\\$&");
+    } else r = ch.replace(reESC, '\\$&');
     return `(${r})`;
   };
 
@@ -69,13 +68,13 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
    */
 
   const isInitialMatch = (inputValue, target) => {
-    const reg = new RegExp(inputValue.split("").map(pattern).join(".*?"), "i");
+    const reg = new RegExp(inputValue.split('').map(pattern).join('.*?'), 'i');
     const matches = reg.exec(target);
     return Boolean(matches);
   };
 
   const [hasText, setHasText] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState(city);
 
   const [activeSuggestion, setActiveSuggestion] = useState(0);
@@ -106,7 +105,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
   };
 
   useEffect(() => {
-    if (inputValue === "") {
+    if (inputValue === '') {
       setHasText(false);
       setOptions([]);
     } else {
@@ -156,23 +155,31 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
   // x 버튼 누르면 초기화
   const handleClear = () => {
     setActiveSuggestion(0);
-    setInputValue("");
+    setInputValue('');
   };
 
   return (
-    <AutoCompleteContainer>
-      <div>
-        <div className="search">
-          <input
-            onChange={handleInputChange}
-            value={inputValue}
-            placeholder="Search Destination ex. 서울, 부산..."
-            onKeyDown={handleKeyDown}
-            ref={inputRef}
-          ></input>
-          <div className="clearbtn" onClick={handleClear}>
-            x
-          </div>
+    <AutoCompleteContainer className="autocomplete">
+      <div className="search__input">
+        <div className="svg-icon--20">
+          <svg viewBox="0 0 16 16">
+            <path
+              fill-rule="evenodd"
+              fill="currentColor"
+              d="M8.403 13.958a.5.5 0 0 1-.806 0C4.866 10.243 3.5 7.59 3.5 6c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5c0 1.59-1.366 4.243-4.097 7.958zM8 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
+            ></path>
+          </svg>
+        </div>
+        <input
+          className="input--large-icon"
+          onChange={handleInputChange}
+          value={inputValue}
+          placeholder="Search Destination ex. 서울, 부산..."
+          onKeyDown={handleKeyDown}
+          ref={inputRef}
+        ></input>
+        <div className="clearbtn" onClick={handleClear}>
+          Clear
         </div>
       </div>
       {hasText && (
@@ -195,14 +202,10 @@ export const DropDown = ({ options, handleComboBox, activeSuggestion }) => {
         let className;
 
         if (index === activeSuggestion) {
-          className = "active";
+          className = 'active';
         }
         return (
-          <li
-            key={option}
-            onClick={() => handleComboBox(option)}
-            className={className}
-          >
+          <li key={option} onClick={() => handleComboBox(option)} className={className}>
             {option}
           </li>
         );
@@ -214,42 +217,67 @@ export const DropDown = ({ options, handleComboBox, activeSuggestion }) => {
 export default Autocomplete;
 
 const AutoCompleteContainer = styled.div`
-  > div > div {
-    &.search {
-      display: flex;
-      position: relative;
-    }
+  position: relative;
+  max-width: 540px;
+  flex: 1 1 0%;
+
+  .search__input {
+    min-width: 500px;
 
     > input {
-      width: 300px;
-      padding: 10px;
-
-      border-radius: 6px;
+      min-width: 100%;
     }
 
-    > .clearbtn {
-      color: grey;
+    .clearbtn {
       position: absolute;
-      top: 10px;
-      right: 0;
-      width: 30px;
+      top: 15px;
+      right: 18px;
+      font-size: var(--large-text-size);
+      line-height: 18px;
+      color: #bdbdbd;
       cursor: pointer;
+      transition: color 0.1s ease-in;
+
+      &:hover {
+        color: var(--light);
+      }
     }
   }
 `;
 
-const DropDownContainer = styled.div`
-  > li {
-    cursor: pointer;
-    list-style: none;
+const DropDownContainer = styled.ul`
+  position: absolute;
+  margin-top: var(--spacing-2);
+  top: 100%;
+  width: 100%;
+  background-color: white;
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px;
+  list-style: none;
+  box-shadow: 0px 0px 1px rgba(9, 30, 66, 0.31), 0px 8px 12px rgba(9, 30, 66, 0.15);
 
-    border: 1px solid #999;
-    border-top-width: 0;
+  li {
+    padding: 15px 18px;
+    padding-left: 38px;
+    font-size: var(--large-text-size);
+    line-height: 18px;
+    cursor: pointer;
+
+    &:first-child {
+      border-radius: 3px 3px 0 0;
+    }
+
+    &:last-child {
+      border-radius: 0 0 3px 3px;
+    }
+
+    &:hover {
+      background-color: var(--light-gray-1);
+    }
 
     &.active {
-      background-color: grey;
-      color: #fff;
-      font-weight: 700;
+      background-color: var(--primary-blue-light-3);
+      font-weight: 600;
     }
   }
 `;
