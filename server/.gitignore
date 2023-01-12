@@ -6,10 +6,10 @@ build/
 !**/src/test/**/build/
 
 ### yml 파일 ###
-application.yml
-application-local.yml
-application.properties
-application-server.yml
+#application.yml
+#application-local.yml
+#application.properties
+#application-server.yml
 
 ### STS ###
 .apt_generated
