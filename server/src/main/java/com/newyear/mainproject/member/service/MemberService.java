@@ -6,9 +6,11 @@ import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.repository.MemberRepository;
+import com.newyear.mainproject.plan.entity.Plan;
+import com.newyear.mainproject.plan.service.PlanService;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,7 +27,6 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -33,6 +34,21 @@ public class MemberService {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final S3Service s3Service;
+
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
+                         CustomAuthorityUtils authorityUtils, BoardRepository boardRepository,
+                         CommentRepository commentRepository, S3Service s3Service,
+                         @Lazy PlanService planService) {
+        this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authorityUtils = authorityUtils;
+        this.boardRepository = boardRepository;
+        this.commentRepository = commentRepository;
+        this.s3Service = s3Service;
+        this.planService = planService;
+    }
+
+    private final PlanService planService;
 
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
@@ -95,6 +111,21 @@ public class MemberService {
     public Member findMember(long memberId) {
         return findVerifiedMember(memberId);
     }
+
+    public Member findMemberProfile(Member member){
+        Member findMember = findVerifiedMember(member.getMemberId());
+        List<Plan>planList =  planService.findPlans(findMember);
+
+        findMember.setTrips(planList.size());
+
+        long cities =  planList.stream()
+                .map(city -> city.getCityName())
+                .distinct().count();
+
+        findMember.setCities(cities);
+        return findMember;
+    }
+
 
     public Page<Member> findMembers(int page, int size) {
         return memberRepository.findAll(PageRequest.of(page, size,
