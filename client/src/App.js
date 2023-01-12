@@ -10,7 +10,7 @@ import UserProfileEdit from "./Pages/UserProfileEdit";
 import Itinerary from "./Pages/Itinerary";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   return (
     <>
