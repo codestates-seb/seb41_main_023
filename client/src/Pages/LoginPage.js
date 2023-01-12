@@ -3,8 +3,6 @@ import axios from "axios";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from "react-router-dom";
-import GLogin from "../Components/GLogin";
-import GLogout from "../Components/GLogout"
 
 const SignUpStyle = styled.div`
     width: 50vw;
@@ -26,13 +24,11 @@ const LoginPage = ({ setIsLoggedIn }) => {
   const eref = useRef();
   const pref = useRef();
   const navigate = useNavigate();
-  const [cookie, setCookie] = useCookies(["access-token"]);
+  const [cookie, setCookie] = useCookies(["accessToken"]);
 
   useEffect(() => {
     eref.current.focus();
   }, []);
-
-
 
   // 이메일, 비밀번호
   const [email, setEmail] = useState("");
@@ -50,16 +46,15 @@ const LoginPage = ({ setIsLoggedIn }) => {
   const login = async () => {
     try {
       const response = await axios
-      .post("http://localhost:3001/login", {
+      .post("https://www.sebmain41team23.shop/members/login", {
         email,
         password,
       });
       console.log(response);
-      const { status } = response;
 
-      if (status === 200)
-      setCookie("access-token", response.토큰위치);
-      localStorage.setItem("refresh-token", response.토큰위치);
+      if (response.status === 200)
+      setCookie("accessToken", response.headers.authorization);
+      localStorage.setItem("refresh-token", response.headers.refresh);
       setIsLoggedIn(true);
       alert("로그인되었습니다. 메인 페이지로 이동합니다.");
       navigate("/");
@@ -166,8 +161,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
         )}
 
         <button onClick={onLogin}>sign in</button>
-        <GLogin setIsLoggedIn={setIsLoggedIn}/>
-          <GLogout setIsLoggedIn={setIsLoggedIn}/>
+        <button onClick={() => navigate("//")}>google</button>
 
         <div>
           Not a member? <Link to="/signup">Sign up</Link>
