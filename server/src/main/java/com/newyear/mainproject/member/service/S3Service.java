@@ -34,19 +34,12 @@ public class S3Service {
         String contentType = "";
 
         //content type 지정 (미지정시 자동 다운됨)
-        switch (ext) {
-            case "jpeg":
-                contentType = "image/jpeg";
-                break;
-            case "png":
-                contentType = "image/png";
-                break;
-            case "txt":
-            case "csv":
-            case "pdf":
-            case "zip":
-            case "xlsx":
-                throw new BusinessLogicException(ExceptionCode.INVALID_VALUES);
+        if (ext.equals("jpeg") || ext.equals("jpg")) {
+            contentType = "image/jpeg";
+        } else if (ext.equals("png")) {
+            contentType = "image/png";
+        } else {
+            throw new BusinessLogicException(ExceptionCode.INVALID_VALUES);
         }
 
         Map <String, String> map = new HashMap<>();
