@@ -23,22 +23,21 @@ public class ExpenseService {
     private final BudgetService budgetService;
     private final PlaceService placeService;
 
-    public Expenses createExpense(Expenses expenses, long budgetId) {
-        Budget budget = budgetService.findBudget(budgetId);
-        expenses.setBudget(budget);
-        return expenseRepository.save(expenses);
-    }
-
-    public Expenses createExpensePlan(Expenses expenses, long budgetId, long placeId) {
-        Budget budget = budgetService.findBudget(budgetId);
-        expenses.setBudget(budget);
-
+    public Expenses createExpense(Expenses expenses, long budgetId, Long placeId) {
         //장소 연결
-        Place place = placeService.findPlace(placeId);
-        expenses.setPlace(place);
+        if(placeId != null) {
+            if(expenseRepository.findAll().size() != 0){
+                if(expenseRepository.findAll().stream().anyMatch(expenses1 -> expenses1.getPlace().getPlaceId().equals(placeId))){
+                    throw new BusinessLogicException(ExceptionCode.PLACE_CHECK_EXISTS);
+                }
+            }
 
-        place.setExpense(expenses.getPrice());
-        placeService.updatePlace(place);
+            Place place = placeService.findPlace(placeId);
+            expenses.setPlace(place);
+        }
+
+        Budget budget = budgetService.findBudget(budgetId);
+        expenses.setBudget(budget);
 
         return expenseRepository.save(expenses);
     }
@@ -57,38 +56,8 @@ public class ExpenseService {
     }
 
 
-    public Expenses updateExpensePlan(Expenses expenses, long placeId) {
-        Expenses findExpenses = findExistExpense(expenses.getExpenseId());
-
-        Optional.ofNullable(expenses.getItem())
-                .ifPresent(findExpenses::setItem);
-        Optional.of(expenses.getPrice())
-                .ifPresent(findExpenses::setPrice);
-        Optional.ofNullable(expenses.getCategory())
-                .ifPresent(findExpenses::setCategory);
-
-        //장소 연결
-        Place place = placeService.findPlace(placeId);
-        expenses.setPlace(place);
-
-        place.setExpense(expenses.getPrice());
-        placeService.updatePlace(place);
-
-        return expenseRepository.save(findExpenses);
-    }
-
     public void deleteExpense(long expenseId) {
         Expenses findExpense = findExistExpense(expenseId);
-        expenseRepository.delete(findExpense);
-    }
-
-    public void deleteExpensePlan(long expenseId, long placeId) {
-        Expenses findExpense = findExistExpense(expenseId);
-
-        //장소 연결
-        Place place = placeService.findPlace(placeId);
-        place.setExpense(null);
-        placeService.updatePlace(place);
         expenseRepository.delete(findExpense);
     }
 

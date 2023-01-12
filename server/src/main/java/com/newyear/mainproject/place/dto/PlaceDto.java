@@ -1,6 +1,7 @@
 package com.newyear.mainproject.place.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.newyear.mainproject.expense.dto.ExpenseDto;
 import com.newyear.mainproject.plan.dto.PlanDto;
 import lombok.*;
 
@@ -22,7 +23,6 @@ public class PlaceDto {
     public static class Patch {
         private Long placeId;
         private String placeName;
-        private Integer expense;
         private String startTime;
         private String endTime;
     }
@@ -35,9 +35,9 @@ public class PlaceDto {
         private PlanDto.PlanDatesResponse planDates;
         private Long placeId;
         private String placeName;
-        private Integer expense;
         private String startTime;
         private String endTime;
+        private ExpenseDto.SimpleResponse expenses;
     }
 
 
