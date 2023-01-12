@@ -1,25 +1,10 @@
 /* 유저이름, 비밀번호 수정, 계정 삭제 */
 
-import axios from "axios";
 import styled from "styled-components";
 import { useEffect, useState, useCallback } from "react";
-// import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 import Modal from "./Modal";
-
-// const [token, setToken] = useState();
-// const [memberId,setMemberId] = useState();
-// const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
-
-// 토큰 설정
-// useEffect(() => {
-//   if (cookies.accessToken) {
-//     setToken(cookies.accessToken.token)
-//   }
-// }, []);
-
-//memberId 설정
 
 // 유저이름 수정
 const General = ({ handleChange, handleSubmit, nameRef }) => {

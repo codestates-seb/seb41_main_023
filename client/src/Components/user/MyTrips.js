@@ -1,53 +1,22 @@
 import moment from "moment";
-import getData from "../../Util/api";
-import postData from "../../Util/api";
+import { getData } from "../../Util/api";
+import { postData } from "../../Util/api";
 
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const MyTrips = () => {
-  const dummyItineraryList = [
-    {
-      planId: 1,
-      cityName: "서울",
-      planTitle: "Trip to Seoul",
-      startDate: "2022-01-03",
-      endDate: "2022-01-05",
-      plans: "6",
-      image: "https://picsum.photos/200", //추가 필요
-    },
-    {
-      planId: 2,
-      cityName: "서울",
-      planTitle: "Trip to Seoul",
-      startDate: "2022-01-03",
-      endDate: "2022-01-05",
-      plans: "6",
-      image: "https://picsum.photos/200",
-    },
-  ];
-
   const navigate = useNavigate();
 
   //초기값 배열 설정하기
-  const [tripList, setTripList] = useState(dummyItineraryList);
+  const [tripList, setTripList] = useState([]);
 
   // 전체 일정 조회 async
   const getTrip = async () => {
-    const data = await getData(`/city`);
-    console.log(data);
+    const data = await getData(`/plans`);
+    setTripList(data.data);
   };
-
-  // const postTrip = async () => {
-  //   const data = await postData(`/posts`, {
-  //     userId: 11,
-  //     id: 101,
-  //     body: "test body",
-  //     title: "test title",
-  //   });
-  //   console.log(data);
-  // };
 
   useEffect(() => {
     getTrip();
@@ -62,7 +31,7 @@ const MyTrips = () => {
             <img
               alt="place_image"
               src={el.image}
-              onClick={() => navigate(`/itinerary/${el.id}`)}
+              onClick={() => navigate(`/itinerary/${el.planId}`)}
             />
             <div className="meta_title">{el.planTitle}</div>
             <div className="meta_content">

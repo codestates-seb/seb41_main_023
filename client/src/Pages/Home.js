@@ -4,10 +4,12 @@ import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { getCookie } from "../Util/Cookies";
 
 import Header from "../Components/Header";
 import Calendar from "../Components/Calendar";
 import Autocomplete from "../Components/AutoComplete";
+import { de } from "date-fns/locale";
 
 const Home = ({ login }) => {
   const navigate = useNavigate();
@@ -19,16 +21,7 @@ const Home = ({ login }) => {
   const inputRef = useRef([]);
   const inputCalendarRef = useRef([]);
   const calenderRef = useRef();
-
-  const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
-  const [token, setIsToken] = useState();
-
-  //토큰 설정
-  // useEffect(() => {
-  //   if (cookies.accessToken) {
-  //     setIsToken(cookies.accessToken.token);
-  //   }
-  // }, []);
+  const token = getCookie("accessToken");
 
   //달력 외부 영역 클릭 시 닫힘
   const handleClickOutside = (e) => {
@@ -61,7 +54,7 @@ const Home = ({ login }) => {
    */
 
   // 일정 생성 요청
-  const handleSubmit = (destination, startDate, endDate) => {
+  const handleSubmit = async (destination, startDate, endDate) => {
     // console.log(destination, startDate, endDate);
 
     //장소가 입력되지 않았을 때 포커싱
@@ -76,15 +69,22 @@ const Home = ({ login }) => {
         endDate: endDate,
       };
       if (login) {
-        axios
-          .post(`${process.env.REACT_APP_API_URL}/plans`, {
-            headers: {
-              // Authorization: token,
-              withCredentials: true,
+        await axios
+          .post(
+            "https://www.sebmain41team23.shop/plans",
+            {
+              cityName: destination,
+              startDate: startDate,
+              endDate: endDate,
             },
-            data: data,
-          })
-          .then((res) => navigate(`/itinerary/${res.data.planId}`));
+            {
+              headers: {
+                Authorization: token,
+                withCredentials: true,
+              },
+            }
+          )
+          .then((res) => navigate(`/itinerary/${res.data.data.planId}`));
       } else {
         localStorage.setItem("plan", JSON.stringify(data));
         navigate("/login");
