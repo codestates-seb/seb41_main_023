@@ -55,7 +55,7 @@ public class PlanDto {
         private String endDate;
 
         private List<PlanDatesResponse> planDates = new ArrayList<>();
-        private List<PlaceDto.Response> places = new ArrayList<>();
+        private List<PlanDto.PlanDatesDetailResponse> planDatesAndPlace = new ArrayList<>();
     }
     @Getter
     @Setter
@@ -85,4 +85,15 @@ public class PlanDto {
         private String planDate;
     }
 
+    @Builder
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class PlanDatesDetailResponse {
+        private Long planDateId;
+        private String planDate;
+        private String subTitle;
+        private List<PlaceDto.Response> places;
+    }
 }
