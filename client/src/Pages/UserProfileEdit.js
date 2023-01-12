@@ -136,6 +136,7 @@ const UserProfileEdit = () => {
         return;
       }
 
+
       if (window.confirm("프로필을 변경하시겠습니까?")) {
         const formData = new FormData();
         //formData.append : FormData 객체안에 이미 키가 존재하면 그 키에 새로운 값을 추가하고, 키가 없으면 추가
