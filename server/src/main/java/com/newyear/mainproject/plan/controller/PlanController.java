@@ -89,7 +89,7 @@ public class PlanController {
      */
     @GetMapping("/{plan-id}")
     public ResponseEntity getPlan(@PathVariable("plan-id") @Positive Long planId) throws ParseException {
-        Plan plan = planService.findPlan(planId);
+        Plan plan = planService.findPlanAndMember(planId, memberService.getLoginMember());
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.planToPlaceDetailResponseDto(plan)), HttpStatus.OK);

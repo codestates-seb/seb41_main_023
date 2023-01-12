@@ -123,9 +123,17 @@ public class PlanService {
     }
 
     /**
-     * 해당 유저가 작성한 일정 조회
+     * 해당 유저가 작성한 일정들 조회
      */
     public List<Plan> findPlans(Member member){
         return planRepository.findAllByMember(member);
+    }
+
+    /**
+     * 해당 유저가 작성한 일정 조회
+     */
+    public Plan findPlanAndMember(Long planId, Member member) {
+        Optional<Plan> optionalPlan = planRepository.findByPlanIdAndMember(planId, member);
+        return optionalPlan.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN));
     }
 }
