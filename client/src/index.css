@@ -24,6 +24,7 @@
   --red: #ca3521;
   --red-dark-1: #ae2a19;
   --red-dark-2: #601e16;
+  --red-light-1: #E86B5A;
 
   /* font-size - text */
   --small-text-size: 11px;
@@ -85,6 +86,13 @@ input::placeholder {
   color: var(--light);
 }
 
+.input {
+  padding: 10px;
+  width: 100%;
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px;
+}
+
 .input--large-icon {
   padding: 15px 12px; 
   padding-left: 42px; 
@@ -142,6 +150,7 @@ button {
   padding: 10px 14px; 
   background-color: transparent;
   font-weight: 500; 
+  color: var(--dark-gray-1);
   border-radius: 3px; 
 }
 
@@ -155,4 +164,21 @@ button {
 
 .button--subtle {
   font-weight: 400; 
+}
+
+.button--subtle:hover {
+  background-color: var(--light-gray-2);
+}
+
+.button--subtle:active {
+  background-color: var(--light-gray-3);
+}
+
+a {
+  color: var(--primary-blue-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-blue);
 }
