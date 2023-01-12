@@ -1,6 +1,8 @@
 package com.newyear.mainproject.plan.mapper;
 
 import com.newyear.mainproject.budget.entity.Budget;
+import com.newyear.mainproject.expense.dto.ExpenseDto;
+import com.newyear.mainproject.expense.entity.Expenses;
 import com.newyear.mainproject.place.dto.PlaceDto;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.plan.dto.PlanDto;
@@ -80,7 +82,7 @@ public interface PlanMapper {
         response.setStartDate(DateUtil.convertStringToDateFormatV1(plan.getStartDate()));
         response.setEndDate(DateUtil.convertStringToDateFormatV1(plan.getEndDate()));
         response.setPlanDates(planDateToPlanDateResponseDtos(plan.getPlanDates()));
-        response.setPlaces(placesToPlaceResponseDtos(plan.getPlaces()));
+        response.setPlanDatesAndPlace(planDatesToPlanDatesDetailResponseDtos(plan.getPlanDates()));
         return response;
     }
 
@@ -139,16 +141,28 @@ public interface PlanMapper {
     default List<PlaceDto.Response> placesToPlaceResponseDtos(List<Place> places) {
         return places
                 .stream()
-                .map(place -> {
-                    try {
-                        return PlaceDto.Response
+                .map(place -> PlaceDto.Response
                                 .builder()
                                 .placeId(place.getPlaceId())
                                 .placeName(place.getPlaceName())
-                                .expense(place.getExpense())
                                 .startTime(place.getStartTime())
                                 .endTime(place.getEndTime())
-                                .planDates(planDatesToPlanDateResponseDtoV2(place.getPlanDates()))
+                                .expenses(expensesToExpenseSimpleResponseDto(place.getExpenses()))
+                                .build())
+                    .collect(Collectors.toList());
+    }
+
+    default List<PlanDto.PlanDatesDetailResponse> planDatesToPlanDatesDetailResponseDtos(List<PlanDates> dates) {
+        return dates
+                .stream()
+                .map(planDates -> {
+                    try {
+                        return PlanDto.PlanDatesDetailResponse
+                                .builder()
+                                .planDateId(planDates.getPlanDateId())
+                                .planDate(DateUtil.convertStringToDateFormatV2(planDates.getPlanDate()))
+                                .subTitle(planDates.getSubTitle())
+                                .places(placesToPlaceResponseDtos(planDates.getPlaces()))
                                 .build();
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
@@ -156,4 +170,6 @@ public interface PlanMapper {
                 })
                 .collect(Collectors.toList());
     }
+
+   ExpenseDto.SimpleResponse expensesToExpenseSimpleResponseDto(Expenses expenses);
 }
