@@ -51,7 +51,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public Page<Comment> findComments(int page, int size, long boardId) {
         Board board = boardService.findBoard(boardId);
-        return commentRepository.findAllByboard(PageRequest.of(page, size, Sort.by("commentId").descending()), board);
+        return commentRepository.findAllByBoard(PageRequest.of(page, size, Sort.by("commentId").descending()), board);
     }
 
     public void deleteComment(long commentId) {
