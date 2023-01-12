@@ -22,6 +22,7 @@ public interface MemberMapper {
 
     default MemberDto.userProfile memberToUserProfileDto(Member member){
         MemberDto.userProfile response = new MemberDto.userProfile();
+        response.setMemberId(member.getMemberId());
         response.setEmail(member.getEmail());
         response.setDisplayName(member.getDisplayName());
         //이미지 추가
