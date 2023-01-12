@@ -3,9 +3,6 @@ import axios from "axios";
 import { Link } from 'react-router-dom';
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-// import GLogin from "../Components/GLogin";
-// import GLogout from "../Components/GLogout"
-// import { gapi } from "gapi-script";
 
 const SignUpStyle = styled.div`
     width: 50vw;
@@ -34,20 +31,8 @@ const SignUpPage = ({ setIsLoggedIn }) => {
     uref.current.focus();
   }, []);
 
-  //let accessToken = gapi.auth.getToken().access_token;
-
-  // useEffect(() => {
-  //    const start = () => {
-  //     gapi.client.init({
-  //       clientId: clientId,
-  //       scope: ""
-  //     })
-  //   };
-  //   gapi.load("client:auth2", start);
-  // });
-
   // 이름, 이메일, 비밀번호
-  const [userName, setUserName] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -64,15 +49,15 @@ const SignUpPage = ({ setIsLoggedIn }) => {
   // 회원가입 요청
   const signUp = async () => {
     try {
-      await axios
-      .post("http://localhost:3001/signup", {
-        userName,
+      const response = await axios
+      .post("https://www.sebmain41team23.shop/members/signup", {
         email,
+        displayName,
         password,
       });
       navigate("/login");
       alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
-
+      console.log(response)
     } catch (err) {
       console.error(err);
       if (err.response.status === 404) alert("페이지를 찾을 수 없습니다.");
@@ -84,7 +69,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
   const onSignUp = (e) => {
     //e.preventDefault();
     if (
-      userName.length !== 0 &&
+      displayName.length !== 0 &&
       email.length !== 0 &&
       password.length !== 0 &&
       isName === true &&
@@ -100,7 +85,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
   // userName
   const onChangeName = useCallback((e) => {
     const nameRegex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
-    setUserName(e.target.value);
+    setDisplayName(e.target.value);
 
     if (!nameRegex.test(e.target.value)) {
       setNameMessage("영문과 한글 또는 숫자를 3~20자리로 입력하세요.");
@@ -113,8 +98,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
 
   // email
   const onChangeEmail = useCallback((e) => {
-    const emailRegex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    const emailRegex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     setEmail(e.target.value);
 
     if (!emailRegex.test(e.target.value)) {
@@ -128,14 +112,11 @@ const SignUpPage = ({ setIsLoggedIn }) => {
 
   // password
   const onChangePassword = useCallback((e) => {
-    const passwordRegex =
-      /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
     setPassword(e.target.value);
 
     if (!passwordRegex.test(e.target.value)) {
-      setPasswordMessage(
-        "숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요."
-      );
+      setPasswordMessage("숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.");
       setIsPassword(false);
     } else {
       setPasswordMessage("올바른 비밀번호입니다.");
@@ -143,7 +124,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
     }
   }, []);
 
-  // username 입력 후 enter 누르면 email input으로 focus
+  // username 'enter' -> email
   const usernameEnter = (e) => {
     if (e.key === "Enter") eref.current.focus();
   };
@@ -179,7 +160,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
           onKeyDown={usernameEnter}
           ref={uref}
         />
-        {userName.length > 0 && (
+        {displayName.length > 0 && (
           <span className={`message${isName ? "success" : "error"}`}>
             {nameMessage}
           </span>
@@ -214,8 +195,7 @@ const SignUpPage = ({ setIsLoggedIn }) => {
         )}
 
         <button onClick={onSignUp}>Sign up</button>
-        {/* <GLogin setIsLoggedIn={setIsLoggedIn} />
-          <GLogout setIsLoggedIn={setIsLoggedIn} /> */}
+        <button onClick={() => navigate("//")}>google</button>
 
         <div>
           Already a member?<Link to="/login">Sign in</Link>
