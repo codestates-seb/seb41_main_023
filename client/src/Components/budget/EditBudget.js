@@ -1,57 +1,55 @@
 import styled from "styled-components";
-import { useState } from "react";
 
 const EditBudget = (props) => {
-  const { editBudget, setEditBudget, handleEditBudget, originBudget } = props;
-  const [inputBudget, setInputBudget] = useState(originBudget);
+    const {editBudgetModal, setEditBudgetModal, handleEditBudget, budget, setBudget} = props;
 
-  const handleInputBudget = (e) => {
-    setInputBudget(e.target.value);
-  };
+    const handleInputBudget = (e) => {
+        setBudget(e.target.value);
+    };
 
-  return (
-    <>
-      {editBudget ? (
-        <ModalContainer onClick={() => setEditBudget(false)}>
-          <ModalWrapper onClick={(e) => e.stopPropagation()}>
-            <div className="title_frame">
-              <div className="title">Set Budget</div>
-              <div
-                className="cancle_button"
-                onClick={() => setEditBudget(false)}
-              >
-                ❌
-              </div>
-            </div>
-            <input
-              className="content"
-              placeholder="예산을 입력해주세요"
-              value={inputBudget}
-              onChange={handleInputBudget}
-            />
-            <div className="submit_frame">
-              <button
-                className="btn"
-                onClick={() => handleEditBudget(inputBudget)}
-              >
-                Set Budget
-              </button>
-              <div className="cancle_text" onClick={() => setEditBudget(false)}>
-                Cancle
-              </div>
-            </div>
-          </ModalWrapper>
-        </ModalContainer>
-      ) : null}
-      <EditBudgetText
-        onClick={() => {
-          setEditBudget(!editBudget);
-        }}
-      >
-        Edit Budget
-      </EditBudgetText>
-    </>
-  );
+    return (
+        <>
+            {editBudgetModal ? (
+                <ModalContainer onClick={() => setEditBudgetModal(false)}>
+                    <ModalWrapper onClick={(e) => e.stopPropagation()}>
+                        <div className="title_frame">
+                            <div className="title">Set Budget</div>
+                            <div
+                                className="cancel_button"
+                                onClick={() => setEditBudgetModal(false)}
+                            >
+                                ❌
+                            </div>
+                        </div>
+                        <input
+                            className="content"
+                            placeholder="예산을 입력해주세요"
+                            // value={budget}
+                            onChange={handleInputBudget}
+                        />
+                        <div className="submit_frame">
+                            <button
+                                className="btn"
+                                onClick={() => handleEditBudget(budget)}
+                            >
+                                Set Budget
+                            </button>
+                            <div className="cancel_text" onClick={() => setEditBudgetModal(false)}>
+                                Cancel
+                            </div>
+                        </div>
+                    </ModalWrapper>
+                </ModalContainer>
+            ) : null}
+            <EditBudgetText
+                onClick={() => {
+                    setEditBudgetModal(!editBudgetModal);
+                }}
+            >
+                Edit Budget
+            </EditBudgetText>
+        </>
+    );
 };
 
 export default EditBudget;
@@ -85,8 +83,9 @@ const ModalWrapper = styled.div`
   line-height: 17px;
   background-color: #fff;
   border-radius: 7px;
-  box-shadow: rgba(0, 0, 0, 0.09) 0px 1px 4px 0px,
-    rgba(0, 0, 0, 0.09) 0px 3px 8px 0px, rgba(0, 0, 0, 0.13) 0px 4px 13px 0px;
+  box-shadow: rgba(0, 0, 0, 0.09) 0 1px 4px 0,
+  rgba(0, 0, 0, 0.09) 0 3px 8px 0, rgba(0, 0, 0, 0.13) 0 4px 13px 0;
+
   > .title_frame {
     display: flex;
     flex-direction: row;
@@ -97,13 +96,15 @@ const ModalWrapper = styled.div`
 
     margin-bottom: 20px;
     font-size: 13px;
+
     > .title {
       color: #c22e32;
       font-size: 27px;
       line-height: 32px;
       font-weight: 400;
     }
-    > .cancle_button {
+
+    > .cancel_button {
       width: 13px;
       height: 13px;
       margin-top: 4px;
@@ -113,6 +114,7 @@ const ModalWrapper = styled.div`
       /* background-color: #3b4045; */
     }
   }
+
   > .content {
     width: 250px;
     height: 16px;
@@ -127,9 +129,12 @@ const ModalWrapper = styled.div`
     line-height: 17px;
     color: #3b4045;
   }
+
   > .submit_frame {
     display: flex;
     flex-direction: row;
+    margin: 5px;
+
     > .btn {
       background-color: #d0393e;
       color: white;
@@ -141,14 +146,18 @@ const ModalWrapper = styled.div`
         background-color: #c22e32;
         cursor: pointer;
       }
+
       border: none;
       border-radius: 5px;
     }
-    > .cancle_text {
-      width: 50px;
+
+    > .cancel_text {
+      display: flex;
+      width: auto;
       height: 10px;
       padding: 15px 10px;
       margin: 0 20px;
+      align-items: center;
 
       font-size: 13px;
       line-height: 15px;
@@ -157,6 +166,7 @@ const ModalWrapper = styled.div`
 
       background-color: none;
       cursor: pointer;
+
       &:hover {
         border-radius: 5px;
 
