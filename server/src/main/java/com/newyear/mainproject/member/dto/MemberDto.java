@@ -75,6 +75,7 @@ public class MemberDto {
         private String profileImage;
         private long cities;
         private long trips;
+        private String createdAt;
     }
 
     @Getter @Setter
@@ -85,6 +86,7 @@ public class MemberDto {
         private String email;
         private String displayName;
         private String profileImage;
+        private String createdAt;
         private Member.MemberStatus memberStatus;
         public String getMemberStatus() {
             return memberStatus.getStatus();
