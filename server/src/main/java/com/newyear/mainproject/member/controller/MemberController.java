@@ -107,6 +107,7 @@ public class MemberController {
     public ResponseEntity getUserProfile(@PathVariable("member-id") @Positive long memberId){
 
         Member member = memberService.findMember(memberId);
+        member = memberService.findMemberProfile(member);
         MemberDto.userProfile response = mapper.memberToUserProfileDto(member);
         return new ResponseEntity(response, HttpStatus.OK);
     }

@@ -27,6 +27,8 @@ public interface MemberMapper {
         response.setDisplayName(member.getDisplayName());
         //이미지 추가
         response.setProfileImage(member.getProfileImage());
+        response.setTrips(member.getTrips());
+        response.setCities(member.getCities());
         return response;
 
     }

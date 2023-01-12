@@ -73,6 +73,8 @@ public class MemberDto {
         private String displayName;
         //프로필이미지
         private String profileImage;
+        private long cities;
+        private long trips;
     }
 
     @Getter @Setter
