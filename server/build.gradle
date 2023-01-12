@@ -39,7 +39,15 @@ dependencies {
 	implementation 'org.hamcrest:hamcrest:2.2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws-parameter-store-config'
 }
+
+dependencyManagement { // 블록 추가
+	imports {
+		mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:2.3.3"
+	}
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()
