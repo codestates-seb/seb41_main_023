@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import GlobalStyle from "./GlobalStyle";
 import SignUpPage from "./Pages/SignUpPage";
 import LoginPage from "./Pages/LoginPage";
@@ -9,17 +8,18 @@ import Main from "./Pages/Main";
 import UserProfile from "./Pages/UserProfile";
 import UserProfileEdit from "./Pages/UserProfileEdit";
 import Itinerary from "./Pages/Itinerary";
+import { getCookie } from "./Util/Cookies";
 
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [cookie, setCookie] = useCookies(["accessToken"]);
+  
 
   useEffect(() => {
-    if(cookie.accessToken) {
+    if(getCookie("accessToken")) {
       setIsLoggedIn(true);
     }
-  }, [isLoggedIn, cookie])
+  }, [isLoggedIn])
   
   return (
     <>

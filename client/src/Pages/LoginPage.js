@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import axios from "axios";
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from "react-router-dom";
+import { setCookie } from "../Util/Cookies";
 
 const SignUpStyle = styled.div`
     width: 50vw;
@@ -24,7 +24,6 @@ const LoginPage = ({ setIsLoggedIn }) => {
   const eref = useRef();
   const pref = useRef();
   const navigate = useNavigate();
-  const [cookie, setCookie] = useCookies(["accessToken"]);
 
   useEffect(() => {
     eref.current.focus();
