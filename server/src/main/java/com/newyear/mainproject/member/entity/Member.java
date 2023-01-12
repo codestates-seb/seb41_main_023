@@ -33,6 +33,12 @@ public class Member{
     @Column(nullable = false)
     private String profileKey;
 
+    @Column
+    private long trips;
+
+    @Column
+    private long cities;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
