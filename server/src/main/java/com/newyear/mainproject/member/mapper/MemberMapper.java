@@ -4,6 +4,7 @@ import com.newyear.mainproject.member.dto.MemberDto;
 import com.newyear.mainproject.member.entity.Member;
 import org.mapstruct.Mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -27,6 +28,26 @@ public interface MemberMapper {
         response.setDisplayName(member.getDisplayName());
         //이미지 추가
         response.setProfileImage(member.getProfileImage());
+        response.setTrips(member.getTrips());
+        response.setCities(member.getCities());
+
+        LocalDateTime dateTime = member.getCreatedAt();
+        String day = String.valueOf(dateTime.getDayOfMonth());
+
+        if (dateTime.getDayOfMonth() < 4 || dateTime.getDayOfMonth() > 20) {
+            if (day.endsWith("1")) {
+                day = "st";
+            } else if (day.endsWith("2")) {
+                day = "nd";
+            } else if (day.endsWith("3")) {
+                day = "rd";
+            } else day = "th";
+        } else day = "th";
+
+        String createdAt = dateTime.getMonth().toString().substring(0, 3) + " "
+                + dateTime.getDayOfMonth() + day +", " + dateTime.getYear();
+        response.setCreatedAt(createdAt);
+
         return response;
 
     }
@@ -38,6 +59,23 @@ public interface MemberMapper {
         response.setMemberStatus(member.getMemberStatus());
         response.setEmail(member.getEmail());
         response.setProfileImage(member.getProfileImage());
+
+        LocalDateTime dateTime = member.getCreatedAt();
+        String day = String.valueOf(dateTime.getDayOfMonth());
+
+        if (dateTime.getDayOfMonth() < 4 || dateTime.getDayOfMonth() > 20) {
+            if (day.endsWith("1")) {
+                day = "st";
+            } else if (day.endsWith("2")) {
+                day = "nd";
+            } else if (day.endsWith("3")) {
+                day = "rd";
+            } else day = "th";
+        } else day = "th";
+
+        String createdAt = dateTime.getMonth().toString().substring(0, 3) + " "
+                + dateTime.getDayOfMonth() + day +", " + dateTime.getYear();
+        response.setCreatedAt(createdAt);
 
         return response;
     }
