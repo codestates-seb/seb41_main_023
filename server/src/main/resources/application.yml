@@ -16,7 +16,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -34,6 +34,7 @@ spring:
       client:
         registration:
           google:
+            redirect-uri: https://sebmain41team23.shop/login/oauth2/code/google
             #clientId: ${GOOGLE_CLIENT_ID}
             #clientSecret: ${GOOGLE_SECRET}
             scope:
@@ -55,7 +56,7 @@ server:
 
 jwt:
   #secret-key: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
+  access-token-expiration-minutes: 1440
   refresh-token-expiration-minutes: 420
 
   #config:
@@ -64,10 +65,10 @@ jwt:
 cloud:
   aws:
     credentials:
-      #access-key: ${S3_ACCESS_KEY}
-      #secret-key: ${S3_SECRET_KEY}
+    #access-key: ${S3_ACCESS_KEY}
+    #secret-key: ${S3_SECRET_KEY}
     s3: #버킷이름
-      #bucket: ${S3_BUCKET}
+    #bucket: ${S3_BUCKET}
     region: #S3 지역
       static: ap-northeast-2
     stack:
