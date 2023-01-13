@@ -14,21 +14,19 @@ const SectionHeader = styled.div`
 `;
 
 const SinglePlanBox = (props) => {
-    const {searchData, setSearchData, setAddExpenseModal} = props;
+    const {planDateId, planDate, searchData, setSearchData, setAddExpenseModal} = props;
 
     const handleDeletePlan = (targetId) => {
         alert('정말 삭제하시겠습니까?');
         const newDataList = searchData.filter((data) => data.id !== targetId);
         setSearchData(newDataList);
-        // console.log(newDataList)
     }
 
-    // console.log(searchData)
 
     return (
         <Fragment>
             <SectionHeader>
-                <p>1월 3일</p>
+                <p>{planDate}</p>
             </SectionHeader>
             {searchData !== null ? (
                 searchData.map((data) => (

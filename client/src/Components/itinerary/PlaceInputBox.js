@@ -1,6 +1,7 @@
 import {StandaloneSearchBox} from "@react-google-maps/api";
 import styled from "styled-components";
 import axios from "axios";
+import {getCookie} from "../../Util/Cookies";
 
 const InputContainer = styled.div`
   width: 95%;
@@ -36,14 +37,15 @@ const PlaceInputBox = (props) => {
         setSearchedGeocode,
         setCenter,
         searchData,
-        setSearchData
+        setSearchData,
+        planDateId,
     } = props;
     const onLoad = (ref) => {
         console.log(ref)
         setSearchBox(ref);
     }
 
-    const onPlacesChanged = async () => {
+    const onPlacesChanged = () => {
         if (searchBox !== '' && searchBox.getPlaces() !== undefined) {
             setInfoWindowOpen(true);
             const place = searchBox.getPlaces()[0];
@@ -100,7 +102,7 @@ const PlaceInputBox = (props) => {
                 alert('이미 일정에 추가되었습니다');
             } else {
                 const newData = {
-                    id: searchData.length,
+                    // id: searchData.length,
                     name,
                     photo,
                     status,
@@ -114,7 +116,17 @@ const PlaceInputBox = (props) => {
 
                 setSearchData(searchData => [...searchData, newData]);
 
-                await axios.post(`${process.env.REACT_APP_API_URL}`, )
+                axios.post(`${process.env.REACT_APP_API_URL}/places/${planDateId}`, {
+                    placeName: name,
+                    // placeAddress: formattedAddress
+                }, {
+                    headers: {
+                        Authorization: getCookie('accessToken'),
+                        withCredentials: true
+                    }
+                })
+                    .then((res) => console.log(res.data.data))
+                    .catch((err) => console.log(err))
             }
         }
 
