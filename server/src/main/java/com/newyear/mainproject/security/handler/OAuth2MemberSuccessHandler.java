@@ -26,6 +26,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private final CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    final String password = "!!kfQp93%*@mcvGldWq!!130049@";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -50,9 +51,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
             accessToken = delegateAccessToken(findMember.getEmail(), List.of("USER"));
             refreshToken = delegateRefreshToken(findMember.getEmail());
 
+            findMember.setPassword(password); //db password 에 다른값이 저장되어있어도 새로변경한 password 가 이미 가입된 이메일 필터링 할때 쓰이도록 함
 
             //OAuth 로그인시 이미 가입된 이메일일 경우 (비밀번호가 null 값으로 필터링)사이트 이용 불가
-            if(findMember.getPassword() == null) {
+            if(findMember.getPassword() == password) {
                 response.setHeader("Authorization", "Bearer " + accessToken);
                 response.setHeader("Refresh", refreshToken);
             }
@@ -71,6 +73,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         member.setEmail(email);
         member.setDisplayName(name);
         member.setProfileKey("GOOGLE");
+        member.setPassword(password);
         member.setProfileImage(profileImage);
         memberRepository.save(member);
     }
