@@ -172,7 +172,10 @@ public class MemberService {
         if (member.getMemberId() != getLoginMember().getMemberId()) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
-        Map<String, String> profile = s3Service.uploadFile(member.getProfileKey(), multipartFile);
+        //기본 이미지일 경우 삭제 X
+        boolean isBasicImage = member.getProfileKey().equals("basic.png");
+
+        Map<String, String> profile = s3Service.uploadFile(member.getProfileKey(), multipartFile, isBasicImage);
         member.setProfileImage(profile.get("url"));
         member.setProfileKey(profile.get("key"));
 
