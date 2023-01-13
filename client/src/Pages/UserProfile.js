@@ -19,7 +19,7 @@ const UserProfile = () => {
   const [trips, setTrips] = useState(0);
 
   const token = getCookie("accessToken");
-  const refreshToken = localStorage.getItem("refresh-token");
+  const refreshToken = localStorage.getItem("refreshToken");
   const memberId = getCookie("memberId");
 
   // 유저 정보 조회
@@ -49,8 +49,8 @@ const UserProfile = () => {
       }).then((res) => {
         removeCookie("accessToken");
         removeCookie("memberId");
-        localStorage.removeItem("refresh-token");
-        navigate("/");
+        localStorage.removeItem("refreshToken");
+        window.location.replace("/");
       });
     }
   };

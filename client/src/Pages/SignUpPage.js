@@ -17,9 +17,9 @@ const BackgroundImgStyle = styled.div`
     float: right;
 `;
 
-const clientId = process.env.REACT_APP_CLIENT_ID;
+//const clientId = process.env.REACT_APP_CLIENT_ID;
 
-const SignUpPage = ({ setIsLoggedIn }) => {
+const SignUpPage = () => {
   const navigate = useNavigate();
 
   const uref = useRef();

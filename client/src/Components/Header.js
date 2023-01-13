@@ -9,7 +9,7 @@ const Header = ({ login }) => {
   const navigate = useNavigate();
 
   const token = getCookie("accessToken");
-  const refreshToken = localStorage.getItem("refresh-token");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const [userProfile, setUserProfile] = useState("https://picsum.photos/50");
 
@@ -59,9 +59,8 @@ const Header = ({ login }) => {
       }).then((res) => {
         removeCookie("accessToken");
         removeCookie("memberId");
-        localStorage.removeItem("refresh-token");
-        navigate("/");
-        window.location.reload();
+        localStorage.removeItem("refreshToken");
+        window.location.replace("/");
       });
     }
   };

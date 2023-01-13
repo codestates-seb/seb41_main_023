@@ -17,9 +17,9 @@ const BackgroundImgStyle = styled.div`
   float: right;
 `;
 
-const clientId = process.env.REACT_APP_CLIENT_ID;
+//const clientId = process.env.REACT_APP_CLIENT_ID;
 
-const LoginPage = ({ setIsLoggedIn }) => {
+const LoginPage = () => {
   const eref = useRef();
   const pref = useRef();
   const navigate = useNavigate();
@@ -55,10 +55,9 @@ const LoginPage = ({ setIsLoggedIn }) => {
       if (response.status === 200) {
         setCookie("accessToken", response.headers.authorization);
         setCookie("memberId", response.data.memberId);
-        localStorage.setItem("refresh-token", response.headers.refresh);
-        setIsLoggedIn(true);
+        localStorage.setItem("refreshToken", response.headers.refresh);
         alert("로그인되었습니다. 메인 페이지로 이동합니다.");
-        navigate("/");
+        window.location.replace("/");
       }
     } catch (err) {
       console.error(err);
@@ -84,6 +83,24 @@ const LoginPage = ({ setIsLoggedIn }) => {
     else if (!isEmail) alert("Email을 확인해주세요.");
     else if (!isPassword) alert("Password를 확인해주세요.");
   };
+
+
+  // const googleLogin = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       "http://ec2-13-125-238-7.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google"
+  //     );
+  //     console.log(response);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+  // const gLogin = () => {
+  //   window.location.replace("http://ec2-13-125-238-7.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google")
+  //   navigate("//ec2-13-125-238-7.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google")
+  // }
+
 
   // email
   const onChangeEmail = useCallback((e) => {
@@ -169,7 +186,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
         )}
 
         <button onClick={onLogin}>sign in</button>
-        <button onClick={() => navigate("//")}>google</button>
+        {/* <button onClick={gLogin}>google</button> */}
 
         <div>
           Not a member? <Link to="/signup">Sign up</Link>
