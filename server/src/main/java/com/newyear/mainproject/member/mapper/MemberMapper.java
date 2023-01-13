@@ -21,15 +21,15 @@ public interface MemberMapper {
 
 //    MemberDto.Response memberToMemberResponseDto(Member member);
 
-    default MemberDto.userProfile memberToUserProfileDto(Member member){
+    default MemberDto.userProfile memberToUserProfileDto(Member member, long trips, long cities){
         MemberDto.userProfile response = new MemberDto.userProfile();
         response.setMemberId(member.getMemberId());
         response.setEmail(member.getEmail());
         response.setDisplayName(member.getDisplayName());
         //이미지 추가
         response.setProfileImage(member.getProfileImage());
-        response.setTrips(member.getTrips());
-        response.setCities(member.getCities());
+        response.setTrips(trips);
+        response.setCities(cities);
 
         LocalDateTime dateTime = member.getCreatedAt();
         String day = String.valueOf(dateTime.getDayOfMonth());
