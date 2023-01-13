@@ -1,10 +1,15 @@
 /* 유저이름, 비밀번호 수정, 계정 삭제 */
 
 import styled from "styled-components";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { getCookie, removeCookie } from "../../Util/Cookies";
+import { getData, patchData, postData, deleteData } from "../../Util/api";
+
 import Modal from "./Modal";
+
+const memberId = getCookie("memberId");
 
 // 유저이름 수정
 const General = ({ handleChange, handleSubmit, nameRef }) => {
@@ -68,29 +73,18 @@ const Password = () => {
       return;
     }
 
-    console.log("change!");
-
-    // 비밀번호 변경 요청
-    // axios
-    //   .patch(`${process.env.REACT_APP_API_URL}/members/password/${memberId}`, {
-    //     headers: {
-    //       Authorization: token,
-    //       withCredentials: true,
-    //     },
-    //     data : {
-    //       originPassword : inputs.originPassword,
-    //       password : inputs.newPassword
-    // }
-    //   })
-    //   .then((res) => {
-    //     alert("비밀번호가 변경되었습니다.");
-    // setInputs({
-    //   originPassword: "",
-    //   newPassword: "",
-    // });
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => console.log("error"));
+    patchData(`/members/password/${memberId}`, {
+      originPassword: inputs.originPassword,
+      password: inputs.newPassword,
+    }).then((res) => {
+      if (res) {
+        console.log(res);
+        setInputs({ originPassword: "", newPassword: "" });
+        alert("비밀번호가 변경되었습니다");
+      } else {
+        alert("비밀번호를 확인해주세요");
+      }
+    });
   };
 
   return (
@@ -144,7 +138,18 @@ const DeleteAccount = ({ modal, setModal }) => {
     //     window.location.reload();
     //   })
     //   .catch((err) => console.log("error"));
-    console.log("계정 삭제!");
+
+    deleteData(`/members/${memberId}`).then((res) => {
+      if (res) {
+        console.log(res);
+        removeCookie("accessToken");
+        removeCookie("memberId");
+        localStorage.removeItem("refresh-token");
+        alert("그동안 이용해주셔서 감사합니다.");
+      } else {
+        alert("탈퇴 못함");
+      }
+    });
   };
 
   return (

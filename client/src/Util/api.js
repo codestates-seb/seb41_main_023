@@ -6,7 +6,7 @@ export const baseAPI = (url, options) => {
   return axios.create({ baseURL: url, ...options });
 };
 
-// // api 요청 시 인증값이 필요한 경우
+// api 요청 시 인증값이 필요한 경우
 const axiosAuthApi = (url, options) => {
   const token = getCookie("accessToken");
 
@@ -48,14 +48,14 @@ const patchBaseData = async (url, data) => {
     const res = await baseInstance.patch(url, data);
     return res;
   } catch (error) {
-    console.log(error.message);
+    return error;
   }
 };
 
 //delete 요청
 const deleteBaseData = async (url) => {
   try {
-    const res = await baseInstance.patch(url);
+    const res = await baseInstance.delete(url);
     return res;
   } catch (error) {
     console.log(error.message);
@@ -97,7 +97,7 @@ const patchData = async (url, data) => {
 //delete 요청
 const deleteData = async (url) => {
   try {
-    const res = await authInstance.patch(url);
+    const res = await authInstance.delete(url);
     return res;
   } catch (error) {
     console.log(error.message);

@@ -1,6 +1,5 @@
 import moment from "moment";
 import { getData } from "../../Util/api";
-import { postData } from "../../Util/api";
 
 import styled from "styled-components";
 import { useState, useEffect } from "react";
@@ -14,8 +13,7 @@ const MyTrips = () => {
 
   // 전체 일정 조회 async
   const getTrip = async () => {
-    const data = await getData(`/plans`);
-    setTripList(data.data);
+    await getData(`/plans`).then((res) => setTripList(res.data));
   };
 
   useEffect(() => {
