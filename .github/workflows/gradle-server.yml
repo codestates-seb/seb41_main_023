@@ -18,7 +18,7 @@ permissions:
 env:
   S3_BUCKET_NAME: project-main23
   working-directory: ./server
-  PROPERTIES_PATH: ./server/src/main/resources/application.yml
+  PROPERTIES_PATH: ./server/src/main/resources/application.properties
 
 jobs:
   build:
@@ -34,7 +34,7 @@ jobs:
         distribution: 'temurin'
         
      # properties secret 설정
-    - name: Set application.yml 
+    - name: Set application.properties
       run: |
         touch ${{ env.PROPERTIES_PATH }}
         echo "
