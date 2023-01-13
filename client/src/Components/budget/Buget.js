@@ -2,6 +2,7 @@ import axios from "axios";
 import moment from "moment";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { getCookie } from "./Cookies";
 
 import EditBudget from "./EditBudget";
 import AddExpense from "./AddExpense";
@@ -40,20 +41,8 @@ const Budget = () => {
     memberStatus: "활동중",
   });
 
-  // 토큰, 유저 id
-  // const [token, setToken] = useState();
-  // const [memberId,setMemberId] = useState();
-
-  // 토큰 설정
-  // useEffect(() => {
-  //   if (cookies.accessToken) {
-  //     setToken(cookies.accessToken.token)
-  //   }
-  // }, []);
-
-  //memberId 설정
-
-  //budgetId 필요
+  const token = getCookie("accessToken");
+  const memberId = getCookie("memberId");
 
   // 예산 수정 모달
   const [editBudget, setEditBudget] = useState(false);

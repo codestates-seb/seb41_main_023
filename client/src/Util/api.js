@@ -9,7 +9,6 @@ export const baseAPI = (url, options) => {
 // api 요청 시 인증값이 필요한 경우
 const axiosAuthApi = (url, options) => {
   const token = getCookie("accessToken");
-
   const instance = axios.create({
     baseURL: url,
     headers: { Authorization: token },
@@ -23,10 +22,10 @@ export const authInstance = axiosAuthApi("https://www.sebmain41team23.shop");
 
 /* baseInstance */
 
-const getBaseData = async (url) => {
+const getBaseData = async (url, data) => {
   try {
-    const { data } = await baseInstance.get(url);
-    return data;
+    const { res } = await baseInstance.get(url, data);
+    return res;
   } catch (error) {
     console.log(error.message);
   }
@@ -65,10 +64,10 @@ const deleteBaseData = async (url) => {
 /* authInstance */
 
 // get 요청
-const getData = async (url) => {
+const getData = async (url, data) => {
   try {
-    const { data } = await authInstance.get(url);
-    return data;
+    const { res } = await authInstance.get(url, data);
+    return res;
   } catch (error) {
     console.log(error.message);
   }

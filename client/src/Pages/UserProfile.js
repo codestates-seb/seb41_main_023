@@ -1,3 +1,4 @@
+import axios from "axios";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +7,7 @@ import Header from "../Components/Header";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
 
-import { getData } from "../Util/api";
+// import { getData } from "../Util/api";
 import { postData } from "../Util/api";
 import { getCookie, removeCookie } from "../Util/Cookies";
 
@@ -19,9 +20,19 @@ const UserProfile = () => {
   const memberId = getCookie("memberId");
 
   // 유저 정보 조회
-  const getUserInfo = async () => {
-    const data = await getData(`/members/userProfile/${memberId}`);
-    setUserInfo(data);
+  // const getUserInfo = async () => {
+  //   const data = await getData(`/members/userProfile/${memberId}`);
+  //   setUserInfo(data);
+  // };
+
+  const getUserInfo = () => {
+    axios
+      .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => setUserInfo(res.data));
   };
 
   useEffect(() => {
