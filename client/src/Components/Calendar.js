@@ -9,8 +9,7 @@ import { DateRange } from 'react-date-range';
 const CalendarContainer = styled.div`
   position: relative;
   max-width: 848px;
-  /* disoka */
-  /* max-width: 540px; */
+  z-index: 999;
 
   & .calendar {
     display: flex;

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
 import { data } from '../dummyCity';
 
 const Autocomplete = ({ handleDestination, inputRef }) => {
@@ -255,6 +254,7 @@ const DropDownContainer = styled.ul`
   border-radius: 3px;
   list-style: none;
   box-shadow: 0px 0px 1px rgba(9, 30, 66, 0.31), 0px 8px 12px rgba(9, 30, 66, 0.15);
+  z-index: 999;
 
   li {
     padding: 15px 18px;

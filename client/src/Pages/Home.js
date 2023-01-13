@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useState, useRef } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,8 @@ import Header from '../Components/Header';
 import Calendar from '../Components/Calendar';
 import Autocomplete from '../Components/AutoComplete';
 
-import backgroundImage from '../images/background-image.jpg';
+import logOutBgImg from '../images/logged-out_background-image.jpg';
+import logInBgImg from '../images/login_background-image-02.jpg';
 
 const Home = ({ login }) => {
   const navigate = useNavigate();
@@ -80,12 +81,12 @@ const Home = ({ login }) => {
   return (
     <HomeContainer className={login ? 'login' : false}>
       <Header className="header" login={login || false} />
-      <Main>
-        <Content>
+      <Main className={login ? 'login' : false}>
+        <Content className={login ? 'login' : false}>
           <TopSection className={login ? 'login' : false}>
             <h1>Where do you want to travel?</h1>
           </TopSection>
-          <BottomSection className={login ? 'login' : false}>
+          <BottomSection>
             <Autocomplete
               className="autocomplete"
               handleDestination={handleDestination}
@@ -108,7 +109,7 @@ const Home = ({ login }) => {
                   ref={inputCalendarRef}
                 >
                   <span>{startDate}</span>
-                  <span className='calendar__seperator'>|</span>
+                  <span className="calendar__seperator">|</span>
                   <span>{endDate}</span>
                 </div>
               </div>
@@ -134,9 +135,15 @@ const HomeContainer = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-image: url(${backgroundImage});
-  /* background-color: whitesmoke; */
+  background-image: url(${logOutBgImg});
   background-size: cover;
+
+  &.login {
+    max-height: 400px;
+    background-image: url(${logInBgImg});
+    background-size: cover;
+    background-position: 25% 60%;
+  }
 
   & .button--default:hover {
     background-color: white;
@@ -153,6 +160,12 @@ const Main = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
+
+  &.login {
+    align-items: flex-end;
+    max-height: 400px;
+    background-color: rgba(15, 15, 15, .15);
+  }
 `;
 
 const Content = styled.div`
@@ -176,7 +189,9 @@ const TopSection = styled.div`
   }
 
   &.login {
-    position: relative;
+    h1 {
+      color: var(--white);
+    }
   }
 `;
 
@@ -191,11 +206,6 @@ const BottomSection = styled.div`
 
   & > :not(:first-child) {
     margin-left: var(--spacing-2);
-  }
-
-  &.login {
-    position: relative;
-    left: 20px;
   }
 
   .calendar__input-container {
@@ -215,7 +225,7 @@ const BottomSection = styled.div`
       }
 
       > .calendarbtn {
-        display: flex; 
+        display: flex;
         justify-content: space-between;
         padding: 15px;
         margin: -15px 0;

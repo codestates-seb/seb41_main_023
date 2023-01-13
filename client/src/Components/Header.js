@@ -76,9 +76,13 @@ const Header = ({ login }) => {
   return (
     <HeadContainer>
       <LeftSection>
-        <div className='header__logo' onClick={() => handleNavigate('/')}>website name</div>
+        <div className="header__logo" onClick={() => handleNavigate('/')}>
+          website name
+        </div>
         {/* <img alt="logo_image" src="https://picsum.photos/40" onClick={() => handleNavigate('/')} /> */}
-        <button className='button--default button--subtle' onClick={() => handleNavigate('/blog')}>Travel Logs</button>
+        <button className="button--default button--subtle" onClick={() => handleNavigate('/blog')}>
+          Travel Logs
+        </button>
       </LeftSection>
       <RightSection>
         {login ? (
@@ -88,7 +92,7 @@ const Header = ({ login }) => {
               alt="profile_image"
               src={userProfile}
             />
-            <button onClick={handleSignout}>Sign out</button>
+            <button className='button--default button--subtle' onClick={handleSignout}>Sign out</button>
           </>
         ) : (
           <>
@@ -108,13 +112,12 @@ const Header = ({ login }) => {
 export default Header;
 
 const HeadContainer = styled.div`
-  position: fixed; 
+  position: fixed;
   display: flex;
   justify-content: space-between;
   margin: 0 50px;
-  width: calc(100vw - 100px); 
+  width: calc(100vw - 100px);
   height: 60px;
-  /* background-color: violet; */
   z-index: 9999;
 `;
 
@@ -127,38 +130,16 @@ const LeftSection = styled.div`
     cursor: pointer;
   }
 `;
+
 const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
 
-  /* > * {
+  > img {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
     cursor: pointer;
   }
-
-  > img {
-    margin: 20px 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  } */
-
-  /* > button {
-    white-space: nowrap;
-    border: none;
-    border-radius: 0;
-    margin: 20px 15px;
-    padding: 1px 0;
-
-    font-size: 12px;
-    letter-spacing: 1px;
-    text-decoration: none;
-    text-transform: uppercase;
-
-    background-color: transparent;
-    &:hover {
-      text-decoration: underline;
-      text-underline-position: under;
-    }
-  } */
 `;
