@@ -68,35 +68,30 @@ const Header = ({ login }) => {
   return (
     <HeadContainer>
       <LeftSection>
-        <img
-          alt="logo_image"
-          src="https://picsum.photos/40"
-          onClick={() => handleNavigate("/")}
-        />
-        <button onClick={() => handleNavigate("/blog")}>Travel Logs</button>
+        <div className="header__logo" onClick={() => handleNavigate('/')}>
+          website name
+        </div>
+        {/* <img alt="logo_image" src="https://picsum.photos/40" onClick={() => handleNavigate('/')} /> */}
+        <button className="button--default button--subtle" onClick={() => handleNavigate('/blog')}>
+          Travel Logs
+        </button>
       </LeftSection>
       <RightSection>
         {login ? (
           <>
             <img
-              onClick={() => handleNavigate("/user/:memberId")}
+              onClick={() => handleNavigate('/user/:memberId')}
               alt="profile_image"
               src={userProfile}
             />
-            <button onClick={handleSignout}>Sign out</button>
+            <button className='button--default button--subtle' onClick={handleSignout}>Sign out</button>
           </>
         ) : (
           <>
-            <button
-              className="login_button"
-              onClick={() => handleNavigate("/login")}
-            >
+            <button className="button--default" onClick={() => handleNavigate('/login')}>
               Log In
             </button>
-            <button
-              className="signup_button"
-              onClick={() => handleNavigate("/signup")}
-            >
+            <button className="button--primary" onClick={() => handleNavigate('/signup')}>
               Sign Up
             </button>
           </>
@@ -109,65 +104,34 @@ const Header = ({ login }) => {
 export default Header;
 
 const HeadContainer = styled.div`
+  position: fixed;
   display: flex;
   justify-content: space-between;
+  margin: 0 50px;
+  width: calc(100vw - 100px);
+  height: 60px;
+  z-index: 9999;
 `;
 
 const LeftSection = styled.div`
   display: flex;
-  margin: 20px;
-  cursor: pointer;
+  align-items: center;
+  gap: 24px;
 
-  > img {
-    margin-right: 15px;
-    border-radius: 50%;
-  }
-
-  > button {
-    border: none;
-    background-color: transparent;
+  .header__logo {
     cursor: pointer;
-    font-size: 13px;
-    letter-spacing: 1px;
-
-    padding: 1px 0;
-
-    &:hover {
-      text-decoration: underline;
-      text-underline-position: under;
-    }
   }
 `;
+
 const RightSection = styled.div`
   display: flex;
-
-  > * {
-    cursor: pointer;
-  }
+  align-items: center;
+  gap: var(--spacing-2);
 
   > img {
-    margin: 20px 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-
-  > button {
-    white-space: nowrap;
-    border: none;
-    border-radius: 0;
-    margin: 20px 15px;
-    padding: 1px 0;
-
-    font-size: 12px;
-    letter-spacing: 1px;
-    text-decoration: none;
-    text-transform: uppercase;
-
-    background-color: transparent;
-    &:hover {
-      text-decoration: underline;
-      text-underline-position: under;
-    }
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    cursor: pointer;
   }
 `;
