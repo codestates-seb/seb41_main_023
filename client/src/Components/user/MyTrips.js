@@ -27,7 +27,7 @@ const MyTrips = () => {
       <h2>My Trips</h2>
       <div className="contents">
         {tripList.map((el) => (
-          <div key={el.planId}>
+          <div className="my-trips__card" key={el.planId}>
             <img
               alt="place_image"
               src={el.image}
@@ -39,8 +39,9 @@ const MyTrips = () => {
                 {moment(el.startDate).format("M월 D일")} -{" "}
                 {moment(el.endDate).format("M월 D일")}
               </div>
-              <div>{el.plans} 장소</div>
-              <div>{el.cityName}</div>
+              <div>
+                {el.plans} places · {el.cityName}
+              </div>
             </div>
           </div>
         ))}
@@ -52,31 +53,46 @@ const MyTrips = () => {
 export default MyTrips;
 
 const MyTripsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  margin-bottom: 50px;
 
-  margin: 20px;
+  h2 {
+    margin-bottom: var(--spacing-4);
+    font-size: var(--large-heading-font-size);
+    line-height: var(--large-heading-line-height);
+    font-weight: 600;
+    color: var(--black);
+  }
 
   .contents {
     display: flex;
+    gap: var(--spacing-4);
 
-    > div {
-      margin: 20px 17px 10px 0;
-      cursor: pointer;
+    .my-trips__card {
+      width: calc((100vw - 228px) / 5);
+      cursor: pointer; 
 
-      > img {
-        border-radius: 7px;
+      img {
+        margin-bottom: var(--spacing-3);
+        width: 100%; 
+        border-radius: 5px;
       }
 
-      > .meta_title {
-        margin: 5px;
-        font-size: 15px;
+      .meta_title {
+        margin-bottom: var(--spacing-1);
+        font-size: var(--large-text-size);
+        line-height: var(--large-text-line-height);
+        font-weight: 600;
       }
 
-      > .meta_content {
-        margin: 5px;
-        font-size: 12px;
-        color: rgba(0, 0, 0, 0.5);
+      .meta_content {
+        > div {
+          color: var(--light);
+
+          &:not(:last-child) {
+            margin-bottom: 2px;
+          }
+        }
       }
     }
   }
