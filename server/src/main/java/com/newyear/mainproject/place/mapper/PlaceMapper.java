@@ -14,6 +14,10 @@ public interface PlaceMapper {
     default Place placePostDtoToPlace(PlaceDto.Post post, PlanService planService) {
         Place place = new Place();
         place.setPlaceName(post.getPlaceName());
+        place.setLatitude(post.getLatitude());
+        place.setLongitude(post.getLongitude());
+        place.setPlaceAddress(post.getPlaceAddress());
+        place.setPlaceImage(post.getPlaceImage());
 
         //plan_date, plan 연결
         PlanDates planDates = planService.findPlanDates(post.getPlaceDateId());

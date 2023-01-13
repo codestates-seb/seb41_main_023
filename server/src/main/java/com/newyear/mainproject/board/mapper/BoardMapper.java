@@ -3,6 +3,7 @@ package com.newyear.mainproject.board.mapper;
 import com.newyear.mainproject.board.dto.BoardDto;
 import com.newyear.mainproject.board.entity.Board;
 import com.newyear.mainproject.board.likes.Likes;
+import com.newyear.mainproject.city.City;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.plan.entity.Plan;
@@ -45,20 +46,22 @@ public interface BoardMapper {
         Plan plan = board.getPlan();
         List<BoardDto.Days> days = newDays(plan);
         Member member = board.getMember();
+        City city = plan.getCity();
 
         return new BoardDto.ResponseDetails(board.getBoardId(), board.getTitle(), board.getContent(), board.getLikes().size(),
                 board.getViews(), createdAt, member.getMemberId(), member.getDisplayName(), member.getProfileImage(), checkLikes(board),
-                plan.getPlanId(), plan.getCityName(), days);
+                plan.getPlanId(), city.getCityName(), days, city.getCityImage());
     }
 
     //게시물 편집 화면
     default BoardDto.ResponseEditDetails boardToResponseEditDto(Plan plan) {
 
         List<BoardDto.Days> days = newDays(plan);
-
-        return new BoardDto.ResponseEditDetails(plan.getPlanTitle(), plan.getPlanId(), plan.getCityName(), days);
+        City city = plan.getCity();
+        return new BoardDto.ResponseEditDetails(plan.getPlanTitle(), plan.getPlanId(), city.getCityName(), days, city.getCityImage());
     }
 
+    //게시물 목록 조회
     default List<BoardDto.Response> boardsToBoardResponseDto(List<Board> boards) {
 
         List<BoardDto.Response> list = new ArrayList<>( boards.size() );
@@ -75,7 +78,7 @@ public interface BoardMapper {
             Member member = board.getMember();
 
             list.add(new BoardDto.Response(board.getBoardId(), board.getTitle(), board.getLikes().size(),
-                board.getViews(), member.getMemberId(), member.getDisplayName(), member.getProfileImage(), checkLikes(board), period));
+                board.getViews(), member.getMemberId(), member.getDisplayName(), member.getProfileImage(), checkLikes(board), period, board.getPlan().getCity().getCityImage()));
         }
         return list;
     }

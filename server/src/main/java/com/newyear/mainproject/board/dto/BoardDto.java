@@ -51,6 +51,7 @@ public class BoardDto {
         private boolean checkLikes;
         //일정 - date
         private String travelPeriod;
+        private String cityImage;
     }
 
     @Getter @Setter
@@ -82,6 +83,7 @@ public class BoardDto {
         private long planId;
         private String cityName;
         private List<Days> days;
+        private String cityImage;
     }
 
     //게시판 최초 작성시
@@ -93,6 +95,7 @@ public class BoardDto {
         private long planId;
         private String cityName;
         private List<Days> days;
+        private String cityImage;
     }
 
     @NoArgsConstructor
