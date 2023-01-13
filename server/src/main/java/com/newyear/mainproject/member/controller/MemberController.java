@@ -8,6 +8,8 @@ import com.newyear.mainproject.member.dto.MemberDto;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.mapper.MemberMapper;
 import com.newyear.mainproject.member.service.MemberService;
+import com.newyear.mainproject.plan.entity.Plan;
+import com.newyear.mainproject.plan.service.PlanService;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
 import com.newyear.mainproject.security.logout.RedisUtil;
 import com.newyear.mainproject.security.logout.RefreshToken;
@@ -38,6 +40,7 @@ public class MemberController {
     private final JwtTokenizer jwtTokenizer;
     private final RedisUtil redisUtil;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final PlanService planService;
 
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post post){
@@ -107,8 +110,15 @@ public class MemberController {
     public ResponseEntity getUserProfile(@PathVariable("member-id") @Positive long memberId){
 
         Member member = memberService.findMember(memberId);
+
+        List<Plan>planList =  planService.findPlans(member);
+        long cities =  planList.stream()
+                .map(city -> city.getCityName())
+                .distinct().count();
+
         member = memberService.findMemberProfile(member);
-        MemberDto.userProfile response = mapper.memberToUserProfileDto(member);
+        MemberDto.userProfile response = mapper.memberToUserProfileDto(member, planList.size(), cities);
+
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
@@ -130,7 +140,7 @@ public class MemberController {
     }
 
     //회원 프로필 이미지
-    @GetMapping("/{member-id}/profile")
+    @PostMapping("/{member-id}/profile")
     public ResponseEntity updateUserProfile(@PathVariable("member-id") @Positive long memberId,
                                             MultipartFile multipartFile) throws Exception {
         Member member = memberService.editProfileImage(multipartFile, memberId);

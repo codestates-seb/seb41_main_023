@@ -25,7 +25,7 @@ public class S3Service {
     private final AmazonS3 amazonS3;
 
     //파일 저장
-    public Map<String, String> uploadFile(String currentFilePath, MultipartFile multipartFile) throws IOException {
+    public Map<String, String> uploadFile(String currentFilePath, MultipartFile multipartFile, boolean isBasicImage) throws IOException {
 
         String fileName = multipartFile.getOriginalFilename();
 
@@ -54,7 +54,7 @@ public class S3Service {
             file = fileName + "-" + date.format(new Date());
 
             // 이미 key 가 존재하면 기존 파일 삭제
-            if (!"".equals(currentFilePath) && currentFilePath != null) {
+            if (!"".equals(currentFilePath) && currentFilePath != null && !isBasicImage) {
                 boolean isExistObject = amazonS3.doesObjectExist(bucket, currentFilePath);
 
                 if (isExistObject) {

@@ -6,7 +6,6 @@ import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.repository.MemberRepository;
-import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.service.PlanService;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -114,15 +113,6 @@ public class MemberService {
 
     public Member findMemberProfile(Member member){
         Member findMember = findVerifiedMember(member.getMemberId());
-        List<Plan>planList =  planService.findPlans(findMember);
-
-        findMember.setTrips(planList.size());
-
-        long cities =  planList.stream()
-                .map(city -> city.getCityName())
-                .distinct().count();
-
-        findMember.setCities(cities);
         return findMember;
     }
 
@@ -182,7 +172,10 @@ public class MemberService {
         if (member.getMemberId() != getLoginMember().getMemberId()) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
-        Map<String, String> profile = s3Service.uploadFile(member.getProfileKey(), multipartFile);
+        //기본 이미지일 경우 삭제 X
+        boolean isBasicImage = member.getProfileKey().equals("basic.png");
+
+        Map<String, String> profile = s3Service.uploadFile(member.getProfileKey(), multipartFile, isBasicImage);
         member.setProfileImage(profile.get("url"));
         member.setProfileKey(profile.get("key"));
 
