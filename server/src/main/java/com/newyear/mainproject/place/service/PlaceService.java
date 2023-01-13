@@ -39,6 +39,14 @@ public class PlaceService {
                 .ifPresent(startTime -> findPlace.setStartTime(startTime));
         Optional.ofNullable(place.getEndTime())
                 .ifPresent(endTime -> findPlace.setEndTime(endTime));
+        Optional.ofNullable(place.getLatitude())
+                .ifPresent(latitude -> findPlace.setLatitude(latitude));
+        Optional.ofNullable(place.getLongitude())
+                .ifPresent(longitude -> findPlace.setLongitude(longitude));
+        Optional.ofNullable(place.getPlaceAddress())
+                .ifPresent(address -> findPlace.setPlaceAddress(address));
+        Optional.ofNullable(place.getPlaceImage())
+                .ifPresent(image -> findPlace.setPlaceImage(image));
 
         return placeRepository.save(findPlace);
     }
