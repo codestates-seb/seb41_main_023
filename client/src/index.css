@@ -154,6 +154,19 @@ button {
   border-radius: 3px; 
 }
 
+.button--google {
+  padding: 10px 14px; 
+  font-weight: 500;
+  background-color: var(--white);
+  color: var(--dark-gray-1);
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px;
+}
+
+.button--google:hover {
+  background-color: var(--light-gray-1);
+}
+
 .button--default:hover {
   background-color: var(--light-gray-3);
 }
