@@ -12,13 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -43,17 +41,27 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
 //        List<String> authorities = authorityUtils.createRoles(email); // CustomAuthorityUtils를 이용해 권한 정보를 생성
 //        사실 오류가 나서 없애고 직접 유저권한으로 주입하였지만 OAuth로 로그인 하는데 다른 권한을 줄 필요가 있나??
+        String accessToken = "";
+        String refreshToken = "";
 
         try {
             Member findMember = memberRepository.findByEmail(email).get();
 
-            //OAuth로그인시 이미 가입된 이메일일 경우 (비밀번호가 null값으로 필터링)사이트 이용 불가
-            if(findMember.getPassword() == null) redirect(request, response, findMember.getEmail());
+            accessToken = delegateAccessToken(findMember.getEmail(), List.of("USER"));
+            refreshToken = delegateRefreshToken(findMember.getEmail());
+
+
+            //OAuth 로그인시 이미 가입된 이메일일 경우 (비밀번호가 null 값으로 필터링)사이트 이용 불가
+            if(findMember.getPassword() == null) {
+                response.setHeader("Authorization", "Bearer " + accessToken);
+                response.setHeader("Refresh", refreshToken);
+            }
             else throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
         catch (NoSuchElementException e){
             saveMember(email, name, profileImage); //db에 저장
-            redirect(request, response, email);
+            response.setHeader("Authorization", "Bearer " + accessToken);
+            response.setHeader("Refresh", refreshToken);
         }
     }
 
@@ -67,22 +75,22 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         memberRepository.save(member);
     }
 
-    private void redirect(HttpServletRequest request, HttpServletResponse response, String username) throws IOException {
-
-        String accessToken = delegateAccessToken(username, List.of("USER"));
-        String refreshToken = delegateRefreshToken(username);
-
-        response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("Refresh", refreshToken);
-        //Frontend 애플리케이션 쪽의 URL을 생성합니다. createURI() 메서드에서
-        //UriComponentsBuilder를 이용해 Access Token과 Refresh Token을 포함한 URL을 생성
-        //UriComponentsBuilder에서 Port 설정을 하지 않으면 기본값은 80 포트
-        String uri = createURI(accessToken, refreshToken).toString();
-
-        //SimpleUrlAuthenticationSuccessHandler에서 제공하는 sendRedirect() 메서드를 이용해
-        //Frontend 애플리케이션 쪽으로 리다이렉트
-        getRedirectStrategy().sendRedirect(request, response, uri);
-    }
+//    private void redirect(HttpServletRequest request, HttpServletResponse response, String username) throws IOException {
+//
+//        String accessToken = delegateAccessToken(username, List.of("USER"));
+//        String refreshToken = delegateRefreshToken(username);
+//
+//        response.setHeader("Authorization", "Bearer " + accessToken);
+//        response.setHeader("Refresh", refreshToken);
+//        //Frontend 애플리케이션 쪽의 URL을 생성합니다. createURI() 메서드에서
+//        //UriComponentsBuilder를 이용해 Access Token과 Refresh Token을 포함한 URL을 생성
+//        //UriComponentsBuilder에서 Port 설정을 하지 않으면 기본값은 80 포트
+////        String uri = createURI(accessToken, refreshToken).toString();
+//
+//        //SimpleUrlAuthenticationSuccessHandler에서 제공하는 sendRedirect() 메서드를 이용해
+//        //Frontend 애플리케이션 쪽으로 리다이렉트
+////        getRedirectStrategy().sendRedirect(request, response, uri);
+//    }
 
     private String delegateAccessToken(String username, List<String> authorities) {
         Map<String, Object> claims = new HashMap<>();
@@ -119,18 +127,18 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return refreshToken;
     }
 
-    private URI createURI(String accessToken, String refreshToken) {
-//        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-//        queryParams.add("access_token", accessToken);
-//        queryParams.add("refresh_token", refreshToken);
-
-        return UriComponentsBuilder
-                .newInstance()
-                .scheme("http")
-                .host("localhost")
-                .port(8080)
-//                .queryParams(queryParams)
-                .build()
-                .toUri();
-    }
+//    private URI createURI(String accessToken, String refreshToken) {
+////        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+////        queryParams.add("access_token", accessToken);
+////        queryParams.add("refresh_token", refreshToken);
+//
+//        return UriComponentsBuilder
+//                .newInstance()
+//                .scheme("http")
+//                .host("localhost")
+//                .port(8080)
+////                .queryParams(queryParams)
+//                .build()
+//                .toUri();
+//    }
 }
