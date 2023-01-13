@@ -1,5 +1,6 @@
 package com.newyear.mainproject.plan.mapper;
 
+import com.newyear.mainproject.budget.dto.BudgetDto;
 import com.newyear.mainproject.budget.entity.Budget;
 import com.newyear.mainproject.city.City;
 import com.newyear.mainproject.city.CityDto;
@@ -88,6 +89,7 @@ public interface PlanMapper {
         response.setEndDate(DateUtil.convertStringToDateFormatV1(plan.getEndDate()));
         response.setPlanDates(planDateToPlanDateResponseDtos(plan.getPlanDates()));
         response.setPlanDatesAndPlace(planDatesToPlanDatesDetailResponseDtos(plan.getPlanDates()));
+        response.setBudget(budgetToBudgetSimpleResponseDto(plan.getBudget()));
         return response;
     }
 
@@ -181,4 +183,5 @@ public interface PlanMapper {
     }
 
    ExpenseDto.SimpleResponse expensesToExpenseSimpleResponseDto(Expenses expenses);
+    BudgetDto.SimpleResponse budgetToBudgetSimpleResponseDto(Budget budget);
 }

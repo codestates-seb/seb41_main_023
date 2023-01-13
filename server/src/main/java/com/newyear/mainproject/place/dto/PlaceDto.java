@@ -27,6 +27,10 @@ public class PlaceDto {
     public static class Patch {
         private Long placeId;
         private String placeName;
+        private Integer latitude; //위도
+        private Integer longitude; //경도
+        private String placeAddress;
+        private String placeImage;
         private String startTime;
         private String endTime;
     }
