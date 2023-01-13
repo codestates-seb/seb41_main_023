@@ -153,6 +153,10 @@ public interface PlanMapper {
                                 .startTime(place.getStartTime())
                                 .endTime(place.getEndTime())
                                 .expenses(expensesToExpenseSimpleResponseDto(place.getExpenses()))
+                                .latitude(place.getLatitude())
+                                .longitude(place.getLongitude())
+                                .placeAddress(place.getPlaceAddress())
+                                .placeImage(place.getPlaceImage())
                                 .build())
                     .collect(Collectors.toList());
     }
@@ -165,7 +169,7 @@ public interface PlanMapper {
                         return PlanDto.PlanDatesDetailResponse
                                 .builder()
                                 .planDateId(planDates.getPlanDateId())
-                                .planDate(DateUtil.convertStringToDateFormatV2(planDates.getPlanDate()))
+                                .planDate(DateUtil.convertStringToDateFormatV1(planDates.getPlanDate()))
                                 .subTitle(planDates.getSubTitle())
                                 .places(placesToPlaceResponseDtos(planDates.getPlaces()))
                                 .build();
