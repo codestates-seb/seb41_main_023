@@ -27,9 +27,20 @@ const UserProfileEdit = () => {
     });
   };
 
-  const getUserInfo = async () => {
-    const data = await getData(`/members/userProfile/${memberId}`);
-    setUserInfo(data);
+  // const getUserInfo = async () => {
+  //   const data = await getData(`/members/userProfile/${memberId}`);
+  //   setUserInfo(data);
+  // };
+
+  // 유저 정보 요청
+  const getUserInfo = () => {
+    axios
+      .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => setUserInfo(res.data));
   };
 
   useEffect(() => {
@@ -80,23 +91,22 @@ const UserProfileEdit = () => {
   const SettingUserThumbnail = () => {
     const inputRef = useRef(null);
 
-    const onUploadImage = (e) => {
+    const onUploadImage = async (e) => {
       if (!e.target.files) {
         return;
       }
-
       if (window.confirm("프로필을 변경하시겠습니까?")) {
         const formData = new FormData();
         //formData.append : FormData 객체안에 이미 키가 존재하면 그 키에 새로운 값을 추가하고, 키가 없으면 추가
-        formData.append("image", e.target.files[0]);
-        axios({
-          method: "GET",
+        formData.append("multipartFile", e.target.files[0]);
+        await axios({
+          method: "POST",
           url: `https://www.sebmain41team23.shop/members/${memberId}/profile`,
-          data: formData,
           headers: {
             Authorization: token,
             "Content-Type": "multipart/form-data",
           },
+          data: formData,
         });
       }
     };

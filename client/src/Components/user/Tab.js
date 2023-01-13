@@ -5,11 +5,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getCookie, removeCookie } from "../../Util/Cookies";
-import { getData, patchData, postData, deleteData } from "../../Util/api";
+import { patchData } from "../../Util/api";
+import axios from "axios";
 
 import Modal from "./Modal";
-
-const memberId = getCookie("memberId");
 
 // 유저이름 수정
 const General = ({ handleChange, handleSubmit, nameRef }) => {
@@ -34,6 +33,7 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
 
 // 비밀번호 수정
 const Password = () => {
+  const memberId = getCookie("memberId");
   const [inputs, setInputs] = useState({
     originPassword: "",
     newPassword: "",
@@ -61,7 +61,6 @@ const Password = () => {
       ...inputs,
       [name]: value,
     };
-
     setInputs(data);
   };
 
@@ -78,7 +77,6 @@ const Password = () => {
       password: inputs.newPassword,
     }).then((res) => {
       if (res) {
-        console.log(res);
         setInputs({ originPassword: "", newPassword: "" });
         alert("비밀번호가 변경되었습니다");
       } else {
@@ -122,34 +120,35 @@ const Password = () => {
 
 /* 계정 삭제 */
 const DeleteAccount = ({ modal, setModal }) => {
+  const memberId = getCookie("memberId");
+  const token = getCookie("accessToken");
+  const refreshToken = localStorage.getItem("refresh-token");
   const navigate = useNavigate();
-  const handleDeleteAccount = () => {
-    // axios
-    //   .delete(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
-    //     headers: {
-    //       Authorization: token,
-    //       withCredentials: true,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     removeCookie("accessToken");
-    //     alert("그동안 이용해주셔서 감사합니다.");
-    //     navigate("/");
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => console.log("error"));
 
-    deleteData(`/members/${memberId}`).then((res) => {
-      if (res) {
-        console.log(res);
+  const handleDeleteAccount = () => {
+    console.log(token, refreshToken);
+    axios
+      .delete(`https://www.sebmain41team23.shop/members/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+        data: {
+          accessToken: token,
+          refreshToken: refreshToken,
+        },
+      })
+      .then((res) => {
         removeCookie("accessToken");
         removeCookie("memberId");
+      })
+      .then((res) => {
         localStorage.removeItem("refresh-token");
         alert("그동안 이용해주셔서 감사합니다.");
-      } else {
-        alert("탈퇴 못함");
-      }
-    });
+      })
+      .then((res) => {
+        window.location.replace("/");
+      })
+      .catch((err) => console.log("error"));
   };
 
   return (

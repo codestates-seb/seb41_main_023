@@ -1,19 +1,21 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { getData } from "../Util/api";
-
-// import { data } from "../dummyCity";
+import { useState, useEffect } from "react";
 
 const Autocomplete = ({ handleDestination, inputRef }) => {
-  // const dummyCity = data.map((el) => el.cityName);
   const [city, setCity] = useState();
-  // console.log(city);
 
   /* 도시 정보 조회 */
-  const getCity = async () => {
-    const data = await getData(`/city`);
-    setCity(data.data.map((el) => el.cityName));
+  // const getCity = async () => {
+  //   const data = await getData(`/city`);
+  //   setCity(data.data.map((el) => el.cityName));
+  // };
+
+  const getCity = () => {
+    axios
+      .get(`https://www.sebmain41team23.shop/city`, {})
+      .then((res) => setCity(res.data.data.map((el) => el.cityName)));
   };
 
   useEffect(() => {
@@ -26,23 +28,24 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
   const offset = 44032;
 
   const orderOffest = [
-    ['ㄱ', 44032],
-    ['ㄲ', 44620],
-    ['ㄴ', 45208],
-    ['ㄷ', 45796],
-    ['ㄸ', 46384],
-    ['ㄹ', 46972],
-    ['ㅁ', 47560],
-    ['ㅂ', 48148],
-    ['ㅃ', 48736],
-    ['ㅅ', 49324],
+    ["ㄱ", 44032],
+    ["ㄲ", 44620],
+    ["ㄴ", 45208],
+    ["ㄷ", 45796],
+    ["ㄸ", 46384],
+    ["ㄹ", 46972],
+    ["ㅁ", 47560],
+    ["ㅂ", 48148],
+    ["ㅃ", 48736],
+    ["ㅅ", 49324],
   ];
 
   const con2syl = Object.fromEntries(orderOffest);
   const pattern = (ch) => {
     let r;
     if (reJa.test(ch)) {
-      const begin = con2syl[ch] || (ch.charCodeAt(0) - 12613) * 588 + con2syl['ㅅ'];
+      const begin =
+        con2syl[ch] || (ch.charCodeAt(0) - 12613) * 588 + con2syl["ㅅ"];
       const end = begin + 587;
       r = `[${ch}\\u${begin.toString(16)}-\\u${end.toString(16)}]`;
     } else if (reChar.test(ch)) {
@@ -51,7 +54,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
       const begin = Math.floor(chCode / 28) * 28 + offset;
       const end = begin + 27;
       r = `[\\u${begin.toString(16)}-\\u${end.toString(16)}]`;
-    } else r = ch.replace(reESC, '\\$&');
+    } else r = ch.replace(reESC, "\\$&");
     return `(${r})`;
   };
 
@@ -61,13 +64,13 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
    */
 
   const isInitialMatch = (inputValue, target) => {
-    const reg = new RegExp(inputValue.split('').map(pattern).join('.*?'), 'i');
+    const reg = new RegExp(inputValue.split("").map(pattern).join(".*?"), "i");
     const matches = reg.exec(target);
     return Boolean(matches);
   };
 
   const [hasText, setHasText] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState(city);
 
   const [activeSuggestion, setActiveSuggestion] = useState(0);
@@ -98,7 +101,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
   };
 
   useEffect(() => {
-    if (inputValue === '') {
+    if (inputValue === "") {
       setHasText(false);
       setOptions([]);
     } else {
@@ -148,7 +151,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
   // x 버튼 누르면 초기화
   const handleClear = () => {
     setActiveSuggestion(0);
-    setInputValue('');
+    setInputValue("");
   };
 
   return (
@@ -195,10 +198,14 @@ export const DropDown = ({ options, handleComboBox, activeSuggestion }) => {
         let className;
 
         if (index === activeSuggestion) {
-          className = 'active';
+          className = "active";
         }
         return (
-          <li key={option} onClick={() => handleComboBox(option)} className={className}>
+          <li
+            key={option}
+            onClick={() => handleComboBox(option)}
+            className={className}
+          >
             {option}
           </li>
         );
@@ -247,7 +254,8 @@ const DropDownContainer = styled.ul`
   border: 1px solid var(--light-gray-4);
   border-radius: 3px;
   list-style: none;
-  box-shadow: 0px 0px 1px rgba(9, 30, 66, 0.31), 0px 8px 12px rgba(9, 30, 66, 0.15);
+  box-shadow: 0px 0px 1px rgba(9, 30, 66, 0.31),
+    0px 8px 12px rgba(9, 30, 66, 0.15);
   z-index: 999;
 
   li {
