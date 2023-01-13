@@ -1,13 +1,15 @@
-import axios from 'axios';
-import moment from 'moment';
-import styled, { css } from 'styled-components';
-import { useState, useRef } from 'react';
-import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import moment from "moment";
+import styled from "styled-components";
+import { useState, useRef, useEffect } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import { getCookie } from "../Util/Cookies";
 
-import Header from '../Components/Header';
-import Calendar from '../Components/Calendar';
-import Autocomplete from '../Components/AutoComplete';
+import Header from "../Components/Header";
+import Calendar from "../Components/Calendar";
+import Autocomplete from "../Components/AutoComplete";
+import { de } from "date-fns/locale";
 
 import logOutBgImg from '../images/logged-out_background-image.jpg';
 import logInBgImg from '../images/login_background-image-02.jpg';
@@ -21,16 +23,23 @@ const Home = ({ login }) => {
 
   const inputRef = useRef([]);
   const inputCalendarRef = useRef([]);
+  const calenderRef = useRef();
+  const token = getCookie("accessToken");
 
-  const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
-  const [token, setIsToken] = useState();
+  //달력 외부 영역 클릭 시 닫힘
+  const handleClickOutside = (e) => {
+    if (showCalendar && !calenderRef.current.contains(e.target)) {
+      setShowCalendar(false);
+    }
+  };
 
-  //토큰 설정
-  // useEffect(() => {
-  //   if (cookies.accessToken) {
-  //     setIsToken(cookies.accessToken.token);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (showCalendar)
+      document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showCalendar]);
 
   const handleDate = (date) => {
     setStartDate(moment(date[0].startDate).format('YYYY-MM-DD'));
@@ -47,7 +56,8 @@ const Home = ({ login }) => {
    *  @param {string} endDate 종료 날짜
    */
 
-  const handleSubmit = (destination, startDate, endDate) => {
+  // 일정 생성 요청
+  const handleSubmit = async (destination, startDate, endDate) => {
     // console.log(destination, startDate, endDate);
 
     //장소가 입력되지 않았을 때 포커싱
@@ -62,15 +72,22 @@ const Home = ({ login }) => {
         endDate: endDate,
       };
       if (login) {
-        axios
-          .post(`${process.env.REACT_APP_API_URL}/plans`, {
-            headers: {
-              // Authorization: token,
-              withCredentials: true,
+        await axios
+          .post(
+            "https://www.sebmain41team23.shop/plans",
+            {
+              cityName: destination,
+              startDate: startDate,
+              endDate: endDate,
             },
-            data: data,
-          })
-          .then((res) => navigate(`/itinerary/${res.data.planId}`));
+            {
+              headers: {
+                Authorization: token,
+                withCredentials: true,
+              },
+            }
+          )
+          .then((res) => navigate(`/itinerary/${res.data.data.planId}`));
       } else {
         localStorage.setItem('plan', JSON.stringify(data));
         navigate('/login');
@@ -121,7 +138,13 @@ const Home = ({ login }) => {
               Start Planning
             </button>
           </BottomSection>
-          {showCalendar && <Calendar handleDate={handleDate} login={login} />}
+          {showCalendar && (
+            <Calendar
+              calenderRef={calenderRef}
+              handleDate={handleDate}
+              login={login}
+            />
+          )}
         </Content>
       </Main>
     </HomeContainer>

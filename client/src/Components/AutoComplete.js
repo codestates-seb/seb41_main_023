@@ -1,30 +1,24 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { data } from '../dummyCity';
+import axios from "axios";
+import { useState, useEffect } from "react";
+import styled from "styled-components";
+import { getData } from "../Util/api";
+
+// import { data } from "../dummyCity";
 
 const Autocomplete = ({ handleDestination, inputRef }) => {
-  const dummyCity = data.map((el) => el.cityName);
-  const [city, setCity] = useState(dummyCity);
+  // const dummyCity = data.map((el) => el.cityName);
+  const [city, setCity] = useState();
   // console.log(city);
 
   /* 도시 정보 조회 */
-  // useEffect(() => {
-  //   axios({
-  //     url: `${process.env.REACT_APP_API_URL}/city`,
-  //     method: "GET",
-  //     headers: {
-  //       withCredentials: true,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //        setCity(res.data.map((el)=>el.cityName))
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
+  const getCity = async () => {
+    const data = await getData(`/city`);
+    setCity(data.data.map((el) => el.cityName));
+  };
+
+  useEffect(() => {
+    getCity();
+  }, []);
 
   const reESC = /[\\^$.*+?()[\]{}|]/g;
   const reChar = /[가-힣]/;
@@ -100,7 +94,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
       .map((option) => {
         return option;
       })
-      .slice(0, 7);
+      .slice(0, 5);
   };
 
   useEffect(() => {

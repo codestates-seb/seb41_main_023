@@ -1,25 +1,21 @@
 import styled from "styled-components";
 import axios from "axios";
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { useCookies } from 'react-cookie';
 import { useNavigate, Link } from "react-router-dom";
-// import GLogin from "../Components/GLogin";
-// import GLogout from "../Components/GLogout"
-// import { gapi } from "gapi-script";
+import { setCookie } from "../Util/Cookies";
 
 const SignUpStyle = styled.div`
-    width: 50vw;
-    height: 100vh;
-    float: left;
+  width: 50vw;
+  height: 100vh;
+  float: left;
 `;
 
 const BackgroundImgStyle = styled.div`
-    width: 50vw;
-    height: 100vh;
-    background-color: lightgray;
-    float: right;
+  width: 50vw;
+  height: 100vh;
+  background-color: lightgray;
+  float: right;
 `;
-
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
@@ -27,21 +23,10 @@ const LoginPage = ({ setIsLoggedIn }) => {
   const eref = useRef();
   const pref = useRef();
   const navigate = useNavigate();
-  const [cookie, setCookie] = useCookies(["access-token"]);
 
   useEffect(() => {
     eref.current.focus();
   }, []);
-
-  //   useEffect(() => {
-  //     const start = () => {
-  //     gapi.client.init({
-  //       clientId: clientId,
-  //       scope: ""
-  //     })
-  //   };
-  //   gapi.load("client:auth2", start);
-  // });
 
   // 이메일, 비밀번호
   const [email, setEmail] = useState("");
@@ -58,24 +43,29 @@ const LoginPage = ({ setIsLoggedIn }) => {
   // 로그인 요청
   const login = async () => {
     try {
-      const response = await axios
-      .post("http://localhost:3001/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://www.sebmain41team23.shop/members/login",
+        {
+          email,
+          password,
+        }
+      );
       console.log(response);
-      const { status } = response;
 
-      if (status === 200)
-      setCookie("access-token", response.토큰위치);
-      localStorage.setItem("refresh-token", response.토큰위치);
-      setIsLoggedIn(true);
-      alert("로그인되었습니다. 메인 페이지로 이동합니다.");
-      navigate("/");
-      
+      if (response.status === 200) {
+        setCookie("accessToken", response.headers.authorization);
+        setCookie("memberId", response.data.memberId);
+        localStorage.setItem("refresh-token", response.headers.refresh);
+        setIsLoggedIn(true);
+        alert("로그인되었습니다. 메인 페이지로 이동합니다.");
+        navigate("/");
+      }
     } catch (err) {
       console.error(err);
-      if (err.response.status === 401) alert("이메일 또는 비밀번호를 잘못 입력하셨거나 등록되지 않은 회원입니다.");
+      if (err.response.status === 401)
+        alert(
+          "이메일 또는 비밀번호를 잘못 입력하셨거나 등록되지 않은 회원입니다."
+        );
       else if (err.response.status === 404) alert("페이지를 찾을 수 없습니다.");
       else if (err.response.status === 500) alert("서버 점검 중...");
     }
@@ -97,7 +87,8 @@ const LoginPage = ({ setIsLoggedIn }) => {
 
   // email
   const onChangeEmail = useCallback((e) => {
-    const emailRegex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    const emailRegex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     setEmail(e.target.value);
 
     if (!emailRegex.test(e.target.value)) {
@@ -111,11 +102,14 @@ const LoginPage = ({ setIsLoggedIn }) => {
 
   // password
   const onChangePassword = useCallback((e) => {
-    const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
+    const passwordRegex =
+      /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
     setPassword(e.target.value);
 
     if (!passwordRegex.test(e.target.value)) {
-      setPasswordMessage("숫자와 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.");
+      setPasswordMessage(
+        "숫자와 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요."
+      );
       setIsPassword(false);
     } else {
       setPasswordMessage("올바른 비밀번호입니다.");
@@ -123,7 +117,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
     }
   }, []);
 
-  // email 'enter' -> pw 
+  // email 'enter' -> pw
   const emailEnter = (e) => {
     if (e.key === "Enter") pref.current.focus();
   };
@@ -175,8 +169,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
         )}
 
         <button onClick={onLogin}>sign in</button>
-        {/* <GLogin setIsLoggedIn={setIsLoggedIn}/>
-          <GLogout setIsLoggedIn={setIsLoggedIn}/> */}
+        <button onClick={() => navigate("//")}>google</button>
 
         <div>
           Not a member? <Link to="/signup">Sign up</Link>
@@ -186,6 +179,6 @@ const LoginPage = ({ setIsLoggedIn }) => {
       <BackgroundImgStyle />
     </>
   );
-}
+};
 
 export default LoginPage;

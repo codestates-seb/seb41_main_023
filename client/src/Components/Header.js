@@ -1,25 +1,16 @@
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useCookies } from 'react-cookie';
-import { useEffect, useState } from 'react';
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { removeCookie } from "../Util/Cookies";
+import { getCookie } from "../Util/Cookies";
+import { postData } from "../Util/api.js";
 
 const Header = ({ login }) => {
-  const [token, setToken] = useState();
-  const [memberId, setMemberId] = useState();
-  const [cookies, setCookie] = useCookies(['accessToken']);
   const navigate = useNavigate();
 
-  const [userProfile, setUserProfile] = useState('https://picsum.photos/50');
-
-  // 토큰 설정
-  // useEffect(() => {
-  //   if (cookies.accessToken) {
-  //     setToken(cookies.accessToken.token);
-  //   }
-  // }, []);
-
-  // memberId 설정
+  const token = getCookie("accessToken");
+  const refreshToken = localStorage.getItem("refresh-token");
+  const [userProfile, setUserProfile] = useState("https://picsum.photos/50");
 
   // 유저 프로필 요청
   //  useEffect(() => {
@@ -59,17 +50,18 @@ const Header = ({ login }) => {
   };
 
   // 로그아웃
-  const handleSignout = () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/members/logout`, {
-          headers: {
-            // Authorization: token,
-            withCredentials: true,
-          },
-        })
-        .then((res) => console.log(res))
-        .then((res) => navigate('/'));
+  const handleSignout = async () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      await postData("/members/logout", {
+        accessToken: token,
+        refreshToken: refreshToken,
+      }).then((res) => {
+        removeCookie("accessToken");
+        removeCookie("memberId");
+        localStorage.removeItem("refresh-token");
+        navigate("/");
+        window.location.reload();
+      });
     }
   };
 

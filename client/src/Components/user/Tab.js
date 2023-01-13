@@ -1,25 +1,10 @@
 /* 유저이름, 비밀번호 수정, 계정 삭제 */
 
-import axios from "axios";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-// import { useCookies } from "react-cookie";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Modal from "./Modal";
-
-// const [token, setToken] = useState();
-// const [memberId,setMemberId] = useState();
-// const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
-
-// 토큰 설정
-// useEffect(() => {
-//   if (cookies.accessToken) {
-//     setToken(cookies.accessToken.token)
-//   }
-// }, []);
-
-//memberId 설정
 
 // 유저이름 수정
 const General = ({ handleChange, handleSubmit, nameRef }) => {
@@ -32,6 +17,7 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
           name="id"
           id="username"
           ref={nameRef}
+          placeholder="Enter a new user name"
         ></input>
       </div>
       <div className="submit_area">
@@ -48,8 +34,24 @@ const Password = () => {
     newPassword: "",
   });
 
+  const [valueCheck, setValueCheck] = useState(true);
+  //유효성 검사(숫자, 영문, 특수문자 조합한 8~20자리)
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&#]{8,}$/i;
+
+  useEffect(() => {
+    const passwordValueCheck = passwordRegex.test(inputs.newPassword);
+
+    if (!passwordValueCheck) {
+      setValueCheck(false);
+    } else {
+      setValueCheck(true);
+    }
+  }, [inputs.newPassword]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     const data = {
       ...inputs,
       [name]: value,
@@ -58,12 +60,10 @@ const Password = () => {
     setInputs(data);
   };
 
+  // 비밀번호 수정 요청
   const submitPassword = () => {
-    //유효성 검사(숫자, 영문, 특수문자 조합한 8~20자리)
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&#]{8,}$/i;
-
     const passwordValueCheck = passwordRegex.test(inputs.newPassword);
+
     if (!passwordValueCheck) {
       return;
     }
@@ -102,6 +102,7 @@ const Password = () => {
           name="originPassword"
           value={inputs.originPassword}
           onChange={handleChange}
+          placeholder="Enter your current password"
         ></input>
         <div>New password</div>
         <input
@@ -109,11 +110,14 @@ const Password = () => {
           name="newPassword"
           value={inputs.newPassword}
           onChange={handleChange}
+          placeholder="Enter a new password"
         ></input>
-        <div>
-          숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를
-          입력하세요.
-        </div>
+        {!valueCheck ? (
+          <div>
+            숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를
+            입력하세요.
+          </div>
+        ) : null}
       </div>
       <div className="submit_area">
         <button onClick={submitPassword}>Save Changes</button>
@@ -163,6 +167,7 @@ export { General, Password, DeleteAccount };
 const GeneralContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 450px;
   & .input_area {
     > input {
       width: 97%;
@@ -182,6 +187,7 @@ const GeneralContainer = styled.div`
 const PasswordContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 450px;
 
   & .input_area {
     > input {

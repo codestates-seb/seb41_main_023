@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import GlobalStyle from "./GlobalStyle";
-import SignUpPage from "./Pages/SignUpPage";
-import LoginPage from "./Pages/LoginPage";
+
+import { getCookie } from "./Util/Cookies";
+
 import Home from "./Pages/Home";
 import Main from "./Pages/Main";
+import Itinerary from "./Pages/Itinerary";
+import LoginPage from "./Pages/LoginPage";
+import SignUpPage from "./Pages/SignUpPage";
 import UserProfile from "./Pages/UserProfile";
 import UserProfileEdit from "./Pages/UserProfileEdit";
-import Itinerary from "./Pages/Itinerary";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (getCookie("accessToken")) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <>

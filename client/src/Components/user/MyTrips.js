@@ -1,86 +1,26 @@
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import moment from "moment";
+import { getData } from "../../Util/api";
+import { postData } from "../../Util/api";
+
+import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MyTrips = () => {
-  const dummyItineraryList = [
-    {
-      planId: 1,
-      cityName: 'Seoul',
-      planTitle: 'Trip to Seoul',
-      startDate: 'Jan 31',
-      endDate: 'Feb 18',
-      plans: '6',
-      image: 'https://picsum.photos/100', //추가 필요
-    },
-    {
-      planId: 2,
-      cityName: 'Seoul',
-      planTitle: 'Trip to Seoul',
-      startDate: 'Jan 31',
-      endDate: 'Feb 18',
-      plans: '6',
-      image: 'https://picsum.photos/200',
-    },
-    {
-      planId: 3,
-      cityName: 'Seoul',
-      planTitle: 'Trip to Seoul',
-      startDate: 'Jan 31',
-      endDate: 'Feb 18',
-      plans: '6',
-      image: 'https://picsum.photos/300',
-    },
-    {
-      planId: 4,
-      cityName: 'Seoul',
-      planTitle: 'Trip to Seoul',
-      startDate: 'Jan 31',
-      endDate: 'Feb 18',
-      plans: '6',
-      image: 'https://picsum.photos/400',
-    },
-    {
-      planId: 5,
-      cityName: 'Seoul',
-      planTitle: 'Trip to Seoul',
-      startDate: 'Jan 31',
-      endDate: 'Feb 18',
-      plans: '6',
-      image: 'https://picsum.photos/500',
-    },
-  ];
-
   const navigate = useNavigate();
-  const [tripList, setTripList] = useState(dummyItineraryList);
-  const [token, setToken] = useState();
 
-  // 토큰 설정
-  // useEffect(() => {
-  //   if (cookies.accessToken) {
-  //     setToken(cookies.accessToken.token);
-  //   }
-  // }, []);
+  //초기값 배열 설정하기
+  const [tripList, setTripList] = useState([]);
 
-  // 전체 일정 조회
-  // useEffect(() => {
-  //   axios({
-  //     url: `${process.env.REACT_APP_API_URL}/plans`,
-  //     method: "GET",
-  //     headers: {
-  //        Authorization: token,
-  //       withCredentials: true,
-  //     },
-  //   })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //        setTripList(response.data)
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
+  // 전체 일정 조회 async
+  const getTrip = async () => {
+    const data = await getData(`/plans`);
+    setTripList(data.data);
+  };
+
+  useEffect(() => {
+    getTrip();
+  }, []);
 
   return (
     <MyTripsContainer>
@@ -96,7 +36,8 @@ const MyTrips = () => {
             <div className="meta_title">{el.planTitle}</div>
             <div className="meta_content">
               <div>
-                {el.startDate} - {el.endDate}
+                {moment(el.startDate).format("M월 D일")} -{" "}
+                {moment(el.endDate).format("M월 D일")}
               </div>
               <div>
                 {el.plans} places · {el.cityName}

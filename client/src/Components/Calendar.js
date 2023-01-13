@@ -152,8 +152,8 @@ const CalendarContainer = styled.div`
   } */
 `;
 
-const Calendar = ({ handleDate, login }) => {
-  const tomorrow = moment().add(1, 'd').toDate();
+const Calendar = ({ handleDate, login, calenderRef }) => {
+  const tomorrow = moment().add(1, "d").toDate();
 
   const [date, setDate] = useState([
     {
@@ -168,7 +168,7 @@ const Calendar = ({ handleDate, login }) => {
   }, [date[0].startDate, date[0].endDate]);
 
   return (
-    <CalendarContainer className={login ? 'login' : null}>
+    <CalendarContainer ref={calenderRef} className={login ? 'login' : null}>
       <div className="calendar">
         <DateRange
           editableDateInputs={true}
