@@ -1,6 +1,8 @@
 package com.newyear.mainproject.plan.mapper;
 
 import com.newyear.mainproject.budget.entity.Budget;
+import com.newyear.mainproject.city.City;
+import com.newyear.mainproject.city.CityDto;
 import com.newyear.mainproject.expense.dto.ExpenseDto;
 import com.newyear.mainproject.expense.entity.Expenses;
 import com.newyear.mainproject.place.dto.PlaceDto;
@@ -67,6 +69,7 @@ public interface PlanMapper {
                                         .endDate(DateUtil.convertStringToDateFormatV1(plan.getEndDate()))
                                         .cityName(plan.getCityName())
                                         .placesCount(plan.getPlaces().size())
+                                        .city(cityImageResponseToCity(plan.getCity()))
                                         .build();
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
@@ -74,6 +77,8 @@ public interface PlanMapper {
                         }
                 ).collect(Collectors.toList());
     }
+    CityDto.ImageResponse cityImageResponseToCity(City city);
+
     default PlanDto.PlanDatePlaceDetailResponse planToPlaceDetailResponseDto(Plan plan) throws ParseException {
         PlanDto.PlanDatePlaceDetailResponse response = new PlanDto.PlanDatePlaceDetailResponse();
         response.setPlanId(plan.getPlanId());

@@ -1,5 +1,6 @@
 package com.newyear.mainproject.plan.service;
 
+import com.newyear.mainproject.city.CityService;
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
@@ -20,11 +21,13 @@ public class PlanService {
    private final PlanRepository planRepository;
    private final PlanDateRepository planDateRepository;
    private final MemberService memberService;
+   private final CityService cityService;
 
-    public PlanService(PlanRepository planRepository, PlanDateRepository planDateRepository, MemberService memberService) {
+    public PlanService(PlanRepository planRepository, PlanDateRepository planDateRepository, MemberService memberService, CityService cityService) {
         this.planRepository = planRepository;
         this.planDateRepository = planDateRepository;
         this.memberService = memberService;
+        this.cityService = cityService;
     }
 
     /**
@@ -32,6 +35,7 @@ public class PlanService {
      */
     public Plan createPlan(Plan plan) {
         plan.setMember(memberService.getLoginMember());
+        plan.setCity(cityService.findCity(plan.getCityName()));
         return planRepository.save(plan);
     }
 
