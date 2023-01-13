@@ -5,11 +5,15 @@ import com.newyear.mainproject.comment.entity.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @Getter @Setter
 @Entity
@@ -24,7 +28,7 @@ public class Member{
     @Column(nullable = false)
     private String displayName;
 
-    @Column(length = 100)
+    @Column(nullable = false, length = 100)
     private String password;
 
     @Column(nullable = false)
@@ -33,11 +37,9 @@ public class Member{
     @Column(nullable = false)
     private String profileKey;
 
-    @Column
-    private long trips;
-
-    @Column
-    private long cities;
+    @CreatedDate
+    @Column(updatable = false) //update 시, createdAt null 문제로 updatable = false 추가
+    private LocalDateTime createdAt;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
