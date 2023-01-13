@@ -2,6 +2,7 @@ package com.newyear.mainproject.plan.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.newyear.mainproject.budget.dto.BudgetDto;
+import com.newyear.mainproject.city.CityDto;
 import com.newyear.mainproject.place.dto.PlaceDto;
 import lombok.*;
 
@@ -43,6 +44,7 @@ public class PlanDto {
 
         private List<PlanDto.PlanDatesSimpleResponse> planDates;
         private BudgetDto.SimpleResponse budget;
+        private CityDto.ImageResponse city;
     }
 
     @Getter
@@ -53,7 +55,7 @@ public class PlanDto {
         private String planTitle;
         private String startDate;
         private String endDate;
-
+        private BudgetDto.SimpleResponse budget;
         private List<PlanDatesResponse> planDates = new ArrayList<>();
         private List<PlanDto.PlanDatesDetailResponse> planDatesAndPlace = new ArrayList<>();
     }

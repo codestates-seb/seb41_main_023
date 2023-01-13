@@ -28,7 +28,7 @@ public class Member{
     @Column(nullable = false)
     private String displayName;
 
-    @Column(length = 100)
+    @Column(nullable = false, length = 100)
     private String password;
 
     @Column(nullable = false)
@@ -36,12 +36,6 @@ public class Member{
 
     @Column(nullable = false)
     private String profileKey;
-
-    @Column
-    private long trips;
-
-    @Column
-    private long cities;
 
     @CreatedDate
     @Column(updatable = false) //update 시, createdAt null 문제로 updatable = false 추가

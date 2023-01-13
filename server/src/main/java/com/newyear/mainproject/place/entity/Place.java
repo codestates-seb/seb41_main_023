@@ -27,7 +27,19 @@ public class Place {
 
     private String endTime; // 이 장소에서 시작한 일정 종료 시간
 
-    private String description; // 이 장소에서 시작한 일정에 대한 설명(게시판에서 사용)
+    private String description; // 이 장소에서 시작한 일정에 대한 설명(장소(note), 게시판에서 사용)
+
+    @Column(nullable = false)
+    private Integer latitude; //위도
+
+    @Column(nullable = false)
+    private Integer longitude; //경도
+
+    @Column(nullable = false)
+    private String placeAddress; // 주소
+
+    @Column(nullable = false)
+    private String placeImage;
 
     @ManyToOne
     @JoinColumn(name = "plan_date_id")

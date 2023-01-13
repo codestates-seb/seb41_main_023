@@ -1,6 +1,9 @@
 package com.newyear.mainproject.plan.mapper;
 
+import com.newyear.mainproject.budget.dto.BudgetDto;
 import com.newyear.mainproject.budget.entity.Budget;
+import com.newyear.mainproject.city.City;
+import com.newyear.mainproject.city.CityDto;
 import com.newyear.mainproject.expense.dto.ExpenseDto;
 import com.newyear.mainproject.expense.entity.Expenses;
 import com.newyear.mainproject.place.dto.PlaceDto;
@@ -67,6 +70,7 @@ public interface PlanMapper {
                                         .endDate(DateUtil.convertStringToDateFormatV1(plan.getEndDate()))
                                         .cityName(plan.getCityName())
                                         .placesCount(plan.getPlaces().size())
+                                        .city(cityImageResponseToCity(plan.getCity()))
                                         .build();
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
@@ -74,6 +78,8 @@ public interface PlanMapper {
                         }
                 ).collect(Collectors.toList());
     }
+    CityDto.ImageResponse cityImageResponseToCity(City city);
+
     default PlanDto.PlanDatePlaceDetailResponse planToPlaceDetailResponseDto(Plan plan) throws ParseException {
         PlanDto.PlanDatePlaceDetailResponse response = new PlanDto.PlanDatePlaceDetailResponse();
         response.setPlanId(plan.getPlanId());
@@ -83,6 +89,7 @@ public interface PlanMapper {
         response.setEndDate(DateUtil.convertStringToDateFormatV1(plan.getEndDate()));
         response.setPlanDates(planDateToPlanDateResponseDtos(plan.getPlanDates()));
         response.setPlanDatesAndPlace(planDatesToPlanDatesDetailResponseDtos(plan.getPlanDates()));
+        response.setBudget(budgetToBudgetSimpleResponseDto(plan.getBudget()));
         return response;
     }
 
@@ -148,6 +155,10 @@ public interface PlanMapper {
                                 .startTime(place.getStartTime())
                                 .endTime(place.getEndTime())
                                 .expenses(expensesToExpenseSimpleResponseDto(place.getExpenses()))
+                                .latitude(place.getLatitude())
+                                .longitude(place.getLongitude())
+                                .placeAddress(place.getPlaceAddress())
+                                .placeImage(place.getPlaceImage())
                                 .build())
                     .collect(Collectors.toList());
     }
@@ -160,7 +171,7 @@ public interface PlanMapper {
                         return PlanDto.PlanDatesDetailResponse
                                 .builder()
                                 .planDateId(planDates.getPlanDateId())
-                                .planDate(DateUtil.convertStringToDateFormatV2(planDates.getPlanDate()))
+                                .planDate(DateUtil.convertStringToDateFormatV1(planDates.getPlanDate()))
                                 .subTitle(planDates.getSubTitle())
                                 .places(placesToPlaceResponseDtos(planDates.getPlaces()))
                                 .build();
@@ -172,4 +183,5 @@ public interface PlanMapper {
     }
 
    ExpenseDto.SimpleResponse expensesToExpenseSimpleResponseDto(Expenses expenses);
+    BudgetDto.SimpleResponse budgetToBudgetSimpleResponseDto(Budget budget);
 }

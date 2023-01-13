@@ -16,7 +16,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -34,6 +34,7 @@ spring:
       client:
         registration:
           google:
+            redirect-uri: https://sebmain41team23.shop/login/oauth2/code/google
             #clientId: ${GOOGLE_CLIENT_ID}
             #clientSecret: ${GOOGLE_SECRET}
             scope:
@@ -55,7 +56,7 @@ server:
 
 jwt:
   #secret-key: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
+  access-token-expiration-minutes: 1440
   refresh-token-expiration-minutes: 420
 
   #config:
