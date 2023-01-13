@@ -27,7 +27,7 @@ public class CityController {
      */
     @GetMapping
     public ResponseEntity getCity() {
-        List<City> cityList = cityService.findCity();
+        List<City> cityList = cityService.findCities();
         return new ResponseEntity<>(
                 new SingleResponseDto<>(cityMapper.cityToCityResponseDtos(cityList)), HttpStatus.OK);
     }
