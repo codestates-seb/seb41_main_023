@@ -45,8 +45,6 @@ public class PlaceService {
                 .ifPresent(longitude -> findPlace.setLongitude(longitude));
         Optional.ofNullable(place.getPlaceAddress())
                 .ifPresent(address -> findPlace.setPlaceAddress(address));
-        Optional.ofNullable(place.getPlaceImage())
-                .ifPresent(image -> findPlace.setPlaceImage(image));
 
         return placeRepository.save(findPlace);
     }

@@ -18,6 +18,7 @@ permissions:
 env:
   S3_BUCKET_NAME: project-main23
   working-directory: ./server
+  PROPERTIES_PATH: ./server/src/main/resources/application.properties
 
 jobs:
   build:
@@ -31,6 +32,23 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+        
+     # properties secret 설정
+    - name: Set application.properties
+      run: |
+        touch ${{ env.PROPERTIES_PATH }}
+        echo "
+        spring.datasource.url=${{ secrets.RDS_ENDPOINT }}
+        spring.datasource.username=${{ secrets.RDS_MYSQL_ADMIN_ID }}
+        spring.datasource.password=${{ secrets.RDS_MYSQL_ADMIN_PW }}
+        jwt.secret-key=${{ secrets.JWT_SECRET_KEY }}
+        spring.redis.password=${{ secrets.REDIS_PASSWORD }}
+        spring.security.oauth2.client.registration.google.clientId=${{ secrets.GOOGLE_CLIENT_ID }}
+        spring.security.oauth2.client.registration.google.clientSecret=${{ secrets.GOOGLE_SECRET }}
+        cloud.aws.credentials.access-key=${{ secrets.S3_ACCESS_KEY }}
+        cloud.aws.credentials.secret-key=${{ secrets.S3_SECRET_KEY }}
+        cloud.aws.s3.bucket=${{ secrets.S3_BUCKET }}
+        " >> ${{ env.PROPERTIES_PATH }}  
         
       # 연결 권한 설정
     - name: Run chmod to make gradlew executable
