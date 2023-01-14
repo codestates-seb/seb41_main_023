@@ -4,6 +4,7 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import {getCookie} from "../../Util/Cookies";
 import moment from "moment";
+import {da} from "date-fns/locale";
 
 const LeftSideBar = styled.div`
   display: flex;
@@ -56,6 +57,7 @@ const SideDateBar = (props) => {
         )
             .then((res) => {
                 const dateArr = res.data.data.planDates.map((element) => element.planDate);
+                console.log(dateArr[0])
                 const formattedDateArr = dateArr.map((date) => moment(date).format('M/D'));
                 setDate(formattedDateArr);
             })

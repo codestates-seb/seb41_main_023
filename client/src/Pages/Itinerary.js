@@ -33,7 +33,7 @@ const Itinerary = () => {
     });
 
     const [searchBox, setSearchBox] = useState('');
-    const [searchData, setSearchData] = useState([]);
+    const [searchData, setSearchData] = useState({});
     const [startDate, setStartDate] = useState("Start date");
     const [endDate, setEndDate] = useState("End date");
     const [mainData, setMainData] = useState({
@@ -41,6 +41,10 @@ const Itinerary = () => {
         planTitle: '',
         startDate: startDate,
         endDate: endDate,
+        budgetId: '',
+        planDates: [],
+        planDatesAndPlace: [],
+
     });
 
     useEffect(() => {
@@ -58,9 +62,12 @@ const Itinerary = () => {
                     planTitle: res.data.data.planTitle,
                     startDate: res.data.data.startDate,
                     endDate: res.data.data.endDate,
+                    budgetId: res.data.data.budget.budgetId,
+                    planDates: res.data.data.planDates,
+                    planDatesAndPlace: res.data.data.planDatesAndPlace
                 })
             })
-    }, [itineraryId, getCookie])
+    }, [itineraryId, getCookie]);
 
     return (
         <ItineraryWrapper>
@@ -82,6 +89,8 @@ const Itinerary = () => {
                     setSearchData={setSearchData}
                     infoWindowOpen={infoWindowOpen}
                     setInfoWindowOpen={setInfoWindowOpen}
+                    mainData={mainData}
+                    setMainData={setMainData}
                 />
                 <PlanSection
                     center={center}
@@ -97,6 +106,8 @@ const Itinerary = () => {
                     setStartDate={setStartDate}
                     endDate={endDate}
                     setEndDate={setEndDate}
+                    mainData={mainData}
+                    setMainData={setMainData}
                 />
             </LoadScript>
 

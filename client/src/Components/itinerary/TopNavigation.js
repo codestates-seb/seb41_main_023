@@ -68,14 +68,7 @@ const TopNavigation = (props) => {
     const navigate = useNavigate();
     const token = getCookie('accessToken');
     const [showCalendar, setShowCalendar] = useState(false);
-    // const [startDate, setStartDate] = useState("Start date");
-    // const [endDate, setEndDate] = useState("End date");
-    // const [mainData, setMainData] = useState({
-    //     cityName: '',
-    //     planTitle: '',
-    //     startDate: startDate,
-    //     endDate: endDate,
-    // });
+
     const handleDate = (date) => {
         setStartDate(moment(date[0].startDate).format("YYYY-MM-DD"));
         setEndDate(moment(date[0].endDate).format("YYYY-MM-DD"));
@@ -85,7 +78,7 @@ const TopNavigation = (props) => {
         setShowCalendar(prevState => !prevState);
     }
 
-    const changeDateHandler = (event) => {
+    const changeDateHandler = () => {
         axios.patch(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
             {
                 startDate,
@@ -99,7 +92,6 @@ const TopNavigation = (props) => {
             }
         )
             .then((res) => {
-                console.log(res.data.data)
                 setMainData({
                     ...mainData,
                     startDate: startDate,
@@ -108,25 +100,6 @@ const TopNavigation = (props) => {
                 window.location.reload();
             })
     }
-
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
-            {
-                headers: {
-                    Authorization: token,
-                    withCredentials: true,
-                }
-            }
-        )
-            .then((res) => {
-                setMainData({
-                    cityName: res.data.data.cityName,
-                    planTitle: res.data.data.planTitle,
-                    startDate: res.data.data.startDate,
-                    endDate: res.data.data.endDate,
-                })
-            })
-    }, [itineraryId, token])
 
     return (
         <TopNavBar>

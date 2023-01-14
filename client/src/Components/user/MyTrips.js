@@ -5,18 +5,29 @@ import { postData } from "../../Util/api";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import {getCookie} from "../../Util/Cookies";
 
 const MyTrips = () => {
   const navigate = useNavigate();
+  const token = getCookie('accessToken');
 
   //초기값 배열 설정하기
   const [tripList, setTripList] = useState([]);
 
   // 전체 일정 조회 async
-  const getTrip = async () => {
-    const data = await getData(`/plans`);
-    setTripList(data.data);
-  };
+    const getTrip = () => {
+        axios
+            .get(`https://www.sebmain41team23.shop/plans`, {
+                headers: {
+                    Authorization: token,
+                },
+            })
+            .then((res) => {
+                console.log(res)
+                setTripList(res.data.data)
+            });
+    };
 
   useEffect(() => {
     getTrip();

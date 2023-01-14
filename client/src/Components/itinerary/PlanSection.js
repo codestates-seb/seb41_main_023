@@ -24,7 +24,9 @@ const PlanSection = (props) => {
         startDate,
         setStartDate,
         endDate,
-        setEndDate
+        setEndDate,
+        mainData,
+        setMainData
     } = props;
 
     return (
@@ -49,6 +51,8 @@ const PlanSection = (props) => {
                 setStartDate={setStartDate}
                 endDate={endDate}
                 setEndDate={setEndDate}
+                mainData={mainData}
+                setMainData={setMainData}
             />
         </TravelContainer>
     )

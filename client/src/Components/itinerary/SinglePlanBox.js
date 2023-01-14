@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {Fragment, useState} from "react";
 import PlaceInfoSection from "./PlaceInfoSection";
+import moment from "moment";
 
 const SectionHeader = styled.div`
   margin-top: 20px;
@@ -14,13 +15,14 @@ const SectionHeader = styled.div`
 `;
 
 const SinglePlanBox = (props) => {
-    const {planDateId, planDate, searchData, setSearchData, setAddExpenseModal} = props;
+    const {planDateId, planDate, planData, setPlanData, setAddExpenseModal, singleData, setMainData, searchData} = props;
 
     const handleDeletePlan = (targetId) => {
         alert('정말 삭제하시겠습니까?');
-        const newDataList = searchData.filter((data) => data.id !== targetId);
-        setSearchData(newDataList);
+        const newDataList = planData.filter((data) => data.planDateId !== targetId);
+        setPlanData(newDataList);
     }
+    console.log("singleData", singleData)
 
 
     return (
@@ -28,16 +30,13 @@ const SinglePlanBox = (props) => {
             <SectionHeader>
                 <p>{planDate}</p>
             </SectionHeader>
-            {searchData !== null ? (
-                searchData.map((data) => (
                     <PlaceInfoSection
-                        key={data.id}
-                        searchData={data}
+                        singleData={singleData}
                         setAddExpenseModal={setAddExpenseModal}
                         handleDeletePlan={handleDeletePlan}
                     />
-                    )
-                )) : null}
+
+                {/*)) : null}*/}
         </Fragment>
     )
 };
