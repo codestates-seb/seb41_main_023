@@ -11,7 +11,7 @@ const AddExpense = (props) => {
   const [category, setCategory] = useState(false);
 
   //카테고리 선택
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   //카테고리 변경
   const handleCategory = (el) => {
@@ -33,7 +33,7 @@ const AddExpense = (props) => {
   //입력창 초기화
   const handleClear = () => {
     setInputs({ price: "", item: "" });
-    setSelectedCategory();
+    setSelectedCategory(null);
     setAddExpenseModal(false);
   };
 
@@ -44,7 +44,7 @@ const AddExpense = (props) => {
           <ModalWrapper onClick={(e) => e.stopPropagation()}>
             <div className="title_frame">
               <div className="title">Add Expense</div>
-              <div className="cancle_button" onClick={handleClear}>
+              <div className="cancel_button" onClick={handleClear}>
                 ❌
               </div>
             </div>
@@ -75,8 +75,8 @@ const AddExpense = (props) => {
               >
                 Add expense
               </button>
-              <div className="cancle_text" onClick={handleClear}>
-                Cancle
+              <div className="cancel_text" onClick={handleClear}>
+                Cancel
               </div>
             </div>
           </ModalWrapper>
@@ -126,8 +126,8 @@ const ModalWrapper = styled.div`
   line-height: 17px;
   background-color: #fff;
   border-radius: 7px;
-  box-shadow: rgba(0, 0, 0, 0.09) 0px 1px 4px 0px,
-    rgba(0, 0, 0, 0.09) 0px 3px 8px 0px, rgba(0, 0, 0, 0.13) 0px 4px 13px 0px;
+  box-shadow: rgba(0, 0, 0, 0.09) 0 1px 4px 0,
+    rgba(0, 0, 0, 0.09) 0 3px 8px 0, rgba(0, 0, 0, 0.13) 0 4px 13px 0;
   > .title_frame {
     display: flex;
     flex-direction: row;
@@ -144,7 +144,7 @@ const ModalWrapper = styled.div`
       line-height: 32px;
       font-weight: 400;
     }
-    > .cancle_button {
+    > .cancel_button {
       width: 13px;
       height: 13px;
       margin-top: 4px;
@@ -176,7 +176,7 @@ const ModalWrapper = styled.div`
       background-color: #d0393e;
       color: white;
       line-height: 10px;
-      box-shadow: rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset;
+      box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0 0 inset;
       padding: 0 10px;
 
       &:hover {
@@ -186,7 +186,7 @@ const ModalWrapper = styled.div`
       border: none;
       border-radius: 5px;
     }
-    > .cancle_text {
+    > .cancel_text {
       width: 70px;
       height: 40px;
       padding: 15px 10px;
@@ -197,7 +197,7 @@ const ModalWrapper = styled.div`
       text-align: center;
       color: #6a737c;
 
-      background-color: none;
+      background-color: white;
       cursor: pointer;
       &:hover {
         border-radius: 5px;

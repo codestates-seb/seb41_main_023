@@ -40,11 +40,14 @@ const InfoWindow = (props) => {
         setInfoWindowOpen(false);
     }
 
-    const showedData = searchData[searchData.length - 1];
+    const showedData = searchData !== null ? searchData[searchData.length - 1] : [];
     const {name, photo, price_level, rating, openingHours, website, formattedAddress, phoneNumber} = showedData;
 
     return (
         <InfoWindowF
+            options={{
+                pixelOffset: new window.google.maps.Size(0, -40)
+            }}
             position={searchedGeocode}
             onCloseClick={closeInfoWindowHandler}
         >

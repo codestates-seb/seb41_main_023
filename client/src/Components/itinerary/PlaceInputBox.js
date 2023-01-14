@@ -1,8 +1,9 @@
 import {StandaloneSearchBox} from "@react-google-maps/api";
 import styled from "styled-components";
+import axios from "axios";
 
 const InputContainer = styled.div`
-  width: 100%;
+  width: 95%;
   height: 40px;
   border: 1px solid black;
   border-radius: 1rem;
@@ -12,7 +13,7 @@ const InputContainer = styled.div`
   padding: 5px 10px;
 
   input {
-    width: 760px;
+    width: 700px;
     border-style: none;
     font-size: 18px;
     height: 30px;
@@ -24,7 +25,7 @@ const InputIconBox = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 10px;
-  width: 2%;
+  width: 3%;
 `;
 
 const PlaceInputBox = (props) => {
@@ -42,7 +43,7 @@ const PlaceInputBox = (props) => {
         setSearchBox(ref);
     }
 
-    const onPlacesChanged = () => {
+    const onPlacesChanged = async () => {
         if (searchBox !== '' && searchBox.getPlaces() !== undefined) {
             setInfoWindowOpen(true);
             const place = searchBox.getPlaces()[0];
@@ -111,7 +112,9 @@ const PlaceInputBox = (props) => {
                     phoneNumber
                 }
 
-                setSearchData(searchData => [...searchData, newData])
+                setSearchData(searchData => [...searchData, newData]);
+
+                await axios.post(`${process.env.REACT_APP_API_URL}`, )
             }
         }
 

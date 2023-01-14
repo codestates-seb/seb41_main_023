@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import SinglePlanBox from "./SinglePlanBox";
 import PlaceInputBox from "./PlaceInputBox";
+import {useState} from "react";
+import Budget from "../budget/Buget";
 
 const Container = styled.div`
   position: relative;
@@ -9,15 +11,15 @@ const Container = styled.div`
   flex-grow: 1;
   max-width: 100%;
   min-height: calc(100% - 200px);
-  width: calc(100% - 50px);
-  margin-top: 30px;
+  width: calc(100% - 30px);
+  margin-top: 240px;
   margin-left: 50px;
-  padding: 0;
   overflow-y: scroll;
 `;
 
 const PlanContainer = styled.div`
-  margin: 240px 48px 0 48px;
+  margin-left: 50px;
+  width: 90%;
   position: relative;
 `;
 
@@ -47,6 +49,8 @@ const EditContainer = (props) => {
         setInfoWindowOpen
     } = props;
 
+    const [addExpenseModal, setAddExpenseModal] = useState(false);
+
     return (
         <Container>
             <PlanContainer>
@@ -55,6 +59,7 @@ const EditContainer = (props) => {
                     <SinglePlanBox
                         searchData={searchData}
                         setSearchData={setSearchData}
+                        setAddExpenseModal={setAddExpenseModal}
                     />
                     <PlaceInputBox
                         searchBox={searchBox}
@@ -66,6 +71,10 @@ const EditContainer = (props) => {
                         setCenter={setCenter}
                     />
                 </SectionComponent>
+                <Budget
+                    addExpenseModal={addExpenseModal}
+                    setAddExpenseModal={setAddExpenseModal}
+                />
             </PlanContainer>
         </Container>
     )
