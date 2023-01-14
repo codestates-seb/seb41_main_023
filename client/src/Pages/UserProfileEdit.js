@@ -107,7 +107,9 @@ const UserProfileEdit = () => {
             "Content-Type": "multipart/form-data",
           },
           data: formData,
-        });
+        }).then((res) =>
+          setUserInfo({ ...userInfo, profileImage: res.data.profileImage })()
+        );
       }
     };
 
