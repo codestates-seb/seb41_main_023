@@ -17,7 +17,6 @@ public interface PlaceMapper {
         place.setLatitude(post.getLatitude());
         place.setLongitude(post.getLongitude());
         place.setPlaceAddress(post.getPlaceAddress());
-        place.setPlaceImage(post.getPlaceImage());
 
         //plan_date, plan 연결
         PlanDates planDates = planService.findPlanDates(post.getPlaceDateId());
