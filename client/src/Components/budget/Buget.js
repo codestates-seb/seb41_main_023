@@ -1,48 +1,23 @@
 import axios from "axios";
 import moment from "moment";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { getCookie } from "./Cookies";
+import { useEffect, useState, useRef } from "react";
+import { getCookie } from "../../Util/Cookies";
 
 import EditBudget from "./EditBudget";
 import AddExpense from "./AddExpense";
 import DeleteExpense from "./DeleteExpense";
 
-const Budget = () => {
-  // 더미
-  const dummybudget = {
-    budgetId: 1,
-    expectedBudget: 20000,
-    totalExpenses: 15000,
-    expenses: [
-      {
-        expenseId: 1,
-        item: "flight",
-        price: 10000,
-        createdAt: "2023-01-10",
-      },
-      {
-        expenseId: 2,
-        item: "ticket",
-        price: 5000,
-        createdAt: "2023-01-15",
-      },
-    ],
-  };
-
+const Budget = ({ budgetId }) => {
   //예산, 비용, 유저 정보
-  const [budget, setBudget] = useState(dummybudget);
-  const [expenses, setExpences] = useState(dummybudget.expenses);
-  const [userInfo, setUserInfo] = useState({
-    image: "https://picsum.photos/40",
-    memberId: 1,
-    email: "newyear@gmail.com",
-    displayName: "뉴이어",
-    memberStatus: "활동중",
-  });
+  const [budget, setBudget] = useState({});
+  const [expenses, setExpences] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
 
   const token = getCookie("accessToken");
   const memberId = getCookie("memberId");
+
+  const budgetRef = useRef();
 
   // 예산 수정 모달
   const [editBudget, setEditBudget] = useState(false);
@@ -54,110 +29,111 @@ const Budget = () => {
   const [deleteExpenseModal, setDeleteExpenseModal] = useState(false);
 
   // 유저 정보 조회
-  //  useEffect(() => {
-  // axios
-  //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
-  //     headers: {
-  //       Authorization: token,
-  //       withCredentials: true,
-  //     },
-  //   })
-  //   .then((res) => {
-  //   setUserInfo(res.data)
-  //   })
-  //   .catch((err) => console.log("error"));
-  //  }, []);
+  const getUserInfo = () => {
+    axios
+      .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => setUserInfo(res.data));
+  };
 
-  // 예산 정보 조회
-  //  useEffect(() => {
-  // axios
-  //   .get(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
-  //     headers: {
-  //       Authorization: token,
-  //       withCredentials: true,
-  //     },
-  //   })
-  //   .then((res) => {
-  //   setExpences(res.data.expences);
-  //   setBudget(res.data)
-  //   })
-  //   .catch((err) => console.log("error"));
-  //  }, []);
+  // 예산과 비용 조회
+  const getBudget = () => {
+    axios
+      .get(`https://www.sebmain41team23.shop/budget/${budgetId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        setBudget(res.data);
+        setExpences(res.data.expenses || []);
+      })
+      .catch((err) => console.log("error"));
+  };
+
+  useEffect(() => {
+    getUserInfo();
+    getBudget();
+  }, []);
 
   // 예산 수정 요청
   const handleEditBudget = (inputBudget) => {
     if (inputBudget < 1) {
       return alert("예산은 1원 이상이어야 합니다.");
     }
-    console.log("예산 수정!");
-    // axios
-    //   .patch(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
-    //     headers: {
-    //       Authorization: token,
-    //       withCredentials: true,
-    //     },
-    //    data : {
-    //    expectedBudget  : inputBudget
-    //    }
-    //   })
-    //   .then((res) => {
-    //    setBudget(res.data.expectedBudget);
-    //   })
-    //  .then((res) => {
-    //    setEditBudget(false)
-    //  })
-    //   .catch((err) => console.log("error"));
-    setEditBudget(false);
+
+    axios
+      .patch(
+        `https://www.sebmain41team23.shop/budget/${budgetId}`,
+        {
+          expectedBudget: inputBudget,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((res) => {
+        setBudget({ ...budget, expectedBudget: res.data.expectedBudget });
+      })
+      .then((res) => {
+        // budgetRef.current.value = "";
+        setEditBudget(false);
+      })
+      .catch((err) => console.log("error"));
   };
 
   // 비용 추가 요청
   const handleAddExpense = (price, selectedCategory, item) => {
-    console.log(price, selectedCategory, item);
+    // console.log(price, selectedCategory, item);
 
     if (price < 1) {
       return alert("지출 금액은 1원 이상이어야 합니다.");
     }
 
-    // axios
-    //   .post(`${process.env.REACT_APP_API_URL}/expenses/budget/${budgetId}`, {
-    //     headers: {
-    //       Authorization: token,
-    //       withCredentials: true,
-    //     },
-    //    data : {
-    //    category  : selectedCategory,
-    //    item  : item,
-    //    price  : price,
-    //    }
-    //   })
-    //   .then((res) => {
-    //    setExpences([...expences,res.data]); //비용에 추가
-    //   })
-    //  .then((res) => {
-    //    리로드??
-    // setAddExpenseModal(false)
-    //  })
-    //   .catch((err) => console.log("error"));
-    setAddExpenseModal(false);
+    axios
+      .post(
+        `https://www.sebmain41team23.shop/expenses/budget/${budgetId}`,
+        {
+          category: selectedCategory,
+          item: item,
+          price: price,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setExpences([...expenses, res.data]); //비용에 추가
+      })
+      .then((res) => {
+        setAddExpenseModal(false);
+      })
+      .catch((err) => console.log("error"));
   };
 
   // 비용 삭제 요청
   const handleDeleteExpense = (expenseId) => {
-    console.log("비용 삭제!");
-    // console.log(expenseId);
-    // axios
-    //   .delete(`${process.env.REACT_APP_API_URL}/expenses/${expenseId}`, {
-    //     headers: {
-    //       Authorization: token,
-    //       withCredentials: true,
-    //     }
-    //   })
-    //   .then(() => {
-    //    비용 목록 다시 요청?? 리로드?
-    //    setDeleteExpenseModal(false)
-    //   })
-    //   .catch((err) => console.log("error"));
-    setDeleteExpenseModal(false);
+    axios
+      .delete(`https://www.sebmain41team23.shop/expenses/${expenseId}`, {
+        headers: {
+          Authorization: token,
+          withCredentials: true,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        //리로드?
+        setDeleteExpenseModal(false);
+      })
+      .catch((err) => console.log("error"));
   };
 
   return (
@@ -168,12 +144,13 @@ const Budget = () => {
         <EditBudget
           editBudget={editBudget}
           setEditBudget={setEditBudget}
-          originBudget={budget.expectedBudget}
           handleEditBudget={handleEditBudget}
+          originBudget={budget.expectedBudget}
+          budgetRef={budgetRef}
         />
       </TopArea>
       <div className="budget">
-        $ {budget.expectedBudget.toLocaleString("ko-KR")}
+        $ {budget?.expectedBudget?.toLocaleString("ko-KR")}
       </div>
       <hr />
       <MiddleArea>
@@ -188,7 +165,7 @@ const Budget = () => {
         return (
           <BottomArea key={el.expenseId}>
             <div className="bottom_left">
-              <img alt="profile_image" src={userInfo.image} />
+              <img alt="profile_image" src={userInfo.profileImage} />
               <div className="meta_user">
                 <div className="meta_user_top">{userInfo.displayName}</div>
                 <div className="meta_user_bottom">

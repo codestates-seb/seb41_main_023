@@ -11,15 +11,15 @@ import Calendar from "../Components/Calendar";
 import Autocomplete from "../Components/AutoComplete";
 import { de } from "date-fns/locale";
 
-import logOutBgImg from '../images/logged-out_background-image.jpg';
-import logInBgImg from '../images/login_background-image-02.jpg';
+import logOutBgImg from "../images/logged-out_background-image.jpg";
+import logInBgImg from "../images/login_background-image-02.jpg";
 
 const Home = ({ login }) => {
   const navigate = useNavigate();
   const [showCalendar, setShowCalendar] = useState(false);
-  const [startDate, setStartDate] = useState('Start date');
-  const [endDate, setEndDate] = useState('End date');
-  const [destination, setDestination] = useState('');
+  const [startDate, setStartDate] = useState("Start date");
+  const [endDate, setEndDate] = useState("End date");
+  const [destination, setDestination] = useState("");
 
   const inputRef = useRef([]);
   const inputCalendarRef = useRef([]);
@@ -42,8 +42,8 @@ const Home = ({ login }) => {
   }, [showCalendar]);
 
   const handleDate = (date) => {
-    setStartDate(moment(date[0].startDate).format('YYYY-MM-DD'));
-    setEndDate(moment(date[0].endDate).format('YYYY-MM-DD'));
+    setStartDate(moment(date[0].startDate).format("YYYY-MM-DD"));
+    setEndDate(moment(date[0].endDate).format("YYYY-MM-DD"));
   };
 
   const handleDestination = (destination) => {
@@ -63,7 +63,7 @@ const Home = ({ login }) => {
     //장소가 입력되지 않았을 때 포커싱
     if (destination.length <= 1) {
       inputRef.current.focus();
-    } else if (startDate === 'Start date' || endDate === 'End date') {
+    } else if (startDate === "Start date" || endDate === "End date") {
       inputCalendarRef.current.focus();
     } else {
       const data = {
@@ -89,18 +89,18 @@ const Home = ({ login }) => {
           )
           .then((res) => navigate(`/itinerary/${res.data.data.planId}`));
       } else {
-        localStorage.setItem('plan', JSON.stringify(data));
-        navigate('/login');
+        localStorage.setItem("plan", JSON.stringify(data));
+        navigate("/login");
       }
     }
   };
 
   return (
-    <HomeContainer className={login ? 'login' : false}>
+    <HomeContainer className={login ? "login" : false}>
       <Header className="header" login={login || false} />
-      <Main className={login ? 'login' : false}>
-        <Content className={login ? 'login' : false}>
-          <TopSection className={login ? 'login' : false}>
+      <Main className={login ? "login" : false}>
+        <Content className={login ? "login" : false}>
+          <TopSection className={login ? "login" : false}>
             <h1>Where do you want to travel?</h1>
           </TopSection>
           <BottomSection>
@@ -187,7 +187,7 @@ const Main = styled.div`
   &.login {
     align-items: flex-end;
     max-height: 400px;
-    background-color: rgba(15, 15, 15, .15);
+    background-color: rgba(15, 15, 15, 0.15);
   }
 `;
 
