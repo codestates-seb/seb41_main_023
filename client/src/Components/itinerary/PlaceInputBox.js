@@ -27,7 +27,6 @@ const InputContainer = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 5px 10px;
-  //margin-bottom: 20px;
 
   input {
     width: 700px;

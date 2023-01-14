@@ -25,7 +25,6 @@ const RenderMap = (props) => {
     } = props;
 
 
-
     const handleInfoWindow = () => {
         setInfoWindowOpen(prevState => !prevState);
     }

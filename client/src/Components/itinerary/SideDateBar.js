@@ -4,7 +4,6 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import {getCookie} from "../../Util/Cookies";
 import moment from "moment";
-import {da} from "date-fns/locale";
 
 const LeftSideBar = styled.div`
   display: flex;
@@ -17,6 +16,7 @@ const LeftSideBar = styled.div`
   z-index: 50;
   margin-top: 221px;
   overflow: scroll;
+
   ::-webkit-scrollbar {
     display: none;
   }
