@@ -191,4 +191,4 @@ insert into city(city_name, city_image) values ('경상북도 의성군', 'https
 insert into city(city_name, city_image) values ('경상북도 성주군', 'https://image.inews24.com/v1/a0a0b481802e06.jpg');
 insert into city(city_name, city_image) values ('경상북도 군위군', 'http://ojsfile.ohmynews.com/STD_IMG_FILE/2017/1108/IE002242690_STD.jpg');
 insert into city(city_name, city_image) values ('경상북도 청도군', 'https://lh5.googleusercontent.com/p/AF1QipPU1RnizrLE_aRPLx4BkVQ3DvSdeXWekeoJbnnp=w426-h240-k-no');
-insert into city(city_name, city_image) values ('경상북도 고령군', 'https://tongglobalcdn.visitkorea.or.kr/cms/resource/15/2024015_image2_1.bmp')
+insert into city(city_name, city_image) values ('경상북도 고령군', 'https://tongglobalcdn.visitkorea.or.kr/cms/resource/15/2024015_image2_1.bmp');
