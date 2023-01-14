@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {useState} from "react";
+import {Fragment, useState} from "react";
 
 const SectionWrapper = styled.div`
   display: flex;
@@ -115,8 +115,8 @@ const deleteSvg = (
 )
 
 const PlaceInfoSection = (props) => {
-    const {searchData, setAddExpenseModal, handleDeletePlan} = props;
-    const [delButtonIsShow, setDelButtonIsShow] = useState(false);
+    const {searchData, setAddExpenseModal, handleDeletePlan, singleData} = props;
+    const [delButtonIsShow, setDelButtonIsShow] = useState(true);
 
     const onMouseHandler = () => {
         setDelButtonIsShow(prevState => !prevState);
@@ -126,44 +126,53 @@ const PlaceInfoSection = (props) => {
         setAddExpenseModal(true);
     }
 
+    console.log('싱글', singleData)
+
     return (
-        <SectionWrapper
-            onMouseEnter={onMouseHandler}
-            onMouseLeave={onMouseHandler}
-        >
-            <SectionContent>
-                <PlaceInfoBox>
-                    <PlaceInfoContainer>
-                        <h3>{searchData.name} {searchData.id}</h3>
-                        <p>{searchData.formattedAddress}</p>
-                    </PlaceInfoContainer>
-                    <PlaceAddingButtons>
-                        <button>
-                            {clockSvg}
-                            Add time
-                        </button>
-                        <button
-                            onClick={handleExpenseModal}
-                        >
-                            {moneySvg}
-                            Add cost
-                        </button>
-                    </PlaceAddingButtons>
-                </PlaceInfoBox>
-                <PlaceImageBox>
-                    <img src={searchData.photo} alt={`${searchData.name}의 사진`}/>
-                </PlaceImageBox>
-            </SectionContent>
-            <PlanDeleteContainer>
-                {delButtonIsShow ? (
-                    <button
-                        onClick={handleDeletePlan}
+        <Fragment>
+            {singleData &&
+                singleData.places.map((data) => (
+                <SectionWrapper
+                    // onMouseEnter={onMouseHandler}
+                    // onMouseLeave={onMouseHandler}
+                    key={data.placeId}
+                >
+                    <SectionContent
                     >
-                        {deleteSvg}
-                    </button>
-                ) : null}
-            </PlanDeleteContainer>
-        </SectionWrapper>
+                        <PlaceInfoBox>
+                            <PlaceInfoContainer>
+                                <h3>{data.placeName}</h3>
+                                <p>{data.placeAddress}</p>
+                            </PlaceInfoContainer>
+                            <PlaceAddingButtons>
+                                <button>
+                                    {clockSvg}
+                                    Add time
+                                </button>
+                                <button
+                                    onClick={handleExpenseModal}
+                                >
+                                    {moneySvg}
+                                    Add cost
+                                </button>
+                            </PlaceAddingButtons>
+                        </PlaceInfoBox>
+                        <PlaceImageBox>
+                            <img src={data.photo} alt={`${data.name}의 사진`}/>
+                        </PlaceImageBox>
+                    </SectionContent>
+                    <PlanDeleteContainer>
+                        {delButtonIsShow ? (
+                            <button
+                                onClick={handleDeletePlan}
+                            >
+                                {deleteSvg}
+                            </button>
+                        ) : null}
+                    </PlanDeleteContainer>
+                </SectionWrapper>
+            ))}
+        </Fragment>
     )
 };
 
