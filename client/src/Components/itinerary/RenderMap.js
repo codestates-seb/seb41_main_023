@@ -24,6 +24,8 @@ const RenderMap = (props) => {
         setSearchData
     } = props;
 
+
+
     const handleInfoWindow = () => {
         setInfoWindowOpen(prevState => !prevState);
     }
@@ -38,6 +40,7 @@ const RenderMap = (props) => {
             <MarkerF
                 position={searchedGeocode}
                 onClick={handleInfoWindow}
+                label={'0'}
             />
             {infoWindowOpen ? (
                 <InfoWindow
