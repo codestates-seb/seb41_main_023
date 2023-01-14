@@ -1,23 +1,12 @@
 import styled from "styled-components";
 import EditContainer from "./EditContainer";
+import SideDateBar from "./SideDateBar";
 
 const TravelContainer = styled.div`
   display: flex;
   width: 50%;
   box-sizing: border-box;
   flex-direction: row;
-`;
-
-const LeftSideBar = styled.div`
-  width: 50px;
-  background-color: white;
-  border-right: 1px solid #e9ecef;
-  height: calc(100% - 200px);
-  overflow: hidden;
-  position: fixed;
-  z-index: 50;
-  margin-top: 221px;
-  overflow-y: scroll;
 `;
 
 
@@ -31,12 +20,23 @@ const PlanSection = (props) => {
         setSearchData,
         searchedGeocode,
         setSearchedGeocode,
-        setInfoWindowOpen
+        setInfoWindowOpen,
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate,
+        mainData,
+        setMainData
     } = props;
 
     return (
         <TravelContainer>
-            <LeftSideBar/>
+            <SideDateBar
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+            />
             <EditContainer
                 center={center}
                 setCenter={setCenter}
@@ -47,6 +47,12 @@ const PlanSection = (props) => {
                 searchedGeocode={searchedGeocode}
                 setSearchedGeocode={setSearchedGeocode}
                 setInfoWindowOpen={setInfoWindowOpen}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                mainData={mainData}
+                setMainData={setMainData}
             />
         </TravelContainer>
     )

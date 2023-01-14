@@ -63,19 +63,12 @@ const TripTitleContainer = styled.div`
 `;
 
 const TopNavigation = (props) => {
+    const {startDate, setStartDate, endDate,setEndDate, mainData, setMainData} = props;
     const {itineraryId} = useParams();
-    console.log(itineraryId);
     const navigate = useNavigate();
     const token = getCookie('accessToken');
     const [showCalendar, setShowCalendar] = useState(false);
-    const [startDate, setStartDate] = useState("Start date");
-    const [endDate, setEndDate] = useState("End date");
-    const [mainData, setMainData] = useState({
-        cityName: '',
-        planTitle: '',
-        startDate: startDate,
-        endDate: endDate,
-    });
+
     const handleDate = (date) => {
         setStartDate(moment(date[0].startDate).format("YYYY-MM-DD"));
         setEndDate(moment(date[0].endDate).format("YYYY-MM-DD"));
@@ -99,33 +92,14 @@ const TopNavigation = (props) => {
             }
         )
             .then((res) => {
-                console.log(res.data.data)
                 setMainData({
                     ...mainData,
                     startDate: startDate,
                     endDate: endDate
-                })
+                });
+                window.location.reload();
             })
     }
-
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
-            {
-                headers: {
-                    Authorization: token,
-                    withCredentials: true,
-                }
-            }
-        )
-            .then((res) => {
-                setMainData({
-                    cityName: res.data.data.cityName,
-                    planTitle: res.data.data.planTitle,
-                    startDate: res.data.data.startDate,
-                    endDate: res.data.data.endDate,
-                })
-            })
-    }, [])
 
     return (
         <TopNavBar>
@@ -146,7 +120,6 @@ const TopNavigation = (props) => {
                 >{moment(mainData.startDate).format('M월 D일')} ~ {moment(mainData.endDate).format('M월 D일')}</button>
                 {showCalendar ? (<Calendar
                     handleDate={handleDate}
-                    // onKeyPress={(event) => changeDateHandler(event)}
                 />) : null}
                 <button
                     onClick={changeDateHandler}
