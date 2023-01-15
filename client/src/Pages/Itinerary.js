@@ -67,7 +67,7 @@ const Itinerary = () => {
                     planDatesAndPlace: res.data.data.planDatesAndPlace
                 })
             })
-    }, [itineraryId, getCookie]);
+    }, []);
 
     return (
         <ItineraryWrapper>

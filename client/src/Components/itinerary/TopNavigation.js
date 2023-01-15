@@ -79,6 +79,7 @@ const TopNavigation = (props) => {
     }
 
     const changeDateHandler = () => {
+        if(window.confirm('정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!'))
         axios.patch(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
             {
                 startDate,
@@ -123,6 +124,7 @@ const TopNavigation = (props) => {
                 />) : null}
                 <button
                     onClick={changeDateHandler}
+                    disabled={showCalendar === false}
                 >날짜 변경
                 </button>
             </TripTitleContainer>
