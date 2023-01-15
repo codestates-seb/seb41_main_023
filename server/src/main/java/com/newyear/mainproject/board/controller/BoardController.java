@@ -103,8 +103,10 @@ public class BoardController {
 
     // 도시 이름으로 조회
     @GetMapping("/plan")
-    public ResponseEntity getBoardForCity(@RequestParam @NotBlank String city) {
-        List<Board> boards = boardService.findCityBoards(city);
+    public ResponseEntity getBoardForCity(@RequestParam @NotBlank String city,
+                                          @RequestParam(required = false) String tab) {
+        if (tab == null) tab = "likes";
+        List<Board> boards = boardService.findCityBoards(city, tab);
         return new ResponseEntity<>(mapper.boardsToBoardResponseDto(boards), HttpStatus.OK);
     }
 

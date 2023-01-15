@@ -50,7 +50,7 @@ public class S3Service {
             metadata.setContentType(contentType);
 
             // key 값을 고유값으로 하기 위한 시간 설정
-            SimpleDateFormat date = new SimpleDateFormat("yyyymmddHHmmss");
+            SimpleDateFormat date = new SimpleDateFormat("yyyyMMddHHmmss");
             file = fileName + "-" + date.format(new Date());
 
             // 이미 key 가 존재하면 기존 파일 삭제
