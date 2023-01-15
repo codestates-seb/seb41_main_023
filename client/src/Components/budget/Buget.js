@@ -11,10 +11,11 @@ import DeleteExpense from "./DeleteExpense";
 
 const Budget = ({ budgetId }) => {
   const token = getCookie("accessToken");
-
   //예산, 비용, 유저 정보
   const [budget, setBudget] = useState({});
   const [expenses, setExpences] = useState([]);
+
+  const [currentExpenseId, setCurrentExpenseId] = useState();
 
   /* Modal */
 
@@ -46,7 +47,6 @@ const Budget = ({ budgetId }) => {
         },
       })
       .then((res) => {
-        console.log(res.data.expenses);
         setBudget(res.data);
         setExpences(res?.data?.expenses || []);
       })
@@ -82,7 +82,15 @@ const Budget = ({ budgetId }) => {
 
   // 비용 추가 요청
   const handleAddExpense = (price, selectedCategory, item) => {
-    // console.log(price, selectedCategory, item);
+    if (budget.expectedBudget < 1) {
+      return alert("예산을 설정해주세요.");
+    }
+    if (
+      budget.expectedBudget <
+      parseInt(budget.totalExpenses) + parseInt(price)
+    ) {
+      return alert("예산을 초과하였습니다.");
+    }
 
     if (price < 1) {
       return alert("지출 금액은 1원 이상이어야 합니다.");
@@ -130,7 +138,6 @@ const Budget = ({ budgetId }) => {
         }
       )
       .then((res) => {
-        window.location.reload();
         setEditExpenseModal(false);
         handleRefresh();
       })
@@ -177,53 +184,67 @@ const Budget = ({ budgetId }) => {
           handleAddExpense={handleAddExpense}
         />
       </MiddleArea>
-      {expenses &&
-        expenses.map((el) => {
-          return (
-            <BottomArea key={el.expenseId}>
-              <div className="bottom_left">
-                <div className="meta_user">
-                  <div className="meta_user_bottom">
-                    <div>{moment(el.createdAt).format("MMM DD")}</div>
-                    <div>•{el.item}</div>
-                  </div>
+      {expenses.map((el) => {
+        return (
+          <BottomArea key={el.expenseId}>
+            <div className="bottom_left">
+              <div className="meta_user">
+                <div className="meta_user_bottom">
+                  <div>{moment(el.createdAt).format("MMM DD")}</div>
+                  <div>•{el.item}</div>
                 </div>
               </div>
-              <div className="bottom_right">
-                <div className="meta_user_expense">
-                  $ {el.price.toLocaleString("ko-KR")}
+            </div>
+            <div className="bottom_right">
+              <div className="meta_user_expense">
+                $ {el.price.toLocaleString("ko-KR")}
+              </div>
+
+              <div className="delete_expense">
+                <div
+                  onClick={() => {
+                    setCurrentExpenseId(el.expenseId);
+                    setEditExpenseModal(!editExpenseModal);
+                  }}
+                >
+                  🤔
                 </div>
 
-                <div className="delete_expense">
-                  <div onClick={() => setEditExpenseModal(!editExpenseModal)}>
-                    🤔
-                  </div>
-
-                  <div
-                    onClick={() => setDeleteExpenseModal(!deleteExpenseModal)}
-                  >
-                    ❌
-                  </div>
-                  {deleteExpenseModal ? (
-                    <DeleteExpense
-                      expenseId={el.expenseId}
-                      handleDeleteExpense={handleDeleteExpense}
-                      setDeleteExpenseModal={setDeleteExpenseModal}
-                    />
-                  ) : null}
-                  {editExpenseModal ? (
-                    <EditExpense
-                      expenseId={el.expenseId}
-                      handleEditExpense={handleEditExpense}
-                      setEditExpenseModal={setEditExpenseModal}
-                      editExpenseModal={editExpenseModal}
-                    />
-                  ) : null}
+                <div
+                  onClick={() => {
+                    setCurrentExpenseId(el.expenseId);
+                    setDeleteExpenseModal(!deleteExpenseModal);
+                  }}
+                >
+                  ❌
                 </div>
               </div>
-            </BottomArea>
-          );
-        })}
+            </div>
+          </BottomArea>
+        );
+      })}
+
+      {deleteExpenseModal ? (
+        <DeleteExpense
+          expenseId={currentExpenseId}
+          handleDeleteExpense={handleDeleteExpense}
+          setDeleteExpenseModal={setDeleteExpenseModal}
+        />
+      ) : null}
+
+      {editExpenseModal ? (
+        <EditExpense
+          expenseId={currentExpenseId}
+          handleEditExpense={handleEditExpense}
+          setEditExpenseModal={setEditExpenseModal}
+          editExpenseModal={editExpenseModal}
+        />
+      ) : null}
+
+      <div>예산 사용량</div>
+      <div>
+        {(budget.expectedBudget / budget.totalExpenses / 100).toFixed()} %{" "}
+      </div>
     </BudgetContainer>
   );
 };
@@ -279,7 +300,7 @@ const BottomArea = styled.div`
       margin-right: 5px;
     }
     .delete_expense {
-      opacity: 0;
+      opacity: 1;
 
       :hover {
         opacity: 1;

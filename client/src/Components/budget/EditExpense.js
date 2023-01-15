@@ -10,6 +10,7 @@ const EditExpense = (props) => {
     handleEditExpense,
     expenseId,
   } = props;
+  console.log(expenseId);
   const [inputs, setInputs] = useState({ price: "", item: "" });
 
   // 카테고리 모달창 활성화
@@ -31,15 +32,9 @@ const EditExpense = (props) => {
       const value = e.target.value;
       const onlyNumber = value.replace(/[^0-9]/g, "");
       return setInputs({ ...inputs, [e.target.name]: onlyNumber });
+    } else {
+      setInputs({ ...inputs, [e.target.name]: e.target.value });
     }
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
-  };
-
-  //입력창 초기화
-  const handleClear = () => {
-    setInputs({ price: "", item: "" });
-    setSelectedCategory(null);
-    setEditExpenseModal(false);
   };
 
   return (
@@ -49,7 +44,10 @@ const EditExpense = (props) => {
           <ModalWrapper onClick={(e) => e.stopPropagation()}>
             <div className="title_frame">
               <div className="title">Edit Expense</div>
-              <div className="cancel_button" onClick={handleClear}>
+              <div
+                className="cancel_button"
+                onClick={() => setEditExpenseModal(false)}
+              >
                 ❌
               </div>
             </div>
@@ -59,6 +57,7 @@ const EditExpense = (props) => {
               placeholder="지출 금액을 입력해주세요."
               name="price"
               onChange={handleInputs}
+              value={inputs.price}
             />
             <div
               className="content category"
@@ -86,8 +85,11 @@ const EditExpense = (props) => {
               >
                 Edit expense
               </button>
-              <div className="cancel_text" onClick={handleClear}>
-                Cancel
+              <div
+                className="cancel_text"
+                onClick={() => setEditExpenseModal(false)}
+              >
+                Cancel {expenseId}
               </div>
             </div>
           </ModalWrapper>
