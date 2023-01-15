@@ -59,14 +59,15 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                        .antMatchers(HttpMethod.POST, "/members/signup", "/members/login", "/login/**").permitAll()
-                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
-                        .antMatchers(HttpMethod.POST, "/members/logout").permitAll()
-                        .antMatchers(HttpMethod.GET, "/members").hasAnyRole("ADMIN", "USER")
-                        .antMatchers(HttpMethod.GET, "/", "/members/**", "/city", "/board", "/board/**", "/comments/**").permitAll() //추후 추가하기
-                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
-                        .antMatchers("/h2/**").permitAll() // h2 콘솔 사용을 위한 설정
-                        .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                                .antMatchers(HttpMethod.POST, "/members/signup", "/members/login", "/login/**").permitAll()
+                                .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
+                                .antMatchers(HttpMethod.POST, "/members/logout").permitAll()
+                                .antMatchers(HttpMethod.GET, "/members").hasAnyRole("ADMIN", "USER")
+                                .antMatchers(HttpMethod.GET, "/", "/members/**", "/city", "/board", "/board/**", "/comments/**").permitAll() //추후 추가하기
+                                .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
+                                .antMatchers("/h2/**").permitAll() // h2 콘솔 사용을 위한 설정
+                                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                                .antMatchers("/login/**", "/oauth2/**").permitAll()
                         .anyRequest()
 //                                .permitAll()
                         .authenticated()

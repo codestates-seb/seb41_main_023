@@ -1,6 +1,5 @@
 package com.newyear.mainproject.city;
 
-import com.newyear.mainproject.plan.entity.Plan;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +19,4 @@ public class City {
     @Column(nullable = false)
     private String cityImage;
 
-    @OneToOne(mappedBy = "city", cascade = CascadeType.ALL)
-    private Plan plan;
 }

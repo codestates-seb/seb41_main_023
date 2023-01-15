@@ -158,7 +158,6 @@ public interface PlanMapper {
                                 .latitude(place.getLatitude())
                                 .longitude(place.getLongitude())
                                 .placeAddress(place.getPlaceAddress())
-                                .placeImage(place.getPlaceImage())
                                 .build())
                     .collect(Collectors.toList());
     }
