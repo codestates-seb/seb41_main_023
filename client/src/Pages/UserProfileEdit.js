@@ -1,26 +1,23 @@
-import axios from "axios";
 import styled from "styled-components";
+import axios from "axios";
 import { useState, useRef, useCallback, useEffect } from "react";
 
 import Header from "../Components/Header";
-import { getData, patchData } from "../Util/api";
+import { General, Password, DeleteAccount } from "../Components/user/Tab";
+
 import { getCookie } from "../Util/Cookies";
 
-import { General, Password, DeleteAccount } from "../Components/user/Tab";
+import { getData, patchData, postData } from "../Util/api";
 
 const UserProfileEdit = () => {
   const memberId = getCookie("memberId");
+  const token = getCookie("accessToken");
   const [currentTab, clickTab] = useState(0);
   const [modal, setModal] = useState(false);
-
   const [userInfo, setUserInfo] = useState({});
-
   const [submitInfo, setSubmitInfo] = useState({
     id: "",
   });
-
-  const [userProfile, setUserProfile] = useState("");
-
   const nameRef = useRef([]);
 
   const handleChange = (e) => {
@@ -30,20 +27,24 @@ const UserProfileEdit = () => {
     });
   };
 
-  const getUserInfo = async () => {
-    const data = await getData(`/members/${memberId}`);
-    setUserInfo(data);
-  };
-
-  // const getUserProfile = async () => {
-  //   const data = await getData(`/members/${memberId}/profile`);
-  //   console.log(data);
-  //   // setUserProfile(data);
+  // const getUserInfo = async () => {
+  //   const data = await getData(`/members/userProfile/${memberId}`);
+  //   setUserInfo(data);
   // };
+
+  // 유저 정보 요청
+  const getUserInfo = () => {
+    axios
+      .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => setUserInfo(res.data));
+  };
 
   useEffect(() => {
     getUserInfo();
-    // getUserProfile();
   }, []);
 
   //유저 정보 patch 요청
@@ -62,7 +63,6 @@ const UserProfileEdit = () => {
           ...data,
         }).then((res) => {
           setUserInfo({ ...userInfo, displayName: res.data.displayName });
-          //input 창 초기화..
           nameRef.current.value = "";
         });
       }
@@ -91,32 +91,27 @@ const UserProfileEdit = () => {
   const SettingUserThumbnail = () => {
     const inputRef = useRef(null);
 
-    const onUploadImage = useCallback((e) => {
+    const onUploadImage = async (e) => {
       if (!e.target.files) {
         return;
       }
-
       if (window.confirm("프로필을 변경하시겠습니까?")) {
         const formData = new FormData();
         //formData.append : FormData 객체안에 이미 키가 존재하면 그 키에 새로운 값을 추가하고, 키가 없으면 추가
-        formData.append("image", e.target.files[0]);
-        axios({
-          url: `${process.env.REACT_APP_API_URL}/member/profile`, //url 수정필요
+        formData.append("multipartFile", e.target.files[0]);
+        await axios({
           method: "POST",
-          data: formData,
+          url: `https://www.sebmain41team23.shop/members/${memberId}/profile`,
           headers: {
+            Authorization: token,
             "Content-Type": "multipart/form-data",
-            // Authorization: token,
           },
-        })
-          .then((response) => {
-            setUserProfile(response.data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+          data: formData,
+        }).then((res) =>
+          setUserInfo({ ...userInfo, profileImage: res.data.profileImage })()
+        );
       }
-    }, []);
+    };
 
     const onUploadImageButtonClick = useCallback(() => {
       if (!inputRef.current) {
@@ -154,7 +149,7 @@ const UserProfileEdit = () => {
             <img
               className="profile_image"
               alt="profile_image"
-              src={userProfile}
+              src={userInfo.profileImage}
             />
             <SettingUserThumbnail />
           </div>

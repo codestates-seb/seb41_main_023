@@ -3,48 +3,39 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { removeCookie } from "../Util/Cookies";
 import { getCookie } from "../Util/Cookies";
-import { postData } from "../Util/api.js";
+import { getData, postData } from "../Util/api.js";
+import axios from "axios";
 
 const Header = ({ login }) => {
   const navigate = useNavigate();
 
   const token = getCookie("accessToken");
+  const memberId = getCookie("memberId");
   const refreshToken = localStorage.getItem("refreshToken");
 
-  const [userProfile, setUserProfile] = useState("https://picsum.photos/50");
+  const [userInfo, setUserInfo] = useState({});
 
-  // 유저 프로필 요청
-  //  useEffect(() => {
-  //   if (memberId) {
-  // axios
-  //   .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
-  //     headers: {
-  //       Authorization: token,
-  //       withCredentials: true,
-  //     },
-  //   })
-  //   .then((res) => {
-  //   console.log(res)
-  //   })
-  //   .catch((err) => console.log("error"));
-  //      }
-  //  }, [memberId]);
+  // const getUserInfo = async () => {
+  //   const data = await getData(`/members/userProfile/${memberId}`);
+  //   console.log(data.data);
+  //   // setUserInfo(data);
+  // };
 
-  // 프로필 이미지 요청
-  // useEffect(() => {
-  //     axios
-  //       .get(`${process.env.REACT_APP_API_URL}/member/profile`, {
-  //         headers: {
-  //           Authorization: token,
-  //           withCredentials: true,
-  //         },
-  //       })
-  //       .then((res) => res.data.data)
-  //       .then((res) => {
-  //         setUserProfile(res);
-  //       });
-  //   }
-  // }, []);
+  const getUserInfo = () => {
+    axios
+      .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) =>
+        setUserInfo({ ...userInfo, profileImage: res.data.profileImage })
+      );
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -68,11 +59,13 @@ const Header = ({ login }) => {
   return (
     <HeadContainer>
       <LeftSection>
-        <div className="header__logo" onClick={() => handleNavigate('/')}>
+        <div className="header__logo" onClick={() => handleNavigate("/")}>
           website name
         </div>
-        {/* <img alt="logo_image" src="https://picsum.photos/40" onClick={() => handleNavigate('/')} /> */}
-        <button className="button--default button--subtle" onClick={() => handleNavigate('/blog')}>
+        <button
+          className="button--default button--subtle"
+          onClick={() => handleNavigate("/blog")}
+        >
           Travel Logs
         </button>
       </LeftSection>
@@ -80,18 +73,29 @@ const Header = ({ login }) => {
         {login ? (
           <>
             <img
-              onClick={() => handleNavigate('/user/:memberId')}
+              onClick={() => handleNavigate(`/user/${memberId}`)}
               alt="profile_image"
-              src={userProfile}
+              src={userInfo.profileImage}
             />
-            <button className='button--default button--subtle' onClick={handleSignout}>Sign out</button>
+            <button
+              className="button--default button--subtle"
+              onClick={handleSignout}
+            >
+              Sign out
+            </button>
           </>
         ) : (
           <>
-            <button className="button--default" onClick={() => handleNavigate('/login')}>
+            <button
+              className="button--default"
+              onClick={() => handleNavigate("/login")}
+            >
               Log In
             </button>
-            <button className="button--primary" onClick={() => handleNavigate('/signup')}>
+            <button
+              className="button--primary"
+              onClick={() => handleNavigate("/signup")}
+            >
               Sign Up
             </button>
           </>

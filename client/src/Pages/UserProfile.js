@@ -1,43 +1,42 @@
+import axios from "axios";
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Header from "../Components/Header";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
-import { getData } from "../Util/api";
-import { useState, useEffect } from "react";
-import { getCookie, removeCookie } from "../Util/Cookies";
+
+// import { getData } from "../Util/api";
 import { postData } from "../Util/api";
+import { getCookie, removeCookie } from "../Util/Cookies";
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
-
-  const [tripList, setTripList] = useState();
-
-  //일정 개수
-  const [trips, setTrips] = useState(0);
 
   const token = getCookie("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const memberId = getCookie("memberId");
 
   // 유저 정보 조회
-  const getUserInfo = async () => {
-    const data = await getData(`/members/${memberId}`);
-    setUserInfo(data);
-  };
+  // const getUserInfo = async () => {
+  //   const data = await getData(`/members/userProfile/${memberId}`);
+  //   setUserInfo(data);
+  // };
 
-  // 여행 정보 조회
-  const getUserPlans = async () => {
-    const data = await getData(`/plans`);
-    setTrips(data.data.length);
-    setTripList(data);
+  const getUserInfo = () => {
+    axios
+      .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => setUserInfo(res.data));
   };
 
   useEffect(() => {
     getUserInfo();
-    getUserPlans();
   }, []);
 
   // 로그아웃 요청
@@ -62,7 +61,7 @@ const UserProfile = () => {
         <div className="user_profile">
           <div className="user_meta">
             <div className="user_meta_left">
-              <img src={userInfo.profile} alt="profile_image" />
+              <img src={userInfo.profileImage} alt="profile_image" />
             </div>
             <div className="user_meta_right">
               <div className="display_name">{userInfo.displayName}</div>
@@ -80,8 +79,8 @@ const UserProfile = () => {
         </div>
         <div className="map">
           <div className="meta_map">
-            <div>0 cities</div>
-            <div>{trips} trips</div>
+            <div>{userInfo.cities} cities</div>
+            <div>{userInfo.trips} trips</div>
           </div>
         </div>
       </UserProfileContainer>

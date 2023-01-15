@@ -23,28 +23,32 @@ const InfoContainer = styled.div`
   width: 100%;
   height: 80%;
   margin: 15px;
-  
+
   .content {
     margin: 10px 0;
   }
-  
+
   p {
     margin: 5px 0;
   }
 `;
 
 const InfoWindow = (props) => {
-    const {searchedGeocode, searchData, setSearchData, setInfoWindowOpen} = props;
+    const {searchedGeocode, searchData, setSearchData, setInfoWindowOpen, mainData, setMainData} = props;
 
     const closeInfoWindowHandler = () => {
         setInfoWindowOpen(false);
     }
 
-    const showedData = searchData[searchData.length - 1];
-    const {name, photo, price_level, rating, openingHours, website, formattedAddress, phoneNumber} = showedData;
+    const {name, photo, price_level, rating, openingHours, website, formattedAddress, phoneNumber} = searchData;
+
+    console.log(searchData);
 
     return (
         <InfoWindowF
+            options={{
+                pixelOffset: new window.google.maps.Size(0, -40)
+            }}
             position={searchedGeocode}
             onCloseClick={closeInfoWindowHandler}
         >

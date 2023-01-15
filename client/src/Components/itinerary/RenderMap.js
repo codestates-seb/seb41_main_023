@@ -21,11 +21,19 @@ const RenderMap = (props) => {
         setInfoWindowOpen,
         searchedGeocode,
         setSearchedGeocode,
-        setSearchData
+        setSearchData,
+        mainData,
+        setMainData
     } = props;
+
+
 
     const handleInfoWindow = () => {
         setInfoWindowOpen(prevState => !prevState);
+    }
+
+    const onLoad = () => {
+
     }
 
     return (
@@ -33,11 +41,13 @@ const RenderMap = (props) => {
             id={"mapping"}
             mapContainerStyle={mapContainerStyle}
             zoom={15}
+            // onLoad={() => window.location.reload()}
             center={center}
         >
             <MarkerF
                 position={searchedGeocode}
                 onClick={handleInfoWindow}
+                label={'0'}
             />
             {infoWindowOpen ? (
                 <InfoWindow
@@ -45,6 +55,8 @@ const RenderMap = (props) => {
                     searchData={searchData}
                     setSearchData={setSearchData}
                     setInfoWindowOpen={setInfoWindowOpen}
+                    mainData={mainData}
+                    setMainData={setMainData}
                 />
             ) : null}
         </GoogleMap>

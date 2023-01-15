@@ -1,8 +1,12 @@
 /* 유저이름, 비밀번호 수정, 계정 삭제 */
 
 import styled from "styled-components";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { getCookie, removeCookie } from "../../Util/Cookies";
+import { patchData } from "../../Util/api";
+import axios from "axios";
 
 import Modal from "./Modal";
 
@@ -29,6 +33,7 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
 
 // 비밀번호 수정
 const Password = () => {
+  const memberId = getCookie("memberId");
   const [inputs, setInputs] = useState({
     originPassword: "",
     newPassword: "",
@@ -56,7 +61,6 @@ const Password = () => {
       ...inputs,
       [name]: value,
     };
-
     setInputs(data);
   };
 
@@ -68,29 +72,17 @@ const Password = () => {
       return;
     }
 
-    console.log("change!");
-
-    // 비밀번호 변경 요청
-    // axios
-    //   .patch(`${process.env.REACT_APP_API_URL}/members/password/${memberId}`, {
-    //     headers: {
-    //       Authorization: token,
-    //       withCredentials: true,
-    //     },
-    //     data : {
-    //       originPassword : inputs.originPassword,
-    //       password : inputs.newPassword
-    // }
-    //   })
-    //   .then((res) => {
-    //     alert("비밀번호가 변경되었습니다.");
-    // setInputs({
-    //   originPassword: "",
-    //   newPassword: "",
-    // });
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => console.log("error"));
+    patchData(`/members/password/${memberId}`, {
+      originPassword: inputs.originPassword,
+      password: inputs.newPassword,
+    }).then((res) => {
+      if (res) {
+        setInputs({ originPassword: "", newPassword: "" });
+        alert("비밀번호가 변경되었습니다");
+      } else {
+        alert("비밀번호를 확인해주세요");
+      }
+    });
   };
 
   return (
@@ -128,23 +120,35 @@ const Password = () => {
 
 /* 계정 삭제 */
 const DeleteAccount = ({ modal, setModal }) => {
+  const memberId = getCookie("memberId");
+  const token = getCookie("accessToken");
+  const refreshToken = localStorage.getItem("refresh-token");
   const navigate = useNavigate();
+
   const handleDeleteAccount = () => {
-    // axios
-    //   .delete(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
-    //     headers: {
-    //       Authorization: token,
-    //       withCredentials: true,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     removeCookie("accessToken");
-    //     alert("그동안 이용해주셔서 감사합니다.");
-    //     navigate("/");
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => console.log("error"));
-    console.log("계정 삭제!");
+    console.log(token, refreshToken);
+    axios
+      .delete(`https://www.sebmain41team23.shop/members/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+        data: {
+          accessToken: token,
+          refreshToken: refreshToken,
+        },
+      })
+      .then((res) => {
+        removeCookie("accessToken");
+        removeCookie("memberId");
+      })
+      .then((res) => {
+        localStorage.removeItem("refresh-token");
+        alert("그동안 이용해주셔서 감사합니다.");
+      })
+      .then((res) => {
+        window.location.replace("/");
+      })
+      .catch((err) => console.log("error"));
   };
 
   return (

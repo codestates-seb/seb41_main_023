@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import SinglePlanBox from "./SinglePlanBox";
 import PlaceInputBox from "./PlaceInputBox";
+import {useState} from "react";
+import Budget from "../budget/Buget";
+import {useParams} from "react-router-dom";
+import moment from "moment/moment";
+import PlaceInfoSection from "./PlaceInfoSection";
 
 const Container = styled.div`
   position: relative;
@@ -9,15 +14,15 @@ const Container = styled.div`
   flex-grow: 1;
   max-width: 100%;
   min-height: calc(100% - 200px);
-  width: calc(100% - 50px);
-  margin-top: 30px;
+  width: calc(100% - 30px);
+  margin-top: 240px;
   margin-left: 50px;
-  padding: 0;
   overflow-y: scroll;
 `;
 
 const PlanContainer = styled.div`
-  margin: 240px 48px 0 48px;
+  margin-left: 50px;
+  width: 90%;
   position: relative;
 `;
 
@@ -34,7 +39,10 @@ const Title = styled.h2`
 
 const SectionComponent = styled.div`
   box-sizing: border-box;
+  border-bottom: 1px solid lightgray;
 `;
+
+
 
 const EditContainer = (props) => {
     const {
@@ -44,28 +52,81 @@ const EditContainer = (props) => {
         searchData,
         setSearchData,
         setSearchedGeocode,
-        setInfoWindowOpen
+        setInfoWindowOpen,
+        mainData,
+        setMainData,
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate
     } = props;
+
+    const {itineraryId} = useParams();
+
+    const [addExpenseModal, setAddExpenseModal] = useState(false);
+    // const [planData, setPlanData] = useState([]);
+
+    // useEffect(() => {
+    //     axios.get(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
+    //         headers: {
+    //             Authorization: getCookie('accessToken'),
+    //             withCredentials: true
+    //         }
+    //     })
+    //         .then((res) => {
+    //             // const dateArr = res.data.data.planDates.map((element) => element.planDate);
+    //             // const formattedDateArr = dateArr.map((date) => moment(date).format('M월 D일'));
+    //             // setDate(formattedDateArr);
+    //             console.log(res.data.data.planDatesAndPlace)
+    //
+    //             setPlanData(res.data.data.planDatesAndPlace);
+    //         })
+    // }, [getCookie])
+    console.log('메인:', mainData.planDatesAndPlace)
+    const singlePlanData = mainData.planDatesAndPlace;
 
     return (
         <Container>
             <PlanContainer>
-                <Title>Itinerary</Title>
-                <SectionComponent>
-                    <SinglePlanBox
-                        searchData={searchData}
-                        setSearchData={setSearchData}
-                    />
-                    <PlaceInputBox
-                        searchBox={searchBox}
-                        setSearchBox={setSearchBox}
-                        searchData={searchData}
-                        setSearchData={setSearchData}
-                        setInfoWindowOpen={setInfoWindowOpen}
-                        setSearchedGeocode={setSearchedGeocode}
-                        setCenter={setCenter}
-                    />
-                </SectionComponent>
+                <Title>일정</Title>
+                {singlePlanData !== null ? (
+                    singlePlanData.map((singleData) => (
+                    <SectionComponent
+                        key={singleData.planDateId}
+                    >
+                        <SinglePlanBox
+                            planDateId={singleData.planDateId}
+                            planDate={singleData.planDate}
+                            singleData={singleData}
+                            searchData={searchData}
+                            setSearchData={setSearchData}
+                            setAddExpenseModal={setAddExpenseModal}
+                        />
+                        {/*<PlaceInfoSection*/}
+                        {/*    searchData={searchData}*/}
+                        {/*    setSearchData={setSearchData}*/}
+                        {/*    setAddExpenseModal={setAddExpenseModal}*/}
+                        {/*    singleData={singleData}/>*/}
+                        {/*<SectionHeader>*/}
+                        {/*    <p>{moment(singleData.planDate).format('M월 D일')}</p>*/}
+                        {/*    <p>{singleData.planDateId}</p>*/}
+                        {/*</SectionHeader>*/}
+                        <PlaceInputBox
+                            planDateId={singleData.planDateId}
+                            searchBox={searchBox}
+                            setSearchBox={setSearchBox}
+                            searchData={searchData}
+                            setSearchData={setSearchData}
+                            setInfoWindowOpen={setInfoWindowOpen}
+                            setSearchedGeocode={setSearchedGeocode}
+                            setCenter={setCenter}
+                        />
+                    </SectionComponent>
+                ))) : null}
+                <Budget
+                    addExpenseModal={addExpenseModal}
+                    setAddExpenseModal={setAddExpenseModal}
+                />
             </PlanContainer>
         </Container>
     )
