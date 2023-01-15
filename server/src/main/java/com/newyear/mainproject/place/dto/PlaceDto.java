@@ -58,6 +58,7 @@ public class PlaceDto {
         private Double latitude; //위도
         private Double longitude; //경도
         private String placeAddress;
+
         private Double ratings; //별점
         private String website; //웹사이트
         private String phone; //전화번호
