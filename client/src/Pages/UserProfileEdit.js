@@ -35,7 +35,7 @@ const UserProfileEdit = () => {
   // 유저 정보 요청
   const getUserInfo = () => {
     axios
-      .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
+      .get(`${process.env.REACT_APP_API_URL}/members/userProfile/${memberId}`, {
         headers: {
           Authorization: token,
         },
@@ -59,12 +59,16 @@ const UserProfileEdit = () => {
       };
 
       if (window.confirm("수정사항을 저장하시겠습니까?")) {
-        patchData(`/members/displayName/${memberId}`, {
-          ...data,
-        }).then((res) => {
-          setUserInfo({ ...userInfo, displayName: res.data.displayName });
-          nameRef.current.value = "";
-        });
+        axios
+          .patch(
+            `${process.env.REACT_APP_API_URL}/members/displayName/${memberId}`,
+            { ...data },
+            { headers: { Authorization: token } }
+          )
+          .then((res) => {
+            setUserInfo({ ...userInfo, displayName: res.data.displayName });
+            nameRef.current.value = "";
+          });
       }
     }
   };

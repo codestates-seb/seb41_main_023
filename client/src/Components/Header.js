@@ -51,8 +51,7 @@ const Header = ({ login }) => {
         removeCookie("accessToken");
         removeCookie("memberId");
         localStorage.removeItem("refresh-token");
-        navigate("/");
-        window.location.reload();
+        window.location.replace("/");
       });
     }
   };
