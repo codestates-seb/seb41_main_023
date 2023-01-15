@@ -35,9 +35,7 @@ const MarkerLists = (props) => {
         <Fragment>
             {data !== null ? (
                 data.places.map((singleData) => (
-                    <Fragment
-                        key={singleData.placeId}
-                    >
+                    <Fragment key={singleData.placeId}>
                         <MarkerF
                             position={{
                                 lat: singleData.latitude,

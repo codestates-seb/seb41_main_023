@@ -25,7 +25,7 @@ const RenderMap = (props) => {
         <GoogleMap
             id={"mapping"}
             mapContainerStyle={mapContainerStyle}
-            zoom={15}
+            zoom={13}
             center={center}
         >
             {placesInfo !== null ? (
