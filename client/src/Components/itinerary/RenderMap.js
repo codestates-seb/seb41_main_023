@@ -15,25 +15,18 @@ const mapContainerStyle = {
 const RenderMap = (props) => {
     const {
         center,
-        setCenter,
         searchData,
         infoWindowOpen,
         setInfoWindowOpen,
         searchedGeocode,
-        setSearchedGeocode,
         setSearchData,
         mainData,
         setMainData
     } = props;
 
 
-
     const handleInfoWindow = () => {
         setInfoWindowOpen(prevState => !prevState);
-    }
-
-    const onLoad = () => {
-
     }
 
     return (
@@ -41,7 +34,6 @@ const RenderMap = (props) => {
             id={"mapping"}
             mapContainerStyle={mapContainerStyle}
             zoom={15}
-            // onLoad={() => window.location.reload()}
             center={center}
         >
             <MarkerF

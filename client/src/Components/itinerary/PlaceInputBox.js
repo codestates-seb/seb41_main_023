@@ -2,10 +2,24 @@ import {StandaloneSearchBox} from "@react-google-maps/api";
 import styled from "styled-components";
 import axios from "axios";
 import {getCookie} from "../../Util/Cookies";
+import PlanDropDown from "./PlanDropDown";
 import {useState} from "react";
 
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 40px;
+  align-items: center;
+
+  div {
+    width: 100%;
+  }
+`;
+
 const InputContainer = styled.div`
-  width: 95%;
+  width: 100%;
   height: 40px;
   border: 1px solid black;
   border-radius: 1rem;
@@ -13,7 +27,6 @@ const InputContainer = styled.div`
   flex-direction: row;
   align-items: center;
   padding: 5px 10px;
-  margin-bottom: 20px;
 
   input {
     width: 700px;
@@ -28,8 +41,9 @@ const InputIconBox = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 10px;
-  width: 3%;
+  width: auto;
 `;
+
 
 const PlaceInputBox = (props) => {
         const {
@@ -38,26 +52,14 @@ const PlaceInputBox = (props) => {
             setInfoWindowOpen,
             setSearchedGeocode,
             setCenter,
-            searchData,
             setSearchData,
-            planDateId,
+            singlePlanData
         } = props;
 
-        const [isFocused, setIsFocused] = useState(false);
+        const [selectedDateId, setSelectedDateId] = useState(null);
 
         const onLoad = (ref) => {
-            // if(isFocused) {
-            console.log(ref);
             setSearchBox(ref);
-            // }
-        }
-
-        const handleOnFocus = () => {
-            setIsFocused(prevState => !prevState);
-        }
-
-        const onUnmount = () => {
-            setSearchBox('');
         }
 
         const onPlacesChanged = () => {
@@ -80,7 +82,8 @@ const PlaceInputBox = (props) => {
                 let photo, openingHours;
 
                 if (place.photos !== undefined) {
-                    photo = place.photos[0].getUrl();
+                    photo = place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500});
+                    console.log(photo);
                 } else {
                     photo = 'null';
                 }
@@ -128,7 +131,7 @@ const PlaceInputBox = (props) => {
                     phoneNumber
                 });
 
-                axios.post(`${process.env.REACT_APP_API_URL}/places/${planDateId}`, {
+                axios.post(`${process.env.REACT_APP_API_URL}/places/${selectedDateId}`, {
                     placeName: name,
                     latitude: lat,
                     longitude: lng,
@@ -139,10 +142,13 @@ const PlaceInputBox = (props) => {
                     }
                 })
                     .then((res) => console.log('추가된 정보: ', res.data))
-                    // .then(res => window.location.reload())
+                    .then(res => window.location.reload())
                     .catch((err) => console.log(err))
             }
 
+            if(selectedDateId === null) {
+                alert('먼저 날짜를 선택해주세요!!')
+            }
         };
 
         const handleOnKeyPress = (event) => {
@@ -151,32 +157,33 @@ const PlaceInputBox = (props) => {
             }
         };
 
-        const handlePlanDateId = () => {
-            console.log(planDateId)
-        }
-
         return (
-            <InputContainer>
-                <InputIconBox>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                         preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                        <path fill="currentColor"
-                              d="M18.364 17.364L12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0zM12 13a2 2 0 1 0 0-4a2 2 0 0 0 0 4z"/>
-                    </svg>
-                </InputIconBox>
-                <StandaloneSearchBox
-                    onLoad={onLoad}
-                    onPlacesChanged={onPlacesChanged}
-                >
-                    <input
-                        id={planDateId}
-                        type={'text'}
-                        placeholder={'Add a place'}
-                        onKeyPress={handleOnKeyPress}
-                        onClick={handlePlanDateId}
-                    />
-                </StandaloneSearchBox>
-            </InputContainer>
+            <InputWrapper>
+                <InputContainer>
+                    <InputIconBox>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                             preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                  d="M18.364 17.364L12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0zM12 13a2 2 0 1 0 0-4a2 2 0 0 0 0 4z"/>
+                        </svg>
+                    </InputIconBox>
+                    <StandaloneSearchBox
+                        onLoad={onLoad}
+                        onPlacesChanged={onPlacesChanged}
+                    >
+                        <input
+                            type={'text'}
+                            placeholder={'Add a place'}
+                            onKeyPress={handleOnKeyPress}
+                        />
+                    </StandaloneSearchBox>
+                </InputContainer>
+                <PlanDropDown
+                    singlePlanData={singlePlanData}
+                    selectedDateId={selectedDateId}
+                    setSelectedDateId={setSelectedDateId}
+                />
+            </InputWrapper>
         )
     }
 ;

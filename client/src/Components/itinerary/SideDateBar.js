@@ -4,7 +4,6 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import {getCookie} from "../../Util/Cookies";
 import moment from "moment";
-import {da} from "date-fns/locale";
 
 const LeftSideBar = styled.div`
   display: flex;
@@ -17,6 +16,7 @@ const LeftSideBar = styled.div`
   z-index: 50;
   margin-top: 221px;
   overflow: scroll;
+
   ::-webkit-scrollbar {
     display: none;
   }
@@ -42,9 +42,9 @@ const DateBox = styled.div`
   }
 `;
 
-const SideDateBar = (props) => {
+const SideDateBar = () => {
     const {itineraryId} = useParams();
-    const [date, setDate] = useState([]);
+    const [dates, setDates] = useState([]);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
@@ -56,18 +56,15 @@ const SideDateBar = (props) => {
             }
         )
             .then((res) => {
-                const dateArr = res.data.data.planDates.map((element) => element.planDate);
-                console.log(dateArr[0])
-                const formattedDateArr = dateArr.map((date) => moment(date).format('M/D'));
-                setDate(formattedDateArr);
+                setDates(res.data.data.planDates);
             })
-    }, [itineraryId, getCookie])
+    }, [])
 
     return (
         <LeftSideBar>
-            {date.map((element, idx) => (
-                <DateBox key={idx}>
-                    <button>{element}</button>
+            {dates.map((date) => (
+                <DateBox key={date.planDateId}>
+                    <button>{moment(date.planDate).format('M/D')}</button>
                 </DateBox>
             ))}
         </LeftSideBar>
