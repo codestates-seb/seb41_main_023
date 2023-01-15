@@ -4,8 +4,11 @@ import { useState } from "react";
 const EditBudget = (props) => {
   const { editBudget, setEditBudget, handleEditBudget, originBudget } = props;
   const [inputBudget, setInputBudget] = useState(originBudget);
+
   const handleInputBudget = (e) => {
-    setInputBudget(e.target.value);
+    const value = e.target.value;
+    const onlyNumber = value.replace(/[^0-9]/g, "");
+    setInputBudget(onlyNumber);
   };
 
   return (

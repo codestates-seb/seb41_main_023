@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SinglePlanBox from "./SinglePlanBox";
 import PlaceInputBox from "./PlaceInputBox";
-import {useState} from "react";
+import { useState } from "react";
 import Budget from "../budget/Buget";
 import moment from "moment/moment";
 
@@ -52,61 +52,63 @@ const SectionHeader = styled.div`
 `;
 
 const EditContainer = (props) => {
-    const {
-        setCenter,
-        searchBox,
-        setSearchBox,
-        searchData,
-        setSearchData,
-        setSearchedGeocode,
-        setInfoWindowOpen,
-        mainData,
-    } = props;
+  const {
+    setCenter,
+    searchBox,
+    setSearchBox,
+    searchData,
+    setSearchData,
+    setSearchedGeocode,
+    setInfoWindowOpen,
+    mainData,
+  } = props;
 
-    const [addExpenseModal, setAddExpenseModal] = useState(false);
+  const [addExpenseModal, setAddExpenseModal] = useState(false);
 
-    const singlePlanData = mainData.planDatesAndPlace;
+  const singlePlanData = mainData.planDatesAndPlace;
 
-    return (
-        <Container>
-            <PlanContainer>
-                <Title>Add a place you want</Title>
-                <PlaceInputBox
-                    searchBox={searchBox}
-                    setSearchBox={setSearchBox}
-                    searchData={searchData}
-                    setSearchData={setSearchData}
-                    setInfoWindowOpen={setInfoWindowOpen}
-                    setSearchedGeocode={setSearchedGeocode}
-                    setCenter={setCenter}
-                    singlePlanData={singlePlanData}
+  return (
+    <Container>
+      <PlanContainer>
+        <Title>Add a place you want</Title>
+        <PlaceInputBox
+          searchBox={searchBox}
+          setSearchBox={setSearchBox}
+          searchData={searchData}
+          setSearchData={setSearchData}
+          setInfoWindowOpen={setInfoWindowOpen}
+          setSearchedGeocode={setSearchedGeocode}
+          setCenter={setCenter}
+          singlePlanData={singlePlanData}
+        />
+        <Title>일정</Title>
+        {singlePlanData !== null
+          ? singlePlanData.map((singleData) => (
+              <SectionComponent key={singleData.planDateId}>
+                <SectionHeader>
+                  <p>{moment(singleData.planDate).format("M월 D일")}</p>
+                </SectionHeader>
+                <SinglePlanBox
+                  planDateId={singleData.planDateId}
+                  planDate={singleData.planDate}
+                  singleData={singleData}
+                  searchData={searchData}
+                  setSearchData={setSearchData}
+                  setAddExpenseModal={setAddExpenseModal}
                 />
-                <Title>일정</Title>
-                {singlePlanData !== null ? (
-                    singlePlanData.map((singleData) => (
-                        <SectionComponent
-                            key={singleData.planDateId}
-                        >
-                            <SectionHeader>
-                                <p>{moment(singleData.planDate).format('M월 D일')}</p>
-                            </SectionHeader>
-                            <SinglePlanBox
-                                planDateId={singleData.planDateId}
-                                planDate={singleData.planDate}
-                                singleData={singleData}
-                                searchData={searchData}
-                                setSearchData={setSearchData}
-                                setAddExpenseModal={setAddExpenseModal}
-                            />
-                        </SectionComponent>
-                    ))) : null}
-                <Budget
-                    addExpenseModal={addExpenseModal}
-                    setAddExpenseModal={setAddExpenseModal}
-                />
-            </PlanContainer>
-        </Container>
-    )
+              </SectionComponent>
+            ))
+          : null}
+        {mainData.budgetId && (
+          <Budget
+            budgetId={mainData.budgetId}
+            addExpenseModal={addExpenseModal}
+            setAddExpenseModal={setAddExpenseModal}
+          />
+        )}
+      </PlanContainer>
+    </Container>
+  );
 };
 
 export default EditContainer;

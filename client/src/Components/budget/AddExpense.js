@@ -26,8 +26,9 @@ const AddExpense = (props) => {
       const value = e.target.value;
       const onlyNumber = value.replace(/[^0-9]/g, "");
       return setInputs({ ...inputs, [e.target.name]: onlyNumber });
+    } else {
+      setInputs({ ...inputs, [e.target.name]: e.target.value });
     }
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
   //입력창 초기화
@@ -40,7 +41,7 @@ const AddExpense = (props) => {
   return (
     <>
       {addExpenseModal ? (
-        <ModalContainer onClick={() => setAddExpenseModal(false)}>
+        <ModalContainer onClick={handleClear}>
           <ModalWrapper onClick={(e) => e.stopPropagation()}>
             <div className="title_frame">
               <div className="title">Add Expense</div>
@@ -50,9 +51,10 @@ const AddExpense = (props) => {
             </div>
             <input
               type="text"
+              name="price"
+              value={inputs.price}
               className="content"
               placeholder="지출 금액을 입력해주세요."
-              name="price"
               onChange={handleInputs}
             />
             <div
@@ -63,16 +65,17 @@ const AddExpense = (props) => {
             </div>
             <input
               className="content"
-              placeholder="지출 항목을 입력해주세요."
               name="item"
+              placeholder="지출 항목을 입력해주세요."
               onChange={handleInputs}
             />
             <div className="submit_frame">
               <button
                 className="btn"
-                onClick={() =>
-                  handleAddExpense(inputs.price, selectedCategory, inputs.item)
-                }
+                onClick={() => {
+                  handleAddExpense(inputs.price, selectedCategory, inputs.item);
+                  handleClear();
+                }}
               >
                 Add expense
               </button>
