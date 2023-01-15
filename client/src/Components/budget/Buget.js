@@ -173,7 +173,7 @@ const Budget = ({ budgetId }) => {
         />
       </TopArea>
       <div className="budget">
-        $ {budget?.expectedBudget?.toLocaleString("ko-KR")}
+        ₩ {budget?.expectedBudget?.toLocaleString("ko-KR")}
       </div>
       <hr />
       <MiddleArea>
@@ -197,7 +197,7 @@ const Budget = ({ budgetId }) => {
             </div>
             <div className="bottom_right">
               <div className="meta_user_expense">
-                $ {el.price.toLocaleString("ko-KR")}
+                ₩ {el.price.toLocaleString("ko-KR")}
               </div>
 
               <div className="delete_expense">
@@ -243,7 +243,7 @@ const Budget = ({ budgetId }) => {
 
       <div>예산 사용량</div>
       <div>
-        {(budget.expectedBudget / budget.totalExpenses / 100).toFixed()} %{" "}
+        {Math.floor((budget?.totalExpenses / budget?.expectedBudget) * 100)} %
       </div>
     </BudgetContainer>
   );

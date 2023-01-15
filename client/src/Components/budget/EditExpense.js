@@ -89,7 +89,7 @@ const EditExpense = (props) => {
                 className="cancel_text"
                 onClick={() => setEditExpenseModal(false)}
               >
-                Cancel {expenseId}
+                Cancel
               </div>
             </div>
           </ModalWrapper>
