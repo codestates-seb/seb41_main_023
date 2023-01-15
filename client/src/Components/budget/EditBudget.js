@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useState, forwardRef } from "react";
+import { useState } from "react";
 
-const EditBudget = (props, ref) => {
+const EditBudget = (props) => {
   const { editBudget, setEditBudget, handleEditBudget, originBudget } = props;
   const [inputBudget, setInputBudget] = useState(originBudget);
   const handleInputBudget = (e) => {
@@ -23,10 +23,9 @@ const EditBudget = (props, ref) => {
               </div>
             </div>
             <input
-              ref={ref}
               id="budget"
               className="content"
-              placeholder="예산을 입력해주세요"
+              placeholder={"예산을 입력해주세요"}
               value={inputBudget}
               onChange={handleInputBudget}
             />
@@ -55,7 +54,7 @@ const EditBudget = (props, ref) => {
   );
 };
 
-export default forwardRef(EditBudget);
+export default EditBudget;
 
 const ModalContainer = styled.div`
   background: rgba(0, 0, 0, 0.5);

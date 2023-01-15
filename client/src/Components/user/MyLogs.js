@@ -1,64 +1,52 @@
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from "axios";
+import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { getCookie } from "../../Util/Cookies";
 
 //axios.get
 const MyLogs = () => {
-  const dummy = [
-    {
-      image: 'https://picsum.photos/100',
-      boardId: 3,
-      title: 'Trip to Busan',
-      likes: 1,
-      views: 0,
-      displayName: 'wpdnd',
-      checkLikes: true,
-    },
-    {
-      image: 'https://picsum.photos/200',
-      boardId: 4,
-      title: 'title',
-      likes: 1,
-      views: 0,
-      displayName: 'wpdnd',
-      checkLikes: false,
-    },
-  ];
+  // const dummy = [
+  //   {
+  //     image: "https://picsum.photos/100",
+  //     boardId: 3,
+  //     title: "Trip to Busan",
+  //     likes: 1,
+  //     views: 0,
+  //     displayName: "wpdnd",
+  //     checkLikes: true,
+  //   },
+  //   {
+  //     image: "https://picsum.photos/200",
+  //     boardId: 4,
+  //     title: "title",
+  //     likes: 1,
+  //     views: 0,
+  //     displayName: "wpdnd",
+  //     checkLikes: false,
+  //   },
+  // ];
 
   const navigate = useNavigate();
-  const [logList, setLogList] = useState(dummy);
+  const [logList, setLogList] = useState([]);
 
-  const [token, setToken] = useState();
-  const [memberId, setMemberId] = useState();
+  const token = getCookie("accessToken");
+  const memberId = getCookie("memberId");
 
-  //토큰 설정
-  // useEffect(() => {
-  //   if (cookies.accessToken) {
-  //     setToken(cookies.accessToken.token);
-  //   }
-  // }, []);
+  const getTrip = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/board/user/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => setLogList(res.data));
+  };
 
-  //memberId 설정
-
-  //회원의 전체 게시글 조회
-  // useEffect(() => {
-  //   axios({
-  //     url: `${process.env.REACT_APP_API_URL}/board/user/${memberId}`,
-  //     method: "GET",
-  //     headers: {
-  //        Authorization: token,
-  //       withCredentials: true,
-  //     },
-  //   })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //        setLogList(response.data)
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    getTrip();
+  }, []);
 
   return (
     <MyLogsContainer>
@@ -66,14 +54,20 @@ const MyLogs = () => {
       <div className="contents">
         {logList.map((el) => (
           <div className="my-logs__card" key={el.boardId}>
-            <img alt="place_image" src={el.image} onClick={() => navigate('/board/:boardId')} />
+            <img
+              alt="place_image"
+              src={el.image}
+              onClick={() => navigate("/board/:boardId")}
+            />
             <div className="meta_title">{el.title}</div>
-            <div className="meta_content">{/* {el.startDate} - {el.endDate} */}</div>
+            <div className="meta_content">
+              {/* {el.startDate} - {el.endDate} */}
+            </div>
             <div className="meta_profile">
               {/* <div>{el.profile_image}</div> */}
               <div>{el.displayName} </div>
             </div>
-            <div className={el.checkLikes ? 'meta_likes likes' : 'meta_likes'}>
+            <div className={el.checkLikes ? "meta_likes likes" : "meta_likes"}>
               <svg viewBox="0 0 16 16">
                 <path
                   fill-rule="evenodd"

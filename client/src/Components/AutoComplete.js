@@ -14,7 +14,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
 
   const getCity = () => {
     axios
-      .get(`https://www.sebmain41team23.shop/city`, {})
+      .get(`${process.env.REACT_APP_API_URL}/city`, {})
       .then((res) => setCity(res.data.data.map((el) => el.cityName)));
   };
 
