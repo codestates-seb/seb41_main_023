@@ -152,12 +152,17 @@ public interface PlanMapper {
                                 .builder()
                                 .placeId(place.getPlaceId())
                                 .placeName(place.getPlaceName())
+                                .description(place.getDescription())
                                 .startTime(place.getStartTime())
                                 .endTime(place.getEndTime())
                                 .expenses(expensesToExpenseSimpleResponseDto(place.getExpenses()))
                                 .latitude(place.getLatitude())
                                 .longitude(place.getLongitude())
                                 .placeAddress(place.getPlaceAddress())
+                                .ratings(place.getRatings())
+                                .website(place.getWebsite())
+                                .phone(place.getPhone())
+                                .openingHours(place.getOpeningHours())
                                 .build())
                     .collect(Collectors.toList());
     }
