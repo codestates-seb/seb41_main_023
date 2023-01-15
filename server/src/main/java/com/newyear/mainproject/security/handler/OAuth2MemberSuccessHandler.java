@@ -145,7 +145,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .scheme("https")
                 .host("www.sebmain41team23.shop")
 //                .port(8080)
-                .path("/login/token")
+                .path("/login")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
