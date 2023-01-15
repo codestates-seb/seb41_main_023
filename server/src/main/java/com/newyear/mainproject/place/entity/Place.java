@@ -45,7 +45,6 @@ public class Place {
     private String phone; //전화번호
 
     private String openingHours; //영업시간
-
     @ManyToOne
     @JoinColumn(name = "plan_date_id")
     private PlanDates planDates;
