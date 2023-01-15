@@ -1,4 +1,4 @@
-package com.newyear.mainproject.expense;
+package com.newyear.mainproject.expense.service;
 
 import com.newyear.mainproject.budget.entity.Budget;
 import com.newyear.mainproject.budget.service.BudgetService;
