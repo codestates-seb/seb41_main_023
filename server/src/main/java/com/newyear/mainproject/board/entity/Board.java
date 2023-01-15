@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class Board extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardId;
 
-    @NotBlank
+    @Column(nullable = false)
     private String title;
 
     private String content;
