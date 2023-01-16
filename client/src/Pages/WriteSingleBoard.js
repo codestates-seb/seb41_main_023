@@ -134,7 +134,7 @@ const WriteSingleBoard = () => {
         <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
           <GoogleMap
             zoom={15}
-            center={center}
+            center={geocode}
             mapContainerStyle={mapContainerStyle}
           >
             <MarkerF onLoad={onLoad} position={geocode} scale={5}>

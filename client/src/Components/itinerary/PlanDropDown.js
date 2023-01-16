@@ -10,7 +10,7 @@ const ListWrapper = styled.div`
 
 export const StyledSelectBox = styled.div`
   position: relative;
-  width: 8rem;
+  width: 10rem;
   height: 2.6rem;
   border-radius: 8px;
   background: #ffffff;
@@ -39,7 +39,7 @@ export const StyledSelectedLabel = styled.button`
 `;
 
 const activeExist = ({ active = true }) => {
-    return `max-height: ${active ? '300px' : '0'}`;
+    return `max-height: ${active ? '100px' : '0'}`;
 };
 
 export const StyledOptionList = styled.ul`
@@ -47,7 +47,7 @@ export const StyledOptionList = styled.ul`
   position: absolute; // absolute를 이용해 위치를 원하는 곳에 둘것.
   top: 2.6rem; // 그곳에 위에서부터 2.6rem(드롭다운본체의 크기)만큼 떨어진 곳.
   list-style-type: none; // ul을 커스텀할 거라면 꼭 해줘야하는 list-style-type:none
-  width: 100%; // 크기는 드롭다운 본체의 너비와 동일하게함.
+  width: 120%; // 크기는 드롭다운 본체의 너비와 동일하게함.
   border-radius: 8px; // 동글동글하게 아래부분을 만들어야해서 border-radius를 줌.
   background: #ffffff; // 배경색
   ${activeExist}; 
@@ -74,10 +74,17 @@ export const StyledOptionList = styled.ul`
 `;
 
 export const StyledOptionItem = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
-  padding: 0.8rem 1rem 0.8rem 1rem;
+  //padding: 0.8rem 1rem 0.8rem 1rem;
+  margin: 7px 3px;
+  //margin-left: 3px;
   //transition: 0.3s;
   color: #0f0f0f;
+  font-size: 12px;
+  
   &:hover {
     background: #ffffff;
   }

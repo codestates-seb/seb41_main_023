@@ -67,7 +67,9 @@ const Itinerary = () => {
                     planDatesAndPlace: res.data.data.planDatesAndPlace
                 })
             })
-    }, []);
+    }, [itineraryId]);
+
+    console.log('메인데이터: ', mainData);
 
     return (
         <ItineraryWrapper>
