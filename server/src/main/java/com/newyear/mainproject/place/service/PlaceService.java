@@ -45,6 +45,16 @@ public class PlaceService {
                 .ifPresent(longitude -> findPlace.setLongitude(longitude));
         Optional.ofNullable(place.getPlaceAddress())
                 .ifPresent(address -> findPlace.setPlaceAddress(address));
+        Optional.ofNullable(place.getRatings())
+                .ifPresent(ratings -> findPlace.setRatings(ratings));
+        Optional.ofNullable(place.getWebsite())
+                .ifPresent(website -> findPlace.setWebsite(website));
+        Optional.ofNullable(place.getPhone())
+                .ifPresent(phone -> findPlace.setPhone(phone));
+        Optional.ofNullable(place.getOpeningHours())
+                .ifPresent(openingHours -> findPlace.setOpeningHours(openingHours));
+        Optional.ofNullable(place.getDescription())
+                .ifPresent(description -> findPlace.setDescription(description));
 
         return placeRepository.save(findPlace);
     }
