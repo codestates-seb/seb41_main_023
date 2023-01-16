@@ -1,5 +1,9 @@
+import {useState} from "react";
+import axios from "axios";
+import {getCookie} from "../../Util/Cookies";
 import styled from "styled-components";
-import {Fragment, useState} from "react";
+import AddExpense from "../budget/AddExpense";
+import {da} from "date-fns/locale";
 
 const SectionWrapper = styled.div`
   display: flex;
@@ -8,7 +12,7 @@ const SectionWrapper = styled.div`
 
 const SectionContent = styled.div`
   width: 95%;
-  height: 180px;
+  height: 100px;
   border: 1px solid black;
   border-radius: 2rem;
   margin: 20px 0;
@@ -78,18 +82,6 @@ const PlanDeleteContainer = styled.div`
   }
 `;
 
-const PlaceImageBox = styled.div`
-  width: 30%;
-  height: 100%;
-
-  img {
-    border-radius: 1rem;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
 const clockSvg = (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
          viewBox="0 0 24 24">
@@ -114,66 +106,78 @@ const deleteSvg = (
     </svg>
 )
 
-const PlaceInfoSection = (props) => {
-    const {searchData, setAddExpenseModal, handleDeletePlan, singleData} = props;
-    const [delButtonIsShow, setDelButtonIsShow] = useState(true);
+const SinglePlan = (props) => {
+    const {planDate, setCurrentDate, data, setCurrentPlace, setAddExpenseModal, setCurrentPlaceId} = props;
+    const [delButtonIsShow, setDelButtonIsShow] = useState(false);
 
-    const onMouseHandler = () => {
-        setDelButtonIsShow(prevState => !prevState);
-    }
 
     const handleExpenseModal = () => {
         setAddExpenseModal(true);
     }
 
-    console.log('싱글', singleData)
+    const onMouseHandler = () => {
+        setDelButtonIsShow(prevState => !prevState);
+    }
+
+    const handleDeletePlan = (selectedPlaceId) => {
+        if (window.confirm('정말 삭제하시겠습니까?')) {
+            axios.delete(`${process.env.REACT_APP_API_URL}/places/${selectedPlaceId}`, {
+                headers: {
+                    Authorization: getCookie('accessToken')
+                }
+            })
+                .then(res => {
+                    console.log('삭제완료!')
+                })
+                .then(res => window.location.reload())
+                .catch(err => console.log(err));
+        }
+    }
 
     return (
-        <Fragment>
-            {singleData &&
-                singleData.places.map((data) => (
-                <SectionWrapper
-                    // onMouseEnter={onMouseHandler}
-                    // onMouseLeave={onMouseHandler}
-                    key={data.placeId}
-                >
-                    <SectionContent
+        <SectionWrapper
+            onMouseEnter={onMouseHandler}
+            onMouseLeave={onMouseHandler}
+            key={data.placeId}
+        >
+            <SectionContent>
+                <PlaceInfoBox>
+                    <PlaceInfoContainer>
+                        <h3>{data.placeName}</h3>
+                        <p>{data.placeAddress}</p>
+                    </PlaceInfoContainer>
+                    <PlaceAddingButtons>
+                        {/*<button>*/}
+                        {/*    {clockSvg}*/}
+                        {/*    Add time*/}
+                        {/*</button>*/}
+                        <button
+                            onClick={() => {
+                                handleExpenseModal();
+                                setCurrentDate(planDate);
+                                setCurrentPlace(data.placeName);
+                                setCurrentPlaceId(data.placeId);
+                            }
+                            }
+                        >
+                            {moneySvg}
+                            Add cost
+                            {/*{expenses ? 'AddCost' : expenses}*/}
+                        </button>
+                    </PlaceAddingButtons>
+                </PlaceInfoBox>
+            </SectionContent>
+            <PlanDeleteContainer>
+                {delButtonIsShow ? (
+                    <button
+                        onClick={() => handleDeletePlan(data.placeId)}
                     >
-                        <PlaceInfoBox>
-                            <PlaceInfoContainer>
-                                <h3>{data.placeName}</h3>
-                                <p>{data.placeAddress}</p>
-                            </PlaceInfoContainer>
-                            <PlaceAddingButtons>
-                                <button>
-                                    {clockSvg}
-                                    Add time
-                                </button>
-                                <button
-                                    onClick={handleExpenseModal}
-                                >
-                                    {moneySvg}
-                                    Add cost
-                                </button>
-                            </PlaceAddingButtons>
-                        </PlaceInfoBox>
-                        <PlaceImageBox>
-                            <img src={data.photo} alt={`${data.name}의 사진`}/>
-                        </PlaceImageBox>
-                    </SectionContent>
-                    <PlanDeleteContainer>
-                        {delButtonIsShow ? (
-                            <button
-                                onClick={handleDeletePlan}
-                            >
-                                {deleteSvg}
-                            </button>
-                        ) : null}
-                    </PlanDeleteContainer>
-                </SectionWrapper>
-            ))}
-        </Fragment>
+                        {deleteSvg}
+                    </button>
+                ) : null}
+            </PlanDeleteContainer>
+        </SectionWrapper>
     )
 };
 
-export default PlaceInfoSection;
+export default SinglePlan;

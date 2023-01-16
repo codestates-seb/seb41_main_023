@@ -1,5 +1,5 @@
-import {GoogleMap, MarkerF} from "@react-google-maps/api";
-import InfoWindow from "./InfoWindow";
+import {GoogleMap} from "@react-google-maps/api";
+import MarkerLists from "./MarkerLists";
 
 const mapContainerStyle = {
     width: "50%",
@@ -15,19 +15,11 @@ const mapContainerStyle = {
 const RenderMap = (props) => {
     const {
         center,
-        searchData,
-        infoWindowOpen,
-        setInfoWindowOpen,
-        searchedGeocode,
-        setSearchData,
-        mainData,
-        setMainData
+        mainData
     } = props;
 
-
-    const handleInfoWindow = () => {
-        setInfoWindowOpen(prevState => !prevState);
-    }
+    const placesInfo = mainData.planDatesAndPlace
+    console.log('info: ', placesInfo)
 
     return (
         <GoogleMap
@@ -36,21 +28,13 @@ const RenderMap = (props) => {
             zoom={15}
             center={center}
         >
-            <MarkerF
-                position={searchedGeocode}
-                onClick={handleInfoWindow}
-                label={'0'}
-            />
-            {infoWindowOpen ? (
-                <InfoWindow
-                    searchedGeocode={searchedGeocode}
-                    searchData={searchData}
-                    setSearchData={setSearchData}
-                    setInfoWindowOpen={setInfoWindowOpen}
-                    mainData={mainData}
-                    setMainData={setMainData}
-                />
-            ) : null}
+            {placesInfo !== null ? (
+                placesInfo.map((place) => (
+                    <MarkerLists
+                        key={place.planDateId}
+                        data={place}
+                    />
+                ))) : null}
         </GoogleMap>
     )
 };

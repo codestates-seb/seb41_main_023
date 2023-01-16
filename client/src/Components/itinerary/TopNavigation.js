@@ -8,18 +8,21 @@ import Calendar from "../Calendar";
 
 const TopNavBar = styled.nav`
   border-bottom: 1px solid #e9ecef;
-  margin: 20px;
   position: fixed;
   display: flex;
-  width: 910px;
+  width: 50%;
   height: 200px;
   left: 0;
   right: 0;
   top: 0;
   padding: 0;
   z-index: 50;
-  background-color: white !important;
   flex-flow: column nowrap;
+  background-image: url(${props => props.cityImage});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
 `;
 
 const LogoButtonContainer = styled.div`
@@ -67,6 +70,7 @@ const TopNavigation = (props) => {
     const {itineraryId} = useParams();
     const navigate = useNavigate();
     const token = getCookie('accessToken');
+    const cityImage = getCookie('cityImage');
     const [showCalendar, setShowCalendar] = useState(false);
 
     const handleDate = (date) => {
@@ -103,7 +107,7 @@ const TopNavigation = (props) => {
     }
 
     return (
-        <TopNavBar>
+        <TopNavBar cityImage={cityImage}>
             <LogoButtonContainer>
                 <Logo>
                     <img
