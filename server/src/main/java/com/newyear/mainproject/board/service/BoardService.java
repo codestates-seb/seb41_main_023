@@ -17,8 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -94,8 +93,8 @@ public class BoardService {
 
     // 지역으로 검색
     @Transactional(readOnly = true)
-    public List<Board> findCityBoards(String cityName) {
-        List<Board> boards = boardRepository.findAll();
+    public List<Board> findCityBoards(String cityName, String tab) {
+        List<Board> boards = boardRepository.findAll(Sort.by(tab).descending());
         return boards.stream().filter(b -> b.getPlan().getCityName().equals(cityName)).collect(Collectors.toList());
     }
 

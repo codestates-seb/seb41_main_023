@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CityMapper {
-    List<CityDto.Response> cityToCityResponseDtos(List<City> city);
+    List<CityDto.ImageResponse> cityToCityResponseDtos(List<City> city);
 }

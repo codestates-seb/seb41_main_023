@@ -17,6 +17,10 @@ public interface PlaceMapper {
         place.setLatitude(post.getLatitude());
         place.setLongitude(post.getLongitude());
         place.setPlaceAddress(post.getPlaceAddress());
+        place.setRatings(post.getRatings());
+        place.setWebsite(post.getWebsite());
+        place.setPhone(post.getPhone());
+        place.setOpeningHours(post.getOpeningHours());
 
         //plan_date, plan 연결
         PlanDates planDates = planService.findPlanDates(post.getPlaceDateId());
@@ -28,7 +32,6 @@ public interface PlaceMapper {
 
     Place placePatchDtoToPlace(PlaceDto.Patch patch);
     PlaceDto.Response placeToPlaceResponseDto(Place place);
-
     //게시판 desc
     List<Place> patchDescToPlaces(List<PlaceDto.PatchPlaceDesc> patchDesc);
 }

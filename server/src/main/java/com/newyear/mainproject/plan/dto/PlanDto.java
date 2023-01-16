@@ -56,6 +56,7 @@ public class PlanDto {
         private String startDate;
         private String endDate;
         private BudgetDto.SimpleResponse budget;
+        private CityDto.ImageResponse city;
         private List<PlanDatesResponse> planDates = new ArrayList<>();
         private List<PlanDto.PlanDatesDetailResponse> planDatesAndPlace = new ArrayList<>();
     }
