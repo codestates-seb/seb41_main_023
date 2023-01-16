@@ -126,9 +126,8 @@ const DeleteAccount = ({ modal, setModal }) => {
   const navigate = useNavigate();
 
   const handleDeleteAccount = () => {
-    console.log(token, refreshToken);
     axios
-      .delete(`https://www.sebmain41team23.shop/members/${memberId}`, {
+      .delete(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
         headers: {
           Authorization: token,
         },

@@ -2,14 +2,12 @@ import axios from "axios";
 import moment from "moment";
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../Util/Cookies";
 
 import Header from "../Components/Header";
 import Calendar from "../Components/Calendar";
 import Autocomplete from "../Components/AutoComplete";
-import { de } from "date-fns/locale";
 
 import logOutBgImg from "../images/logged-out_background-image.jpg";
 import logInBgImg from "../images/login_background-image-02.jpg";
@@ -74,7 +72,7 @@ const Home = ({ login }) => {
       if (login) {
         await axios
           .post(
-            "https://www.sebmain41team23.shop/plans",
+            `${process.env.REACT_APP_API_URL}/plans`,
             {
               cityName: destination,
               startDate: startDate,

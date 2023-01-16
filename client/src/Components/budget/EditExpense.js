@@ -3,8 +3,14 @@ import { useState } from "react";
 
 import Category from "./Category";
 
-const AddExpense = (props) => {
-  const { addExpenseModal, setAddExpenseModal, handleAddExpense } = props;
+const EditExpense = (props) => {
+  const {
+    editExpenseModal,
+    setEditExpenseModal,
+    handleEditExpense,
+    expenseId,
+  } = props;
+  console.log(expenseId);
   const [inputs, setInputs] = useState({ price: "", item: "" });
 
   // 카테고리 모달창 활성화
@@ -31,31 +37,27 @@ const AddExpense = (props) => {
     }
   };
 
-  //입력창 초기화
-  const handleClear = () => {
-    setInputs({ price: "", item: "" });
-    setSelectedCategory(null);
-    setAddExpenseModal(false);
-  };
-
   return (
     <>
-      {addExpenseModal ? (
-        <ModalContainer onClick={handleClear}>
+      {editExpenseModal ? (
+        <ModalContainer onClick={() => setEditExpenseModal(false)}>
           <ModalWrapper onClick={(e) => e.stopPropagation()}>
             <div className="title_frame">
-              <div className="title">Add Expense</div>
-              <div className="cancel_button" onClick={handleClear}>
+              <div className="title">Edit Expense</div>
+              <div
+                className="cancel_button"
+                onClick={() => setEditExpenseModal(false)}
+              >
                 ❌
               </div>
             </div>
             <input
               type="text"
-              name="price"
-              value={inputs.price}
               className="content"
               placeholder="지출 금액을 입력해주세요."
+              name="price"
               onChange={handleInputs}
+              value={inputs.price}
             />
             <div
               className="content category"
@@ -65,21 +67,28 @@ const AddExpense = (props) => {
             </div>
             <input
               className="content"
-              name="item"
               placeholder="지출 항목을 입력해주세요."
+              name="item"
               onChange={handleInputs}
             />
             <div className="submit_frame">
               <button
                 className="btn"
-                onClick={() => {
-                  handleAddExpense(inputs.price, selectedCategory, inputs.item);
-                  handleClear();
-                }}
+                onClick={() =>
+                  handleEditExpense(
+                    inputs.price,
+                    selectedCategory,
+                    inputs.item,
+                    expenseId
+                  )
+                }
               >
-                Add expense
+                Edit expense
               </button>
-              <div className="cancel_text" onClick={handleClear}>
+              <div
+                className="cancel_text"
+                onClick={() => setEditExpenseModal(false)}
+              >
                 Cancel
               </div>
             </div>
@@ -90,18 +99,18 @@ const AddExpense = (props) => {
       {category ? (
         <Category setCategory={setCategory} handleCategory={handleCategory} />
       ) : null}
-      <AddExpenseBtn
+      <EditExpenseBtn
         onClick={() => {
-          setAddExpenseModal(!addExpenseModal);
+          setEditExpenseModal(!editExpenseModal);
         }}
       >
-        Add Expense
-      </AddExpenseBtn>
+        Edit Expense
+      </EditExpenseBtn>
     </>
   );
 };
 
-export default AddExpense;
+export default EditExpense;
 
 const ModalContainer = styled.div`
   background: rgba(0, 0, 0, 0.5);
@@ -217,6 +226,6 @@ const ModalWrapper = styled.div`
   }
 `;
 
-const AddExpenseBtn = styled.div`
+const EditExpenseBtn = styled.div`
   cursor: pointer;
 `;

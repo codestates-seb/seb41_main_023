@@ -1,11 +1,11 @@
 import moment from "moment";
 import axios from "axios";
-import { getCookie } from "../../Util/Cookies";
-import { getData } from "../../Util/api";
-
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { getCookie } from "../../Util/Cookies";
+import { getData } from "../../Util/api";
 
 const MyTrips = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const MyTrips = () => {
 
   const getTrip = () => {
     axios
-      .get(`https://www.sebmain41team23.shop/plans`, {
+      .get(`${process.env.REACT_APP_API_URL}/plans`, {
         headers: {
           Authorization: token,
         },
