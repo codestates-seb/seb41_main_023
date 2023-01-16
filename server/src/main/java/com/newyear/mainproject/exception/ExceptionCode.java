@@ -11,6 +11,7 @@ public enum ExceptionCode {
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     INVALID_VALUES(400, "Invalid Values"),
+    INVALID_EMAIL_AUTH_NUMBER(400, "Invalid email authNumber"),
 
     //board
     BOARD_NOT_PATCHED(403, "Board not patched"),

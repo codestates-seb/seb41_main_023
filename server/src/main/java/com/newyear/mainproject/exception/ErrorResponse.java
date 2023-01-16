@@ -20,6 +20,11 @@ public class ErrorResponse {
         this.status = status;
         this.message = message;
     }
+
+    public ErrorResponse(String message) {
+        this.message = message;
+    }
+
     private ErrorResponse(final List<FieldError> fieldErrors, final List<ConstraintViolationError> violationErrors) {
         this.fieldErrors = fieldErrors;
         this.violationErrors = violationErrors;
@@ -39,6 +44,10 @@ public class ErrorResponse {
 
     public static ErrorResponse of(HttpStatus httpStatus) {
         return new ErrorResponse(httpStatus.value(), httpStatus.getReasonPhrase());
+    }
+
+    public static ErrorResponse of(String message) {
+        return new ErrorResponse(message);
     }
 
     @Getter
