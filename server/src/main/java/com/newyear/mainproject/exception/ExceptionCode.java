@@ -53,7 +53,8 @@ public enum ExceptionCode {
     INVALID_MEMBER_STATUS(400, "Invalid member status"),
     MEMBER_EXISTS(409, "Member exists"),
     MEMBER_NOT_FOUND(404, "Member not found"),
-    INVALID_PASSWORD (400, "Invalid Password");
+    INVALID_PASSWORD (400, "Invalid Password"),
+    MEMBER_NOT_LOGIN(400, "Member not login");
 
     @Getter
     private int status;
