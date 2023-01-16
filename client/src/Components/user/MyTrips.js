@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../Util/Cookies";
 import { getData } from "../../Util/api";
 
-const MyTrips = () => {
+const MyTrips = ({ mode }) => {
   const navigate = useNavigate();
   const token = getCookie("accessToken");
 
@@ -33,17 +33,25 @@ const MyTrips = () => {
     getTrip();
   }, []);
 
+  const handleNavigate = (el) => {
+    if (mode === "plan") {
+      navigate(`/itinerary/${el.planId}`);
+    } else if (mode === "board") {
+      navigate(`/board/plan/${el.planId}`);
+    }
+  };
+
   return (
     <MyTripsContainer>
       <h2>My Trips</h2>
       <div className="contents">
         {tripList.map((el) => (
-          <div className="my-trips__card" key={el.planId}>
-            <img
-              alt="place_image"
-              src={el.image}
-              onClick={() => navigate(`/itinerary/${el.planId}`)}
-            />
+          <div
+            className="my-trips__card"
+            key={el.planId}
+            onClick={() => handleNavigate(el)}
+          >
+            <img alt="place_image" src={el.image} />
             <div className="meta_title">{el.planTitle}</div>
             <div className="meta_content">
               <div>

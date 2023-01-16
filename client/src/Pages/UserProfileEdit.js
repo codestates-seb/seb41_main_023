@@ -27,6 +27,13 @@ const UserProfileEdit = () => {
     });
   };
 
+  const [refresh, setRefresh] = useState(1);
+
+  //refresh function
+  const handleRefresh = () => {
+    setRefresh(refresh * -1);
+  };
+
   // const getUserInfo = async () => {
   //   const data = await getData(`/members/userProfile/${memberId}`);
   //   setUserInfo(data);
@@ -45,7 +52,7 @@ const UserProfileEdit = () => {
 
   useEffect(() => {
     getUserInfo();
-  }, []);
+  }, [refresh]);
 
   //유저 정보 patch 요청
   const handleSubmit = (e) => {
@@ -105,15 +112,16 @@ const UserProfileEdit = () => {
         formData.append("multipartFile", e.target.files[0]);
         await axios({
           method: "POST",
-          url: `https://www.sebmain41team23.shop/members/${memberId}/profile`,
+          url: `${process.env.REACT_APP_API_URL}/members/${memberId}/profile`,
           headers: {
             Authorization: token,
             "Content-Type": "multipart/form-data",
           },
           data: formData,
-        }).then((res) =>
-          setUserInfo({ ...userInfo, profileImage: res.data.profileImage })()
-        );
+        }).then((res) => {
+          setUserInfo({ ...userInfo, profileImage: res.data.profileImage });
+          handleRefresh();
+        });
       }
     };
 

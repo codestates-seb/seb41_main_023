@@ -23,7 +23,7 @@ const Header = ({ login }) => {
 
   const getUserInfo = () => {
     axios
-      .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
+      .get(`${process.env.REACT_APP_API_URL}/members/userProfile/${memberId}`, {
         headers: {
           Authorization: token,
         },
