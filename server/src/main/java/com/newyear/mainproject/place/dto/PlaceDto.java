@@ -18,7 +18,10 @@ public class PlaceDto {
         private Double latitude; //위도
         private Double longitude; //경도
         private String placeAddress;
-        private String placeImage;
+        private Double ratings; //별점
+        private String website; //웹사이트
+        private String phone; //전화번호
+        private String openingHours; //영업시간
     }
 
     @Getter
@@ -27,12 +30,16 @@ public class PlaceDto {
     public static class Patch {
         private Long placeId;
         private String placeName;
+        private String description;
         private Double latitude; //위도
         private Double longitude; //경도
         private String placeAddress;
-        private String placeImage;
         private String startTime;
         private String endTime;
+        private Double ratings; //별점
+        private String website; //웹사이트
+        private String phone; //전화번호
+        private String openingHours; //영업시간
     }
 
     @Builder
@@ -43,12 +50,17 @@ public class PlaceDto {
         private PlanDto.PlanDatesResponse planDates;
         private Long placeId;
         private String placeName;
+        private String description;
         private String startTime;
         private String endTime;
         private Double latitude; //위도
         private Double longitude; //경도
         private String placeAddress;
-        private String placeImage;
+
+        private Double ratings; //별점
+        private String website; //웹사이트
+        private String phone; //전화번호
+        private String openingHours; //영업시간
         private ExpenseDto.SimpleResponse expenses;
     }
 
