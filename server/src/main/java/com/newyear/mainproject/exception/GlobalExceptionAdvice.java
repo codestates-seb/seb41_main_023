@@ -54,21 +54,21 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(NoSuchElementException e) {
+    public ErrorResponse handleNoSuchElementException(NoSuchElementException e) {
         log.error("NoSuchElementException", e);
         return ErrorResponse.of(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(MissingServletRequestParameterException e) {
+    public ErrorResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         log.error("MissingServletRequestParameterException", e);
         return ErrorResponse.of(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMethodArgumentNotValidException(InvalidDataAccessApiUsageException e) {
+    public ErrorResponse handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException e) {
         log.error("InvalidDataAccessApiUsageException", e);
         return ErrorResponse.of(e.getMessage());
     }
