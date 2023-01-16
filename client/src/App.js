@@ -11,8 +11,8 @@ import LoginPage from "./Pages/LoginPage";
 import SignUpPage from "./Pages/SignUpPage";
 import UserProfile from "./Pages/UserProfile";
 import UserProfileEdit from "./Pages/UserProfileEdit";
-import WriteBoard from "./Pages/WriteBoard";
-import WriteSingleBoard from "./Pages/WriteSingleBoard";
+// import WriteBoard from "./Pages/WriteBoard";
+// import WriteSingleBoard from "./Pages/WriteSingleBoard";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
