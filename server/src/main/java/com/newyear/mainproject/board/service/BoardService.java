@@ -33,6 +33,10 @@ public class BoardService {
     public Board createBoard(Board board, long planId) {
         Member member = memberService.getLoginMember();
         Plan plan = planService.findPlan(planId);
+        //해당 plan 작성자만 board 생성 가능
+        if (!plan.getMember().equals(member)) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
         board.setMember(member);
         board.setPlan(plan);
         return boardRepository.save(board);
@@ -67,7 +71,12 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Plan findPlan(long planId) {
-        return planService.findPlan(planId);
+        Plan findPlan = planService.findPlan(planId);
+        //작성자만 접근 허용
+        if (!findPlan.getMember().getEmail().equals(memberService.getLoginMember().getEmail())) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
+        return findPlan;
     }
 
     //조회수
