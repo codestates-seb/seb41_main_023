@@ -67,7 +67,12 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Plan findPlan(long planId) {
-        return planService.findPlan(planId);
+        Plan findPlan = planService.findPlan(planId);
+        //작성자만 접근 허용
+        if (!findPlan.getMember().getEmail().equals(memberService.getLoginMember().getEmail())) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
+        return findPlan;
     }
 
     //조회수
