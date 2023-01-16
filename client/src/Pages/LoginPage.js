@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import axios from 'axios';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { setCookie } from '../Util/Cookies';
 import bgImage from '../images/login-page_side-image.jpg';
 
@@ -101,6 +101,16 @@ const LoginPage = () => {
   const eref = useRef();
   const pref = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+
+  // 토큰 저장
+  useEffect(() => {
+    console.log(location);
+    setCookie("accessToken", location.search.slice(13, 229));
+    localStorage.setItem("refreshToken", location.search.slice(243));
+  }, [])
+  
 
   useEffect(() => {
     eref.current.focus();
@@ -259,7 +269,7 @@ const LoginPage = () => {
           <button className="button--primary" onClick={onLogin}>
             Log in
           </button>
-          <button className="button--google" onClick={() => navigate('//')}>
+          <button className="button--google" onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/google')}>
             <svg
               xlink="http://www.w3.org/1999/xlink"
               xmlns="http://www.w3.org/2000/svg"

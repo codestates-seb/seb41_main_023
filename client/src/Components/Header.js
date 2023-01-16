@@ -64,7 +64,7 @@ const Header = ({ login }) => {
         </div>
         <button
           className="button--default button--subtle"
-          onClick={() => handleNavigate("/blog")}
+          onClick={() => handleNavigate("/board")}
         >
           Travel Logs
         </button>
@@ -115,6 +115,8 @@ const HeadContainer = styled.div`
   width: calc(100vw - 100px);
   height: 60px;
   z-index: 9999;
+  top: 0;
+  left: 0;
 `;
 
 const LeftSection = styled.div`
