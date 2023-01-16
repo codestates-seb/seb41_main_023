@@ -90,6 +90,7 @@ public interface PlanMapper {
         response.setPlanDates(planDateToPlanDateResponseDtos(plan.getPlanDates()));
         response.setPlanDatesAndPlace(planDatesToPlanDatesDetailResponseDtos(plan.getPlanDates()));
         response.setBudget(budgetToBudgetSimpleResponseDto(plan.getBudget()));
+        response.setCity(cityImageResponseToCity(plan.getCity()));
         return response;
     }
 

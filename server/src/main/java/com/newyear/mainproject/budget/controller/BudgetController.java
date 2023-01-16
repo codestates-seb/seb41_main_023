@@ -36,13 +36,13 @@ public class BudgetController {
         return new ResponseEntity<>(mapper.budgetToSimpleResponse(budget), HttpStatus.OK);
     }
 
-    @DeleteMapping("{budget-id}")
+    @DeleteMapping("/{budget-id}")
     public ResponseEntity deleteBudget(@PathVariable("budget-id") @Positive long budgetId) {
         budgetService.deleteBudget(budgetId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("{budget-id}")
+    @GetMapping("/{budget-id}")
     public ResponseEntity getBudget(@PathVariable("budget-id") long budgetId) {
         Budget budget = budgetService.findBudget(budgetId);
         return new ResponseEntity<>(mapper.budgetToResponseDto(budget), HttpStatus.OK);

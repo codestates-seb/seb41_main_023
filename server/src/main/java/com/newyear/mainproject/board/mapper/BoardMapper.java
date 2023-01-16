@@ -105,7 +105,8 @@ public interface BoardMapper {
             int idx = 0;
             for (Place place : planDates.get(i).getPlaces()) {
                 idx += 1;
-                details.add(new BoardDto.PlaceDetails(place.getPlaceId(), place.getPlaceName(), place.getDescription(), idx));
+                details.add(new BoardDto.PlaceDetails(idx, place.getPlaceId(), place.getPlaceName(), place.getStartTime(), place.getEndTime(), place.getDescription(),
+                        place.getLatitude(), place.getLongitude(), place.getPlaceAddress(), place.getRatings(), place.getWebsite(), place.getPhone(), place.getOpeningHours()));
             }
             newDays.setPlaceDetails(details);
             days.add(newDays);
