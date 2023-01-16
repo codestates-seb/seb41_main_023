@@ -73,7 +73,7 @@ public class BoardController {
     }
 
     //plan 불러온 뒤 board 작성시 화면
-    @GetMapping("/plan/{plan-id}")
+    @GetMapping("/user/plan/{plan-id}")
     public ResponseEntity getBoard(@PathVariable("plan-id") @Positive long planId) {
         Plan plan = boardService.findPlan(planId);
         return new ResponseEntity<>(mapper.boardToResponseEditDto(plan), HttpStatus.OK);

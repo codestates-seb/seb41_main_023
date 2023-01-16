@@ -22,11 +22,11 @@ public class BudgetController {
     private final BudgetMapper mapper;
     private final BudgetService budgetService;
 
-    @PostMapping
-    public ResponseEntity postBudget(@RequestBody @Valid BudgetDto.Post post) {
-        Budget budget = budgetService.createBudget(mapper.postDtoToBudget(post));
-        return new ResponseEntity<>(mapper.budgetToSimpleResponse(budget), HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity postBudget(@RequestBody @Valid BudgetDto.Post post) {
+//        Budget budget = budgetService.createBudget(mapper.postDtoToBudget(post));
+//        return new ResponseEntity<>(mapper.budgetToSimpleResponse(budget), HttpStatus.CREATED);
+//    }
 
     @PatchMapping("/{budget-id}")
     public ResponseEntity patchBudget(@PathVariable("budget-id") @Positive long budgetId,
@@ -36,13 +36,13 @@ public class BudgetController {
         return new ResponseEntity<>(mapper.budgetToSimpleResponse(budget), HttpStatus.OK);
     }
 
-    @DeleteMapping("{budget-id}")
+    @DeleteMapping("/{budget-id}")
     public ResponseEntity deleteBudget(@PathVariable("budget-id") @Positive long budgetId) {
         budgetService.deleteBudget(budgetId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("{budget-id}")
+    @GetMapping("/{budget-id}")
     public ResponseEntity getBudget(@PathVariable("budget-id") long budgetId) {
         Budget budget = budgetService.findBudget(budgetId);
         return new ResponseEntity<>(mapper.budgetToResponseDto(budget), HttpStatus.OK);
