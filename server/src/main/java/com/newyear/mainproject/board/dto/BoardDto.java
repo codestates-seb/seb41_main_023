@@ -84,6 +84,7 @@ public class BoardDto {
         private String cityName;
         private List<Days> days;
         private String cityImage;
+
     }
 
     //게시판 최초 작성시
@@ -110,10 +111,19 @@ public class BoardDto {
     @AllArgsConstructor
     @Getter @Setter
     public static class PlaceDetails {
+        private int index;
         private long placeId;
         private String placeName;
+        private String startTime;
+        private String endTime;
         private String description;
-        private int index;
+        private double latitude;
+        private double longitude;
+        private String placeAddress;
+        private double ratings;
+        private String website;
+        private String phone;
+        private String openingHours;
     }
 
 }

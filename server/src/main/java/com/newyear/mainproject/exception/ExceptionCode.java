@@ -11,6 +11,7 @@ public enum ExceptionCode {
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     INVALID_VALUES(400, "Invalid Values"),
+    INVALID_EMAIL_AUTH_NUMBER(400, "Invalid email authNumber"),
 
     //board
     BOARD_NOT_PATCHED(403, "Board not patched"),
@@ -52,7 +53,8 @@ public enum ExceptionCode {
     INVALID_MEMBER_STATUS(400, "Invalid member status"),
     MEMBER_EXISTS(409, "Member exists"),
     MEMBER_NOT_FOUND(404, "Member not found"),
-    INVALID_PASSWORD (400, "Invalid Password");
+    INVALID_PASSWORD (400, "Invalid Password"),
+    MEMBER_NOT_LOGIN(400, "Member not login");
 
     @Getter
     private int status;
