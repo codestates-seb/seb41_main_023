@@ -90,13 +90,12 @@ public class MemberController {
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@PathVariable("member-id") @Positive long memberId){
-        Member member = memberService.findMember(memberId);
-
+    @GetMapping("/one")
+    public ResponseEntity getMember() {
+        Member member = memberService.getLoginMember();
         return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
     }
-
+    
     @GetMapping
     public ResponseEntity getMembers(@Positive @RequestParam int page,
                                      @Positive @RequestParam int size){
