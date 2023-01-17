@@ -1,22 +1,23 @@
 /* 유저이름, 비밀번호 수정, 계정 삭제 */
 
-import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { getCookie, removeCookie } from "../../Util/Cookies";
-import { patchData } from "../../Util/api";
-import axios from "axios";
+import { getCookie, removeCookie } from '../../Util/Cookies';
+import { patchData } from '../../Util/api';
+import axios from 'axios';
 
-import Modal from "./Modal";
+import Modal from './Modal';
 
 // 유저이름 수정
 const General = ({ handleChange, handleSubmit, nameRef }) => {
   return (
     <GeneralContainer>
       <div className="input_area">
-        <div>Username</div>
+        <label>Username</label>
         <input
+          className="input"
           onChange={handleChange}
           name="id"
           id="username"
@@ -25,7 +26,9 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
         ></input>
       </div>
       <div className="submit_area">
-        <button onClick={handleSubmit}>Save Changes</button>
+        <button className="button--primary" onClick={handleSubmit}>
+          Save Changes
+        </button>
       </div>
     </GeneralContainer>
   );
@@ -33,16 +36,15 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
 
 // 비밀번호 수정
 const Password = () => {
-  const memberId = getCookie("memberId");
+  const memberId = getCookie('memberId');
   const [inputs, setInputs] = useState({
-    originPassword: "",
-    newPassword: "",
+    originPassword: '',
+    newPassword: '',
   });
 
   const [valueCheck, setValueCheck] = useState(true);
   //유효성 검사(숫자, 영문, 특수문자 조합한 8~20자리)
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&#]{8,}$/i;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&#]{8,}$/i;
 
   useEffect(() => {
     const passwordValueCheck = passwordRegex.test(inputs.newPassword);
@@ -77,10 +79,10 @@ const Password = () => {
       password: inputs.newPassword,
     }).then((res) => {
       if (res) {
-        setInputs({ originPassword: "", newPassword: "" });
-        alert("비밀번호가 변경되었습니다");
+        setInputs({ originPassword: '', newPassword: '' });
+        alert('비밀번호가 변경되었습니다');
       } else {
-        alert("비밀번호를 확인해주세요");
+        alert('비밀번호를 확인해주세요');
       }
     });
   };
@@ -88,16 +90,18 @@ const Password = () => {
   return (
     <PasswordContainer>
       <div className="input_area">
-        <div>Old password</div>
+        <label>Old password</label>
         <input
+          className="input password-input"
           type="password"
           name="originPassword"
           value={inputs.originPassword}
           onChange={handleChange}
           placeholder="Enter your current password"
         ></input>
-        <div>New password</div>
+        <label>New password</label>
         <input
+          className="input"
           type="password"
           name="newPassword"
           value={inputs.newPassword}
@@ -105,14 +109,15 @@ const Password = () => {
           placeholder="Enter a new password"
         ></input>
         {!valueCheck ? (
-          <div>
-            숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를
-            입력하세요.
+          <div className="password__instruction">
+            숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.
           </div>
         ) : null}
       </div>
       <div className="submit_area">
-        <button onClick={submitPassword}>Save Changes</button>
+        <button className="button--primary" onClick={submitPassword}>
+          Save Changes
+        </button>
       </div>
     </PasswordContainer>
   );
@@ -120,9 +125,9 @@ const Password = () => {
 
 /* 계정 삭제 */
 const DeleteAccount = ({ modal, setModal }) => {
-  const memberId = getCookie("memberId");
-  const token = getCookie("accessToken");
-  const refreshToken = localStorage.getItem("refresh-token");
+  const memberId = getCookie('memberId');
+  const token = getCookie('accessToken');
+  const refreshToken = localStorage.getItem('refresh-token');
   const navigate = useNavigate();
 
   const handleDeleteAccount = () => {
@@ -137,17 +142,17 @@ const DeleteAccount = ({ modal, setModal }) => {
         },
       })
       .then((res) => {
-        removeCookie("accessToken");
-        removeCookie("memberId");
+        removeCookie('accessToken');
+        removeCookie('memberId');
       })
       .then((res) => {
-        localStorage.removeItem("refresh-token");
-        alert("그동안 이용해주셔서 감사합니다.");
+        localStorage.removeItem('refresh-token');
+        alert('그동안 이용해주셔서 감사합니다.');
       })
       .then((res) => {
-        window.location.replace("/");
+        window.location.replace('/');
       })
-      .catch((err) => console.log("error"));
+      .catch((err) => console.log('error'));
   };
 
   return (
@@ -157,7 +162,7 @@ const DeleteAccount = ({ modal, setModal }) => {
           setModal={setModal}
           title="Do you want to delete your account?"
           content="Deleting your account will permanently delete your account, trip plans, logs,and other documents associated with your account."
-          buttonName="Delete Account"
+          buttonName="Delete account"
           handleClick={handleDeleteAccount}
         />
       ) : null}
@@ -168,42 +173,55 @@ const DeleteAccount = ({ modal, setModal }) => {
 export { General, Password, DeleteAccount };
 
 const GeneralContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 450px;
   & .input_area {
+    margin-bottom: calc(var(--spacing-4) - 10px);
+
+    > label {
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--dark-gray-1);
+    }
+
     > input {
-      width: 97%;
+      width: 100%;
       margin: 10px 0;
       padding: 7px;
     }
   }
 
   > .submit_area {
-    text-align: end;
-    > button {
-      cursor: pointer;
-    }
+    float: right;
   }
 `;
 
 const PasswordContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 450px;
-
   & .input_area {
+    margin-bottom: var(--spacing-4);
+
+    > label {
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--dark-gray-1);
+    }
+
     > input {
-      width: 97%;
+      width: 100%;
       margin: 10px 0;
       padding: 7px;
+
+      &.password-input {
+        margin-bottom: var(--spacing-3);
+      }
     }
   }
 
   > .submit_area {
-    text-align: end;
-    > button {
-      cursor: pointer;
-    }
+    float: right;
+  }
+
+  .password__instruction {
+    font-size: var(--small-text-size);
+    line-height: var(--small-text-line-height);
+    color: var(--light);
   }
 `;
