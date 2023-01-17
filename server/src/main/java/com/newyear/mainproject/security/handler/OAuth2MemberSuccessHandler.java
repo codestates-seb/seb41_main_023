@@ -94,7 +94,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         //Frontend 애플리케이션 쪽의 URL을 생성합니다. createURI() 메서드에서
         //UriComponentsBuilder를 이용해 Access Token과 Refresh Token을 포함한 URL을 생성
         //UriComponentsBuilder에서 Port 설정을 하지 않으면 기본값은 80 포트
-        String uri = createURI(accessToken, refreshToken).toString();
+        String uri = createURI("Bearer " + accessToken, refreshToken).toString();
         //SimpleUrlAuthenticationSuccessHandler 에서 제공하는 sendRedirect() 메서드를 이용해
         //Frontend 애플리케이션 쪽으로 리다이렉트
         getRedirectStrategy().sendRedirect(request, response, uri);
