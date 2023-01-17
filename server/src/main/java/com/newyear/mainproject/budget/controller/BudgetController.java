@@ -22,11 +22,11 @@ public class BudgetController {
     private final BudgetMapper mapper;
     private final BudgetService budgetService;
 
-    @PostMapping
-    public ResponseEntity postBudget(@RequestBody @Valid BudgetDto.Post post) {
-        Budget budget = budgetService.createBudget(mapper.postDtoToBudget(post));
-        return new ResponseEntity<>(mapper.budgetToSimpleResponse(budget), HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity postBudget(@RequestBody @Valid BudgetDto.Post post) {
+//        Budget budget = budgetService.createBudget(mapper.postDtoToBudget(post));
+//        return new ResponseEntity<>(mapper.budgetToSimpleResponse(budget), HttpStatus.CREATED);
+//    }
 
     @PatchMapping("/{budget-id}")
     public ResponseEntity patchBudget(@PathVariable("budget-id") @Positive long budgetId,

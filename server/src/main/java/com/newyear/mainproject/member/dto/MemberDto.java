@@ -1,13 +1,11 @@
 package com.newyear.mainproject.member.dto;
 
 import com.newyear.mainproject.member.entity.Member;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 public class MemberDto {
 
@@ -21,9 +19,11 @@ public class MemberDto {
         private String email;
 
         @NotBlank(message = "이름은 공백이 아니어야 합니다.")
+        @Pattern(regexp="[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}")
         private String displayName;
 
         @NotBlank
+        @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&]).{8,20}")
         private String password;
 
     }
@@ -42,7 +42,11 @@ public class MemberDto {
     @NoArgsConstructor
     public static class PatchPassword{
         private long memberId;
+
+        @NotBlank
+        @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&]).{8,20}")
         private String password;
+
         private String originPassword;
     }
 
@@ -51,6 +55,9 @@ public class MemberDto {
     @NoArgsConstructor
     public static class PatchDisplayName{
         private long memberId;
+
+        @NotBlank(message = "이름은 공백이 아니어야 합니다.")
+        @Pattern(regexp="[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}")
         private String displayName;
     }
 

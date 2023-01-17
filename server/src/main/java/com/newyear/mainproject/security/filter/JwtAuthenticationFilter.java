@@ -1,8 +1,6 @@
 package com.newyear.mainproject.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.newyear.mainproject.exception.BusinessLogicException;
-import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.dto.LoginDto;
@@ -46,13 +44,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ObjectMapper objectMapper = new ObjectMapper();
         //objectMapper.readValue(request.getInputStream(), LoginDto.class)를 통해 ServletInputStream 을 LoginDto 클래스의 객체로 역직렬화(Deserialization)
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-
-        //회원 상태가 ACTIVE 가 아니면 예외처리
-        Member member = memberRepository.findByEmail(loginDto.getEmail()).get();
-        if(member.getMemberStatus() != Member.MemberStatus.MEMBER_ACTIVE){
-            logger.info("정지 or 휴면 상태인 회원은 로그인 불가");
-            throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_STATUS);
-        }
 
         //Username과 Password 정보를 포함한 UsernamePasswordAuthenticationToken을 생성
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -107,8 +98,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         claims.put("username", member.getEmail());
         claims.put("roles", member.getRoles());
 
-        System.out.println("엑세스토큰 생성됨★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-
         String subject = member.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
 
@@ -124,8 +113,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String subject = member.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        System.out.println("리프레쉬토큰 생성됨★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 
         String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
 

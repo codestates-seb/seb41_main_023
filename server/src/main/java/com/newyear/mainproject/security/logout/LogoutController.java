@@ -1,5 +1,7 @@
 package com.newyear.mainproject.security.logout;
 
+import com.newyear.mainproject.exception.BusinessLogicException;
+import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +30,13 @@ public class LogoutController{
 //        String key = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
         RefreshToken findRefreshToken = refreshTokenRepository.findByRefreshToken(refreshToken);
-        redisUtil.setBlackList(accessToken, "access_token", jwtTokenizer.getBlacklistTime(findRefreshToken.getEndedAt()));
+
+        try{
+            redisUtil.setBlackList(accessToken, "access_token", jwtTokenizer.getBlacklistTime(findRefreshToken.getEndedAt()));
+        }
+        catch (NullPointerException e){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_LOGIN);
+        }
 
         refreshTokenRepository.delete(findRefreshToken);
 
