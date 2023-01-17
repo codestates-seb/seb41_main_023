@@ -30,7 +30,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private final CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-    final String password = "!!kfQp93%*@mcvGldWq!!130049@";
+    final String passwordGoogle = "GOOGLE";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -55,10 +55,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
             accessToken = delegateAccessToken(findMember.getEmail(), List.of("USER"));
             refreshToken = delegateRefreshToken(findMember.getEmail());
 
-            findMember.setPassword(password); //db password 에 다른값이 저장되어있어도 새로변경한 password 가 이미 가입된 이메일 필터링 할때 쓰이도록 함
+            findMember.setPassword(passwordGoogle); //db password 에 다른값이 저장되어있어도 새로변경한 password 가 이미 가입된 이메일 필터링 할때 쓰이도록 함
+
 
             //OAuth 로그인시 이미 가입된 이메일일 경우 (비밀번호가 null 값으로 필터링)사이트 이용 불가
-            if (findMember.getPassword().equals(password)) {
+            if (findMember.getPassword().equals(passwordGoogle)) {
                 response.setHeader("Authorization", "Bearer " + accessToken);
                 response.setHeader("Refresh", refreshToken);
             } else {
@@ -79,7 +80,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         member.setEmail(email);
         member.setDisplayName(name);
         member.setProfileKey("GOOGLE");
-        member.setPassword(password);
+        member.setPassword(passwordGoogle);
         member.setProfileImage(profileImage);
         memberRepository.save(member);
     }
@@ -146,6 +147,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .newInstance()
                 .scheme("http")
                 .host("travel-logs.s3-website.ap-northeast-2.amazonaws.com")//S3주소로
+//                .host("localhost")
 //                .port(8080)
                 .path("/login")
                 .queryParams(queryParams)
