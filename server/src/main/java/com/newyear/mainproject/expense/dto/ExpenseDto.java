@@ -53,6 +53,7 @@ public class ExpenseDto {
         private int price;
         private String category;
         private String createdAt;
+        private String placeName;
     }
 
     @Getter
