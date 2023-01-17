@@ -34,17 +34,26 @@ const LoginPage = () => {
     let getRefreshToken = (key) => {
       return new URLSearchParams(location.search).get(key);
     };
+    let getMemberId = (key) => {
+      return new URLSearchParams(location.search).get(key);
+    };
     const searchAccessToken = getAccessToken("accessToken");
     const searchRefreshToken = getRefreshToken("refreshToken");
+    const searchMemberId = getMemberId("memberId");
+
+    setCookie("memberId", searchMemberId);
+
+    if(searchAccessToken && searchRefreshToken) {
     setCookie("accessToken", searchAccessToken);
     localStorage.setItem("refreshToken", searchRefreshToken);
-    
-    console.log(`search : ${location.search}`);
-    console.log(`access : ${searchAccessToken}, refresh : ${searchRefreshToken}`);
-    
-    if(getCookie("accessToken") !== "null") {
-      console.log(getCookie("accessToken"));
+    }
 
+    //console.log(`search : ${location.search}`);
+    //console.log(`access : ${searchAccessToken}, refresh : ${searchRefreshToken}`);
+    //console.log(`memberId : ${searchMemberId}`);
+
+    if(getCookie("accessToken")) {
+      console.log(getCookie("accessToken"));
       window.location.replace("/")
     }
   }, [])
@@ -73,9 +82,7 @@ const LoginPage = () => {
       console.error(err);
       if (err.response.status === 401) { 
         alert('이메일 또는 비밀번호를 잘못 입력하셨거나 등록되지 않은 회원입니다.');
-        // localStorage.setItem("email", email);
-        // window.location.reload();
-        // setEmail(localStorage.getItem("email"));
+        pref.current.value = '';
       }
       else if (err.response.status === 400) alert('탈퇴한 회원입니다.');
       else if (err.response.status === 404) alert('페이지를 찾을 수 없습니다.');
