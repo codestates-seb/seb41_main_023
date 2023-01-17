@@ -1,9 +1,13 @@
 import styled from "styled-components";
 import SinglePlanBox from "./SinglePlanBox";
 import PlaceInputBox from "./PlaceInputBox";
-import { useState } from "react";
+import {useState} from "react";
 import Budget from "../budget/Buget";
 import moment from "moment/moment";
+import 'moment/locale/ko';
+import AddExpense from "../budget/AddExpense";
+import axios from "axios";
+import {getCookie} from "../../Util/Cookies";
 
 const Container = styled.div`
   position: relative;
@@ -52,63 +56,135 @@ const SectionHeader = styled.div`
 `;
 
 const EditContainer = (props) => {
-  const {
-    setCenter,
-    searchBox,
-    setSearchBox,
-    searchData,
-    setSearchData,
-    setSearchedGeocode,
-    setInfoWindowOpen,
-    mainData,
-  } = props;
+    const {
+        setCenter,
+        searchBox,
+        setSearchBox,
+        searchData,
+        setSearchData,
+        setSearchedGeocode,
+        setInfoWindowOpen,
+        mainData,
+    } = props;
 
-  const [addExpenseModal, setAddExpenseModal] = useState(false);
+    const [addExpenseModal, setAddExpenseModal] = useState(false);
+    const [currentDate, setCurrentDate] = useState(null);
+    const [currentPlace, setCurrentPlace] = useState(null);
+    const [currentPlaceId, setCurrentPlaceId] = useState(null);
 
-  const singlePlanData = mainData.planDatesAndPlace;
+    const singlePlanData = mainData.planDatesAndPlace;
+    const budgetId = mainData.budgetId;
 
-  return (
-    <Container>
-      <PlanContainer>
-        <Title>Add a place you want</Title>
-        <PlaceInputBox
-          searchBox={searchBox}
-          setSearchBox={setSearchBox}
-          searchData={searchData}
-          setSearchData={setSearchData}
-          setInfoWindowOpen={setInfoWindowOpen}
-          setSearchedGeocode={setSearchedGeocode}
-          setCenter={setCenter}
-          singlePlanData={singlePlanData}
-        />
-        <Title>일정</Title>
-        {singlePlanData !== null
-          ? singlePlanData.map((singleData) => (
-              <SectionComponent key={singleData.planDateId}>
-                <SectionHeader>
-                  <p>{moment(singleData.planDate).format("M월 D일")}</p>
-                </SectionHeader>
-                <SinglePlanBox
-                  planDateId={singleData.planDateId}
-                  planDate={singleData.planDate}
-                  singleData={singleData}
-                  searchData={searchData}
-                  setSearchData={setSearchData}
-                  setAddExpenseModal={setAddExpenseModal}
+    const [budget, setBudget] = useState({});
+    const [expenses, setExpenses] = useState([]);
+
+    const [refresh, setRefresh] = useState(1);
+
+    //refresh function
+    const handleRefresh = () => {
+        setRefresh(refresh * -1);
+    };
+
+    // 비용 추가 요청
+    const handleAddExpense = (price, selectedCategory, item, placeId) => {
+        console.log(price, selectedCategory, item, placeId)
+        if (budget.expectedBudget < 1) {
+            return alert("예산을 설정해주세요.");
+        }
+        if (
+            budget.expectedBudget <
+            parseInt(budget.totalExpenses) + parseInt(price)
+        ) {
+            return alert("예산을 초과하였습니다.");
+        }
+
+        if (price < 1) {
+            return alert("지출 금액은 1원 이상이어야 합니다.");
+        }
+
+        axios
+            .post(
+                `${process.env.REACT_APP_API_URL}/expenses/budget/${budgetId}/places/${placeId}`,
+                {
+                    category: selectedCategory,
+                    item: item,
+                    price: price,
+                },
+                {
+                    headers: {
+                        Authorization: getCookie('accessToken'),
+                    },
+                }
+            )
+            .then((res) => {
+                console.log('장소등록: ', res.data)
+                setExpenses([...expenses, res.data]); //비용에 추가
+                handleRefresh();
+            })
+            .then((res) => {
+                setAddExpenseModal(false);
+            })
+            .catch((err) => console.log("error"));
+    };
+
+    return (
+        <Container>
+            <PlanContainer>
+                <Title>Add a place you want</Title>
+                <PlaceInputBox
+                    searchBox={searchBox}
+                    setSearchBox={setSearchBox}
+                    searchData={searchData}
+                    setSearchData={setSearchData}
+                    setInfoWindowOpen={setInfoWindowOpen}
+                    setSearchedGeocode={setSearchedGeocode}
+                    setCenter={setCenter}
+                    singlePlanData={singlePlanData}
                 />
-              </SectionComponent>
-            ))
-          : null}
-        {mainData.budgetId && (
-          <Budget
-            budgetId={mainData.budgetId}
-            addExpenseModal={addExpenseModal}
-            setAddExpenseModal={setAddExpenseModal}
-          />
-        )}
-      </PlanContainer>
-    </Container>
-  );
+                <Title>일정</Title>
+                {singlePlanData !== null
+                    ? singlePlanData.map((singleData) => (
+                        <SectionComponent key={singleData.planDateId}>
+                            <SectionHeader>
+                                <p>{moment(singleData.planDate).format("M월 D일(ddd)")}</p>
+                            </SectionHeader>
+                            <SinglePlanBox
+                                planDateId={singleData.planDateId}
+                                planDate={singleData.planDate}
+                                singleData={singleData}
+                                setAddExpenseModal={setAddExpenseModal}
+                                setCurrentDate={setCurrentDate}
+                                setCurrentPlace={setCurrentPlace}
+                                setCurrentPlaceId={setCurrentPlaceId}
+                            />
+                        </SectionComponent>
+                    ))
+                    : null}
+                <AddExpense
+                    currentPlace={currentPlace}
+                    currentPlaceId={currentPlaceId}
+                    planDate={currentDate}
+                    addExpenseModal={addExpenseModal}
+                    setAddExpenseModal={setAddExpenseModal}
+                    handleAddExpense={handleAddExpense}
+                />
+                {mainData.budgetId && (
+                    <Budget
+                        budgetId={mainData.budgetId}
+                        addExpenseModal={addExpenseModal}
+                        setAddExpenseModal={setAddExpenseModal}
+                        handleAddExpense={handleAddExpense}
+                        budget={budget}
+                        setBudget={setBudget}
+                        expenses={expenses}
+                        setExpenses={setExpenses}
+                        refresh={refresh}
+                        handleRefresh={handleRefresh}
+                    />
+                )}
+            </PlanContainer>
+        </Container>
+    );
 };
 
 export default EditContainer;

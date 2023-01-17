@@ -6,65 +6,81 @@ import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../Util/Cookies";
 
 //axios.get
-const MyLogs = () => {
-  // const dummy = [
-  //   {
-  //     image: "https://picsum.photos/100",
-  //     boardId: 3,
-  //     title: "Trip to Busan",
-  //     likes: 1,
-  //     views: 0,
-  //     displayName: "wpdnd",
-  //     checkLikes: true,
-  //   },
-  //   {
-  //     image: "https://picsum.photos/200",
-  //     boardId: 4,
-  //     title: "title",
-  //     likes: 1,
-  //     views: 0,
-  //     displayName: "wpdnd",
-  //     checkLikes: false,
-  //   },
-  // ];
+const MyLogs = ({ mode }) => {
+  const dummy = [
+    {
+      boardId: 1,
+      title: "title",
+      likes: 0,
+      views: 0,
+      memberId: 1,
+      displayName: "wpdnd",
+      profileImage:
+        "https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png",
+      checkLikes: true,
+      travelPeriod: "JAN 01 - JAN 03, 2021",
+      cityImage:
+        "https://youimg1.tripcdn.com/target/0104p120008ars39uB986_C_800_10000.jpg",
+    },
+    {
+      boardId: 2,
+      title: "title",
+      likes: 0,
+      views: 1,
+      memberId: 1,
+      displayName: "wpdnd",
+      profileImage:
+        "https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png",
+      checkLikes: false,
+      travelPeriod: "JAN 01 - JAN 03, 2021",
+      cityImage:
+        "https://lh5.googleusercontent.com/p/AF1QipPOse0VYy5ZbAIVOet6W0sSvyS2L391-c52Pv0=w408-h271-k-no",
+    },
+  ];
 
   const navigate = useNavigate();
-  const [logList, setLogList] = useState([]);
+  const [logList, setLogList] = useState(dummy);
 
   const token = getCookie("accessToken");
   const memberId = getCookie("memberId");
 
-  const getTrip = () => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/board/user/${memberId}`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((res) => setLogList(res.data));
-  };
+  // const getTrip = () => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_API_URL}/board/user/${memberId}`, {
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     })
+  //     .then((res) => setLogList(res.data));
+  // };
 
-  useEffect(() => {
-    getTrip();
-  }, []);
+  // useEffect(() => {
+  //   getTrip();
+  // }, []);
+
+  const handleNavigate = (el) => {
+    if (mode === "plan") {
+      navigate(`/board/${el.boardId}`);
+    } else if (mode === "board") {
+      navigate(`/board/edit/${el.boardId}`);
+    }
+  };
 
   return (
     <MyLogsContainer>
       <h2>My Logs</h2>
       <div className="contents">
         {logList.map((el) => (
-          <div className="my-logs__card" key={el.boardId}>
-            <img
-              alt="place_image"
-              src={el.image}
-              onClick={() => navigate("/board/:boardId")}
-            />
+          <div
+            className="my-logs__card"
+            key={el.boardId}
+            onClick={() => handleNavigate(el)}
+          >
+            <img alt="place_image" src={el.cityImage} />
             <div className="meta_title">{el.title}</div>
-            <div className="meta_content">
-              {/* {el.startDate} - {el.endDate} */}
-            </div>
+            <div className="meta_content">{el.travelPeriod}</div>
             <div className="meta_profile">
-              {/* <div>{el.profile_image}</div> */}
+              <img alt="profile_image" src={el.profileImage} />
               <div>{el.displayName} </div>
             </div>
             <div className={el.checkLikes ? "meta_likes likes" : "meta_likes"}>

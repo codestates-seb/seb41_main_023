@@ -49,10 +49,6 @@ const PlaceInputBox = (props) => {
         const {
             searchBox,
             setSearchBox,
-            setInfoWindowOpen,
-            setSearchedGeocode,
-            setCenter,
-            setSearchData,
             singlePlanData
         } = props;
 
@@ -63,44 +59,28 @@ const PlaceInputBox = (props) => {
         }
 
         const onPlacesChanged = () => {
-            console.log(1);
             if (searchBox !== '') {
-                setInfoWindowOpen(true);
-                console.log(searchBox);
                 const place = searchBox.getPlaces()[0];
-                console.log(place)
                 const name = place.name;
                 const status = place.business_status;
                 const rating = place.rating;
-                const price_level = place.price_level;
                 const website = place.website;
                 const formattedAddress = place.formatted_address;
                 const phoneNumber = place.formatted_phone_number;
                 const lat = place.geometry.location.lat();
                 const lng = place.geometry.location.lng();
 
-                let photo, openingHours;
-
-                if (place.photos !== undefined) {
-                    photo = place.photos[0].getUrl({'maxWidth': 500, 'maxHeight': 500});
-                    console.log(photo);
-                } else {
-                    photo = 'null';
-                }
+                let openingHours;
 
                 if (place.opening_hours !== undefined) {
-                    openingHours = [
-                        place.opening_hours.weekday_text[0],
-                        place.opening_hours.weekday_text[1],
-                        place.opening_hours.weekday_text[2],
-                        place.opening_hours.weekday_text[3],
-                        place.opening_hours.weekday_text[4],
-                        place.opening_hours.weekday_text[5],
-                        place.opening_hours.weekday_text[6]
-                    ];
+                    openingHours =
+                        `${place.opening_hours.weekday_text[0]}, ${place.opening_hours.weekday_text[1]},${place.opening_hours.weekday_text[2]},${place.opening_hours.weekday_text[3]},${place.opening_hours.weekday_text[4]},${place.opening_hours.weekday_text[5]},${place.opening_hours.weekday_text[6]}`
+                    ;
                 }
 
                 //console log all results
+                console.log(typeof rating);
+                console.log(openingHours)
                 console.log(`Name: ${name}`);
                 console.log(`Ratings: ${rating}/5`);
                 console.log(`Business Status: ${status}`);
@@ -108,34 +88,25 @@ const PlaceInputBox = (props) => {
                 console.log(`website: ${website}`);
                 console.log(`phone: ${phoneNumber}`);
 
-                setSearchedGeocode({
-                    lat,
-                    lng
-                })
+                // setSearchedGeocode({
+                //     lat,
+                //     lng
+                // })
 
-                setCenter({
-                    lat,
-                    lng
-                })
-
-
-                setSearchData({
-                    name,
-                    photo,
-                    status,
-                    rating,
-                    price_level,
-                    openingHours,
-                    website,
-                    formattedAddress,
-                    phoneNumber
-                });
+                // setCenter({
+                //     lat,
+                //     lng
+                // })
 
                 axios.post(`${process.env.REACT_APP_API_URL}/places/${selectedDateId}`, {
                     placeName: name,
                     latitude: lat,
                     longitude: lng,
-                    placeAddress: formattedAddress
+                    placeAddress: formattedAddress,
+                    ratings: rating,
+                    website: website,
+                    phone: phoneNumber,
+                    openingHours: openingHours
                 }, {
                     headers: {
                         Authorization: getCookie('accessToken'),
@@ -146,7 +117,7 @@ const PlaceInputBox = (props) => {
                     .catch((err) => console.log(err))
             }
 
-            if(selectedDateId === null) {
+            if (selectedDateId === null) {
                 alert('먼저 날짜를 선택해주세요!!')
             }
         };

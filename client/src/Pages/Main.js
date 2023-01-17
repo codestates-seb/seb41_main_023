@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import Home from '../Pages/Home';
-import MyTrips from '../Components/user/MyTrips';
-import MyLogs from '../Components/user/MyLogs';
+import Home from "../Pages/Home";
+import MyTrips from "../Components/user/MyTrips";
+import MyLogs from "../Components/user/MyLogs";
 
 const MainContainer = styled.div`
   position: relative;
@@ -35,8 +35,8 @@ const Main = () => {
     <MainContainer>
       <Home login={true} />
       <Content>
-        <MyTrips />
-        <MyLogs />
+        <MyTrips mode="plan" />
+        <MyLogs mode="plan" />
         <ExploreContainer>
           <h2>Explore</h2>
         </ExploreContainer>

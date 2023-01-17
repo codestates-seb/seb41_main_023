@@ -4,6 +4,7 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import {getCookie} from "../../Util/Cookies";
 import moment from "moment";
+import 'moment/locale/ko';
 
 const LeftSideBar = styled.div`
   display: flex;
@@ -58,13 +59,13 @@ const SideDateBar = () => {
             .then((res) => {
                 setDates(res.data.data.planDates);
             })
-    }, [])
+    }, [itineraryId])
 
     return (
         <LeftSideBar>
             {dates.map((date) => (
                 <DateBox key={date.planDateId}>
-                    <button>{moment(date.planDate).format('M/D')}</button>
+                    <button>{moment(date.planDate).format('M/D(ddd)')}</button>
                 </DateBox>
             ))}
         </LeftSideBar>

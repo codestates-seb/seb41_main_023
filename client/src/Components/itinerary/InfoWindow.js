@@ -1,6 +1,7 @@
 import {InfoWindowF} from "@react-google-maps/api";
 import styled from "styled-components";
 import StarRate from "./StarRate";
+import {Fragment} from "react";
 
 const InfoStyle = styled.div`
   background: white;
@@ -22,7 +23,12 @@ const InfoStyle = styled.div`
 const InfoContainer = styled.div`
   width: 100%;
   height: 80%;
-  margin: 15px;
+  margin: 5px 0;
+  
+  h1 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
 
   .content {
     margin: 10px 0;
@@ -34,64 +40,57 @@ const InfoContainer = styled.div`
 `;
 
 const InfoWindow = (props) => {
-    const {searchedGeocode, searchData, setSearchData, setInfoWindowOpen, mainData, setMainData} = props;
+    const {singleData, setActiveMarker} = props;
+    console.log('단일: ', singleData)
 
-    const closeInfoWindowHandler = () => {
-        setInfoWindowOpen(false);
-    }
-
-    const {name, photo, price_level, rating, openingHours, website, formattedAddress, phoneNumber} = searchData;
-
-    console.log(searchData);
+    const {placeName, openingHours, phone, placeAddress, ratings, website} = singleData;
 
     return (
-        <InfoWindowF
-            options={{
-                pixelOffset: new window.google.maps.Size(0, -40)
-            }}
-            position={searchedGeocode}
-            onCloseClick={closeInfoWindowHandler}
-        >
-            <InfoStyle>
-                <InfoContainer>
-                    <h2>{name}</h2>
-                    {photo ? (
-                        <div className={'content'}>
-                            <img src={photo} alt={`${name} 의 사진`}/>
-                        </div>
-                    ) : null}
-                    {price_level ? (
-                        <p>가격레벨 : {price_level}</p>
-                    ) : null}
-                    {rating ? (
-                        <StarRate rating={rating}/>
-                    ) : null}
-                    <div className={'content'}>
-                        {openingHours ? <p>영업시간</p> : null}
-                        {openingHours ? (
-                            openingHours.map((day, idx) => (
-                                <p key={idx}>
-                                    {day}
-                                </p>
-                            ))
+        <Fragment>
+            <InfoWindowF
+                options={{
+                    pixelOffset: new window.google.maps.Size(0, -40)
+                }}
+                position={{
+                    lat: singleData.latitude,
+                    lng: singleData.longitude
+                }}
+                onCloseClick={() => setActiveMarker(null)}
+            >
+                <InfoStyle>
+                    <InfoContainer>
+                        <h1>{placeName}</h1>
+                        {ratings ? (
+                            <StarRate rating={ratings}/>
                         ) : null}
-                    </div>
-                    {website ? (
                         <div className={'content'}>
-                            <p>웹사이트 : <a href={website}>{website}</a></p>
+                            {openingHours ? <p>영업시간</p> : null}
+                            {openingHours ? (
+                                openingHours.split(',').map((day, idx) => (
+                                    <p key={idx}>
+                                        {day}
+                                    </p>
+                                ))
+                            ) : null}
                         </div>
-                    ) : null}
-                    <div className={'content'}>
-                        <p>주소 : {formattedAddress}</p>
-                    </div>
-                    {phoneNumber ? (
+                        {website ? (
+                            <div className={'content'}>
+                                <p>웹사이트 : <a href={website}>{website}</a></p>
+                            </div>
+                        ) : null}
                         <div className={'content'}>
-                            <p>전화번호 : <a href={`tel:${phoneNumber}`}>{phoneNumber}</a></p>
+                            <p>주소 : {placeAddress}</p>
                         </div>
-                    ) : null}
-                </InfoContainer>
-            </InfoStyle>
-        </InfoWindowF>
+                        {phone ? (
+                            <div className={'content'}>
+                                <p>전화번호 : <a href={`tel:${phone}`}>{phone}</a></p>
+                            </div>
+                        ) : null}
+                    </InfoContainer>
+                </InfoStyle>
+            </InfoWindowF>
+
+        </Fragment>
     )
 };
 
