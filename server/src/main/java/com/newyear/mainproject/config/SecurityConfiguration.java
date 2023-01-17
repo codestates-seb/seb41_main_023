@@ -59,10 +59,10 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                                .antMatchers(HttpMethod.POST, "/members/signup", "/members/login", "/login/**").permitAll()
+                                .antMatchers(HttpMethod.POST, "/members/signup", "/members/login", "/login/**", "/email/auth").permitAll()
                                 .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
                                 .antMatchers(HttpMethod.POST, "/members/logout").permitAll()
-                                .antMatchers(HttpMethod.GET, "/members").hasAnyRole("ADMIN", "USER")
+                                .antMatchers(HttpMethod.GET, "/members", "/board/user/plan/**").hasAnyRole("ADMIN", "USER")
                                 .antMatchers(HttpMethod.GET, "/", "/members/**", "/city", "/board", "/board/**", "/comments/**").permitAll() //추후 추가하기
                                 .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
                                 .antMatchers("/h2/**").permitAll() // h2 콘솔 사용을 위한 설정
@@ -75,6 +75,7 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository, refreshTokenRepository))
                 );
+
         return http.build();
 
     }
@@ -93,7 +94,7 @@ public class SecurityConfiguration {
 
             //wtAuthenticationFilter를 생성하면서 JwtAuthenticationFilter에서 사용되는 AuthenticationManager와 JwtTokenizer를 DI해줌
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, memberRepository, redisUtil, refreshTokenRepository);
-            jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
+            jwtAuthenticationFilter.setFilterProcessesUrl("/members/login/**");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 

@@ -1,15 +1,18 @@
 package com.newyear.mainproject.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @RestControllerAdvice
@@ -18,15 +21,13 @@ public class GlobalExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error("MethodArgumentNotValidException", e);
-        final ErrorResponse errorResponse = ErrorResponse.of(e.getBindingResult());
-        return errorResponse;
+        return ErrorResponse.of(e.getBindingResult());
     }
 
     @ExceptionHandler @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
         log.error("ConstraintViolationException", e);
-        final ErrorResponse errorResponse = ErrorResponse.of(e.getConstraintViolations());
-        return errorResponse;
+        return ErrorResponse.of(e.getConstraintViolations());
     }
 
     @ExceptionHandler
@@ -34,7 +35,7 @@ public class GlobalExceptionAdvice {
 
         final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
 
-        return new ResponseEntity(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
+        return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -50,4 +51,26 @@ public class GlobalExceptionAdvice {
         final ErrorResponse errorResponse = ErrorResponse.of(ExceptionCode.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNoSuchElementException(NoSuchElementException e) {
+        log.error("NoSuchElementException", e);
+        return ErrorResponse.of(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        log.error("MissingServletRequestParameterException", e);
+        return ErrorResponse.of(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException e) {
+        log.error("InvalidDataAccessApiUsageException", e);
+        return ErrorResponse.of(e.getMessage());
+    }
+
 }
