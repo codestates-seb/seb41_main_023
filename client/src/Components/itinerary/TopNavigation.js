@@ -1,27 +1,23 @@
 import styled from "styled-components";
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import axios from "axios";
 import {getCookie} from "../../Util/Cookies";
 import moment from "moment";
 import Calendar from "../Calendar";
 
 const TopNavBar = styled.nav`
-  border-bottom: 1px solid #e9ecef;
-  position: fixed;
-  display: flex;
-  width: 50%;
-  height: 200px;
-  left: 0;
-  right: 0;
-  top: 0;
-  padding: 0;
-  z-index: 50;
-  flex-flow: column nowrap;
+  width: 50vw;
+  height: 300px;
+  border: 1px solid lightgray;
   background-image: url(${props => props.cityImage});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 30px;
 
 `;
 
@@ -66,7 +62,7 @@ const TripTitleContainer = styled.div`
 `;
 
 const TopNavigation = (props) => {
-    const {startDate, setStartDate, endDate,setEndDate, mainData, setMainData, handleRefresh} = props;
+    const {startDate, setStartDate, endDate, setEndDate, mainData, setMainData, handleRefresh} = props;
     const {itineraryId} = useParams();
     const navigate = useNavigate();
     const token = getCookie('accessToken');
@@ -83,27 +79,27 @@ const TopNavigation = (props) => {
     }
 
     const changeDateHandler = () => {
-        if(window.confirm('정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!'))
-        axios.patch(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
-            {
-                startDate,
-                endDate
-            },
-            {
-                headers: {
-                    Authorization: token,
-                    withCredentials: true,
+        if (window.confirm('정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!'))
+            axios.patch(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
+                {
+                    startDate,
+                    endDate
+                },
+                {
+                    headers: {
+                        Authorization: token,
+                        withCredentials: true,
+                    }
                 }
-            }
-        )
-            .then((res) => {
-                setMainData({
-                    ...mainData,
-                    startDate: startDate,
-                    endDate: endDate
-                });
-                handleRefresh()
-            }).then(res => handleCalendar())
+            )
+                .then((res) => {
+                    setMainData({
+                        ...mainData,
+                        startDate: startDate,
+                        endDate: endDate
+                    });
+                    handleRefresh()
+                }).then(res => handleCalendar())
     }
 
     return (

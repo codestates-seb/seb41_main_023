@@ -2,10 +2,10 @@ import {GoogleMap} from "@react-google-maps/api";
 import MarkerLists from "./MarkerLists";
 
 const mapContainerStyle = {
-    width: "50%",
+    width: "50vw",
     minWidth: "400px",
     position: "absolute",
-    height: "100%",
+    height: "100vh",
     zIndex: "60",
     top: "0",
     bottom: "0",

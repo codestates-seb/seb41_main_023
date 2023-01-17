@@ -41,7 +41,7 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
                 handleRefresh();
             })
             .catch((err) => console.log("error"));
-    }, [refresh]);
+    }, [refresh, budgetId, handleRefresh, token, setBudget, setExpenses]);
 
     // 예산 수정 요청
     const handleEditBudget = (inputBudget) => {

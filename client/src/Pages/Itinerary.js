@@ -1,6 +1,5 @@
-import styled from "styled-components";
 import PlanSection from "../Components/itinerary/PlanSection";
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import {LoadScript} from "@react-google-maps/api";
 import RenderMap from "../Components/itinerary/RenderMap";
 import TopNavigation from "../Components/itinerary/TopNavigation";
@@ -9,14 +8,6 @@ import {useParams} from "react-router-dom";
 import {getCookie} from "../Util/Cookies";
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
-
-const ItineraryWrapper = styled.div`
-  position: relative;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  min-height: 100vh;
-`;
 
 const Itinerary = () => {
     const [libraries] = useState(["places"]);
@@ -79,7 +70,7 @@ const Itinerary = () => {
     }
 
     return (
-        <ItineraryWrapper>
+        <Fragment>
             <TopNavigation
                 startDate={startDate}
                 setStartDate={setStartDate}
@@ -117,7 +108,7 @@ const Itinerary = () => {
                 />
             </LoadScript>
 
-        </ItineraryWrapper>
+        </Fragment>
     )
 };
 
