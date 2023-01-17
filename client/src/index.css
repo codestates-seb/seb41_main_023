@@ -67,7 +67,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, 'Helvetica', BlinkMacSystemFont, sans-serif;
   font-size: var(--default-text-size);
   line-height: var(--default-text-line-height);
   color: var(--dark-gray-2);
