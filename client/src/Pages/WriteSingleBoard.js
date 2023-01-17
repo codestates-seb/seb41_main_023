@@ -22,12 +22,6 @@ const WriteSingleBoard = () => {
   const [planDatesAndPlace, setPlanDatesAndPlace] = useState();
   const [content, setContent] = useState();
   const [placeComment, setPlaceComment] = useState([]);
-  //날짜별 데이터
-  // const [daysData, setDaysData] = useState();
-  //선택 날짜 정보
-  // const [selectedDate, setSelectedDate] = useState([]);
-  //선택 날짜의 위도,경도
-  // const [mapLocations, setMapLocations] = useState();
   // 선택한 장소 표시
   const [searchData, setSearchData] = useState({
     장소: "",
@@ -87,38 +81,6 @@ const WriteSingleBoard = () => {
       });
   }, []);
 
-  // 게시글 불러오기
-  useEffect(() => {
-    axios({
-      method: "GET",
-      url: `${process.env.REACT_APP_API_URL}/board/1`,
-      headers: {
-        Authorization: token,
-      },
-    }).then((res) => console.log(res));
-  }, []);
-
-  //요일별 데이터 설정
-  // useEffect(() => {
-  //   setDaysData(planDatesAndPlace?.map((el) => el));
-  // }, [mainData]);
-
-  // 선택한 날짜 데이터, 위치 설정
-  // const handleDayData = (el) => {
-  //   const dateData = [...daysData];
-  //   const selectedlatlng = [];
-  //   for (let i = 0; i < dateData.length; i++) {
-  //     const dataId = dateData[i].planDateId;
-  //     if (dataId === el) {
-  //       setSelectedDate(dateData[i].places.map((el) => el));
-  //     }
-  //     selectedDate?.map((el) =>
-  //       selectedlatlng.push({ lat: el.longitude, lng: el.longitude })
-  //     );
-  //   }
-  //   setMapLocations(selectedlatlng);
-  // };
-
   const handleGeoCode = (lat, lng) => {
     setGeocode({ lat, lng });
   };
@@ -140,12 +102,6 @@ const WriteSingleBoard = () => {
   const handleInfoWindow = () => {
     setOpenInfo(!openInfo);
   };
-
-  // const [activeMarker, setActiveMarker] = useState(null);
-
-  // const handleActiveMarker = (marker) => {
-  //   console.log(marker);
-  // };
 
   //게시물 등록
   const handleCreateLog = async (title, content) => {
@@ -173,8 +129,6 @@ const WriteSingleBoard = () => {
     // console.log("변경할객체", 변경할객체);
     // setPlaceComment([...placeComment, 변경할객체]);
   };
-
-  // console.log(placeComment);
 
   // 장소별 comment 등록
   const handleSubmitComment = async (e) => {
