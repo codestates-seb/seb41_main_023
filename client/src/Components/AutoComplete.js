@@ -160,7 +160,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
         <div className="svg-icon--20">
           <svg viewBox="0 0 16 16">
             <path
-              fill-rule="evenodd"
+              //fill-rule="evenodd"
               fill="currentColor"
               d="M8.403 13.958a.5.5 0 0 1-.806 0C4.866 10.243 3.5 7.59 3.5 6c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5c0 1.59-1.366 4.243-4.097 7.958zM8 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
             ></path>

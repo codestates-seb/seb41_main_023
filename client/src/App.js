@@ -18,7 +18,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (getCookie("accessToken")) {
+    if (getCookie("accessToken" !== "null")) {
       setIsLoggedIn(true);
     }
   }, []);

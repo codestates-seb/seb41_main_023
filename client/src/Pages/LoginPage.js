@@ -38,12 +38,13 @@ const LoginPage = () => {
     const searchRefreshToken = getRefreshToken("refreshToken");
     setCookie("accessToken", searchAccessToken);
     localStorage.setItem("refreshToken", searchRefreshToken);
-
-    console.log(`search : ${location.search}`)
+    
+    console.log(`search : ${location.search}`);
     console.log(`access : ${searchAccessToken}, refresh : ${searchRefreshToken}`);
-
+    
     if(getCookie("accessToken") !== "null") {
-      console.log(getCookie("accessToken"))
+      console.log(getCookie("accessToken"));
+
       window.location.replace("/")
     }
   }, [])
@@ -55,7 +56,7 @@ const LoginPage = () => {
   // 로그인 요청
   const login = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API}/members/login`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/members/login`, {
         email,
         password,
       });

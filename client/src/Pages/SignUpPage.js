@@ -36,7 +36,7 @@ const SignUpPage = () => {
   // 회원가입 요청
   const signUp = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API}/members/signup`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/members/signup`, {
         email,
         displayName,
         password,
