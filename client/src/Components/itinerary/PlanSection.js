@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import EditContainer from "./EditContainer";
+import {useState} from "react";
 
 const TravelContainer = styled.div`
   display: flex;
@@ -19,7 +20,9 @@ const PlanSection = (props) => {
         setEndDate,
         mainData,
         handleGeoCode,
-        handleZoom
+        handleZoom,
+        refresh,
+        handleRefresh
     } = props;
 
     return (
@@ -34,6 +37,8 @@ const PlanSection = (props) => {
                 setStartDate={setStartDate}
                 endDate={endDate}
                 setEndDate={setEndDate}
+                refresh={refresh}
+                handleRefresh={handleRefresh}
             />
         </TravelContainer>
     )

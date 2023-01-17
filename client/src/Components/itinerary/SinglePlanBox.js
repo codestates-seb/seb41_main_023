@@ -12,7 +12,9 @@ const SinglePlanBox = (props) => {
         planDate,
         handleGeoCode,
         handleZoom,
-        expenses
+        expenses,
+        refresh,
+        handleRefresh
     } = props;
 
     return (
@@ -31,6 +33,8 @@ const SinglePlanBox = (props) => {
                         handleGeoCode={handleGeoCode}
                         handleZoom={handleZoom}
                         expenses={expenses}
+                        refresh={refresh}
+                        handleRefresh={handleRefresh}
                     />
                 ))
             }

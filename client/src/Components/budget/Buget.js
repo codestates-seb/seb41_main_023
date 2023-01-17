@@ -38,6 +38,7 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
             .then((res) => {
                 setBudget(res.data);
                 setExpenses(res?.data?.expenses || []);
+                handleRefresh();
             })
             .catch((err) => console.log("error"));
     }, [refresh]);
@@ -135,7 +136,7 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
             </div>
             <hr/>
             <MiddleArea>
-                <div>지출 일자</div>
+                <div>지출 일정</div>
                 <AddExpense
                     addExpenseModal={addExpenseModal}
                     setAddExpenseModal={setAddExpenseModal}

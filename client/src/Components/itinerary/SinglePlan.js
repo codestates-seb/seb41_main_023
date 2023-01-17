@@ -116,7 +116,7 @@ const SinglePlan = (props) => {
         setCurrentPlace,
         setAddExpenseModal,
         setCurrentPlaceId,
-        expenses
+        handleRefresh
     } = props;
     const [delButtonIsShow, setDelButtonIsShow] = useState(false);
 
@@ -138,7 +138,7 @@ const SinglePlan = (props) => {
                 .then(res => {
                     console.log('삭제완료!')
                 })
-                .then(res => window.location.reload())
+                .then(res => handleRefresh())
                 .catch(err => console.log(err));
         }
     }

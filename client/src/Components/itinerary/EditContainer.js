@@ -69,7 +69,9 @@ const EditContainer = (props) => {
         startDate,
         setStartDate,
         endDate,
-        setEndDate
+        setEndDate,
+        refresh,
+        handleRefresh
     } = props;
 
     const [addExpenseModal, setAddExpenseModal] = useState(false);
@@ -83,13 +85,6 @@ const EditContainer = (props) => {
 
     const [budget, setBudget] = useState({});
     const [expenses, setExpenses] = useState([]);
-
-    const [refresh, setRefresh] = useState(1);
-
-    //refresh function
-    const handleRefresh = () => {
-        setRefresh(refresh * -1);
-    };
 
     // 비용 추가 요청
     const handleAddExpense = (price, selectedCategory, item, placeId) => {
@@ -124,12 +119,11 @@ const EditContainer = (props) => {
             )
             .then((res) => {
                 setExpenses([...expenses, res.data]); //비용에 추가
-                handleRefresh();
             })
             .then((res) => {
                 setAddExpenseModal(false);
+                handleRefresh();
             })
-            .then(res => window.location.reload())
             .catch((err) => console.log("error"));
     };
 
@@ -140,6 +134,7 @@ const EditContainer = (props) => {
                 setStartDate={setStartDate}
                 endDate={endDate}
                 setEndDate={setEndDate}
+                singlePlanData={singlePlanData}
             />
             <PlanContainer>
                 <Title>Add a place you want</Title>
@@ -148,6 +143,8 @@ const EditContainer = (props) => {
                     setSearchBox={setSearchBox}
                     singlePlanData={singlePlanData}
                     handleGeoCode={handleGeoCode}
+                    refresh={refresh}
+                    handleRefresh={handleRefresh}
                 />
                 <Title>일정</Title>
                 {singlePlanData !== null
@@ -166,6 +163,8 @@ const EditContainer = (props) => {
                                 handleGeoCode={handleGeoCode}
                                 handleZoom={handleZoom}
                                 expenses={expenses}
+                                refresh={refresh}
+                                handleRefresh={handleRefresh}
                             />
                         </SectionComponent>
                     ))
@@ -177,6 +176,8 @@ const EditContainer = (props) => {
                     addExpenseModal={addExpenseModal}
                     setAddExpenseModal={setAddExpenseModal}
                     handleAddExpense={handleAddExpense}
+                    refresh={refresh}
+                    handleRefresh={handleRefresh}
                 />
             </PlanContainer>
             <BudgetContainer>

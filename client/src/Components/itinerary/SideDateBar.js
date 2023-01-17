@@ -43,27 +43,12 @@ const DateBox = styled.div`
   }
 `;
 
-const SideDateBar = () => {
-    const {itineraryId} = useParams();
-    const [dates, setDates] = useState([]);
-
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
-            {
-                headers: {
-                    Authorization: getCookie('accessToken'),
-                    withCredentials: true,
-                }
-            }
-        )
-            .then((res) => {
-                setDates(res.data.data.planDates);
-            })
-    }, [itineraryId])
+const SideDateBar = (props) => {
+    const {singlePlanData} = props;
 
     return (
         <LeftSideBar>
-            {dates.map((date) => (
+            {singlePlanData.map((date) => (
                 <DateBox key={date.planDateId}>
                     <button>{moment(date.planDate).format('M/D(ddd)')}</button>
                 </DateBox>

@@ -7,6 +7,7 @@ import TopNavigation from "../Components/itinerary/TopNavigation";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {getCookie} from "../Util/Cookies";
+
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
 const ItineraryWrapper = styled.div`
@@ -40,6 +41,12 @@ const Itinerary = () => {
         planDatesAndPlace: [],
 
     });
+    const [refresh, setRefresh] = useState(1);
+
+    //refresh function
+    const handleRefresh = () => {
+        setRefresh(refresh * -1);
+    };
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
@@ -61,15 +68,17 @@ const Itinerary = () => {
                     planDatesAndPlace: res.data.data.planDatesAndPlace
                 });
                 const startPlace = res.data.data.planDatesAndPlace;
-                setSearchedGeocode({
-                    lat: startPlace[0].places[0].latitude,
-                    lng: startPlace[0].places[0].longitude,
-                });
+                if (startPlace[0].places[0]) {
+                    setSearchedGeocode({
+                        lat: startPlace[0].places[0].latitude,
+                        lng: startPlace[0].places[0].longitude,
+                    });
+                }
             })
-    }, []);
+    }, [refresh]);
 
     const handleGeoCode = (lat, lng) => {
-        setSearchedGeocode({ lat, lng });
+        setSearchedGeocode({lat, lng});
     };
 
     const handleZoom = () => {
@@ -85,6 +94,8 @@ const Itinerary = () => {
                 setEndDate={setEndDate}
                 mainData={mainData}
                 setMainData={setMainData}
+                refresh={refresh}
+                handleRefresh={handleRefresh}
             />
             <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
                 <RenderMap
@@ -108,6 +119,8 @@ const Itinerary = () => {
                     mainData={mainData}
                     handleGeoCode={handleGeoCode}
                     handleZoom={handleZoom}
+                    refresh={refresh}
+                    handleRefresh={handleRefresh}
                 />
             </LoadScript>
 

@@ -51,6 +51,8 @@ const PlaceInputBox = (props) => {
             setSearchBox,
             singlePlanData,
             handleGeoCode,
+            refresh,
+            handleRefresh
         } = props;
 
         const [selectedDateId, setSelectedDateId] = useState(null);
@@ -93,7 +95,7 @@ const PlaceInputBox = (props) => {
                     }
                 })
                     .then(res => {
-                        window.location.reload();
+                        handleRefresh();
                     })
                     .catch((err) => console.log(err))
 

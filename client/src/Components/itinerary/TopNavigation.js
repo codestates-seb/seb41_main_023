@@ -66,7 +66,7 @@ const TripTitleContainer = styled.div`
 `;
 
 const TopNavigation = (props) => {
-    const {startDate, setStartDate, endDate,setEndDate, mainData, setMainData} = props;
+    const {startDate, setStartDate, endDate,setEndDate, mainData, setMainData, handleRefresh} = props;
     const {itineraryId} = useParams();
     const navigate = useNavigate();
     const token = getCookie('accessToken');
@@ -102,8 +102,8 @@ const TopNavigation = (props) => {
                     startDate: startDate,
                     endDate: endDate
                 });
-                window.location.reload();
-            })
+                handleRefresh()
+            }).then(res => handleCalendar())
     }
 
     return (
