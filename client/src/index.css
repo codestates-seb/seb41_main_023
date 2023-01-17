@@ -73,6 +73,13 @@
   color: var(--dark-gray-2);
 }
 
+#root {
+  position: absolute;
+  top: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
 input {
   outline: 0;
 }
@@ -194,4 +201,20 @@ a {
 
 a:hover {
   color: var(--primary-blue);
+}
+
+.button--danger {
+  padding: 10px 14px; 
+  font-weight: 500;
+  background-color: var(--red);
+  color: var(--white);
+  border-radius: 3px;
+}
+
+.button--danger:hover {
+  background-color: var(--red-dark-1);
+}
+
+.button--danger:active {
+  background-color: var(--red-dark-2);
 }
