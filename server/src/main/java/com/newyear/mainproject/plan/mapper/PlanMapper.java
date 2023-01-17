@@ -4,6 +4,8 @@ import com.newyear.mainproject.budget.dto.BudgetDto;
 import com.newyear.mainproject.budget.entity.Budget;
 import com.newyear.mainproject.city.City;
 import com.newyear.mainproject.city.CityDto;
+import com.newyear.mainproject.exception.BusinessLogicException;
+import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.expense.dto.ExpenseDto;
 import com.newyear.mainproject.expense.entity.Expenses;
 import com.newyear.mainproject.place.dto.PlaceDto;
@@ -17,7 +19,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,6 +102,16 @@ public interface PlanMapper {
 
     //plan 에 planDates 넣어주기 위한 메소드(중복 방지)
     default List<PlanDates> planDatesToPlanPlanDates(Plan plan) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date startIf = formatter.parse(plan.getStartDate());
+            Date endIf = formatter.parse(plan.getEndDate());
+            //endDate 보다 startDate 가 크면 안됨
+            if(!startIf.before(endIf)) throw new BusinessLogicException(ExceptionCode.INVALID_VALUES);
+        }catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         List<String> dateList = DateCalculation.dateCal(plan.getStartDate(), plan.getEndDate());
 
         //일정 등록하면서 동시에 plan_date 테이블에 값 저장
@@ -112,6 +126,7 @@ public interface PlanMapper {
         }
 
         return planDatesList;
+
     }
 
     PlanDates planDatesPatchToPlanDates(PlanDto.PatchPlanDatesSubTitle patch);
