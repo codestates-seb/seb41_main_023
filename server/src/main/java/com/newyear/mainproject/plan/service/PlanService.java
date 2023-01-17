@@ -1,5 +1,6 @@
 package com.newyear.mainproject.plan.service;
 
+import com.newyear.mainproject.board.service.BoardService;
 import com.newyear.mainproject.city.CityService;
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
@@ -10,6 +11,7 @@ import com.newyear.mainproject.plan.entity.PlanDates;
 import com.newyear.mainproject.plan.repository.PlanDateRepository;
 import com.newyear.mainproject.plan.repository.PlanRepository;
 import com.newyear.mainproject.util.DateCalculation;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -22,12 +24,14 @@ public class PlanService {
    private final PlanDateRepository planDateRepository;
    private final MemberService memberService;
    private final CityService cityService;
+   private final BoardService boardService;
 
-    public PlanService(PlanRepository planRepository, PlanDateRepository planDateRepository, MemberService memberService, CityService cityService) {
+    public PlanService(PlanRepository planRepository, PlanDateRepository planDateRepository, MemberService memberService, CityService cityService, @Lazy BoardService boardService) {
         this.planRepository = planRepository;
         this.planDateRepository = planDateRepository;
         this.memberService = memberService;
         this.cityService = cityService;
+        this.boardService = boardService;
     }
 
     /**
@@ -44,6 +48,11 @@ public class PlanService {
      */
     public Plan updatePlan(Plan plan) {
         Plan findPlan = findVerifiedPlan(plan.getPlanId());
+
+        //작성자만 수정 가능
+        if (!findPlan.getMember().equals(memberService.getLoginMember())) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
 
         Optional.ofNullable(plan.getPlanTitle())
                 .ifPresent(planTitle -> findPlan.setPlanTitle(planTitle));
@@ -103,6 +112,16 @@ public class PlanService {
      */
     public void deletePlan(Long planId) {
         Plan findPlan = findVerifiedPlan(planId);
+        //작성자만 삭제 가능
+        if (!findPlan.getMember().equals(memberService.getLoginMember())) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
+
+        //이 일정에 관련된 게시물이 있으면 게시물 삭제 먼저 하도록 예외 처리
+        if(!boardService.findPlanBoards(findPlan.getPlanId()).isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.BOARD_CHECK_EXISTS);
+        }
+
         planRepository.delete(findPlan);
     }
 

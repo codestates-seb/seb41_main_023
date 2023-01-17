@@ -6,16 +6,22 @@ import com.newyear.mainproject.city.CityDto;
 import com.newyear.mainproject.place.dto.PlaceDto;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlanDto {
 
     @Getter
+    @Setter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Post {
+        @NotBlank
         private String cityName;
+        @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "YYYY-MM-DD 형식으로 작성해야 합니다.")
         private String startDate;
+        @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "YYYY-MM-DD 형식으로 작성해야 합니다.")
         private String endDate;
         private String planTitle;
     }
@@ -26,7 +32,9 @@ public class PlanDto {
     public static class Patch {
         private Long planId;
         private String planTitle;
+        @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "YYYY-MM-DD 형식으로 작성해야 합니다.")
         private String startDate;
+        @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$", message = "YYYY-MM-DD 형식으로 작성해야 합니다.")
         private String endDate;
     }
 
