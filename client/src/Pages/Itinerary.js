@@ -67,15 +67,8 @@ const Itinerary = () => {
                     planDates: res.data.data.planDates,
                     planDatesAndPlace: res.data.data.planDatesAndPlace
                 });
-                const startPlace = res.data.data.planDatesAndPlace;
-                if (startPlace[0].places[0]) {
-                    setSearchedGeocode({
-                        lat: startPlace[0].places[0].latitude,
-                        lng: startPlace[0].places[0].longitude,
-                    });
-                }
             })
-    }, [refresh]);
+    }, [itineraryId, refresh]);
 
     const handleGeoCode = (lat, lng) => {
         setSearchedGeocode({lat, lng});
