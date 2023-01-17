@@ -3,97 +3,8 @@ import axios from 'axios';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { setCookie } from '../Util/Cookies';
+import { getCookie } from "../Util/Cookies";
 import bgImage from '../images/login-page_side-image.jpg';
-
-const Header = styled.div`
-  position: fixed;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  margin: 0 50px;
-  width: calc(100vw - 100px);
-  height: 60px;
-  z-index: 9999;
-
-  .header__logo {
-    cursor: pointer;
-  }
-`;
-
-const LeftContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50vw;
-  height: 100vh;
-  float: left;
-
-  .content {
-    min-width: 350px;
-
-    h2 {
-      margin-bottom: var(--spacing-2);
-      font-size: var(--x-large-heading-font-size);
-      line-height: var(--x-large-heading-line-height);
-      font-weight: 600;
-      color: var(--primary-blue-bright);
-    }
-
-    p {
-      margin-bottom: var(--spacing-4);
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      color: var(--dark-gray-1);
-      margin-bottom: 6px;
-
-      &:not(:first-child) {
-        margin-top: var(--spacing-3);
-      }
-    }
-
-    > .button--primary {
-      margin: var(--spacing-3) 0;
-      width: 100%;
-      text-align: center;
-    }
-
-    > .button--google {
-      display: flex; 
-      justify-content: center;
-      gap: var(--spacing-2);
-      margin-bottom: var(--spacing-3);
-      width: 100%;
-      text-align: center;
-
-      svg {
-        width: 16px; 
-        height: 16px; 
-      }
-    }
-
-    .input__message {
-      padding-top: var(--spacing-2);
-      color: var(--light);
-    }
-
-    .log-in__sub-message {
-      text-align: center;
-      color: var(--light);
-    }
-  }
-`;
-
-const RightContainer = styled.div`
-  width: 50vw;
-  height: 100vh;
-  background-image: url(${bgImage});
-  background-size: cover;
-  background-position: center;
-  float: right;
-`;
 
 //const clientId = process.env.REACT_APP_CLIENT_ID;
 
@@ -102,19 +13,6 @@ const LoginPage = () => {
   const pref = useRef();
   const navigate = useNavigate();
   const location = useLocation();
-  
-
-  // 토큰 저장
-  useEffect(() => {
-    console.log(location);
-    setCookie("accessToken", location.search.slice(13, 229));
-    localStorage.setItem("refreshToken", location.search.slice(243));
-  }, [])
-  
-
-  useEffect(() => {
-    eref.current.focus();
-  }, []);
 
   // 이메일, 비밀번호
   const [email, setEmail] = useState('');
@@ -128,10 +26,36 @@ const LoginPage = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
+  // 구글 로그인 토큰 저장
+  useEffect(() => {
+    let getAccessToken = (key) => {
+      return new URLSearchParams(location.search).get(key);
+    };
+    let getRefreshToken = (key) => {
+      return new URLSearchParams(location.search).get(key);
+    };
+    const searchAccessToken = getAccessToken("accessToken");
+    const searchRefreshToken = getRefreshToken("refreshToken");
+    setCookie("accessToken", searchAccessToken);
+    localStorage.setItem("refreshToken", searchRefreshToken);
+
+    console.log(`search : ${location.search}`)
+    console.log(`access : ${searchAccessToken}, refresh : ${searchRefreshToken}`);
+
+    if(getCookie("accessToken") !== "null") {
+      console.log(getCookie("accessToken"))
+      window.location.replace("/")
+    }
+  }, [])
+  
+  useEffect(() => {
+    eref.current.focus();
+  }, []);
+
   // 로그인 요청
   const login = async () => {
     try {
-      const response = await axios.post('https://www.sebmain41team23.shop/members/login', {
+      const response = await axios.post(`${process.env.REACT_APP_API}/members/login`, {
         email,
         password,
       });
@@ -146,8 +70,13 @@ const LoginPage = () => {
       }
     } catch (err) {
       console.error(err);
-      if (err.response.status === 401)
+      if (err.response.status === 401) { 
         alert('이메일 또는 비밀번호를 잘못 입력하셨거나 등록되지 않은 회원입니다.');
+        // localStorage.setItem("email", email);
+        // window.location.reload();
+        // setEmail(localStorage.getItem("email"));
+      }
+      else if (err.response.status === 400) alert('탈퇴한 회원입니다.');
       else if (err.response.status === 404) alert('페이지를 찾을 수 없습니다.');
       else if (err.response.status === 500) alert('서버 점검 중...');
     }
@@ -310,3 +239,93 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+const Header = styled.div`
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0 50px;
+  width: calc(100vw - 100px);
+  height: 60px;
+  z-index: 9999;
+
+  .header__logo {
+    cursor: pointer;
+  }
+`;
+
+const LeftContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  height: 100vh;
+  float: left;
+
+  .content {
+    min-width: 350px;
+
+    h2 {
+      margin-bottom: var(--spacing-2);
+      font-size: var(--x-large-heading-font-size);
+      line-height: var(--x-large-heading-line-height);
+      font-weight: 600;
+      color: var(--primary-blue-bright);
+    }
+
+    p {
+      margin-bottom: var(--spacing-4);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: var(--dark-gray-1);
+      margin-bottom: 6px;
+
+      &:not(:first-child) {
+        margin-top: var(--spacing-3);
+      }
+    }
+
+    > .button--primary {
+      margin: var(--spacing-3) 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    > .button--google {
+      display: flex; 
+      justify-content: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+      width: 100%;
+      text-align: center;
+
+      svg {
+        width: 16px; 
+        height: 16px; 
+      }
+    }
+
+    .input__message {
+      padding-top: var(--spacing-2);
+      color: var(--light);
+    }
+
+    .log-in__sub-message {
+      text-align: center;
+      color: var(--light);
+    }
+  }
+`;
+
+const RightContainer = styled.div`
+  width: 50vw;
+  height: 100vh;
+  background-image: url(${bgImage});
+  background-size: cover;
+  background-position: center;
+  float: right;
+`;

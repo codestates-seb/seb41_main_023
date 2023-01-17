@@ -5,139 +5,49 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bgImage from '../images/signup-page_side-image.jpg';
 
-const Header = styled.div`
-  position: fixed;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  margin: 0 50px;
-  width: calc(100vw - 100px);
-  height: 60px;
-  z-index: 9999;
-
-  .header__logo {
-    cursor: pointer;
-  }
-`;
-
-const LeftContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50vw;
-  height: 100vh;
-  float: left;
-
-  .content {
-    width: 350px;
-
-    h2 {
-      margin-bottom: var(--spacing-2);
-      font-size: var(--x-large-heading-font-size);
-      line-height: var(--x-large-heading-line-height);
-      font-weight: 600;
-      color: var(--primary-blue-bright);
-    }
-
-    p {
-      margin-bottom: var(--spacing-4);
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      color: var(--dark-gray-1);
-      margin-bottom: 6px;
-
-      &:not(:first-child) {
-        margin-top: var(--spacing-3);
-      }
-    }
-
-    > .button--primary {
-      margin: var(--spacing-3) 0;
-      width: 100%;
-      text-align: center;
-    }
-
-    > .button--google {
-      display: flex;
-      justify-content: center;
-      gap: var(--spacing-2);
-      margin-bottom: var(--spacing-3);
-      width: 100%;
-      text-align: center;
-
-      svg {
-        width: 16px;
-        height: 16px;
-      }
-    }
-
-    .input__message {
-      padding-top: var(--spacing-2);
-      color: var(--light);
-    }
-
-    .signup__sub-message {
-      text-align: center;
-      color: var(--light);
-    }
-  }
-`;
-
-const RightContainer = styled.div`
-  width: 50vw;
-  height: 100vh;
-  background-image: url(${bgImage});
-  background-size: cover;
-  background-position: center;
-  float: right;
-`;
-
 //const clientId = process.env.REACT_APP_CLIENT_ID;
 
 const SignUpPage = () => {
   const navigate = useNavigate();
-
   const uref = useRef();
   const eref = useRef();
   const pref = useRef();
-
+  
+  // 이름, 이메일, 비밀번호
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+  // success, error 메세지
+  const [nameMessage, setNameMessage] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+  
+  // 유효성 검사
+  const [isName, setIsName] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+  
   // 렌더링 될때 username input으로 focus
   useEffect(() => {
     uref.current.focus();
   }, []);
 
-  // 이름, 이메일, 비밀번호
-  const [displayName, setDisplayName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  // success, error 메세지
-  const [nameMessage, setNameMessage] = useState('');
-  const [emailMessage, setEmailMessage] = useState('');
-  const [passwordMessage, setPasswordMessage] = useState('');
-
-  // 유효성 검사
-  const [isName, setIsName] = useState(false);
-  const [isEmail, setIsEmail] = useState(false);
-  const [isPassword, setIsPassword] = useState(false);
-
   // 회원가입 요청
   const signUp = async () => {
     try {
-      const response = await axios.post('https://www.sebmain41team23.shop/members/signup', {
+      const response = await axios.post(`${process.env.REACT_APP_API}/members/signup`, {
         email,
         displayName,
         password,
       });
-      navigate('/login');
       alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
-      console.log(response);
+      navigate('/login');
+      //console.log(response);
     } catch (err) {
       console.error(err);
       if (err.response.status === 404) alert('페이지를 찾을 수 없습니다.');
+      else if (err.response.status === 409) alert('이미 가입된 회원입니다. 이메일을 확인해주세요.');
       else if (err.response.status === 500) alert('서버 점검 중...');
     }
   };
@@ -253,7 +163,7 @@ const SignUpPage = () => {
           <input
             className="input"
             type="email"
-            placeholder="Enter your password"
+            placeholder="Enter your email"
             onChange={onChangeEmail}
             onKeyDown={emailEnter}
             ref={eref}
@@ -282,7 +192,7 @@ const SignUpPage = () => {
           <button className="button--primary" onClick={onSignUp}>
             Sign up
           </button>
-          <button className="button--google" onClick={() => navigate('//')}>
+          <button className="button--google" onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/google')}>
             <svg
               xlink="http://www.w3.org/1999/xlink"
               xmlns="http://www.w3.org/2000/svg"
@@ -323,3 +233,93 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
+
+const Header = styled.div`
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0 50px;
+  width: calc(100vw - 100px);
+  height: 60px;
+  z-index: 9999;
+
+  .header__logo {
+    cursor: pointer;
+  }
+`;
+
+const LeftContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  height: 100vh;
+  float: left;
+
+  .content {
+    width: 350px;
+
+    h2 {
+      margin-bottom: var(--spacing-2);
+      font-size: var(--x-large-heading-font-size);
+      line-height: var(--x-large-heading-line-height);
+      font-weight: 600;
+      color: var(--primary-blue-bright);
+    }
+
+    p {
+      margin-bottom: var(--spacing-4);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: var(--dark-gray-1);
+      margin-bottom: 6px;
+
+      &:not(:first-child) {
+        margin-top: var(--spacing-3);
+      }
+    }
+
+    > .button--primary {
+      margin: var(--spacing-3) 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    > .button--google {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+      width: 100%;
+      text-align: center;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .input__message {
+      padding-top: var(--spacing-2);
+      color: var(--light);
+    }
+
+    .signup__sub-message {
+      text-align: center;
+      color: var(--light);
+    }
+  }
+`;
+
+const RightContainer = styled.div`
+  width: 50vw;
+  height: 100vh;
+  background-image: url(${bgImage});
+  background-size: cover;
+  background-position: center;
+  float: right;
+`;
