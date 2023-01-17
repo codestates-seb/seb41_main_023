@@ -1,48 +1,45 @@
-import axios from "axios";
-import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { getCookie } from "../../Util/Cookies";
+import { getCookie } from '../../Util/Cookies';
 
 //axios.get
 const MyLogs = ({ mode }) => {
   const dummy = [
     {
       boardId: 1,
-      title: "title",
+      title: 'title',
       likes: 0,
       views: 0,
       memberId: 1,
-      displayName: "wpdnd",
-      profileImage:
-        "https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png",
+      displayName: 'wpdnd',
+      profileImage: 'https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png',
       checkLikes: true,
-      travelPeriod: "JAN 01 - JAN 03, 2021",
-      cityImage:
-        "https://youimg1.tripcdn.com/target/0104p120008ars39uB986_C_800_10000.jpg",
+      travelPeriod: 'JAN 01 - JAN 03, 2021',
+      cityImage: 'https://youimg1.tripcdn.com/target/0104p120008ars39uB986_C_800_10000.jpg',
     },
     {
       boardId: 2,
-      title: "title",
+      title: 'title',
       likes: 0,
       views: 1,
       memberId: 1,
-      displayName: "wpdnd",
-      profileImage:
-        "https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png",
+      displayName: 'wpdnd',
+      profileImage: 'https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png',
       checkLikes: false,
-      travelPeriod: "JAN 01 - JAN 03, 2021",
+      travelPeriod: 'JAN 01 - JAN 03, 2021',
       cityImage:
-        "https://lh5.googleusercontent.com/p/AF1QipPOse0VYy5ZbAIVOet6W0sSvyS2L391-c52Pv0=w408-h271-k-no",
+        'https://lh5.googleusercontent.com/p/AF1QipPOse0VYy5ZbAIVOet6W0sSvyS2L391-c52Pv0=w408-h271-k-no',
     },
   ];
 
   const navigate = useNavigate();
   const [logList, setLogList] = useState(dummy);
 
-  const token = getCookie("accessToken");
-  const memberId = getCookie("memberId");
+  const token = getCookie('accessToken');
+  const memberId = getCookie('memberId');
 
   // const getTrip = () => {
   //   axios
@@ -59,31 +56,27 @@ const MyLogs = ({ mode }) => {
   // }, []);
 
   const handleNavigate = (el) => {
-    if (mode === "plan") {
+    if (mode === 'plan') {
       navigate(`/board/${el.boardId}`);
-    } else if (mode === "board") {
+    } else if (mode === 'board') {
       navigate(`/board/edit/${el.boardId}`);
     }
   };
 
   return (
-    <MyLogsContainer>
+    <MyLogsContainer className="my-logs">
       <h2>My Logs</h2>
       <div className="contents">
         {logList.map((el) => (
-          <div
-            className="my-logs__card"
-            key={el.boardId}
-            onClick={() => handleNavigate(el)}
-          >
-            <img alt="place_image" src={el.cityImage} />
+          <div className="my-logs__card" key={el.boardId} onClick={() => handleNavigate(el)}>
+            <img className="meta__travel-image" alt="place_image" src={el.cityImage} />
             <div className="meta_title">{el.title}</div>
             <div className="meta_content">{el.travelPeriod}</div>
             <div className="meta_profile">
-              <img alt="profile_image" src={el.profileImage} />
-              <div>{el.displayName} </div>
+              <img className="profile__image" alt="profile_image" src={el.profileImage} />
+              <span>{el.displayName} </span>
             </div>
-            <div className={el.checkLikes ? "meta_likes likes" : "meta_likes"}>
+            <div className={el.checkLikes ? 'meta_likes likes' : 'meta_likes'}>
               <svg viewBox="0 0 16 16">
                 <path
                   fill-rule="evenodd"
@@ -122,9 +115,10 @@ const MyLogsContainer = styled.div`
       width: calc((100vw - 228px) / 5);
       cursor: pointer;
 
-      img {
+      .meta__travel-image {
         margin-bottom: var(--spacing-3);
-        width: 100%;
+        width: calc((100vw - 228px) / 5);
+        height: calc((100vw - 228px) / 5);
         border-radius: 5px;
       }
 
@@ -136,9 +130,13 @@ const MyLogsContainer = styled.div`
       }
 
       .meta_content {
+        margin-bottom: 2px;
+        color: var(--light);
+
         > div {
-          color: var(--light);
-          margin-bottom: 2px;
+          /* margin-bottom: 2px;
+          text-transform: capitalize;
+          color: var(--light); */
         }
       }
 
@@ -169,6 +167,23 @@ const MyLogsContainer = styled.div`
             color: var(--red);
             stroke: var(--red);
           }
+        }
+      }
+
+      .meta_profile {
+        margin-top: var(--spacing-2);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
+
+        .profile__image {
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+        }
+
+        > span {
+          color: var(--dark-gray-3);
         }
       }
     }
