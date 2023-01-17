@@ -57,7 +57,7 @@ const Header = ({ login }) => {
   };
 
   return (
-    <HeadContainer>
+    <HeadContainer className="header__container">
       <LeftSection>
         <div className="header__logo" onClick={() => handleNavigate("/")}>
           website name
