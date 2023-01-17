@@ -95,7 +95,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         //Frontend 애플리케이션 쪽의 URL을 생성합니다. createURI() 메서드에서
         //UriComponentsBuilder를 이용해 Access Token과 Refresh Token을 포함한 URL을 생성
         //UriComponentsBuilder에서 Port 설정을 하지 않으면 기본값은 80 포트
-        String uri = createURI("Bearer " + accessToken, refreshToken, member.getMemberId()).toString();
+        String memberId = String.valueOf(member);
+        String uri = createURI("Bearer " + accessToken, refreshToken, memberId).toString();
         //SimpleUrlAuthenticationSuccessHandler 에서 제공하는 sendRedirect() 메서드를 이용해
         //Frontend 애플리케이션 쪽으로 리다이렉트
         getRedirectStrategy().sendRedirect(request, response, uri);
@@ -136,9 +137,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return refreshToken;
     }
 
-    private URI createURI(String accessToken, String refreshToken, long memberId) {
+    private URI createURI(String accessToken, String refreshToken, String memberId) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();;
-        queryParams.add("memberId", String.valueOf(memberId));
+        queryParams.add("memberId", memberId);
         queryParams.add("accessToken", accessToken);
         queryParams.add("refreshToken", refreshToken);
 
