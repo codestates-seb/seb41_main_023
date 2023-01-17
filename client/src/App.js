@@ -28,14 +28,8 @@ function App() {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={isLoggedIn ? <Main /> : <Home />} />
-        <Route
-          path="/login"
-          element={<LoginPage setIsLoggedIn={setIsLoggedIn} />}
-        />
-        <Route
-          path="/signup"
-          element={<SignUpPage setIsLoggedIn={setIsLoggedIn} />}
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
         <Route path="/user/:memberId" element={<UserProfile />} />
         <Route path="/user/:memberId/edit" element={<UserProfileEdit />} />
         <Route path="/itinerary/:itineraryId" element={<Itinerary />} />
