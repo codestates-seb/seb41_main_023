@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import moment from "moment";
+import styled from 'styled-components';
+import moment from 'moment';
 import 'moment/locale/ko';
 
 const LeftSideBar = styled.div`
@@ -37,17 +37,17 @@ const DateBox = styled.div`
 `;
 
 const SideDateBar = (props) => {
-    const {singlePlanData} = props;
+  const { singlePlanData } = props;
 
-    return (
-        <LeftSideBar>
-            {singlePlanData.map((date) => (
-                <DateBox key={date.planDateId}>
-                    <button>{moment(date.planDate).format('M/D(ddd)')}</button>
-                </DateBox>
-            ))}
-        </LeftSideBar>
-    )
+  return (
+    <LeftSideBar>
+      {singlePlanData.map((date) => (
+        <DateBox key={date.planDateId}>
+          <button>{moment(date.planDate).format('M/D(ddd)')}</button>
+        </DateBox>
+      ))}
+    </LeftSideBar>
+  );
 };
 
 export default SideDateBar;
