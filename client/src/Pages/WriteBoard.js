@@ -12,8 +12,8 @@ const WriteBoard = () => {
         <h1>Write your travel log</h1>
         <div>Reflect your trips and share it with other travellers!</div>
       </Content>
-      <MyTrips mode="board" />
-      <MyLogs mode="board" />
+      <MyTrips mode="write" />
+      <MyLogs mode="write" />
     </WriteBoardContainer>
   );
 };

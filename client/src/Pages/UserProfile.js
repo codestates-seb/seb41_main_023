@@ -1,16 +1,16 @@
-import axios from 'axios';
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import Header from '../Components/Header';
-import MyTrips from '../Components/user/MyTrips';
-import MyLogs from '../Components/user/MyLogs';
+import Header from "../Components/Header";
+import MyTrips from "../Components/user/MyTrips";
+import MyLogs from "../Components/user/MyLogs";
 
 // import { getData } from "../Util/api";
-import { postData } from '../Util/api';
-import { getCookie, removeCookie } from '../Util/Cookies';
-import Footer from './Footer';
+import { postData } from "../Util/api";
+import { getCookie, removeCookie } from "../Util/Cookies";
+import Footer from "./Footer";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -42,8 +42,8 @@ const UserProfile = () => {
 
   // 로그아웃 요청
   const handleSignout = async () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      await postData('/members/logout', {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      await postData("/members/logout", {
         accessToken: token,
         refreshToken: refreshToken,
       }).then((res) => {
@@ -73,11 +73,14 @@ const UserProfile = () => {
             <div className="user_edit">
               <button
                 className="button--default button--subtle"
-                onClick={() => navigate('/user/:memberId/edit')}
+                onClick={() => navigate(`/user/${memberId}/edit`)}
               >
                 Edit profile
               </button>
-              <button className="button--default button--subtle" onClick={handleSignout}>
+              <button
+                className="button--default button--subtle"
+                onClick={handleSignout}
+              >
                 Sign out
               </button>
             </div>
@@ -96,8 +99,8 @@ const UserProfile = () => {
           </div>
         </div>
         <div className="bottom__container">
-          <MyTrips />
-          <MyLogs />
+          <MyTrips mode="plan" />
+          <MyLogs mode="plan" />
         </div>
       </UserProfileContainer>
       <Footer />
@@ -207,7 +210,8 @@ const UserProfileContainer = styled.div`
       margin: var(--spacing-3);
       background-color: var(--light-gray-2);
       border-radius: 3px;
-      box-shadow: 0px 0px 1px rgba(9, 30, 66, 0.31), 0px 8px 12px rgba(9, 30, 66, 0.15);
+      box-shadow: 0px 0px 1px rgba(9, 30, 66, 0.31),
+        0px 8px 12px rgba(9, 30, 66, 0.15);
 
       > div {
         display: inline-flex;

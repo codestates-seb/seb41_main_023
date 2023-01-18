@@ -1,60 +1,64 @@
-import moment from 'moment';
-import axios from 'axios';
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import moment from "moment";
+import axios from "axios";
+import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { getCookie } from '../../Util/Cookies';
-import { getData } from '../../Util/api';
+import { Mode } from "../../Util/constants";
+import { getCookie } from "../../Util/Cookies";
 
 const MyTrips = ({ mode }) => {
   const navigate = useNavigate();
-  const token = getCookie('accessToken');
+  const token = getCookie("accessToken");
 
   //초기값 배열 설정하기
   const [tripList, setTripList] = useState([]);
 
-  // 전체 일정 조회 async
-  // const getTrip = async () => {
-  //   await getData(`/plans`).then((res) => setTripList(res.data));
-  // };
-
-  const getTrip = () => {
+  useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/plans`, {
         headers: {
           Authorization: token,
         },
       })
-      .then((res) => setTripList(res.data.data));
-  };
-
-  useEffect(() => {
-    getTrip();
+      .then((res) => {
+        if (mode === Mode.Write) {
+          setTripList(
+            res.data.data.filter((trip) => trip.boardCheck === false)
+          );
+        } else {
+          setTripList(res.data.data);
+        }
+      });
   }, []);
 
-  const handleNavigate = (el) => {
-    if (mode === 'plan') {
-      navigate(`/itinerary/${el.planId}`);
-    } else if (mode === 'board') {
-      navigate(`/board/plan/${el.planId}`);
-    }
+  const handleNavigate = (trip) => {
+    navigate(
+      mode === Mode.Plan
+        ? `/itinerary/${trip.planId}`
+        : `/board/plan/${trip.planId}`
+    );
   };
 
   return (
     <MyTripsContainer>
       <h2>My Trips</h2>
       <div className="contents">
-        {tripList.map((el) => (
-          <div className="my-trips__card" key={el.planId} onClick={() => handleNavigate(el)}>
-            <img alt="place_image" src={el.image} />
-            <div className="meta_title">{el.planTitle}</div>
+        {tripList.map((trip) => (
+          <div
+            className="my-trips__card"
+            key={trip.planId}
+            onClick={() => handleNavigate(trip)}
+          >
+            <img alt="place_image" src={trip.city.cityImage} />
+            <div className="meta_title">{trip.planTitle}</div>
             <div className="meta_content">
               <div>
-                {moment(el.startDate).format('M월 D일')} - {moment(el.endDate).format('M월 D일')}
+                {moment(trip.startDate).format("M월 D일")} -{" "}
+                {moment(trip.endDate).format("M월 D일")}
               </div>
               <div>
-                {el.plans} places · {el.cityName}
+                {trip.plans} places · {trip.cityName}
               </div>
             </div>
           </div>

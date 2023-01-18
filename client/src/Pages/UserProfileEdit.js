@@ -1,23 +1,23 @@
-import styled from 'styled-components';
-import axios from 'axios';
-import { useState, useRef, useCallback, useEffect } from 'react';
+import styled from "styled-components";
+import axios from "axios";
+import { useState, useRef, useCallback, useEffect } from "react";
 
-import Header from '../Components/Header';
-import { General, Password, DeleteAccount } from '../Components/user/Tab';
+import Header from "../Components/Header";
+import { General, Password, DeleteAccount } from "../Components/user/Tab";
 
-import { getCookie } from '../Util/Cookies';
+import { getCookie } from "../Util/Cookies";
 
-import { getData, patchData, postData } from '../Util/api';
-import Footer from './Footer';
+// import { getData, patchData, postData } from '../Util/api';
+import Footer from "./Footer";
 
 const UserProfileEdit = () => {
-  const memberId = getCookie('memberId');
-  const token = getCookie('accessToken');
+  const memberId = getCookie("memberId");
+  const token = getCookie("accessToken");
   const [currentTab, clickTab] = useState(0);
   const [modal, setModal] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [submitInfo, setSubmitInfo] = useState({
-    id: '',
+    id: "",
   });
   const nameRef = useRef([]);
 
@@ -66,7 +66,7 @@ const UserProfileEdit = () => {
         displayName: submitInfo.id,
       };
 
-      if (window.confirm('수정사항을 저장하시겠습니까?')) {
+      if (window.confirm("수정사항을 저장하시겠습니까?")) {
         axios
           .patch(
             `${process.env.REACT_APP_API_URL}/members/displayName/${memberId}`,
@@ -75,7 +75,7 @@ const UserProfileEdit = () => {
           )
           .then((res) => {
             setUserInfo({ ...userInfo, displayName: res.data.displayName });
-            nameRef.current.value = '';
+            nameRef.current.value = "";
           });
       }
     }
@@ -83,12 +83,16 @@ const UserProfileEdit = () => {
 
   const menuArr = [
     {
-      name: 'General',
+      name: "General",
       content: (
-        <General handleChange={handleChange} handleSubmit={handleSubmit} nameRef={nameRef} />
+        <General
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          nameRef={nameRef}
+        />
       ),
     },
-    { name: 'Password', content: <Password /> },
+    { name: "Password", content: <Password /> },
   ];
 
   const selectMenuHandler = (index) => {
@@ -103,16 +107,16 @@ const UserProfileEdit = () => {
       if (!e.target.files) {
         return;
       }
-      if (window.confirm('프로필을 변경하시겠습니까?')) {
+      if (window.confirm("프로필을 변경하시겠습니까?")) {
         const formData = new FormData();
         //formData.append : FormData 객체안에 이미 키가 존재하면 그 키에 새로운 값을 추가하고, 키가 없으면 추가
-        formData.append('multipartFile', e.target.files[0]);
+        formData.append("multipartFile", e.target.files[0]);
         await axios({
-          method: 'POST',
+          method: "POST",
           url: `${process.env.REACT_APP_API_URL}/members/${memberId}/profile`,
           headers: {
             Authorization: token,
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
           data: formData,
         }).then((res) => {
@@ -132,13 +136,17 @@ const UserProfileEdit = () => {
     return (
       <SettingUserThumbnailContainer>
         <input
-          type='file'
-          accept='image/*'
-          name='thumbnail'
+          type="file"
+          accept="image/*"
+          name="thumbnail"
           ref={inputRef}
           onChange={onUploadImage}
         />
-        <button className='upload_Image' label='Edit image' onClick={onUploadImageButtonClick}>
+        <button
+          className="upload_Image"
+          label="Edit image"
+          onClick={onUploadImageButtonClick}
+        >
           Edit image
         </button>
       </SettingUserThumbnailContainer>
@@ -150,13 +158,17 @@ const UserProfileEdit = () => {
       <Header login={true} />
       <Main>
         <TopContainer>
-          <div className='user_meta_left'>
-            <img className='profile_image' alt='profile_image' src={userInfo.profileImage} />
+          <div className="user_meta_left">
+            <img
+              className="profile_image"
+              alt="profile_image"
+              src={userInfo.profileImage}
+            />
             <SettingUserThumbnail />
           </div>
-          <div className='user_meta_right'>
-            <div className='display_name'>{userInfo.displayName}</div>
-            <div className='email'>{userInfo.email}</div>
+          <div className="user_meta_right">
+            <div className="display_name">{userInfo.displayName}</div>
+            <div className="email">{userInfo.email}</div>
           </div>
         </TopContainer>
         <MainContainer>
@@ -164,7 +176,7 @@ const UserProfileEdit = () => {
             {menuArr.map((el, index) => (
               <li
                 key={el.name}
-                className={index === currentTab ? 'submenu focused' : 'submenu'}
+                className={index === currentTab ? "submenu focused" : "submenu"}
                 onClick={() => {
                   selectMenuHandler(index);
                 }}
@@ -177,7 +189,7 @@ const UserProfileEdit = () => {
               <DeleteAccount modal={modal} setModal={setModal} />
             </li>
           </SideBarMenu>
-          <div className='main__content'>{menuArr[currentTab].content}</div>
+          <div className="main__content">{menuArr[currentTab].content}</div>
         </MainContainer>
       </Main>
       <Footer />
