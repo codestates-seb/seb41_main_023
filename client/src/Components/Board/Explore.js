@@ -1,84 +1,83 @@
-import axios from "axios";
 import styled from "styled-components";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getCookie } from "../../Util/Cookies";
 import moment from "moment";
 
-import { Mode } from "../../Util/constants";
-import { getCookie } from "../../Util/Cookies";
-
-const MyLogs = ({ mode }) => {
-  const navigate = useNavigate();
-  const [logList, setLogList] = useState([]);
-
+const Explore = () => {
+  const [exploreList, setExploreList] = useState([]);
   const token = getCookie("accessToken");
-  const memberId = getCookie("memberId");
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/board/user/${memberId}`, {
+      .get(`${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=boardId`, {
         headers: {
           Authorization: token,
         },
       })
-      .then((res) => setLogList(res.data));
+      .then((res) => {
+        setExploreList(res.data.data);
+      });
   }, []);
 
-  const handleNavigate = (log) => {
-    navigate(
-      mode === Mode.Plan
-        ? `/board/${log.boardId}`
-        : `/board/edit/${log.boardId}`
-    );
+  const handleNavigate = (explore) => {
+    navigate(`/board/${explore.boardId}`);
   };
 
   return (
-    <MyLogsContainer className="my-logs">
-      <h2>My Logs</h2>
+    <ExploreContainer>
+      <h2>Explore</h2>
       <div className="contents">
-        {logList.map((log) => (
-          <div
-            className="my-logs__card"
-            key={log.boardId}
-            onClick={() => handleNavigate(log)}
-          >
-            <img
-              className="meta__travel-image"
-              alt="place_image"
-              src={log.cityImage}
-            />
-            <div className="meta_title">{log.title}</div>
-            <div className="meta_content">
-              {moment(log.travelPeriod.split("-")[0]).format("M월 D일")} -{" "}
-              {moment(log.travelPeriod.split("-")[1]).format("M월 D일")}
-            </div>
-            <div className="meta_profile">
+        {exploreList &&
+          exploreList.map((explore) => (
+            <div
+              className="my-logs__card"
+              key={explore.boardId}
+              onClick={() => handleNavigate(explore)}
+            >
               <img
-                className="profile__image"
-                alt="profile_image"
-                src={log.profileImage}
+                className="meta__travel-image"
+                alt="place_image"
+                src={explore.cityImage}
               />
-              <span>{log.displayName} </span>
+              <div className="meta_title">{explore.title}</div>
+              <div className="meta_content">
+                {moment(explore.travelPeriod.split("-")[0]).format("M월 D일")} -{" "}
+                {moment(explore.travelPeriod.split("-")[1]).format("M월 D일")}
+              </div>
+              <div className="meta_profile">
+                <img
+                  className="profile__image"
+                  alt="profile_image"
+                  src={explore.profileImage}
+                />
+                <span>{explore.displayName} </span>
+              </div>
+              <div
+                className={
+                  explore.checkLikes ? "meta_likes likes" : "meta_likes"
+                }
+              >
+                <svg viewBox="0 0 16 16">
+                  <path
+                    //fill-rule="evenodd"
+                    fill="currentColor"
+                    d="M7.29583817,13.7871612 C7.68473613,14.1808512 8.31605486,14.1828078 8.70304958,13.7885531 C8.70304958,13.7885531 10.9002368,11.6291175 13,9.00215315 C15,6.50000023 15.5000002,3.49999998 13,2.00000001 C10.5031852,0.501911222 8.00000022,3.00000005 8.00000022,3.00000005 C8.00000022,3.00000005 5.49772957,0.501362336 3.00000005,2.00000001 C0.500000019,3.49999999 0.999999993,6.50000023 2.99999999,9.00215315 C5.09401769,11.6219294 7.29583817,13.7871612 7.29583817,13.7871612 Z"
+                  ></path>
+                </svg>
+              </div>
             </div>
-            <div className={log.checkLikes ? "meta_likes likes" : "meta_likes"}>
-              <svg viewBox="0 0 16 16">
-                <path
-                  fillRule="evenodd"
-                  fill="currentColor"
-                  d="M7.29583817,13.7871612 C7.68473613,14.1808512 8.31605486,14.1828078 8.70304958,13.7885531 C8.70304958,13.7885531 10.9002368,11.6291175 13,9.00215315 C15,6.50000023 15.5000002,3.49999998 13,2.00000001 C10.5031852,0.501911222 8.00000022,3.00000005 8.00000022,3.00000005 C8.00000022,3.00000005 5.49772957,0.501362336 3.00000005,2.00000001 C0.500000019,3.49999999 0.999999993,6.50000023 2.99999999,9.00215315 C5.09401769,11.6219294 7.29583817,13.7871612 7.29583817,13.7871612 Z"
-                ></path>
-              </svg>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
-    </MyLogsContainer>
+    </ExploreContainer>
   );
 };
 
-export default MyLogs;
+export default Explore;
 
-const MyLogsContainer = styled.div`
+const ExploreContainer = styled.div`
   position: relative;
   margin-bottom: 50px;
 

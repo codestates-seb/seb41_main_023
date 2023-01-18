@@ -1,139 +1,178 @@
-import styled from "styled-components";
-import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import axios from "axios";
-import {getCookie} from "../../Util/Cookies";
-import moment from "moment";
-import Calendar from "../Calendar";
+import styled from 'styled-components';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+import { getCookie } from '../../Util/Cookies';
+import moment from 'moment';
+import Calendar from '../Calendar';
 
-const TopNavBar = styled.nav`
-  border-bottom: 1px solid #e9ecef;
-  position: fixed;
-  display: flex;
-  width: 50%;
-  height: 200px;
-  left: 0;
-  right: 0;
-  top: 0;
-  padding: 0;
-  z-index: 50;
-  flex-flow: column nowrap;
-  background-image: url(${props => props.cityImage});
+const TopContainer = styled.div`
+  position: relative;
+  width: 50vw;
+  height: 350px;
+  background-color: var(--primary-blue-light-1);
+  background-image: url(${(props) => props.cityImage});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  cursor: default;
 
+  .top__gradient-bg {
+    position: absolute;
+    top: 0;
+    width: 50vw;
+    height: 350px;
+    background: rgb(15, 15, 15);
+    background: -moz-linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+    background: -webkit-linear-gradient(
+      0deg,
+      rgba(15, 15, 15, 0.5) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background: linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0f0f0f",endColorstr="#ffffff",GradientType=1);
+    z-index: 1;
+  }
 `;
 
-const LogoButtonContainer = styled.div`
+const Header = styled.div`
+  position: fixed;
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: space-between;
-`;
-
-const Logo = styled.div`
-  display: flex;
-  cursor: pointer;
-
-  img {
-    margin-right: 15px;
-    border-radius: 50%;
-  }
-`;
-
-const SaveButton = styled.button`
-  display: flex;
   align-items: center;
-  margin: 0 20px;
-  padding: 5px 10px;
-  border-radius: 2rem;
-  background-color: #4F4F4F;
-  color: white;
+  margin: 0 50px;
+  height: 60px;
+  width: calc(50vw - 100px);
+  z-index: 100;
+
+  > * {
+    cursor: pointer;
+  }
 `;
 
-const TripTitleContainer = styled.div`
-  height: calc(200px - 80px);
-  width: auto;
+const TripInfo = styled.div`
+  position: absolute;
+  bottom: 50px;
+  margin: 0 50px;
+  z-index: 100;
 
-  h1 {
-    margin-top: 70px;
+  h2 {
+    margin-bottom: var(--spacing-2);
+    font-size: var(--xx-large-heading-font-size);
+    line-height: var(--xx-large-heading-line-height);
+    font-weight: 600;
+    color: var(--white);
   }
 
-  p {
-    margin-top: 20px;
+  .trip__info-date {
+    display: inline-flex;
+    gap: var(--spacing-3);
+    align-items: center;
+
+    .button__date {
+      background: transparent;
+    }
+
+    .button__change-date {
+      padding: var(--spacing-2);
+      background-color: transparent;
+      border: 1px solid var(--light-gray-4);
+      color: var(--white);
+      border-radius: 3px;
+
+      &:hover {
+        background-color: var(--white);
+        color: var(--dark-gray-2);
+        border-color: var(--light-gray-4);
+      }
+    }
+
+    span {
+      font-size: var(--large-text-size);
+      line-height: var(--large-text-line-height);
+      color: var(--light-gray-3);
+    }
+  }
+
+  .calendar__container {
+    min-width: 700px;
+    width: calc(50vw - 100px);
+
+    .rdrMonthsHorizontal {
+      gap: var(--spacing-3);
+    }
   }
 `;
 
 const TopNavigation = (props) => {
-    const {startDate, setStartDate, endDate,setEndDate, mainData, setMainData} = props;
-    const {itineraryId} = useParams();
-    const navigate = useNavigate();
-    const token = getCookie('accessToken');
-    const cityImage = getCookie('cityImage');
-    const [showCalendar, setShowCalendar] = useState(false);
+  const { startDate, setStartDate, endDate, setEndDate, mainData, setMainData, handleRefresh } =
+    props;
+  const { itineraryId } = useParams();
+  const navigate = useNavigate();
+  const token = getCookie('accessToken');
+  const cityImage = getCookie('cityImage');
+  const [showCalendar, setShowCalendar] = useState(false);
 
-    const handleDate = (date) => {
-        setStartDate(moment(date[0].startDate).format("YYYY-MM-DD"));
-        setEndDate(moment(date[0].endDate).format("YYYY-MM-DD"));
-    };
+  const handleDate = (date) => {
+    setStartDate(moment(date[0].startDate).format('YYYY-MM-DD'));
+    setEndDate(moment(date[0].endDate).format('YYYY-MM-DD'));
+  };
 
-    const handleCalendar = () => {
-        setShowCalendar(prevState => !prevState);
-    }
+  const handleCalendar = () => {
+    setShowCalendar((prevState) => !prevState);
+  };
 
-    const changeDateHandler = () => {
-        if(window.confirm('정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!'))
-        axios.patch(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
-            {
-                startDate,
-                endDate
+  const changeDateHandler = () => {
+    if (window.confirm('정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!'))
+      axios
+        .patch(
+          `${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
+          {
+            startDate,
+            endDate,
+          },
+          {
+            headers: {
+              Authorization: token,
+              withCredentials: true,
             },
-            {
-                headers: {
-                    Authorization: token,
-                    withCredentials: true,
-                }
-            }
+          }
         )
-            .then((res) => {
-                setMainData({
-                    ...mainData,
-                    startDate: startDate,
-                    endDate: endDate
-                });
-                window.location.reload();
-            })
-    }
+        .then((res) => {
+          setMainData({
+            ...mainData,
+            startDate: startDate,
+            endDate: endDate,
+          });
+          handleRefresh();
+        })
+        .then((res) => handleCalendar());
+  };
 
-    return (
-        <TopNavBar cityImage={cityImage}>
-            <LogoButtonContainer>
-                <Logo>
-                    <img
-                        alt="logo_image"
-                        src="https://picsum.photos/40"
-                        onClick={() => navigate("/")}
-                    />
-                </Logo>
-                <SaveButton>Save Trip</SaveButton>
-            </LogoButtonContainer>
-            <TripTitleContainer>
-                <h1>{mainData.planTitle}</h1>
-                <button
-                    onClick={handleCalendar}
-                >{moment(mainData.startDate).format('M월 D일')} ~ {moment(mainData.endDate).format('M월 D일')}</button>
-                {showCalendar ? (<Calendar
-                    handleDate={handleDate}
-                />) : null}
-                <button
-                    onClick={changeDateHandler}
-                    disabled={showCalendar === false}
-                >날짜 변경
-                </button>
-            </TripTitleContainer>
-        </TopNavBar>
-    )
+  return (
+    <TopContainer cityImage={cityImage}>
+      <div className='top__gradient-bg'></div>
+      <Header>
+        <div className='header__logo' onClick={() => navigate('/')}>
+          website name
+        </div>
+        <button className='button--primary'>Save Trip</button>
+      </Header>
+      <TripInfo>
+        <h2>{mainData.planTitle}</h2>
+        <div className='trip__info-date'>
+          <button className='button__date' onClick={handleCalendar}>
+            <span>{moment(mainData.startDate).format('M월 D일')} -</span>
+            <span> {moment(mainData.endDate).format('M월 D일')}</span>
+          </button>
+          <button className='button__change-date' onClick={changeDateHandler} disabled={showCalendar === false}>
+            날짜 변경
+          </button>
+        </div>
+        {showCalendar ? <Calendar handleDate={handleDate} /> : null}
+      </TripInfo>
+    </TopContainer>
+  );
 };
 
 export default TopNavigation;

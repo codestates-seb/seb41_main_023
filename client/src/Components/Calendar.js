@@ -139,17 +139,6 @@ const CalendarContainer = styled.div`
   .rdrDateDisplayWrapper {
     display: none;
   }
-  /* display: flex;
-  flex-direction: row;
-
-  position: absolute;
-  top: 55%;
-  left: 15%;
-
-  &.login {
-    position: absolute;
-    top: 110%;
-  } */
 `;
 
 const Calendar = ({ handleDate, login, calenderRef }) => {
@@ -168,7 +157,7 @@ const Calendar = ({ handleDate, login, calenderRef }) => {
   }, [date[0].startDate, date[0].endDate]);
 
   return (
-    <CalendarContainer ref={calenderRef} className={login ? 'login' : null}>
+    <CalendarContainer ref={calenderRef} className={`calendar__container ${login ? 'login' : null}`}>
       <div className="calendar">
         <DateRange
           editableDateInputs={true}
@@ -177,8 +166,6 @@ const Calendar = ({ handleDate, login, calenderRef }) => {
           ranges={date}
           months={2}
           direction="horizontal"
-          minDate={addDays(date[0].startDate, -30)}
-          maxDate={addDays(date[0].startDate, 30)}
           dateDisplayFormat={'LLLL yyyy'} // 날짜 포맷값
         />
       </div>

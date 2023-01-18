@@ -7,7 +7,8 @@ import { General, Password, DeleteAccount } from "../Components/user/Tab";
 
 import { getCookie } from "../Util/Cookies";
 
-import { getData, patchData, postData } from "../Util/api";
+// import { getData, patchData, postData } from '../Util/api';
+import Footer from "./Footer";
 
 const UserProfileEdit = () => {
   const memberId = getCookie("memberId");
@@ -146,17 +147,17 @@ const UserProfileEdit = () => {
           label="Edit image"
           onClick={onUploadImageButtonClick}
         >
-          edit image
+          Edit image
         </button>
       </SettingUserThumbnailContainer>
     );
   };
 
   return (
-    <UserProfileEditContainer>
+    <Container>
       <Header login={true} />
-      <UserMetaContainer>
-        <div className="user_meta">
+      <Main>
+        <TopContainer>
           <div className="user_meta_left">
             <img
               className="profile_image"
@@ -167,111 +168,152 @@ const UserProfileEdit = () => {
           </div>
           <div className="user_meta_right">
             <div className="display_name">{userInfo.displayName}</div>
-            <div>{userInfo.email}</div>
+            <div className="email">{userInfo.email}</div>
           </div>
-        </div>
-      </UserMetaContainer>
-      <SideBar>
-        <TabMenu>
-          {menuArr.map((el, index) => (
-            <li
-              key={el.name}
-              className={index === currentTab ? "submenu focused" : "submenu"}
-              onClick={() => {
-                selectMenuHandler(index);
-              }}
-            >
-              {el.name}
+        </TopContainer>
+        <MainContainer>
+          <SideBarMenu>
+            {menuArr.map((el, index) => (
+              <li
+                key={el.name}
+                className={index === currentTab ? "submenu focused" : "submenu"}
+                onClick={() => {
+                  selectMenuHandler(index);
+                }}
+              >
+                {el.name}
+              </li>
+            ))}
+            <li onClick={() => setModal(true)}>Delete account</li>
+            <li>
+              <DeleteAccount modal={modal} setModal={setModal} />
             </li>
-          ))}
-          <li onClick={() => setModal(true)}>Delete account</li>
-          <li>
-            <DeleteAccount modal={modal} setModal={setModal} />
-          </li>
-        </TabMenu>
-        <div>{menuArr[currentTab].content}</div>
-      </SideBar>
-    </UserProfileEditContainer>
+          </SideBarMenu>
+          <div className="main__content">{menuArr[currentTab].content}</div>
+        </MainContainer>
+      </Main>
+      <Footer />
+    </Container>
   );
 };
 
 export default UserProfileEdit;
 
-//style
-const UserProfileEditContainer = styled.div``;
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
 
-const UserMetaContainer = styled.div`
-  margin: 70px 100px 50px;
-  .user_meta {
-    display: flex;
-    flex-direction: row;
+  & .header__container {
+    top: 0;
+  }
+`;
 
-    .user_meta_left {
-      position: relative;
-      display: flex;
-      flex-direction: column;
+const Main = styled.div`
+  position: relative;
+  margin: 0 auto;
+  margin-top: 160px;
+  max-width: 900px;
+  cursor: default;
+`;
 
-      margin-right: 20px;
+const TopContainer = styled.div`
+  position: relative;
+  display: flex;
+  gap: var(--spacing-4);
+  align-items: center;
 
-      > img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        :hover {
-          transition: 0.5s ease;
-          filter: brightness(70%);
-        }
-      }
+  .user_meta_left {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: var(--primary-blue-bright);
+
+    > img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+    }
+  }
+
+  .user_meta_right {
+    .display_name {
+      margin-bottom: var(--spacing-1);
+      font-size: var(--default-heading-font-size);
+      line-height: var(--default-heading-line-height);
+      color: var(--dark-gray-1);
     }
 
-    .user_meta_right {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-
-      .display_name {
-        font-size: 19px;
-        font-weight: 600;
-        margin-bottom: 5px;
-      }
+    .email {
+      color: var(--light);
     }
   }
 `;
 
-const SideBar = styled.div`
+const MainContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  margin: 40px 100px;
+  gap: 100px;
+  margin: 50px 0;
+
+  > .main__content {
+    width: 100%;
+    min-height: 250px;
+  }
 `;
 
-const TabMenu = styled.div`
+const SideBarMenu = styled.ul`
+  display: flex;
+  gap: var(--spacing-3);
+  flex-direction: column;
+  min-width: 110px;
+
   > li {
+    color: var(--light);
     list-style: none;
-    margin: 15px 20px 15px 0;
     cursor: pointer;
+
+    &:hover {
+      color: var(--dark-gray-2);
+    }
+
+    &.focused {
+      color: var(--primary-blue-bright);
+      font-weight: 600;
+    }
   }
 `;
 
 const SettingUserThumbnailContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.25);
+    transition: background-color 0.1s ease-in;
+  }
+
   > input {
     display: none;
   }
 
   > button {
-    border: none;
-    background: transparent;
-    color: white;
-
     position: absolute;
+    bottom: var(--spacing-3);
+    background-color: transparent;
+    color: var(--white);
+    outline: 0;
+    border: 0;
     opacity: 0;
-    top: 78%;
-    left: 27%;
 
-    cursor: pointer;
-
-    ${UserMetaContainer} > div :hover & {
+    ${Main} > div :hover & {
       opacity: 1;
-      transition: 0.5s ease;
+      transition: opacity 0.1s ease-in;
     }
   }
 `;

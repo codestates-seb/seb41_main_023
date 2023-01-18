@@ -5,7 +5,6 @@ const DeleteExpense = ({
   handleDeleteExpense,
   setDeleteExpenseModal,
 }) => {
-  console.log(expenseId);
   return (
     <Modal
       title="지출 내역을 삭제하시겠습니까?"
