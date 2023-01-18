@@ -139,17 +139,6 @@ const CalendarContainer = styled.div`
   .rdrDateDisplayWrapper {
     display: none;
   }
-  /* display: flex;
-  flex-direction: row;
-
-  position: absolute;
-  top: 55%;
-  left: 15%;
-
-  &.login {
-    position: absolute;
-    top: 110%;
-  } */
 `;
 
 const Calendar = ({ handleDate, login, calenderRef }) => {
