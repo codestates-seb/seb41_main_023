@@ -41,22 +41,20 @@ const LoginPage = () => {
     const searchRefreshToken = getRefreshToken("refreshToken");
     const searchMemberId = getMemberId("memberId");
 
-    setCookie("memberId", searchMemberId);
-
-    if(searchAccessToken && searchRefreshToken) {
-    setCookie("accessToken", searchAccessToken);
-    localStorage.setItem("refreshToken", searchRefreshToken);
+    if (searchAccessToken && searchRefreshToken) {
+      setCookie("accessToken", searchAccessToken);
+      setCookie("memberId", searchMemberId);
+      localStorage.setItem("refreshToken", searchRefreshToken);
     }
-
     //console.log(`search : ${location.search}`);
     //console.log(`access : ${searchAccessToken}, refresh : ${searchRefreshToken}`);
     //console.log(`memberId : ${searchMemberId}`);
 
-    if(getCookie("accessToken")) {
+    if (getCookie("accessToken")) {
       console.log(getCookie("accessToken"));
-      window.location.replace("/")
+      window.location.replace("/");
     }
-  }, [])
+  }, []);
   
   useEffect(() => {
     eref.current.focus();
