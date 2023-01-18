@@ -20,7 +20,6 @@ const PlanSection = (props) => {
         mainData,
         handleGeoCode,
         handleZoom,
-        refresh,
         handleRefresh
     } = props;
 
@@ -31,7 +30,7 @@ const PlanSection = (props) => {
 
     const singlePlanData = mainData.planDatesAndPlace;
 
-    const budgetId = mainData.budgetId;
+    const budgetId = mainData.budget?.budgetId;
 
     const [budget, setBudget] = useState({});
     const [expenses, setExpenses] = useState([]);
@@ -86,7 +85,6 @@ const PlanSection = (props) => {
                     setSearchBox={setSearchBox}
                     singlePlanData={singlePlanData}
                     handleGeoCode={handleGeoCode}
-                    refresh={refresh}
                     handleRefresh={handleRefresh}
                 />
             </InputContainer>
@@ -116,7 +114,6 @@ const PlanSection = (props) => {
                                     handleGeoCode={handleGeoCode}
                                     handleZoom={handleZoom}
                                     expenses={expenses}
-                                    refresh={refresh}
                                     handleRefresh={handleRefresh}
                                 />
                             </SectionComponent>
@@ -129,15 +126,14 @@ const PlanSection = (props) => {
                         addExpenseModal={addExpenseModal}
                         setAddExpenseModal={setAddExpenseModal}
                         handleAddExpense={handleAddExpense}
-                        refresh={refresh}
                         handleRefresh={handleRefresh}
                     />
                 </PlanContainer>
             </PlanWrapper>
             <BudgetContainer>
-                {mainData.budgetId && (
+                {mainData.budget && (
                     <Budget
-                        budgetId={mainData.budgetId}
+                        budgetId={budgetId}
                         addExpenseModal={addExpenseModal}
                         setAddExpenseModal={setAddExpenseModal}
                         handleAddExpense={handleAddExpense}
@@ -145,7 +141,6 @@ const PlanSection = (props) => {
                         setBudget={setBudget}
                         expenses={expenses}
                         setExpenses={setExpenses}
-                        refresh={refresh}
                         handleRefresh={handleRefresh}
                     />
                 )}

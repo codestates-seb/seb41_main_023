@@ -6,6 +6,7 @@ import moment from "moment";
 import 'moment/locale/ko';
 
 const AddExpense = (props) => {
+
     const {
         currentPlaceId,
         planDate,
@@ -13,7 +14,7 @@ const AddExpense = (props) => {
         addExpenseModal,
         setAddExpenseModal,
         handleAddExpense,
-        handleRefresh
+        handleRefresh,
     } = props;
     const [inputs, setInputs] = useState({price: "", item: ""});
 

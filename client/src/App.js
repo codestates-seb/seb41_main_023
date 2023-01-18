@@ -13,6 +13,7 @@ import UserProfileEdit from "./Pages/UserProfileEdit";
 import WriteBoard from "./Pages/WriteBoard";
 import WriteSingleBoard from "./Pages/WriteSingleBoard";
 import SingleBoard from "./Pages/SingleBoard";
+import LoadingPage from "./Pages/LoadingPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,6 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={isLoggedIn ? <Main /> : <Home />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/loading" element={<LoadingPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/user/:memberId" element={<UserProfile />} />
         <Route path="/user/:memberId/edit" element={<UserProfileEdit />} />

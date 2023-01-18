@@ -1,108 +1,110 @@
 import axios from 'axios';
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import Header from '../Components/Header';
 import MyTrips from '../Components/user/MyTrips';
 import MyLogs from '../Components/user/MyLogs';
 
 // import { getData } from "../Util/api";
-import { postData } from '../Util/api';
-import { getCookie, removeCookie } from '../Util/Cookies';
+import {postData} from '../Util/api';
+import {getCookie, removeCookie} from '../Util/Cookies';
 import Footer from './Footer';
 
 const UserProfile = () => {
-  const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState({});
+    const navigate = useNavigate();
+    const [userInfo, setUserInfo] = useState({});
 
-  const token = getCookie("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
-  const memberId = getCookie("memberId");
+    const token = getCookie("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const memberId = getCookie("memberId");
 
-  // 유저 정보 조회
-  // const getUserInfo = async () => {
-  //   const data = await getData(`/members/userProfile/${memberId}`);
-  //   setUserInfo(data);
-  // };
+    // 유저 정보 조회
+    // const getUserInfo = async () => {
+    //   const data = await getData(`/members/userProfile/${memberId}`);
+    //   setUserInfo(data);
+    // };
 
-  const getUserInfo = () => {
-    axios
-      .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((res) => setUserInfo(res.data));
-  };
+    const getUserInfo = () => {
+        axios
+            .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {
+                headers: {
+                    Authorization: token,
+                },
+            })
+            .then((res) => setUserInfo(res.data));
+    };
 
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+    useEffect(() => {
+        if (token) {
+            getUserInfo();
+        }
+    }, []);
 
-  // 로그아웃 요청
-  const handleSignout = async () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      await postData('/members/logout', {
-        accessToken: token,
-        refreshToken: refreshToken,
-      }).then((res) => {
-        removeCookie("accessToken");
-        removeCookie("memberId");
-        localStorage.removeItem("refreshToken");
-        window.location.replace("/");
-      });
-    }
-  };
+    // 로그아웃 요청
+    const handleSignout = async () => {
+        if (window.confirm('로그아웃 하시겠습니까?')) {
+            await postData('/members/logout', {
+                accessToken: token,
+                refreshToken: refreshToken,
+            }).then((res) => {
+                removeCookie("accessToken");
+                removeCookie("memberId");
+                localStorage.removeItem("refreshToken");
+                window.location.replace("/");
+            });
+        }
+    };
 
-  return (
-    <Container>
-      <Header login={true} />
-      <UserProfileContainer>
-        <div className="top__container">
-          <div className="user-profile__info">
-            <div className="user_meta">
-              <div className="user_meta_left">
-                <img src={userInfo.profileImage} alt="profile_image" />
-              </div>
-              <div className="user_meta_right">
-                <div className="display_name">{userInfo.displayName}</div>
-                <div className="email">{userInfo.email}</div>
-              </div>
-            </div>
-            <div className="user_edit">
-              <button
-                className="button--default button--subtle"
-                onClick={() => navigate('/user/:memberId/edit')}
-              >
-                Edit profile
-              </button>
-              <button className="button--default button--subtle" onClick={handleSignout}>
-                Sign out
-              </button>
-            </div>
-          </div>
-          <div className="map">
-            <div className="meta_map">
-              <div>
-                <span>{userInfo.cities}</span>
-                cities
-              </div>
-              <div>
-                <span>{userInfo.trips}</span>
-                trips
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="bottom__container">
-          <MyTrips />
-          <MyLogs />
-        </div>
-      </UserProfileContainer>
-      <Footer />
-    </Container>
-  );
+    return (
+        <Container>
+            <Header login={true}/>
+            <UserProfileContainer>
+                <div className="top__container">
+                    <div className="user-profile__info">
+                        <div className="user_meta">
+                            <div className="user_meta_left">
+                                <img src={userInfo.profileImage} alt="profile_image"/>
+                            </div>
+                            <div className="user_meta_right">
+                                <div className="display_name">{userInfo.displayName}</div>
+                                <div className="email">{userInfo.email}</div>
+                            </div>
+                        </div>
+                        <div className="user_edit">
+                            <button
+                                className="button--default button--subtle"
+                                onClick={() => navigate('/user/:memberId/edit')}
+                            >
+                                Edit profile
+                            </button>
+                            <button className="button--default button--subtle" onClick={handleSignout}>
+                                Sign out
+                            </button>
+                        </div>
+                    </div>
+                    <div className="map">
+                        <div className="meta_map">
+                            <div>
+                                <span>{userInfo.cities}</span>
+                                cities
+                            </div>
+                            <div>
+                                <span>{userInfo.trips}</span>
+                                trips
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="bottom__container">
+                    <MyTrips/>
+                    <MyLogs/>
+                </div>
+            </UserProfileContainer>
+            <Footer/>
+        </Container>
+    );
 };
 
 export default UserProfile;

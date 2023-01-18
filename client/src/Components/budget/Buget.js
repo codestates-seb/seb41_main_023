@@ -9,9 +9,15 @@ import AddExpense from "./AddExpense";
 import EditExpense from "./EditExpense";
 import DeleteExpense from "./DeleteExpense";
 
-const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExpenses, refresh, handleRefresh}) => {
+const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExpenses}) => {
+    console.log('budget');
     const token = getCookie("accessToken");
     const [currentExpenseId, setCurrentExpenseId] = useState();
+    const [budgetRefresh, setBudgetRefresh] = useState(1);
+
+    const handleBudgetRefresh = () => {
+        setBudgetRefresh(prevState => prevState * -1);
+    }
 
     /* Modal */
 
@@ -38,10 +44,9 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
             .then((res) => {
                 setBudget(res.data);
                 setExpenses(res?.data?.expenses || []);
-                handleRefresh();
             })
             .catch((err) => console.log("error"));
-    }, [refresh, budgetId, handleRefresh, token, setBudget, setExpenses]);
+    }, [budgetRefresh]);
 
     // 예산 수정 요청
     const handleEditBudget = (inputBudget) => {
@@ -90,7 +95,7 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
             )
             .then((res) => {
                 setEditExpenseModal(false);
-                handleRefresh();
+                handleBudgetRefresh();
             })
             .catch((err) => console.log("error"));
     };
@@ -105,7 +110,7 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
                 },
             })
             .then((res) => {
-                handleRefresh();
+                handleBudgetRefresh();
                 setDeleteExpenseModal(false);
             })
             .catch((err) => console.log("error"));
@@ -145,13 +150,13 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
                 <div>지출 장소</div>
                 <div>메모</div>
                 <div>지출 비용</div>
-                <AddExpenseBtn
-                    onClick={() => {
-                        setAddExpenseModal(!addExpenseModal);
-                    }}
-                >
-                    Add Expense
-                </AddExpenseBtn>
+                {/*<AddExpenseBtn*/}
+                {/*    onClick={() => {*/}
+                {/*        setAddExpenseModal(!addExpenseModal);*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    Add Expense*/}
+                {/*</AddExpenseBtn>*/}
             </MiddleArea>
             {expenses.map((el) => {
                 return (

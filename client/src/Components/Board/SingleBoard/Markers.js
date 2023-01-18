@@ -3,9 +3,10 @@ import {MarkerF} from "@react-google-maps/api";
 import InfoWindow from "../../itinerary/InfoWindow";
 
 export const Markers = (props) => {
-    const {data, handleGeoCode, handleZoom} = props;
+    const {data, handleGeoCode, handleZoom, isOpen, setIsOpen} = props;
 
     const [isMarkerActive, setIsMarkerActive] = useState(null);
+
     const handleInfoWindow = (marker) => {
         if (marker === isMarkerActive) {
             return;
@@ -38,6 +39,7 @@ export const Markers = (props) => {
                             handleInfoWindow(place.placeId);
                             handleGeoCode(place.latitude, place.longitude);
                             handleZoom();
+                            setIsOpen(prevState => !prevState);
                         }}
                         label={(idx + 1).toString()}
                         options={{
@@ -46,7 +48,7 @@ export const Markers = (props) => {
                             }
                         }}
                     />
-                    {isMarkerActive === place.placeId ? (
+                    {isOpen && isMarkerActive === place.placeId ? (
                         <InfoWindow
                             key={place.placeId}
                             singleData={place}
