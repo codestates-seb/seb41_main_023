@@ -1,0 +1,86 @@
+package com.newyear.mainproject.security.oauth;
+
+import com.newyear.mainproject.exception.BusinessLogicException;
+import com.newyear.mainproject.exception.ErrorResponse;
+import com.newyear.mainproject.exception.ExceptionCode;
+import com.newyear.mainproject.member.entity.Member;
+import com.newyear.mainproject.member.repository.MemberRepository;
+import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.*;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+@Slf4j
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+    private final MemberRepository memberRepository;
+    private final CustomAuthorityUtils authorityUtils;
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2UserService<OAuth2UserRequest, OAuth2User> service = new DefaultOAuth2UserService();
+        OAuth2User oauth2User = service.loadUser(userRequest);
+
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+
+        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oauth2User.getAttributes());
+
+        if (memberRepository.findByEmail(attributes.getEmail()).isEmpty()) {
+            log.info("=============== 소셜 회원 신규 가입 ================");
+            saveMember(attributes.getEmail(), attributes.getName(), attributes.getPicture(), registrationId.toUpperCase());
+        }
+
+        Member member = memberRepository.findByEmail(attributes.getEmail()).get();
+        String password = member.getPassword();
+        //해당 이메일이 다른 소셜로 가입되어 있을 경우 예외 발생
+        if (!password.equals(registrationId.toUpperCase())) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+        }
+        //일반 가입으로되어 있을 경우 예외 발생
+        else if (!password.equals("KAKAO") && !password.equals("NAVER") && !password.equals("GITHUB") && !password.equals("GOOGLE")) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+        }
+
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")),
+                attributes.getAttributes(),
+                attributes.getNameAttributeKey());
+    }
+
+
+    private void saveMember(String email, String name, String profileImage, String profileKey) {
+        List<String> roles = authorityUtils.createRoles(email);
+        Member member = new Member();
+        member.setEmail(email);
+        member.setDisplayName(name);
+        member.setPassword(profileKey);
+        member.setProfileKey(profileKey);
+        member.setProfileImage(profileImage);
+        member.setRoles(roles);
+        memberRepository.save(member);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
+
+        final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
+    }
+
+}
