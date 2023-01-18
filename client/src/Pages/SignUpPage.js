@@ -306,11 +306,18 @@ const LeftContainer = styled.div`
     .input__message {
       padding-top: var(--spacing-2);
       color: var(--light);
+      margin-bottom: var(--spacing-3);
+      margin-top: 0 !important;
+      font-weight: normal !important;
     }
 
     .signup__sub-message {
       text-align: center;
       color: var(--light);
+    }
+
+    > .button--primary {
+      margin-top: 0;
     }
   }
 `;
