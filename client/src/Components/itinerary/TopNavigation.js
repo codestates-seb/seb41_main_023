@@ -93,6 +93,15 @@ const TripInfo = styled.div`
       color: var(--light-gray-3);
     }
   }
+
+  .calendar__container {
+    min-width: 700px;
+    width: calc(50vw - 100px);
+
+    .rdrMonthsHorizontal {
+      gap: var(--spacing-3);
+    }
+  }
 `;
 
 const TopNavigation = (props) => {
@@ -156,11 +165,11 @@ const TopNavigation = (props) => {
             <span>{moment(mainData.startDate).format('M월 D일')} -</span>
             <span> {moment(mainData.endDate).format('M월 D일')}</span>
           </button>
-          {showCalendar ? <Calendar handleDate={handleDate} /> : null}
           <button className='button__change-date' onClick={changeDateHandler} disabled={showCalendar === false}>
             날짜 변경
           </button>
         </div>
+        {showCalendar ? <Calendar handleDate={handleDate} /> : null}
       </TripInfo>
     </TopContainer>
   );
