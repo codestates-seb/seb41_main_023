@@ -109,6 +109,13 @@ input::placeholder {
   border-radius: 3px; 
 }
 
+.input--default-icon {
+  padding: 10px 14px; 
+  padding-left: 36px; 
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px; 
+}
+
 .svg-icon--20 {
   display: flex;
   justify-items: center;
@@ -217,4 +224,8 @@ a:hover {
 
 .button--danger:active {
   background-color: var(--red-dark-2);
+}
+
+#mapping {
+  position: fixed !important;
 }
