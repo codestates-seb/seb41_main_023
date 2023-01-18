@@ -34,7 +34,6 @@ const ContentWrapper = styled.div`
   width: 50vw;
   height: calc(100vh - 300px);
   padding: 40px 30px;
-  overflow: scroll;
 `;
 
 const ContentTitle = styled.h1`

@@ -45,7 +45,7 @@ const SingleBoard = () => {
                 })
             })
             .catch((err) => console.log(err))
-    }, [boardId]);
+    }, [boardId, refresh]);
 
     const handleGeoCode = (lat, lng) => {
         setGeocode({lat, lng});
@@ -66,6 +66,7 @@ const SingleBoard = () => {
                         handleGeoCode={handleGeoCode}
                     />
                     <CommentSection
+                        boardData={boardData}
                     />
                 </BoardWrapper>
             ) : null}
@@ -78,6 +79,7 @@ export default SingleBoard;
 const BoardWrapper = styled.div`
   width: 100vw;
   height: 100vh;
+  overflow: scroll;
 `;
 
 
