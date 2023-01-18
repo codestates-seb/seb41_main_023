@@ -36,12 +36,13 @@ const TopContainer = styled.div`
 `;
 
 const Header = styled.div`
-  position: relative;
+  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0 50px;
   height: 60px;
+  width: calc(50vw - 100px);
   z-index: 100;
 
   > * {
