@@ -37,6 +37,7 @@ public enum ExceptionCode {
     PLACE_NOT_PATCHED(403, "Place not patched"),
     PLACE_NOT_FOUND(404, "Place Not Found"),
     PLACE_CHECK_EXISTS(409, "Place Check exists"),
+    PLACE_EXPENSE_EXISTS(409, "Place Expense exists"),
 
     //plan
     PLAN_NOT_PATCHED(403, "Plan not patched"),

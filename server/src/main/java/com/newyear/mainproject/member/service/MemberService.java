@@ -124,6 +124,10 @@ public class MemberService {
 
     public void deleteMember(long memberId) {
         Member member = findVerifiedMember(memberId);
+        if(!member.getEmail().equals(getLoginMember().getEmail())){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_LOGIN);
+        }
+
         member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
         memberRepository.save(member);
 

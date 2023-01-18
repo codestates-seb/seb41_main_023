@@ -28,9 +28,9 @@ public class ExpenseService {
     public Expenses createExpense(Expenses expenses, long budgetId, Long placeId) {
         //장소 연결
         if(placeId != null) {
-            if(expenseRepository.findAll().size() != 0){
+            if(expenseRepository.findAllByPlacePlaceId(placeId).size() != 0){
                 if(expenseRepository.findAll().stream().anyMatch(expenses1 -> expenses1.getPlace().getPlaceId().equals(placeId))){
-                    throw new BusinessLogicException(ExceptionCode.PLACE_CHECK_EXISTS);
+                    throw new BusinessLogicException(ExceptionCode.PLACE_EXPENSE_EXISTS);
                 }
             }
 

@@ -1,6 +1,9 @@
 package com.newyear.mainproject.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.newyear.mainproject.exception.ErrorResponse;
+import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.dto.LoginDto;
@@ -10,6 +13,7 @@ import com.newyear.mainproject.security.logout.RefreshToken;
 import com.newyear.mainproject.security.logout.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,7 +54,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
         //UsernamePasswordAuthenticationToken을 AuthenticationManager에게 전달하면서 인증 처리
-        return authenticationManager.authenticate(authenticationToken);
+        //구글로그인하면 비밀번호가 null 이라 IllegalArgumentException 가 뜨면 sendErrorResponse 로 예외처리
+        try{
+            return authenticationManager.authenticate(authenticationToken);
+        }
+        catch (IllegalArgumentException e){
+            sendErrorResponse(response);
+        }
+        return null;
     }
 
     //클라이언트의 인증 정보를 이용해 인증에 성공할 경우 호출
@@ -123,5 +134,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         refreshTokenRepository.save(token);
 
         return refreshToken;
+    }
+
+    private void sendErrorResponse(HttpServletResponse response) throws IOException {
+        ExceptionCode exceptionCode = ExceptionCode.UNAUTHORIZED;
+
+        Gson gson = new Gson();
+        ErrorResponse errorResponse = ErrorResponse.of(exceptionCode);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(exceptionCode.getStatus());
+        response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
     }
 }
