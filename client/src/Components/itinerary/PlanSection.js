@@ -104,9 +104,7 @@ const PlanSection = (props) => {
               {singlePlanData !== null
                 ? singlePlanData.map((singleData) => (
                     <SectionComponent key={singleData.planDateId}>
-                      <SectionHeader>
-                        <p>{moment(singleData.planDate).format('M월 D일(ddd)')}</p>
-                      </SectionHeader>
+                      <h3 className='plan__heading'>{moment(singleData.planDate).format('M월 D일, ddd요일')}</h3>
                       <SinglePlanBox
                         planDate={singleData.planDate}
                         singleData={singleData}
@@ -182,19 +180,16 @@ const Container = styled.div`
 `;
 
 const ItineraryContainer = styled.div`
-  margin-bottom: var(--spacing-4);
+  margin-bottom: var(--spacing-5);
 
   .itinerary__content {
     display: flex;
     gap: var(--spacing-4);
-    height: 1000px;
   }
 
   .itinerary__side-bar {
     float: left;
     min-width: 60px;
-    height: 600px;
-    /* background-color: orange; */
   }
 
   .itinerary__main {
@@ -214,23 +209,19 @@ const InputContainer = styled.div`
   }
 `;
 
-const PlanContainer = styled.div`
-  /* width: calc(50vw - 50px);
-  margin: 40px 30px; */
-`;
+const PlanContainer = styled.div``;
 
 const SectionComponent = styled.div`
-  /* box-sizing: border-box;
-  border-bottom: 1px solid lightgray; */
-`;
+  padding: var(--spacing-3) 0;
+  border-bottom: 1px solid var(--light-gray-4);
 
-const SectionHeader = styled.div`
-  /* margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: -48px;
-  padding-left: 48px;
-  position: relative;
-  align-items: center;
-  display: flex;
-  width: 100%; */
+  > .plan__heading {
+    margin-bottom: var(--spacing-4);
+  }
+
+  .single-plan__box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
 `;
