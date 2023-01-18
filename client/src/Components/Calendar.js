@@ -168,7 +168,7 @@ const Calendar = ({ handleDate, login, calenderRef }) => {
   }, [date[0].startDate, date[0].endDate]);
 
   return (
-    <CalendarContainer ref={calenderRef} className={login ? 'login' : null}>
+    <CalendarContainer ref={calenderRef} className={`calendar__container ${login ? 'login' : null}`}>
       <div className="calendar">
         <DateRange
           editableDateInputs={true}
