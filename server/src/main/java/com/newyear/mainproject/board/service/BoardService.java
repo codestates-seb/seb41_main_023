@@ -131,6 +131,10 @@ public class BoardService {
         return boardRepository.findByMember(member);
     }
 
+    public List<Board> findPlanBoards(Long planId) {
+        Plan findPlan = planService.findPlan(planId);
+        return boardRepository.findAllByPlan(findPlan);
+    }
 
     private Board findExistsBoard(long boardId) {
         return boardRepository.findById(boardId)
