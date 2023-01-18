@@ -29,8 +29,6 @@ const SingleBoard = () => {
     const [geocode, setGeocode] = useState({
         lat: 37.555969,
         lng: 126.972336,
-        // lat: boardData.days[0].placeDetails[0].latitude,
-        // lng: boardData.days[0].placeDetails[0].longitude,
     });
     const handleRefresh = () => {
         setRefresh(prevState => prevState * -1);
@@ -39,8 +37,12 @@ const SingleBoard = () => {
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/board/${boardId}`)
             .then((res) => {
-                // console.log(res.data);
                 setBoardData(res.data);
+                const startCode = res.data.days[0].placeDetails[0]
+                setGeocode({
+                    lat: startCode.latitude,
+                    lng: startCode.longitude
+                })
             })
             .catch((err) => console.log(err))
     }, [boardId]);

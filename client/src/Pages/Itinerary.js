@@ -10,6 +10,7 @@ import {getCookie} from "../Util/Cookies";
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
 const Itinerary = () => {
+    console.log('1');
     const [libraries] = useState(["places"]);
     const {itineraryId} = useParams();
 
@@ -27,10 +28,9 @@ const Itinerary = () => {
         planTitle: '',
         startDate: startDate,
         endDate: endDate,
-        budgetId: '',
+        budget: null,
         planDates: [],
         planDatesAndPlace: [],
-
     });
     const [refresh, setRefresh] = useState(1);
 
@@ -49,15 +49,7 @@ const Itinerary = () => {
             }
         )
             .then((res) => {
-                setMainData({
-                    cityName: res.data.data.cityName,
-                    planTitle: res.data.data.planTitle,
-                    startDate: res.data.data.startDate,
-                    endDate: res.data.data.endDate,
-                    budgetId: res.data.data.budget.budgetId,
-                    planDates: res.data.data.planDates,
-                    planDatesAndPlace: res.data.data.planDatesAndPlace
-                });
+                setMainData(res.data.data);
             })
     }, [itineraryId, refresh]);
 
@@ -78,7 +70,6 @@ const Itinerary = () => {
                 setEndDate={setEndDate}
                 mainData={mainData}
                 setMainData={setMainData}
-                refresh={refresh}
                 handleRefresh={handleRefresh}
             />
             <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
@@ -103,7 +94,6 @@ const Itinerary = () => {
                     mainData={mainData}
                     handleGeoCode={handleGeoCode}
                     handleZoom={handleZoom}
-                    refresh={refresh}
                     handleRefresh={handleRefresh}
                 />
             </LoadScript>

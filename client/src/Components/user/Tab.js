@@ -127,7 +127,7 @@ const Password = () => {
 const DeleteAccount = ({ modal, setModal }) => {
   const memberId = getCookie('memberId');
   const token = getCookie('accessToken');
-  const refreshToken = localStorage.getItem('refresh-token');
+  const refreshToken = localStorage.getItem('refreshToken');
   const navigate = useNavigate();
 
   const handleDeleteAccount = () => {
@@ -146,7 +146,7 @@ const DeleteAccount = ({ modal, setModal }) => {
         removeCookie('memberId');
       })
       .then((res) => {
-        localStorage.removeItem('refresh-token');
+        localStorage.removeItem('refreshToken');
         alert('그동안 이용해주셔서 감사합니다.');
       })
       .then((res) => {

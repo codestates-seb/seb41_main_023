@@ -10,10 +10,13 @@ const SingleItinerary = (props) => {
                 data.map((place) => (
                     <SinglePlanContainer
                         key={place.index}
-                        onClick={() => handleGeoCode(
-                            place.latitude,
-                            place.longitude
-                        )}
+                        onClick={() => {
+                            handleGeoCode(
+                                place.latitude,
+                                place.longitude
+                            );
+                        }
+                    }
                     >
                         <div className={'single_index'}>{place.index}</div>
                         <SingleInfoContainer>
