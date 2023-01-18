@@ -36,6 +36,9 @@ public class Plan {
     @Column(nullable = false)
     private String endDate; // 여행 끝 일자
 
+    @Column(nullable = false)
+    private Boolean boardCheck; //게시물 작성 여부
+
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
