@@ -159,7 +159,7 @@ const TopNavigation = (props) => {
         <button className='button--primary'>Save Trip</button>
       </Header>
       <TripInfo>
-        <h2>{mainData.planTitle}Trip to Daegu</h2>
+        <h2>{mainData.planTitle}</h2>
         <div className='trip__info-date'>
           <button className='button__date' onClick={handleCalendar}>
             <span>{moment(mainData.startDate).format('M월 D일')} -</span>
