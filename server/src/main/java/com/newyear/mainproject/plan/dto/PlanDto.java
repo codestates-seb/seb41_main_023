@@ -53,6 +53,8 @@ public class PlanDto {
         private List<PlanDto.PlanDatesSimpleResponse> planDates;
         private BudgetDto.SimpleResponse budget;
         private CityDto.ImageResponse city;
+        private Boolean boardCheck;
+
     }
 
     @Getter
