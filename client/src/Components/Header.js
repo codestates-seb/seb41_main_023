@@ -11,7 +11,7 @@ const Header = ({ login }) => {
 
   const token = getCookie("accessToken");
   const memberId = getCookie("memberId");
-  const refreshToken = localStorage.getItem("refresh-token");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const [userInfo, setUserInfo] = useState({});
 
@@ -50,7 +50,7 @@ const Header = ({ login }) => {
       }).then((res) => {
         removeCookie("accessToken");
         removeCookie("memberId");
-        localStorage.removeItem("refresh-token");
+        localStorage.removeItem("refreshToken");
         window.location.replace("/");
       });
     }
@@ -64,7 +64,7 @@ const Header = ({ login }) => {
         </div>
         <button
           className="button--default button--subtle"
-          onClick={() => handleNavigate("/blog")}
+          onClick={() => handleNavigate("/board")}
         >
           Travel Logs
         </button>
@@ -115,6 +115,8 @@ const HeadContainer = styled.div`
   width: calc(100vw - 100px);
   height: 60px;
   z-index: 9999;
+  top: 0;
+  left: 0;
 `;
 
 const LeftSection = styled.div`

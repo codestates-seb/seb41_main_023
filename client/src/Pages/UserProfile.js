@@ -16,9 +16,9 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
 
-  const token = getCookie('accessToken');
-  const refreshToken = localStorage.getItem('refresh-token');
-  const memberId = getCookie('memberId');
+  const token = getCookie("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+  const memberId = getCookie("memberId");
 
   // 유저 정보 조회
   // const getUserInfo = async () => {
@@ -47,10 +47,10 @@ const UserProfile = () => {
         accessToken: token,
         refreshToken: refreshToken,
       }).then((res) => {
-        removeCookie('accessToken');
-        removeCookie('memberId');
-        localStorage.removeItem('refresh-token');
-        window.location.replace('/');
+        removeCookie("accessToken");
+        removeCookie("memberId");
+        localStorage.removeItem("refreshToken");
+        window.location.replace("/");
       });
     }
   };
