@@ -37,6 +37,20 @@ public class BoardService {
         if (!plan.getMember().equals(member)) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
+
+        //만약 해당 일정에 게시판이 작성되어 있다면 예외
+        boardRepository.findAll().forEach(oneBoard -> {
+            if (oneBoard.getPlan().getPlanId() == planId) {
+                throw new BusinessLogicException(ExceptionCode.BOARD_EXISTS);
+            }
+        });
+
+
+        //이 일정에 대한 게시물 등록하면 true 값으로 수정
+        plan.setBoardCheck(true);
+        planService.updatePlan(plan);
+
+
         board.setMember(member);
         board.setPlan(plan);
         return boardRepository.save(board);
@@ -61,6 +75,13 @@ public class BoardService {
         if (!findBoard.getMember().getEmail().equals(memberService.getLoginMember().getEmail())) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
+
+        Plan plan = planService.findPlan(findBoard.getPlan().getPlanId());
+
+        //이 일정에 대한 게시물 삭제하면 false 값으로 수정
+        plan.setBoardCheck(false);
+        planService.updatePlan(plan);
+
         boardRepository.delete(findBoard);
     }
 
