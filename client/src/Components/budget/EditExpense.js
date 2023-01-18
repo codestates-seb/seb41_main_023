@@ -100,12 +100,12 @@ const EditExpense = (props) => {
               >
                 Edit expense
               </button>
-              <div
-                className='button--default button-subtle'
+              <button
+                className='button--default button--subtle'
                 onClick={() => setEditExpenseModal(false)}
               >
                 Cancel
-              </div>
+              </button>
             </div>
           </ModalWrapper>
         </ModalContainer>
