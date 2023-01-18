@@ -5,34 +5,35 @@ import 'moment/locale/ko';
 const LeftSideBar = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50px;
-  background-color: white;
-  border-right: 1px solid #e9ecef;
-  height: auto;
-  overflow: scroll;
-  position: absolute;
+  align-items: center;
+  gap: var(--spacing-2);
 
-  ::-webkit-scrollbar {
-    display: none;
+  > h5 {
+    font-size: var(--small-heading-font-size);
+    line-height: var(--small-heading-line-height);
+    color: var(--primary-blue-bright);
+    font-weight: 500;
+    cursor: default;
   }
 `;
 
 const DateBox = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-style: none;
-
-  button {
+  > button {
+    padding: var(--spacing-2) 0;
     width: 100%;
-    height: 50px;
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
-    border-bottom: 1px solid #e9ecef;
-    background-color: white;
-    cursor: pointer;
+    font-size: var(--large-text-size);
+    line-height: var(--large-text-line-height);
+    border-radius: 3px;
+    background-color: transparent;
+
+    &:hover {
+      color: var(--primary-blue-dark);
+      /* font-weight: 600; */
+    }
+
+    &:active {
+      background-color: var(--light-gray-2);
+    }
   }
 `;
 
@@ -41,9 +42,10 @@ const SideDateBar = (props) => {
 
   return (
     <LeftSideBar>
+      <h5>Dates</h5>
       {singlePlanData.map((date) => (
         <DateBox key={date.planDateId}>
-          <button>{moment(date.planDate).format('M/D(ddd)')}</button>
+          <button>{moment(date.planDate).format('M.D')}</button>
         </DateBox>
       ))}
     </LeftSideBar>
