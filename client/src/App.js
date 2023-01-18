@@ -12,6 +12,7 @@ import UserProfile from "./Pages/UserProfile";
 import UserProfileEdit from "./Pages/UserProfileEdit";
 import WriteBoard from "./Pages/WriteBoard";
 import WriteSingleBoard from "./Pages/WriteSingleBoard";
+import SingleBoard from "./Pages/SingleBoard";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,7 +37,7 @@ function App() {
         {/*  /!*게시글 작성 시작을 위한 여행선택 페이지*!/*/}
         <Route path="/board/plan" element={<WriteBoard/>}/>
         {/*  /!*특정 게시글 조회한 페이지*!/*/}
-        {/*<Route path="/board/:boardId" element={<SingleBoard/>}/>*/}
+        <Route path="/board/:boardId" element={<SingleBoard/>}/>
         {/*  /!*게시글 수정 페이지*!/*/}
         {/*<Route path="/board//edit/:boardId" element={<EditSingleBoard/>}/>*/}
         {/*  /!*게시글 작성 페이지*!/*/}

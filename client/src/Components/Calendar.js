@@ -177,8 +177,6 @@ const Calendar = ({ handleDate, login, calenderRef }) => {
           ranges={date}
           months={2}
           direction="horizontal"
-          minDate={addDays(date[0].startDate, -30)}
-          maxDate={addDays(date[0].startDate, 30)}
           dateDisplayFormat={'LLLL yyyy'} // 날짜 포맷값
         />
       </div>

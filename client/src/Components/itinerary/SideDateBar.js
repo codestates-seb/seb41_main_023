@@ -1,8 +1,4 @@
 import styled from "styled-components";
-import {useEffect, useState} from "react";
-import axios from "axios";
-import {useParams} from "react-router-dom";
-import {getCookie} from "../../Util/Cookies";
 import moment from "moment";
 import 'moment/locale/ko';
 
@@ -12,11 +8,9 @@ const LeftSideBar = styled.div`
   width: 50px;
   background-color: white;
   border-right: 1px solid #e9ecef;
-  height: calc(100% - 200px);
-  position: fixed;
-  z-index: 50;
-  margin-top: 221px;
+  height: auto;
   overflow: scroll;
+  position: absolute;
 
   ::-webkit-scrollbar {
     display: none;
@@ -25,7 +19,6 @@ const LeftSideBar = styled.div`
 
 const DateBox = styled.div`
   width: 100%;
-  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,27 +36,12 @@ const DateBox = styled.div`
   }
 `;
 
-const SideDateBar = () => {
-    const {itineraryId} = useParams();
-    const [dates, setDates] = useState([]);
-
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
-            {
-                headers: {
-                    Authorization: getCookie('accessToken'),
-                    withCredentials: true,
-                }
-            }
-        )
-            .then((res) => {
-                setDates(res.data.data.planDates);
-            })
-    }, [itineraryId])
+const SideDateBar = (props) => {
+    const {singlePlanData} = props;
 
     return (
         <LeftSideBar>
-            {dates.map((date) => (
+            {singlePlanData.map((date) => (
                 <DateBox key={date.planDateId}>
                     <button>{moment(date.planDate).format('M/D(ddd)')}</button>
                 </DateBox>

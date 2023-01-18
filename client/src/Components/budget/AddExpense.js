@@ -2,13 +2,19 @@ import styled from "styled-components";
 import {useState} from "react";
 
 import Category from "./Category";
-import DateSelectBox from "./DateSelectBox";
-import PlaceSelectBox from "./PlaceSelectBox";
 import moment from "moment";
 import 'moment/locale/ko';
 
 const AddExpense = (props) => {
-    const {currentPlaceId, planDate, currentPlace, addExpenseModal, setAddExpenseModal, handleAddExpense} = props;
+    const {
+        currentPlaceId,
+        planDate,
+        currentPlace,
+        addExpenseModal,
+        setAddExpenseModal,
+        handleAddExpense,
+        handleRefresh
+    } = props;
     const [inputs, setInputs] = useState({price: "", item: ""});
 
     // 카테고리 모달창 활성화
@@ -25,15 +31,6 @@ const AddExpense = (props) => {
     const handleCategory = (el) => {
         setSelectedCategory(el);
         setCategory(false);
-    };
-
-    const handleDate = (el) => {
-        setSelectedDate(el);
-        setDateCategory(false);
-    };
-    const handlePlace = (el) => {
-        setSelectedPlace(el);
-        setPlaceCategory(false);
     };
 
     // 지출 금액, 지출 항목 변경
@@ -106,6 +103,7 @@ const AddExpense = (props) => {
                                 onClick={() => {
                                     handleAddExpense(inputs.price, selectedCategory, inputs.item, currentPlaceId);
                                     handleClear();
+                                    handleRefresh();
                                 }}
                             >
                                 비용 추가

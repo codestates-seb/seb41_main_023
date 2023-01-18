@@ -2,10 +2,10 @@ import {GoogleMap} from "@react-google-maps/api";
 import MarkerLists from "./MarkerLists";
 
 const mapContainerStyle = {
-    width: "50%",
+    width: "50vw",
     minWidth: "400px",
     position: "absolute",
-    height: "100%",
+    height: "100vh",
     zIndex: "60",
     top: "0",
     bottom: "0",
@@ -14,25 +14,29 @@ const mapContainerStyle = {
 
 const RenderMap = (props) => {
     const {
-        center,
-        mainData
+        mainData,
+        searchedGeocode,
+        handleGeoCode,
+        zoom,
+        handleZoom
     } = props;
 
     const placesInfo = mainData.planDatesAndPlace
-    console.log('info: ', placesInfo)
 
     return (
         <GoogleMap
             id={"mapping"}
             mapContainerStyle={mapContainerStyle}
-            zoom={13}
-            center={center}
+            zoom={zoom}
+            center={searchedGeocode}
         >
             {placesInfo !== null ? (
                 placesInfo.map((place) => (
                     <MarkerLists
                         key={place.planDateId}
                         data={place}
+                        handleGeoCode={handleGeoCode}
+                        handleZoom={handleZoom}
                     />
                 ))) : null}
         </GoogleMap>
