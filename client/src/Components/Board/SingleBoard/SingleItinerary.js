@@ -27,21 +27,6 @@ const SingleItinerary = (props) => {
                         </SingleInfoContainer>
                         <SingleDescriptionContainer>
                             {place.description}
-                            I ate a lot of marinated salmon whatever ...blnah cahsd
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis no
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis no
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis no
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            {/*labore et dolore magna aliqua. Ut enim ad minim veniam, quis no*/}
-                            {/*Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut*/}
-                            {/*labore et dolore magna aliqua. Ut enim ad minim veniam, quis no*/}
-                            {/*Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut*/}
-                            {/*labore et dolore magna aliqua. Ut enim ad minim veniam, quis no*/}
-                            {/*Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut*/}
-                            {/*labore et dolore magna aliqua. Ut enim ad minim veniam, quis no*/}
                         </SingleDescriptionContainer>
                     </SinglePlanContainer>
                 ))

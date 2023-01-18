@@ -1,8 +1,24 @@
 import {Fragment} from "react";
+import styled from "styled-components";
 
-export const CommentSection = (props) => {
-    const {handleRefresh} = props;
+const CommentSection = (props) => {
     return (
-        <Fragment></Fragment>
+        <Fragment>
+            <CommentWrapper>
+                <CommentContainer>
+
+                </CommentContainer>
+            </CommentWrapper>
+        </Fragment>
     )
 };
+
+export default CommentSection;
+
+const CommentWrapper = styled.div`
+  
+`;
+
+const CommentContainer = styled.div`
+
+`;

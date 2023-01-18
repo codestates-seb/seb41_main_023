@@ -3,9 +3,9 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import {MapSection} from "../Components/Board/SingleBoard/MapSection";
-import {CommentSection} from "../Components/Board/SingleBoard/CommentSection";
 import BoardSection from "../Components/Board/SingleBoard/BoardSection";
 import TopSection from "../Components/Board/SingleBoard/TopSection";
+import CommentSection from "../Components/Board/SingleBoard/CommentSection";
 
 const SingleBoard = () => {
     const {boardId} = useParams();
@@ -66,7 +66,6 @@ const SingleBoard = () => {
                         handleGeoCode={handleGeoCode}
                     />
                     <CommentSection
-                        handleRefresh={handleRefresh}
                     />
                 </BoardWrapper>
             ) : null}

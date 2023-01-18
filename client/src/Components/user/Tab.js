@@ -17,7 +17,7 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
       <div className="input_area">
         <label>Username</label>
         <input
-          className="input"
+          className="input"ㄱ
           onChange={handleChange}
           name="id"
           id="username"
