@@ -1,42 +1,26 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { LoadScript, GoogleMap } from "@react-google-maps/api";
 
 import { getCookie } from "../Util/Cookies";
-import {
-  LoadScript,
-  GoogleMap,
-  MarkerF,
-  InfoWindowF,
-} from "@react-google-maps/api";
 
+import SingleBoardMarker from "../Components/Board/SingleBoardMarker";
 import BoardHeader from "../Components/Board/BoardHeader";
 
 const WriteSingleBoard = () => {
+  const navigate = useNavigate();
   const token = getCookie("accessToken");
   const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
   const { planId } = useParams();
-  const [openInfo, setOpenInfo] = useState(true);
-  const [mainData, setMainData] = useState();
-  const [planDatesAndPlace, setPlanDatesAndPlace] = useState();
-  const [content, setContent] = useState();
-  const [placeComment, setPlaceComment] = useState([]);
-  // 선택한 장소 표시
-  const [searchData, setSearchData] = useState({
-    장소: "",
-    주소: "",
-    영업시간: "",
-    별점: "",
-    웹사이트: "",
-    연락처: "",
-  });
+
+  const [mainData, setMainData] = useState({});
+  const [planDatesAndPlace, setPlanDatesAndPlace] = useState([]);
+  const [content, setContent] = useState("");
+  const [placeNotes, setPlaceNotes] = useState([]);
 
   const [libraries] = useState(["places"]);
-
-  const onLoad = (marker) => {
-    // console.log("marker: ", marker);
-  };
 
   const mapContainerStyle = {
     width: "50%",
@@ -54,6 +38,8 @@ const WriteSingleBoard = () => {
     lng: 0,
   });
 
+  const [zoom, setZoom] = useState(13);
+
   //선택한 일정 조회
   useEffect(() => {
     axios
@@ -66,14 +52,6 @@ const WriteSingleBoard = () => {
         setMainData(res.data.data);
         setPlanDatesAndPlace(res.data.data.planDatesAndPlace);
         const startPlace = res.data.data.planDatesAndPlace[0].places[0];
-        setSearchData({
-          장소: startPlace.placeName,
-          주소: startPlace.placeAddress,
-          전화번호: startPlace.phone || null,
-          웹사이트: startPlace.website || null,
-          평점: startPlace.ratings || null,
-          영업시간: startPlace.openingHours || null,
-        });
         setGeocode({
           lat: startPlace.latitude,
           lng: startPlace.longitude,
@@ -81,32 +59,12 @@ const WriteSingleBoard = () => {
       });
   }, []);
 
-  const handleGeoCode = (lat, lng) => {
-    setGeocode({ lat, lng });
-  };
-
-  //infowindow에 나타낼 데이터
-  const InfoData = ({ searchData }) => {
-    return (
-      <>
-        {Object.entries(searchData).map(([key, value]) => (
-          <InfoDataContainer>
-            <div>{key}:</div>
-            <div>{value} </div>
-          </InfoDataContainer>
-        ))}
-      </>
-    );
-  };
-
-  const handleInfoWindow = () => {
-    setOpenInfo(!openInfo);
+  const handleZoom = (el) => {
+    setZoom(el);
   };
 
   //게시물 등록
   const handleCreateLog = async (title, content) => {
-    console.log("전송 데이터:", title, content);
-    //상단 메모
     const data = {
       title,
       content,
@@ -118,32 +76,41 @@ const WriteSingleBoard = () => {
         Authorization: token,
       },
       data: data,
-    }).then((res) => console.log(res));
+    })
+      .then((res) => navigate(`/board/${res.data.boardId}`))
+      .then(() => {
+        axios({
+          method: "PATCH",
+          url: `${process.env.REACT_APP_API_URL}/places/desc`,
+          headers: {
+            Authorization: token,
+          },
+          data: { placeDesc: placeNotes },
+        }).then((res) => console.log(res));
+      });
   };
 
-  //장소별 메모 변경
-  const handleChangeComment = (e) => {
-    // const { name, value } = e.target;
-    // const 변경할객체 = placeComment.filter((el) => el.placeId === name);
-    // // 변경할객체 = { ...placeId, description: value };
-    // console.log("변경할객체", 변경할객체);
-    // setPlaceComment([...placeComment, 변경할객체]);
+  //장소별 note 변경
+  const handleChangeNote = (e) => {
+    let findIndex = placeNotes.findIndex(
+      (comment) => Number(comment.placeId) === Number(e.target.name)
+    );
+
+    if (findIndex === -1) {
+      setPlaceNotes([
+        ...placeNotes,
+        { placeId: Number(e.target.name), description: e.target.value },
+      ]);
+    } else {
+      let changeNotes = [...placeNotes];
+      changeNotes[findIndex].description = e.target.value;
+      setPlaceNotes(changeNotes);
+    }
   };
 
-  // 장소별 comment 등록
-  const handleSubmitComment = async (e) => {
-    // console.log(placeComment);
-    //enter key
-    // if (e.keyCode === 13) {
-    //   await axios({
-    //     method: "PATCH",
-    //     url: `${process.env.REACT_APP_API_URL}/places/desc`,
-    //     headers: {
-    //       Authorization: token,
-    //     },
-    //     placeDesc: placeComment,
-    //   });
-    // }
+  // 위도, 경도 변경
+  const handleGeoCode = (lat, lng) => {
+    setGeocode({ lat, lng });
   };
 
   return (
@@ -159,11 +126,10 @@ const WriteSingleBoard = () => {
       <MemoBox>
         <h3>Travel experience</h3>
         <textarea
-          placeholder="Share your experience!"
+          placeholder="Select a travel experience"
+          defaultValue={content}
           onChange={(e) => setContent(e.target.value)}
-        >
-          {content}
-        </textarea>
+        ></textarea>
       </MemoBox>
       <ItineraryBox>
         <h3>Itinerary</h3>
@@ -175,7 +141,6 @@ const WriteSingleBoard = () => {
                 <div
                   key={place.placeId}
                   onClick={() => {
-                    setSearchData(place);
                     handleGeoCode(place.latitude, place.longitude);
                   }}
                 >
@@ -184,8 +149,7 @@ const WriteSingleBoard = () => {
                   <input
                     name={place.placeId}
                     placeholder="memo"
-                    onChange={handleChangeComment}
-                    onKeyUp={(e) => handleSubmitComment(e)}
+                    onChange={(e) => handleChangeNote(e)}
                   />
                 </div>
               ))}
@@ -195,22 +159,16 @@ const WriteSingleBoard = () => {
       <MapBox>
         <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
           <GoogleMap
-            zoom={15}
+            zoom={zoom}
             center={geocode}
             mapContainerStyle={mapContainerStyle}
           >
-            <MarkerF
-              onLoad={onLoad}
-              position={geocode}
-              scale={5}
-              onClick={handleInfoWindow}
-            >
-              {openInfo ? (
-                <InfoWindowF position={geocode}>
-                  <InfoData searchData={searchData} />
-                </InfoWindowF>
-              ) : null}
-            </MarkerF>
+            {planDatesAndPlace.map((el) => (
+              <div key={el.planDateId}>
+                <div>{el.planDate}</div>
+                <SingleBoardMarker handleZoom={handleZoom} el={el} />
+              </div>
+            ))}
           </GoogleMap>
         </LoadScript>
       </MapBox>
@@ -226,7 +184,3 @@ export default WriteSingleBoard;
 const MemoBox = styled.div``;
 const ItineraryBox = styled.div``;
 const MapBox = styled.div``;
-const InfoDataContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;

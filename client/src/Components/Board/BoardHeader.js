@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { Mode } from "../../Util/constants";
 
 const BoardHeader = ({ mainData, mode, handleCreateLog, content }) => {
   const navigate = useNavigate();
@@ -14,9 +15,11 @@ const BoardHeader = ({ mainData, mode, handleCreateLog, content }) => {
             onClick={() => navigate("/")}
           />
         </Logo>
-        {mode === "write" ? (
+        {mode === Mode.Write ? (
           <SaveButton
-            onClick={() => handleCreateLog(mainData.planTitle, content)}
+            onClick={() => {
+              handleCreateLog(mainData.planTitle, content);
+            }}
           >
             Save travel log
           </SaveButton>
