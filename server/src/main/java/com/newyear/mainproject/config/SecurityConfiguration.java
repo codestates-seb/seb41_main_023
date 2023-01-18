@@ -73,7 +73,7 @@ public class SecurityConfiguration {
                         .authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, authorityUtils, memberRepository, refreshTokenRepository))
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, memberRepository, refreshTokenRepository))
                 );
 
         return http.build();
