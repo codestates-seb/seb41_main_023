@@ -2,8 +2,11 @@ package com.newyear.mainproject.place.service;
 
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
+import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.place.repository.PlaceRepository;
+import com.newyear.mainproject.plan.entity.Plan;
+import com.newyear.mainproject.plan.service.PlanService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,15 +18,24 @@ import java.util.Optional;
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final MemberService memberService;
+    private final PlanService planService;
 
-    public PlaceService(PlaceRepository placeRepository) {
+    public PlaceService(PlaceRepository placeRepository, MemberService memberService, PlanService planService) {
         this.placeRepository = placeRepository;
+        this.memberService = memberService;
+        this.planService = planService;
     }
 
     /**
      * 해당 일정에 대한 장소 정보 등록
      */
     public Place createPlace(Place place) {
+        //plan 작성자만 place 생성 가능
+        Plan plan = planService.findPlan(place.getPlan().getPlanId());
+        if (!plan.getMember().equals(memberService.getLoginMember())) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
         return placeRepository.save(place);
     }
 
@@ -32,6 +44,11 @@ public class PlaceService {
      */
     public Place updatePlace(Place place) {
         Place findPlace = findVerifiedPlace(place.getPlaceId());
+
+        //작성자만 수정 가능
+        if (!findPlace.getPlan().getMember().equals(memberService.getLoginMember())) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
 
         Optional.ofNullable(place.getPlaceName())
                 .ifPresent(placeName -> findPlace.setPlaceName(placeName));
@@ -64,6 +81,11 @@ public class PlaceService {
      */
     public void deletePlace(Long placeId) {
         Place findPlace = findVerifiedPlace(placeId);
+
+        //작성자만 삭제 가능
+        if (!findPlace.getPlan().getMember().equals(memberService.getLoginMember())) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
         placeRepository.delete(findPlace);
     }
 

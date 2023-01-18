@@ -1,6 +1,7 @@
 package com.newyear.mainproject.plan.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.newyear.mainproject.board.entity.Board;
 import com.newyear.mainproject.budget.entity.Budget;
 import com.newyear.mainproject.city.City;
 import com.newyear.mainproject.member.entity.Member;
@@ -53,6 +54,9 @@ public class Plan {
 
     @OneToOne(mappedBy = "plan", cascade = CascadeType.ALL)
     private Budget budget;
+
+    @OneToOne(mappedBy = "plan")
+    private Board board;
 
     @OneToOne
     @JoinColumn(name = "city_id")
