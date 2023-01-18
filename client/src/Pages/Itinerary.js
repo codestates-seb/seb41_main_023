@@ -10,7 +10,6 @@ import {getCookie} from "../Util/Cookies";
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
 const Itinerary = () => {
-    console.log('1');
     const [libraries] = useState(["places"]);
     const {itineraryId} = useParams();
 

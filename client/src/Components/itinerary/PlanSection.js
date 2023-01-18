@@ -24,55 +24,58 @@ const PlanSection = (props) => {
     handleRefresh,
   } = props;
 
-  const [addExpenseModal, setAddExpenseModal] = useState(false);
-  const [currentDate, setCurrentDate] = useState(null);
-  const [currentPlace, setCurrentPlace] = useState(null);
-  const [currentPlaceId, setCurrentPlaceId] = useState(null);
+    const [addExpenseModal, setAddExpenseModal] = useState(false);
+    const [currentDate, setCurrentDate] = useState(null);
+    const [currentPlace, setCurrentPlace] = useState(null);
+    const [currentPlaceId, setCurrentPlaceId] = useState(null);
 
-  const singlePlanData = mainData.planDatesAndPlace;
+    const singlePlanData = mainData.planDatesAndPlace;
 
-  const budgetId = mainData.budgetId;
+    const budgetId = mainData.budget?.budgetId;
 
-  const [budget, setBudget] = useState({});
-  const [expenses, setExpenses] = useState([]);
+    const [budget, setBudget] = useState({});
+    const [expenses, setExpenses] = useState([]);
 
-  // 비용 추가 요청
-  const handleAddExpense = (price, selectedCategory, item, placeId) => {
-    console.log(price, selectedCategory, item, placeId);
-    if (budget.expectedBudget < 1) {
-      return alert('예산을 설정해주세요.');
-    }
-    if (budget.expectedBudget < parseInt(budget.totalExpenses) + parseInt(price)) {
-      return alert('예산을 초과하였습니다.');
-    }
-
-    if (price < 1) {
-      return alert('지출 금액은 1원 이상이어야 합니다.');
-    }
-
-    axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/expenses/budget/${budgetId}/places/${placeId}`,
-        {
-          category: selectedCategory,
-          item: item,
-          price: price,
-        },
-        {
-          headers: {
-            Authorization: getCookie('accessToken'),
-          },
+    // 비용 추가 요청
+    const handleAddExpense = (price, selectedCategory, item, placeId) => {
+        console.log(price, selectedCategory, item, placeId)
+        if (budget.expectedBudget < 1) {
+            return alert("예산을 설정해주세요.");
         }
-      )
-      .then((res) => {
-        setExpenses([...expenses, res.data]); //비용에 추가
-      })
-      .then((res) => {
-        setAddExpenseModal(false);
-        handleRefresh();
-      })
-      .catch((err) => console.log('error'));
-  };
+        if (
+            budget.expectedBudget <
+            parseInt(budget.totalExpenses) + parseInt(price)
+        ) {
+            return alert("예산을 초과하였습니다.");
+        }
+
+        if (price < 1) {
+            return alert("지출 금액은 1원 이상이어야 합니다.");
+        }
+
+        axios
+            .post(
+                `${process.env.REACT_APP_API_URL}/expenses/budget/${budgetId}/places/${placeId}`,
+                {
+                    category: selectedCategory,
+                    item: item,
+                    price: price,
+                },
+                {
+                    headers: {
+                        Authorization: getCookie('accessToken'),
+                    },
+                }
+            )
+            .then((res) => {
+                setExpenses([...expenses, res.data]); //비용에 추가
+            })
+            .then((res) => {
+                setAddExpenseModal(false);
+                handleRefresh();
+            })
+            .catch((err) => console.log(err));
+    };
 
   return (
     <Container>
@@ -128,7 +131,6 @@ const PlanSection = (props) => {
                 addExpenseModal={addExpenseModal}
                 setAddExpenseModal={setAddExpenseModal}
                 handleAddExpense={handleAddExpense}
-                refresh={refresh}
                 handleRefresh={handleRefresh}
               />
             </PlanContainer>
@@ -136,9 +138,9 @@ const PlanSection = (props) => {
         </div>
       </ItineraryContainer>
       <div className='budget__container'>
-        {mainData.budgetId && (
+        {budgetId && (
           <Budget
-            budgetId={mainData.budgetId}
+            budgetId={budgetId}
             addExpenseModal={addExpenseModal}
             setAddExpenseModal={setAddExpenseModal}
             handleAddExpense={handleAddExpense}
