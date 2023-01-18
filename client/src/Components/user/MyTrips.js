@@ -1,15 +1,15 @@
-import moment from "moment";
-import axios from "axios";
-import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import moment from 'moment';
+import axios from 'axios';
+import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { getCookie } from "../../Util/Cookies";
-import { getData } from "../../Util/api";
+import { getCookie } from '../../Util/Cookies';
+import { getData } from '../../Util/api';
 
 const MyTrips = ({ mode }) => {
   const navigate = useNavigate();
-  const token = getCookie("accessToken");
+  const token = getCookie('accessToken');
 
   //초기값 배열 설정하기
   const [tripList, setTripList] = useState([]);
@@ -34,9 +34,9 @@ const MyTrips = ({ mode }) => {
   }, []);
 
   const handleNavigate = (el) => {
-    if (mode === "plan") {
+    if (mode === 'plan') {
       navigate(`/itinerary/${el.planId}`);
-    } else if (mode === "board") {
+    } else if (mode === 'board') {
       navigate(`/board/plan/${el.planId}`);
     }
   };
@@ -46,17 +46,12 @@ const MyTrips = ({ mode }) => {
       <h2>My Trips</h2>
       <div className="contents">
         {tripList.map((el) => (
-          <div
-            className="my-trips__card"
-            key={el.planId}
-            onClick={() => handleNavigate(el)}
-          >
+          <div className="my-trips__card" key={el.planId} onClick={() => handleNavigate(el)}>
             <img alt="place_image" src={el.image} />
             <div className="meta_title">{el.planTitle}</div>
             <div className="meta_content">
               <div>
-                {moment(el.startDate).format("M월 D일")} -{" "}
-                {moment(el.endDate).format("M월 D일")}
+                {moment(el.startDate).format('M월 D일')} - {moment(el.endDate).format('M월 D일')}
               </div>
               <div>
                 {el.plans} places · {el.cityName}
@@ -93,7 +88,8 @@ const MyTripsContainer = styled.div`
 
       img {
         margin-bottom: var(--spacing-3);
-        width: 100%;
+        width: calc((100vw - 228px) / 5);
+        height: calc((100vw - 228px) / 5);
         border-radius: 5px;
       }
 

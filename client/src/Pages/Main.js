@@ -3,13 +3,10 @@ import styled from "styled-components";
 import Home from "../Pages/Home";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
+import Footer from "./Footer";
 
 const MainContainer = styled.div`
   position: relative;
-
-  & .button--default {
-    /* color: var(--white); */
-  }
 `;
 
 const Content = styled.div`
@@ -41,6 +38,7 @@ const Main = () => {
           <h2>Explore</h2>
         </ExploreContainer>
       </Content>
+      <Footer />
     </MainContainer>
   );
 };

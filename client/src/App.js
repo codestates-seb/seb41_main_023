@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import GlobalStyle from "./GlobalStyle";
 
 import { getCookie } from "./Util/Cookies";
 
@@ -25,7 +24,6 @@ function App() {
 
   return (
     <>
-      <GlobalStyle />
       <Routes>
         <Route path="/" element={isLoggedIn ? <Main /> : <Home />} />
         <Route path="/login" element={<LoginPage />} />
