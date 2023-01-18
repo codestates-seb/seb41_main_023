@@ -96,7 +96,7 @@ public class MemberController {
 
         return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
     }
-
+    
     @GetMapping
     public ResponseEntity getMembers(@Positive @RequestParam int page,
                                      @Positive @RequestParam int size){
