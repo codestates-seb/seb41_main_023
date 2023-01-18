@@ -49,7 +49,8 @@ const PlaceInputBox = (props) => {
         const {
             searchBox,
             setSearchBox,
-            singlePlanData
+            singlePlanData,
+            handleGeoCode,
         } = props;
 
         const [selectedDateId, setSelectedDateId] = useState(null);
@@ -62,7 +63,6 @@ const PlaceInputBox = (props) => {
             if (searchBox !== '') {
                 const place = searchBox.getPlaces()[0];
                 const name = place.name;
-                const status = place.business_status;
                 const rating = place.rating;
                 const website = place.website;
                 const formattedAddress = place.formatted_address;
@@ -78,26 +78,6 @@ const PlaceInputBox = (props) => {
                     ;
                 }
 
-                //console log all results
-                console.log(typeof rating);
-                console.log(openingHours)
-                console.log(`Name: ${name}`);
-                console.log(`Ratings: ${rating}/5`);
-                console.log(`Business Status: ${status}`);
-                console.log(`Formatted Address: ${formattedAddress}`);
-                console.log(`website: ${website}`);
-                console.log(`phone: ${phoneNumber}`);
-
-                // setSearchedGeocode({
-                //     lat,
-                //     lng
-                // })
-
-                // setCenter({
-                //     lat,
-                //     lng
-                // })
-
                 axios.post(`${process.env.REACT_APP_API_URL}/places/${selectedDateId}`, {
                     placeName: name,
                     latitude: lat,
@@ -112,10 +92,14 @@ const PlaceInputBox = (props) => {
                         Authorization: getCookie('accessToken'),
                     }
                 })
-                    .then((res) => console.log('추가된 정보: ', res.data))
-                    .then(res => window.location.reload())
+                    .then(res => {
+                        window.location.reload();
+                    })
                     .catch((err) => console.log(err))
+
+                handleGeoCode(lat, lng)
             }
+
 
             if (selectedDateId === null) {
                 alert('먼저 날짜를 선택해주세요!!')

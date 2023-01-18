@@ -22,7 +22,7 @@ const Category = ({ setCategory, handleCategory }) => {
       <ModalWrapper onClick={(e) => e.stopPropagation()}>
         <div className="title_frame">
           <div className="title">Select Category</div>
-          <div className="cancle_button" onClick={() => setCategory(false)}>
+          <div className="cancel_button" onClick={() => setCategory(false)}>
             ❌
           </div>
         </div>
@@ -89,7 +89,7 @@ const ModalWrapper = styled.div`
       line-height: 32px;
       font-weight: 400;
     }
-    > .cancle_button {
+    > .cancel_button {
       width: 13px;
       height: 13px;
       color: #6a737c;

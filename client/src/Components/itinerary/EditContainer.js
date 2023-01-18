@@ -8,24 +8,28 @@ import 'moment/locale/ko';
 import AddExpense from "../budget/AddExpense";
 import axios from "axios";
 import {getCookie} from "../../Util/Cookies";
+import SideDateBar from "./SideDateBar";
 
 const Container = styled.div`
-  position: relative;
+  //position: relative;
   word-wrap: break-word;
   min-width: 0;
   flex-grow: 1;
   max-width: 100%;
-  min-height: calc(100% - 200px);
-  width: calc(100% - 30px);
-  margin-top: 240px;
-  margin-left: 50px;
+  width: auto;
+  margin-top: 200px;
+  //margin-left: 50px;
   overflow-y: scroll;
 `;
 
 const PlanContainer = styled.div`
   margin-left: 50px;
-  width: 90%;
+  width: auto;
   position: relative;
+`;
+
+const BudgetContainer = styled.div`
+  width: auto;
 `;
 
 const Title = styled.h2`
@@ -57,14 +61,15 @@ const SectionHeader = styled.div`
 
 const EditContainer = (props) => {
     const {
-        setCenter,
         searchBox,
         setSearchBox,
-        searchData,
-        setSearchData,
-        setSearchedGeocode,
-        setInfoWindowOpen,
         mainData,
+        handleGeoCode,
+        handleZoom,
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate
     } = props;
 
     const [addExpenseModal, setAddExpenseModal] = useState(false);
@@ -73,6 +78,7 @@ const EditContainer = (props) => {
     const [currentPlaceId, setCurrentPlaceId] = useState(null);
 
     const singlePlanData = mainData.planDatesAndPlace;
+
     const budgetId = mainData.budgetId;
 
     const [budget, setBudget] = useState({});
@@ -117,29 +123,31 @@ const EditContainer = (props) => {
                 }
             )
             .then((res) => {
-                console.log('장소등록: ', res.data)
                 setExpenses([...expenses, res.data]); //비용에 추가
                 handleRefresh();
             })
             .then((res) => {
                 setAddExpenseModal(false);
             })
+            .then(res => window.location.reload())
             .catch((err) => console.log("error"));
     };
 
     return (
         <Container>
+            <SideDateBar
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+            />
             <PlanContainer>
                 <Title>Add a place you want</Title>
                 <PlaceInputBox
                     searchBox={searchBox}
                     setSearchBox={setSearchBox}
-                    searchData={searchData}
-                    setSearchData={setSearchData}
-                    setInfoWindowOpen={setInfoWindowOpen}
-                    setSearchedGeocode={setSearchedGeocode}
-                    setCenter={setCenter}
                     singlePlanData={singlePlanData}
+                    handleGeoCode={handleGeoCode}
                 />
                 <Title>일정</Title>
                 {singlePlanData !== null
@@ -149,13 +157,15 @@ const EditContainer = (props) => {
                                 <p>{moment(singleData.planDate).format("M월 D일(ddd)")}</p>
                             </SectionHeader>
                             <SinglePlanBox
-                                planDateId={singleData.planDateId}
                                 planDate={singleData.planDate}
                                 singleData={singleData}
                                 setAddExpenseModal={setAddExpenseModal}
                                 setCurrentDate={setCurrentDate}
                                 setCurrentPlace={setCurrentPlace}
                                 setCurrentPlaceId={setCurrentPlaceId}
+                                handleGeoCode={handleGeoCode}
+                                handleZoom={handleZoom}
+                                expenses={expenses}
                             />
                         </SectionComponent>
                     ))
@@ -168,6 +178,8 @@ const EditContainer = (props) => {
                     setAddExpenseModal={setAddExpenseModal}
                     handleAddExpense={handleAddExpense}
                 />
+            </PlanContainer>
+            <BudgetContainer>
                 {mainData.budgetId && (
                     <Budget
                         budgetId={mainData.budgetId}
@@ -182,7 +194,7 @@ const EditContainer = (props) => {
                         handleRefresh={handleRefresh}
                     />
                 )}
-            </PlanContainer>
+            </BudgetContainer>
         </Container>
     );
 };

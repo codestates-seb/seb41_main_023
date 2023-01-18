@@ -78,10 +78,7 @@ export const StyledOptionItem = styled.li`
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  //padding: 0.8rem 1rem 0.8rem 1rem;
   margin: 7px 3px;
-  //margin-left: 3px;
-  //transition: 0.3s;
   color: #0f0f0f;
   font-size: 12px;
   
@@ -98,15 +95,13 @@ const dropDownSvg = (
 )
 
 const PlanDropDown = (props) => {
-    const {singlePlanData, setSelectedDateId, selectedDateId} = props;
+    const {singlePlanData, setSelectedDateId} = props;
     const [selected, setSelected] = useState('일정선택')
     const [isShow, setIsShow] = useState(false);
 
     const showMenu = () => {
         setIsShow(prevState => !prevState);
     };
-
-    // console.log('id', selectedDateId);
 
     return (
         <StyledSelectBox>

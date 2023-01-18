@@ -14,25 +14,29 @@ const mapContainerStyle = {
 
 const RenderMap = (props) => {
     const {
-        center,
-        mainData
+        mainData,
+        searchedGeocode,
+        handleGeoCode,
+        zoom,
+        handleZoom
     } = props;
 
     const placesInfo = mainData.planDatesAndPlace
-    console.log('info: ', placesInfo)
 
     return (
         <GoogleMap
             id={"mapping"}
             mapContainerStyle={mapContainerStyle}
-            zoom={13}
-            center={center}
+            zoom={zoom}
+            center={searchedGeocode}
         >
             {placesInfo !== null ? (
                 placesInfo.map((place) => (
                     <MarkerLists
                         key={place.planDateId}
                         data={place}
+                        handleGeoCode={handleGeoCode}
+                        handleZoom={handleZoom}
                     />
                 ))) : null}
         </GoogleMap>

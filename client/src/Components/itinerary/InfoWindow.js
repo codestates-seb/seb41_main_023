@@ -41,7 +41,6 @@ const InfoContainer = styled.div`
 
 const InfoWindow = (props) => {
     const {singleData, setActiveMarker} = props;
-    console.log('단일: ', singleData)
 
     const {placeName, openingHours, phone, placeAddress, ratings, website} = singleData;
 

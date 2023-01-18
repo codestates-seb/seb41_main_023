@@ -36,7 +36,6 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
                 },
             })
             .then((res) => {
-                console.log('expenses: ', res.data)
                 setBudget(res.data);
                 setExpenses(res?.data?.expenses || []);
             })
@@ -136,12 +135,15 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
             </div>
             <hr/>
             <MiddleArea>
-                <div>Expenses</div>
+                <div>지출 일자</div>
                 <AddExpense
                     addExpenseModal={addExpenseModal}
                     setAddExpenseModal={setAddExpenseModal}
                     handleAddExpense={handleAddExpense}
                 />
+                <div>지출 장소</div>
+                <div>메모</div>
+                <div>지출 비용</div>
                 <AddExpenseBtn
                     onClick={() => {
                         setAddExpenseModal(!addExpenseModal);
@@ -153,40 +155,36 @@ const Budget = ({budgetId, handleAddExpense, budget, setBudget, expenses, setExp
             {expenses.map((el) => {
                 return (
                     <BottomArea key={el.expenseId}>
-                        <div className="bottom_left">
-                            <div className="meta_user">
-                                <div className="meta_user_bottom">
-                                    <div>{moment(el.createdAt).format("M월 DD일")}</div>
-                                    <div>{el.placeName}</div>
-                                    <div>•{el.item}</div>
-                                </div>
+                        {/*<div className="bottom_left">*/}
+                        {/*<div className="meta_user">*/}
+                        {/*    <div className="meta_user_bottom">*/}
+                        <div>{moment(el.createdAt).format("M월 DD일")}</div>
+                        <div>{el.placeName}</div>
+                        <div>•{el.item}</div>
+                        <div className="meta_user_expense">
+                            ₩ {el.price.toLocaleString("ko-KR")}
+                        </div>
+                        <div className={'delete_expense'}>
+                            <div
+                                onClick={() => {
+                                    setCurrentExpenseId(el.expenseId);
+                                    setEditExpenseModal(!editExpenseModal);
+                                }}
+                            >
+                                ✏️
+                            </div>
+                            <div
+                                onClick={() => {
+                                    setCurrentExpenseId(el.expenseId);
+                                    setDeleteExpenseModal(!deleteExpenseModal);
+                                }}
+                            >
+                                ❌
                             </div>
                         </div>
-                        <div className="bottom_right">
-                            <div className="meta_user_expense">
-                                ₩ {el.price.toLocaleString("ko-KR")}
-                            </div>
-
-                            <div className="delete_expense">
-                                <div
-                                    onClick={() => {
-                                        setCurrentExpenseId(el.expenseId);
-                                        setEditExpenseModal(!editExpenseModal);
-                                    }}
-                                >
-                                    ✏️
-                                </div>
-
-                                <div
-                                    onClick={() => {
-                                        setCurrentExpenseId(el.expenseId);
-                                        setDeleteExpenseModal(!deleteExpenseModal);
-                                    }}
-                                >
-                                    ❌
-                                </div>
-                            </div>
-                        </div>
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*</div>*/}
                     </BottomArea>
                 );
             })}
@@ -242,13 +240,21 @@ const MiddleArea = styled.div`
 const BottomArea = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
   justify-content: space-between;
+  align-items: center;
 
   margin: 15px 0;
 
   .bottom_left {
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
+
+    .meta_user {
+      width: 300px;
+    }
+
 
     > img {
       border-radius: 50%;
@@ -258,23 +264,25 @@ const BottomArea = styled.div`
     .meta_user_bottom {
       display: flex;
       flex-direction: row;
+      justify-content: space-evenly;
     }
   }
 
-  .bottom_right {
-    display: flex;
 
-    > * {
-      margin-right: 5px;
+  > * {
+    margin-right: 5px;
+  }
+
+  .delete_expense {
+    opacity: 1;
+
+    div {
+      margin-bottom: 5px;
     }
 
-    .delete_expense {
+    :hover {
       opacity: 1;
-
-      :hover {
-        opacity: 1;
-        cursor: pointer;
-      }
+      cursor: pointer;
     }
   }
 `;

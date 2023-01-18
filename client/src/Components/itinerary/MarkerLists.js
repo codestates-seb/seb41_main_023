@@ -6,12 +6,13 @@ import 'moment/locale/ko';
 
 const MarkerLists = (props) => {
     const {
-        data
+        data,
+        handleGeoCode,
+        handleZoom
     } = props;
 
     const [activeMarker, setActiveMarker] = useState(null);
     const handleInfoWindow = (marker) => {
-        console.log('marker:', marker)
         if (marker === activeMarker) {
             return;
         }
@@ -34,15 +35,20 @@ const MarkerLists = (props) => {
     return (
         <Fragment>
             {data !== null ? (
-                data.places.map((singleData) => (
+                data.places.map((singleData,idx) => (
                     <Fragment key={singleData.placeId}>
                         <MarkerF
                             position={{
                                 lat: singleData.latitude,
                                 lng: singleData.longitude
                             }}
-                            onClick={() => handleInfoWindow(singleData.placeId)}
-                            label={`${moment(data.planDate).format('ddd')}`}
+                            onClick={() => {
+                                handleInfoWindow(singleData.placeId);
+                                handleGeoCode(singleData.latitude, singleData.longitude);
+                                handleZoom();
+                            }}
+                            // label={`${moment(data.planDate).format('ddd')}`}
+                            label={(idx+1).toString()}
                             options={{
                                 icon: {
                                     url: markerUrl,

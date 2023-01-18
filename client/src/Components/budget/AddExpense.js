@@ -2,8 +2,6 @@ import styled from "styled-components";
 import {useState} from "react";
 
 import Category from "./Category";
-import DateSelectBox from "./DateSelectBox";
-import PlaceSelectBox from "./PlaceSelectBox";
 import moment from "moment";
 import 'moment/locale/ko';
 

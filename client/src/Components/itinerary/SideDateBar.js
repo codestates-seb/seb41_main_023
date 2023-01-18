@@ -12,10 +12,10 @@ const LeftSideBar = styled.div`
   width: 50px;
   background-color: white;
   border-right: 1px solid #e9ecef;
-  height: calc(100% - 200px);
+  height: 50%;
   position: fixed;
   z-index: 50;
-  margin-top: 221px;
+  //margin-top: 221px;
   overflow: scroll;
 
   ::-webkit-scrollbar {

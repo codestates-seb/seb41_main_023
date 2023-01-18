@@ -1,6 +1,5 @@
-import {Fragment, useEffect, useState} from "react";
+import {Fragment} from "react";
 import SinglePlan from "./SinglePlan";
-import AddExpense from "../budget/AddExpense";
 
 
 const SinglePlanBox = (props) => {
@@ -11,20 +10,27 @@ const SinglePlanBox = (props) => {
         setCurrentPlace,
         setCurrentPlaceId,
         planDate,
+        handleGeoCode,
+        handleZoom,
+        expenses
     } = props;
 
     return (
         <Fragment>
             {singleData &&
-                singleData.places.map((data) => (
+                singleData.places.map((data, idx) => (
                     <SinglePlan
                         key={data.placeId}
+                        idx={idx}
                         data={data}
                         setAddExpenseModal={setAddExpenseModal}
                         setCurrentDate={setCurrentDate}
                         planDate={planDate}
                         setCurrentPlace={setCurrentPlace}
                         setCurrentPlaceId={setCurrentPlaceId}
+                        handleGeoCode={handleGeoCode}
+                        handleZoom={handleZoom}
+                        expenses={expenses}
                     />
                 ))
             }

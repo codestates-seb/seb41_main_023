@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 const PlaceSelectBox = ({ data, setPlaceCategory, handlePlace, planDateId }) => {
   //카테고리 목록
-  // const PlaceList = data.map((el) => el.placeName);
 
     const placeList = data.filter((element) => element.planDateId === planDateId);
     const places = placeList[0].places;

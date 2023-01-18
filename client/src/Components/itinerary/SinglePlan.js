@@ -2,8 +2,6 @@ import {useState} from "react";
 import axios from "axios";
 import {getCookie} from "../../Util/Cookies";
 import styled from "styled-components";
-import AddExpense from "../budget/AddExpense";
-import {da} from "date-fns/locale";
 
 const SectionWrapper = styled.div`
   display: flex;
@@ -19,6 +17,7 @@ const SectionContent = styled.div`
   padding: 15px 25px;
   display: flex;
   flex-direction: row;
+  cursor: pointer;
 `;
 
 const PlaceInfoBox = styled.div`
@@ -82,13 +81,13 @@ const PlanDeleteContainer = styled.div`
   }
 `;
 
-const clockSvg = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
-         viewBox="0 0 24 24">
-        <path fill="currentColor"
-              d="M14.55 16.55L11 13V8h2v4.175l2.95 2.95ZM11 6V4h2v2Zm7 7v-2h2v2Zm-7 7v-2h2v2Zm-7-7v-2h2v2Zm8 9q-2.075 0-3.9-.788q-1.825-.787-3.175-2.137q-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175q1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138q1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175q-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4Q8.65 4 6.325 6.325Q4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/>
-    </svg>
-);
+// const clockSvg = (
+//     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
+//          viewBox="0 0 24 24">
+//         <path fill="currentColor"
+//               d="M14.55 16.55L11 13V8h2v4.175l2.95 2.95ZM11 6V4h2v2Zm7 7v-2h2v2Zm-7 7v-2h2v2Zm-7-7v-2h2v2Zm8 9q-2.075 0-3.9-.788q-1.825-.787-3.175-2.137q-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175q1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138q1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175q-1.35 1.35-3.175 2.137Q14.075 22 12 22Zm0-2q3.35 0 5.675-2.325Q20 15.35 20 12q0-3.35-2.325-5.675Q15.35 4 12 4Q8.65 4 6.325 6.325Q4 8.65 4 12q0 3.35 2.325 5.675Q8.65 20 12 20Zm0-8Z"/>
+//     </svg>
+// );
 
 const moneySvg = (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
@@ -107,9 +106,19 @@ const deleteSvg = (
 )
 
 const SinglePlan = (props) => {
-    const {planDate, setCurrentDate, data, setCurrentPlace, setAddExpenseModal, setCurrentPlaceId} = props;
+    const {
+        idx,
+        handleZoom,
+        handleGeoCode,
+        planDate,
+        setCurrentDate,
+        data,
+        setCurrentPlace,
+        setAddExpenseModal,
+        setCurrentPlaceId,
+        expenses
+    } = props;
     const [delButtonIsShow, setDelButtonIsShow] = useState(false);
-
 
     const handleExpenseModal = () => {
         setAddExpenseModal(true);
@@ -136,12 +145,19 @@ const SinglePlan = (props) => {
 
     return (
         <SectionWrapper
+            key={data.placeId}
             onMouseEnter={onMouseHandler}
             onMouseLeave={onMouseHandler}
-            key={data.placeId}
         >
-            <SectionContent>
+            <SectionContent
+                onClick={() => {
+                    handleGeoCode(data.latitude, data.longitude);
+                    handleZoom();
+                }}
+            >
                 <PlaceInfoBox>
+                    {/*위치 순서*/}
+                    <p>{idx + 1}</p>
                     <PlaceInfoContainer>
                         <h3>{data.placeName}</h3>
                         <p>{data.placeAddress}</p>
@@ -161,8 +177,7 @@ const SinglePlan = (props) => {
                             }
                         >
                             {moneySvg}
-                            Add cost
-                            {/*{expenses ? 'AddCost' : expenses}*/}
+                            {data.expenses ? data.expenses.price : 'Add Cost'}
                         </button>
                     </PlaceAddingButtons>
                 </PlaceInfoBox>
