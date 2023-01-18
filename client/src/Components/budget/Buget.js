@@ -21,6 +21,7 @@ const Budget = ({
 }) => {
   const token = getCookie('accessToken');
   const [currentExpenseId, setCurrentExpenseId] = useState();
+
   /* Modal */
 
   // 예산 수정
@@ -173,7 +174,7 @@ const Budget = ({
                   <div className='meta_user_expense'>₩ {el.price.toLocaleString('ko-KR')}</div>
                 </div>
                 <div className='expense__item-date'>
-                  {moment(el.createdAt).format('M월 DD일')} • {el.item}
+                  {moment(el.createdAt).format('M월 DD일')} • {el.item} 
                 </div>
               </div>
               <div className='expense__controls'>
@@ -310,6 +311,7 @@ const MyExpenses = styled.div`
 
   .expense__item-date {
     color: var(--light);
+    text-transform: capitalize;
   }
 
   .expense__controls {
