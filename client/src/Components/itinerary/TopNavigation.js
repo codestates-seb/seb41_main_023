@@ -1,135 +1,168 @@
-import styled from "styled-components";
-import {useNavigate, useParams} from "react-router-dom";
-import {useState} from "react";
-import axios from "axios";
-import {getCookie} from "../../Util/Cookies";
-import moment from "moment";
-import Calendar from "../Calendar";
+import styled from 'styled-components';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+import { getCookie } from '../../Util/Cookies';
+import moment from 'moment';
+import Calendar from '../Calendar';
 
-const TopNavBar = styled.nav`
+const TopContainer = styled.div`
+  position: relative;
   width: 50vw;
-  height: 300px;
-  border: 1px solid lightgray;
-  background-image: url(${props => props.cityImage});
+  height: 350px;
+  background-color: var(--primary-blue-light-1);
+  background-image: url(${(props) => props.cityImage});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px 30px;
+  cursor: default;
 
-`;
-
-const LogoButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Logo = styled.div`
-  display: flex;
-  cursor: pointer;
-
-  img {
-    margin-right: 15px;
-    border-radius: 50%;
+  .top__gradient-bg {
+    position: absolute;
+    top: 0;
+    width: 50vw;
+    height: 350px;
+    background: rgb(15, 15, 15);
+    background: -moz-linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+    background: -webkit-linear-gradient(
+      0deg,
+      rgba(15, 15, 15, 0.5) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background: linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0f0f0f",endColorstr="#ffffff",GradientType=1);
+    z-index: 1;
   }
 `;
 
-const SaveButton = styled.button`
+const Header = styled.div`
+  position: relative;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin: 0 20px;
-  padding: 5px 10px;
-  border-radius: 2rem;
-  background-color: #4F4F4F;
-  color: white;
+  margin: 0 50px;
+  height: 60px;
+  z-index: 100;
+
+  > * {
+    cursor: pointer;
+  }
 `;
 
-const TripTitleContainer = styled.div`
-  height: calc(200px - 80px);
-  width: auto;
+const TripInfo = styled.div`
+  position: absolute;
+  bottom: 50px;
+  margin: 0 50px;
+  z-index: 100;
 
-  h1 {
-    margin-top: 70px;
+  h2 {
+    margin-bottom: var(--spacing-2);
+    font-size: var(--xx-large-heading-font-size);
+    line-height: var(--xx-large-heading-line-height);
+    font-weight: 600;
+    color: var(--white);
   }
 
-  p {
-    margin-top: 20px;
+  .trip__info-date {
+    display: inline-flex;
+    gap: var(--spacing-3);
+    align-items: center;
+
+    .button__date {
+      background: transparent;
+    }
+
+    .button__change-date {
+      padding: var(--spacing-2);
+      background-color: transparent;
+      border: 1px solid var(--light-gray-4);
+      color: var(--white);
+      border-radius: 3px;
+
+      &:hover {
+        background-color: var(--white);
+        color: var(--dark-gray-2);
+        border-color: var(--light-gray-4);
+      }
+    }
+
+    span {
+      font-size: var(--large-text-size);
+      line-height: var(--large-text-line-height);
+      color: var(--light-gray-3);
+    }
   }
 `;
 
 const TopNavigation = (props) => {
-    const {startDate, setStartDate, endDate, setEndDate, mainData, setMainData, handleRefresh} = props;
-    const {itineraryId} = useParams();
-    const navigate = useNavigate();
-    const token = getCookie('accessToken');
-    const cityImage = getCookie('cityImage');
-    const [showCalendar, setShowCalendar] = useState(false);
+  const { startDate, setStartDate, endDate, setEndDate, mainData, setMainData, handleRefresh } =
+    props;
+  const { itineraryId } = useParams();
+  const navigate = useNavigate();
+  const token = getCookie('accessToken');
+  const cityImage = getCookie('cityImage');
+  const [showCalendar, setShowCalendar] = useState(false);
 
-    const handleDate = (date) => {
-        setStartDate(moment(date[0].startDate).format("YYYY-MM-DD"));
-        setEndDate(moment(date[0].endDate).format("YYYY-MM-DD"));
-    };
+  const handleDate = (date) => {
+    setStartDate(moment(date[0].startDate).format('YYYY-MM-DD'));
+    setEndDate(moment(date[0].endDate).format('YYYY-MM-DD'));
+  };
 
-    const handleCalendar = () => {
-        setShowCalendar(prevState => !prevState);
-    }
+  const handleCalendar = () => {
+    setShowCalendar((prevState) => !prevState);
+  };
 
-    const changeDateHandler = () => {
-        if (window.confirm('정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!'))
-            axios.patch(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
-                {
-                    startDate,
-                    endDate
-                },
-                {
-                    headers: {
-                        Authorization: token,
-                        withCredentials: true,
-                    }
-                }
-            )
-                .then((res) => {
-                    setMainData({
-                        ...mainData,
-                        startDate: startDate,
-                        endDate: endDate
-                    });
-                    handleRefresh()
-                }).then(res => handleCalendar())
-    }
+  const changeDateHandler = () => {
+    if (window.confirm('정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!'))
+      axios
+        .patch(
+          `${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
+          {
+            startDate,
+            endDate,
+          },
+          {
+            headers: {
+              Authorization: token,
+              withCredentials: true,
+            },
+          }
+        )
+        .then((res) => {
+          setMainData({
+            ...mainData,
+            startDate: startDate,
+            endDate: endDate,
+          });
+          handleRefresh();
+        })
+        .then((res) => handleCalendar());
+  };
 
-    return (
-        <TopNavBar cityImage={cityImage}>
-            <LogoButtonContainer>
-                <Logo>
-                    <img
-                        alt="logo_image"
-                        src="https://picsum.photos/40"
-                        onClick={() => navigate("/")}
-                    />
-                </Logo>
-                <SaveButton>Save Trip</SaveButton>
-            </LogoButtonContainer>
-            <TripTitleContainer>
-                <h1>{mainData.planTitle}</h1>
-                <button
-                    onClick={handleCalendar}
-                >{moment(mainData.startDate).format('M월 D일')} ~ {moment(mainData.endDate).format('M월 D일')}</button>
-                {showCalendar ? (<Calendar
-                    handleDate={handleDate}
-                />) : null}
-                <button
-                    onClick={changeDateHandler}
-                    disabled={showCalendar === false}
-                >날짜 변경
-                </button>
-            </TripTitleContainer>
-        </TopNavBar>
-    )
+  return (
+    <TopContainer cityImage={cityImage}>
+      <div className='top__gradient-bg'></div>
+      <Header>
+        <div className='header__logo' onClick={() => navigate('/')}>
+          website name
+        </div>
+        <button className='button--primary'>Save Trip</button>
+      </Header>
+      <TripInfo>
+        <h2>{mainData.planTitle}Trip to Daegu</h2>
+        <div className='trip__info-date'>
+          <button className='button__date' onClick={handleCalendar}>
+            <span>{moment(mainData.startDate).format('M월 D일')} -</span>
+            <span> {moment(mainData.endDate).format('M월 D일')}</span>
+          </button>
+          {showCalendar ? <Calendar handleDate={handleDate} /> : null}
+          <button className='button__change-date' onClick={changeDateHandler} disabled={showCalendar === false}>
+            날짜 변경
+          </button>
+        </div>
+      </TripInfo>
+    </TopContainer>
+  );
 };
 
 export default TopNavigation;
