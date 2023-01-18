@@ -26,10 +26,11 @@ public class OAuthAttributes {
         } else if ("kakao".equals(registrationId)) {
             log.info("=== 카카오 로그인 ===");
             return ofKakao("id", attributes);
-        } else if ("github".equals(registrationId)) {
-            log.info("=== 깃허브 로그인 ===");
-            return ofGithub("id", attributes);
         }
+//        else if ("github".equals(registrationId)) {
+//            log.info("=== 깃허브 로그인 ===");
+//            return ofGithub("id", attributes);
+//        }
         log.info("=== 구글 로그인 ===");
         return ofGoogle(userNameAttributeName, attributes);
     }
@@ -70,18 +71,18 @@ public class OAuthAttributes {
                 .build();
     }
 
-    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String,Object> attributes) {
-        String email;
-        if (attributes.get("email") == null) {
-            email = attributes.get("name") + "@github.com";
-        } else email = attributes.get("email").toString();
-
-        return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
-                .email(email)
-                .picture((String) attributes.get("avatar_url"))
-                .nameAttributeKey(userNameAttributeName)
-                .attributes(attributes)
-                .build();
-    }
+//    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String,Object> attributes) {
+//        String email;
+//        if (attributes.get("email") == null) {
+//            email = attributes.get("name") + "@github.com";
+//        } else email = attributes.get("email").toString();
+//
+//        return OAuthAttributes.builder()
+//                .name((String) attributes.get("name"))
+//                .email(email)
+//                .picture((String) attributes.get("avatar_url"))
+//                .nameAttributeKey(userNameAttributeName)
+//                .attributes(attributes)
+//                .build();
+//    }
 }

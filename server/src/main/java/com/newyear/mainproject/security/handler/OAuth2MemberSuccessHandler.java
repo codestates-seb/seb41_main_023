@@ -14,7 +14,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,8 +43,6 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
             email = kakao.get("email").toString();
         } else if (naver != null) {
             email = naver.get("email").toString();
-        } else if (attributes.get("email") == null) {
-            email = attributes.get("name") + "@github.com";
         } else {
             email = attributes.get("email").toString();
         }
@@ -117,7 +114,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .host("travel-logs.s3-website.ap-northeast-2.amazonaws.com")//S3주소로
 //                .host("localhost")
 //                .port(8080)
-                .path("/login")
+                .path("/loading")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
