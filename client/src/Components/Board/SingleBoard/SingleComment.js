@@ -71,6 +71,11 @@ const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => 
                                 placeholder={`${comment.comment}`}
                                 autoFocus
                                 ref={editRef}
+                                onKeyDown={(e) => {
+                                    if(e.key === 'Enter') {
+                                        handleEditComment(commentId)
+                                    }
+                                }}
                             />
                         ) : (
                             <div className={'edit_member_container'}>
