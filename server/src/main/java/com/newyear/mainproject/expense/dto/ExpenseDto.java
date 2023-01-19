@@ -17,7 +17,7 @@ public class ExpenseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Post {
-        @NotBlank
+
         private String item;
 
         @NotNull @Positive
@@ -33,7 +33,6 @@ public class ExpenseDto {
     public static class Patch {
         private long expenseId;
 
-        @NotBlank
         private String item;
 
         @NotNull @Positive
