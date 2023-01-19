@@ -105,7 +105,9 @@ const InfoWindow = (props) => {
             {website ? (
               <div className='website__container container'>
                 <h6 className='title'>웹사이트</h6>
-                <a href={website}>{website}</a>
+                <a href={website} rel='noreferrer' target='_blank'>
+                  {website}
+                </a>
               </div>
             ) : null}
           </InfoContainer>
