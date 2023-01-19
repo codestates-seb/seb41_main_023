@@ -294,6 +294,8 @@ const MyExpenses = styled.div`
   .expense__item-top {
     display: flex;
     gap: var(--spacing-3);
+    justify-content: space-between;
+    width: calc(50vw - 100px);
 
     > * {
       font-size: var(--large-text-size);
@@ -319,7 +321,6 @@ const MyExpenses = styled.div`
     position: relative;
     height: 100%;
     opacity: 0;
-    right: -32px;
 
     > div {
       height: 20px;
@@ -329,6 +330,7 @@ const MyExpenses = styled.div`
     .svg-icon--20 {
       position: relative;
       height: 20px;
+      margin-left: var(--spacing-2);
 
       > path {
         fill: var(--light-gray-4);
