@@ -28,7 +28,11 @@ const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => 
                 handleCommentRefresh();
                 setIsEdit(false);
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                if(err.response.status === 400) {
+                    alert('수정할 댓글을 입력 후 수정 버튼을 눌러주세요!')
+                }
+            })
     };
 
     const handleDeleteComment = (commentId) => {
