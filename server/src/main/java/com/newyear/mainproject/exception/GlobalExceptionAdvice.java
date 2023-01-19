@@ -10,6 +10,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolationException;
 import java.util.NoSuchElementException;
@@ -71,6 +72,13 @@ public class GlobalExceptionAdvice {
     public ErrorResponse handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException e) {
         log.error("InvalidDataAccessApiUsageException", e);
         return ErrorResponse.of(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        log.error("MaxUploadSizeExceededException", e);
+        return ErrorResponse.of(ExceptionCode.MAX_FILE_SIZE_2MB);
     }
 
 }
