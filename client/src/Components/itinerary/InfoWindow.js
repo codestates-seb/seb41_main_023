@@ -53,14 +53,22 @@ const InfoContainer = styled.div`
 
   .contact__container {
     margin-bottom: var(--spacing-2);
-  }
 
-  > .container {
     > a {
       color: var(--dark-gray-3);
 
       &:hover {
         color: var(--dark-gray-1);
+      }
+    }
+  }
+
+  > .website__container {
+    > a {
+      color: var(--primary-blue-dark);
+
+      &:hover {
+        color: var(--primary-blue);
       }
     }
   }
