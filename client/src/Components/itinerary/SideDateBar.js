@@ -19,7 +19,7 @@ const LeftSideBar = styled.div`
 
 const DateBox = styled.div`
   > button {
-    padding: var(--spacing-2) 0;
+    padding: var(--spacing-2);
     width: 100%;
     font-size: var(--large-text-size);
     line-height: var(--large-text-line-height);
@@ -27,12 +27,11 @@ const DateBox = styled.div`
     background-color: transparent;
 
     &:hover {
-      color: var(--primary-blue-dark);
-      /* font-weight: 600; */
+      color: var(--primary-blue);
     }
 
     &:active {
-      background-color: var(--light-gray-2);
+      color: var(--primary-blue-dark);
     }
   }
 `;
