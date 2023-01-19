@@ -12,6 +12,7 @@ public enum ExceptionCode {
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     INVALID_VALUES(400, "Invalid Values"),
     INVALID_EMAIL_AUTH_NUMBER(400, "Invalid email authNumber"),
+    INVALID_EMAIL_AUTH(400, "Invalid email auth"),
 
     //board
     BOARD_NOT_PATCHED(403, "Board not patched"),
