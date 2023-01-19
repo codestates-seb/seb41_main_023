@@ -17,6 +17,7 @@ export const MapSection = (props) => {
     const {boardData, geocode, handleGeoCode} = props;
     const [libraries] = useState(['places']);
     const [isZoom, setIsZoom] = useState(13);
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleZoom = () => {
         setIsZoom(17);
@@ -37,6 +38,8 @@ export const MapSection = (props) => {
                             data={data}
                             handleGeoCode={handleGeoCode}
                             handleZoom={handleZoom}
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
                         />
                     ))) : null}
             </GoogleMap>

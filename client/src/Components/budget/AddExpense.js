@@ -117,12 +117,12 @@ const AddExpense = (props) => {
                 </div>
               </div>
             </div>
-            {/* <input
+            <input
               className='content'
               name='item'
               placeholder='비용 상세 내용을 입력해주세요.'
               onChange={handleInputs}
-            /> */}
+            />
             <div className='submit_frame'>
               <button
                 className='button--primary'
@@ -141,23 +141,6 @@ const AddExpense = (props) => {
           </ModalWrapper>
         </ModalContainer>
       ) : null}
-
-      {/* {category ? <Category setCategory={setCategory} handleCategory={handleCategory} /> : null} */}
-      {/*{dateCategory ? (*/}
-      {/*    <DateSelectBox*/}
-      {/*        data={singleData}*/}
-      {/*        setDateCategory={setDateCategory}*/}
-      {/*        handleDate={handleDate}*/}
-      {/*    />*/}
-      {/*) : null}*/}
-      {/*{placeCategory ? (*/}
-      {/*    <PlaceSelectBox*/}
-      {/*        data={singlePlanData}*/}
-      {/*        planDateId={planDateId}*/}
-      {/*        setPlaceCategory={setPlaceCategory}*/}
-      {/*        handlePlace={handlePlace}*/}
-      {/*    />*/}
-      {/*) : null}*/}
     </>
   );
 };

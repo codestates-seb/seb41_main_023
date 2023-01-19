@@ -3,9 +3,9 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import {MapSection} from "../Components/Board/SingleBoard/MapSection";
-import {CommentSection} from "../Components/Board/SingleBoard/CommentSection";
 import BoardSection from "../Components/Board/SingleBoard/BoardSection";
 import TopSection from "../Components/Board/SingleBoard/TopSection";
+import CommentSection from "../Components/Board/SingleBoard/CommentSection";
 
 const SingleBoard = () => {
     const {boardId} = useParams();
@@ -29,8 +29,6 @@ const SingleBoard = () => {
     const [geocode, setGeocode] = useState({
         lat: 37.555969,
         lng: 126.972336,
-        // lat: boardData.days[0].placeDetails[0].latitude,
-        // lng: boardData.days[0].placeDetails[0].longitude,
     });
     const handleRefresh = () => {
         setRefresh(prevState => prevState * -1);
@@ -39,11 +37,15 @@ const SingleBoard = () => {
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/board/${boardId}`)
             .then((res) => {
-                // console.log(res.data);
                 setBoardData(res.data);
+                const startCode = res.data.days[0].placeDetails[0]
+                setGeocode({
+                    lat: startCode.latitude,
+                    lng: startCode.longitude
+                })
             })
             .catch((err) => console.log(err))
-    }, [boardId]);
+    }, [boardId, refresh]);
 
     const handleGeoCode = (lat, lng) => {
         setGeocode({lat, lng});
@@ -64,7 +66,7 @@ const SingleBoard = () => {
                         handleGeoCode={handleGeoCode}
                     />
                     <CommentSection
-                        handleRefresh={handleRefresh}
+                        boardData={boardData}
                     />
                 </BoardWrapper>
             ) : null}
@@ -77,6 +79,7 @@ export default SingleBoard;
 const BoardWrapper = styled.div`
   width: 100vw;
   height: 100vh;
+  overflow: scroll;
 `;
 
 

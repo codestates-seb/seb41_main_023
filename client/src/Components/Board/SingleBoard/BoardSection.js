@@ -11,13 +11,6 @@ const BoardSection = (props) => {
             <ContentTitle>Travel Experience</ContentTitle>
             <Content>
                 {content}
-                I ate a lot of marinated salmon whatever ...blnah cahsd
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis no
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis no
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis no
             </Content>
             <ItineraryTitle>Itinerary</ItineraryTitle>
             {days ? (
@@ -41,7 +34,6 @@ const ContentWrapper = styled.div`
   width: 50vw;
   height: calc(100vh - 300px);
   padding: 40px 30px;
-  overflow: scroll;
 `;
 
 const ContentTitle = styled.h1`
