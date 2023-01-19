@@ -1,6 +1,6 @@
 import axios from "axios";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LoadScript, GoogleMap } from "@react-google-maps/api";
 
@@ -41,7 +41,7 @@ const EditSingleBoard = () => {
 
   const [zoom, setZoom] = useState(13);
 
-  // 수정할 게시글 조회
+  // 게시글 조회 요청
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/board/${boardId}`, {
@@ -72,6 +72,7 @@ const EditSingleBoard = () => {
       title,
       content,
     };
+
     await axios({
       method: "PATCH",
       url: `${process.env.REACT_APP_API_URL}/board/${boardId}`,
@@ -127,6 +128,15 @@ const EditSingleBoard = () => {
     setGeocode({ lat, lng });
   };
 
+  const memoRef = useRef({});
+
+  //입력값 초기화
+  const handelClear = (id) => {
+    const placeId = Object.keys(memoRef.current).filter(
+      (key) => Number(key) === id
+    );
+    memoRef.current[placeId].value = "";
+  };
   return (
     <>
       {mainData && (
@@ -156,7 +166,7 @@ const EditSingleBoard = () => {
               <div>{day.day}</div>
               {day.placeDetails.map((place) => (
                 <div
-                  key={place.index}
+                  key={place.placeId}
                   onClick={() => {
                     handleGeoCode(place.latitude, place.longitude);
                   }}
@@ -164,11 +174,21 @@ const EditSingleBoard = () => {
                   <div>{place.index}</div>
                   <div>{place.placeName}</div>
                   <div>{place.placeAddress}</div>
-                  <input
-                    name={place.placeId}
-                    defaultValue={place.description}
-                    onChange={(e) => handleChangeNote(e)}
-                  />
+                  <div className="memo">
+                    <input
+                      name={place.placeId}
+                      // 기존 값
+                      defaultValue={place.description}
+                      onChange={(e) => handleChangeNote(e)}
+                      ref={(el) => (memoRef.current[place.placeId] = el)}
+                    />
+                    <input
+                      type="reset"
+                      value="reset"
+                      className="delete_memo"
+                      onClick={() => handelClear(place.placeId)}
+                    ></input>
+                  </div>
                 </div>
               ))}
             </div>
@@ -204,5 +224,29 @@ const MemoBox = styled.div`
 `;
 const ItineraryBox = styled.div`
   background-color: var(--light-gray-1);
+  cursor: pointer;
+
+  & .place {
+    background-color: var(--light-gray-4);
+    margin: 10px 0;
+  }
+
+  & .memo {
+    background-color: var(--light-gray-2);
+    :hover > .delete_memo {
+      opacity: 1;
+    }
+
+    > input[type="reset"] {
+      border: none;
+      padding: 5px;
+      background-color: var(--light-gray-5);
+      cursor: pointer;
+    }
+  }
+
+  & .delete_memo {
+    opacity: 0;
+  }
 `;
 const MapBox = styled.div``;
