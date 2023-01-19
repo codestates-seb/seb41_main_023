@@ -85,6 +85,7 @@ const MyTripsContainer = styled.div`
   .contents {
     display: flex;
     gap: var(--spacing-4);
+    flex-wrap: wrap;
 
     .my-trips__card {
       width: calc((100vw - 228px) / 5);
