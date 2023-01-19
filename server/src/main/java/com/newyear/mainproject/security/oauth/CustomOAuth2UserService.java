@@ -1,15 +1,12 @@
 package com.newyear.mainproject.security.oauth;
 
 import com.newyear.mainproject.exception.BusinessLogicException;
-import com.newyear.mainproject.exception.ErrorResponse;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -19,7 +16,6 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.*;
 
@@ -53,7 +49,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
         //일반 가입으로되어 있을 경우 예외 발생
-        else if (!password.equals("KAKAO") && !password.equals("NAVER") && !password.equals("GITHUB") && !password.equals("GOOGLE")) {
+        else if (!password.equals("KAKAO") && !password.equals("FACEBOOK") && !password.equals("GOOGLE")) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
 
@@ -73,14 +69,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         member.setProfileImage(profileImage);
         member.setRoles(roles);
         memberRepository.save(member);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
-
-        final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
-
-        return new ResponseEntity<>(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
     }
 
 }
