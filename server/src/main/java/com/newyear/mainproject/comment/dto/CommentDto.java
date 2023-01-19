@@ -36,13 +36,17 @@ public class CommentDto {
         private String createdAt;
         private String displayName;
         private String profileImage;
+        private long memberId;
+        private String modifiedAt;
     }
 
     @Getter @Setter
     @NoArgsConstructor
     public static class simpleResponse {
         private long commentId;
-        private LocalDate createdAt;
+        private String createdAt;
+        private String modifiedAt;
+        private long memberId;
     }
 
 }

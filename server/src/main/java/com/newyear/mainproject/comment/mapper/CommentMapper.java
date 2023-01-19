@@ -25,15 +25,23 @@ public interface CommentMapper {
 
     Comment patchDtoToComment(CommentDto.Patch patch);
 
-    CommentDto.simpleResponse commentToResponseDto (Comment comment);
+    default CommentDto.simpleResponse commentToResponseDto(Comment comment) {
+        CommentDto.simpleResponse simpleResponse = new CommentDto.simpleResponse();
+        simpleResponse.setCommentId(comment.getCommentId());
+        simpleResponse.setCreatedAt(DateUtil.convertLocalDatetimeToTime(comment.getCreatedAt()));
+        simpleResponse.setModifiedAt(DateUtil.convertLocalDatetimeToTime(comment.getModifiedAt()));
+        simpleResponse.setMemberId(comment.getMember().getMemberId());
+        return simpleResponse;
+    }
 
     default List<CommentDto.Response> commentsToResponseDto(List<Comment> comments) {
             List<CommentDto.Response> list = new ArrayList<>(comments.size());
 
             for (Comment comment : comments) {
                 String createdAt = DateUtil.convertLocalDatetimeToTime(comment.getCreatedAt());
+                String modifiedAt = DateUtil.convertLocalDatetimeToTime(comment.getModifiedAt());
                 Member member = comment.getMember();
-                list.add(new CommentDto.Response(comment.getCommentId(), comment.getComment(), createdAt, member.getDisplayName(), member.getProfileImage()));
+                list.add(new CommentDto.Response(comment.getCommentId(), comment.getComment(), createdAt, member.getDisplayName(), member.getProfileImage(), member.getMemberId(), modifiedAt));
             }
             return list;
     }
