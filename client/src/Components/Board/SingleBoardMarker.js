@@ -4,7 +4,7 @@ import InfoWindow from "../itinerary/InfoWindow";
 import { MarkerF } from "@react-google-maps/api";
 import { useState } from "react";
 
-const SingleBoardMarker = ({ el, handleZoom }) => {
+const SingleBoardMarker = ({ day, handleZoom }) => {
   const [activeMarker, setActiveMarker] = useState(null);
   const [closeInfo, setCloseInfo] = useState(false);
 
@@ -39,12 +39,12 @@ const SingleBoardMarker = ({ el, handleZoom }) => {
   };
 
   const markerUrl = `data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="1.5rem" height="2rem" viewBox="0 0 384 512"%3E%3Cpath fill="${makeColor(
-    `${moment(el.planDate).format("ddd")}`
+    `${moment(day.planDate).format("ddd")}`
   )}" d="M172.268 501.67C26.97 291.031 0 269.413 0 192C0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67c-9.535 13.774-29.93 13.773-39.464 0z"%2F%3E%3C%2Fsvg%3E`;
 
   return (
     <div>
-      {el.places.map((place, idx) => (
+      {day.placeDetails.map((place, idx) => (
         <div key={place.placeId}>
           <MarkerF
             onClick={() => {
