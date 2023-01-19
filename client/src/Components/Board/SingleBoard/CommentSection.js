@@ -43,8 +43,6 @@ const CommentSection = ({boardData}) => {
             .catch((err) => console.log(err))
     }, [boardId, commentRefresh]);
 
-    // console.log(commentList)
-
     return (
         <Fragment>
             <CommentWrapper>
@@ -57,6 +55,7 @@ const CommentSection = ({boardData}) => {
                                 comment={comment}
                                 commentId={comment.commentId}
                                 handleCommentRefresh={handleCommentRefresh}
+                                memberId={comment.memberId}
                             />
                         ))
                     }
