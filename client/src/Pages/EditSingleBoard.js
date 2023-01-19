@@ -9,18 +9,18 @@ import { getCookie } from "../Util/Cookies";
 import SingleBoardMarker from "../Components/Board/SingleBoardMarker";
 import BoardHeader from "../Components/Board/BoardHeader";
 
-const WriteSingleBoard = () => {
+const EditSingleBoard = () => {
   const navigate = useNavigate();
   const token = getCookie("accessToken");
   const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
-  const { planId } = useParams();
+  const { boardId } = useParams();
 
   const [mainData, setMainData] = useState({});
   const [days, setDays] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [placeNotes, setPlaceNotes] = useState([]);
-  // const [boardId, setBoardId] = useState(null);
+
   const [libraries] = useState(["places"]);
 
   const mapContainerStyle = {
@@ -41,16 +41,18 @@ const WriteSingleBoard = () => {
 
   const [zoom, setZoom] = useState(13);
 
+  // 수정할 게시글 조회
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/board/user/plan/${planId}`, {
+      .get(`${process.env.REACT_APP_API_URL}/board/${boardId}`, {
         headers: {
           Authorization: token,
         },
       })
       .then((res) => {
         setMainData(res.data);
-        setTitle(res.data.planTitle);
+        setTitle(res.data.title);
+        setContent(res.data.content);
         setDays(res.data.days);
         const startPlace = res.data.days[0].placeDetails[0];
         setGeocode({
@@ -64,15 +66,15 @@ const WriteSingleBoard = () => {
     setZoom(el);
   };
 
-  //게시물 등록
-  const handleCreateLog = async (title, content) => {
+  //게시물 수정 요청
+  const handleEditLog = async (title, content) => {
     const data = {
       title,
       content,
     };
     await axios({
-      method: "POST",
-      url: `${process.env.REACT_APP_API_URL}/board/plan/${planId}`,
+      method: "PATCH",
+      url: `${process.env.REACT_APP_API_URL}/board/${boardId}`,
       headers: {
         Authorization: token,
       },
@@ -91,10 +93,21 @@ const WriteSingleBoard = () => {
       });
   };
 
+  //게시물 삭제 요청
+  const handleDeleteLog = async () => {
+    await axios({
+      method: "DELETE",
+      url: `${process.env.REACT_APP_API_URL}/board/${boardId}`,
+      headers: {
+        Authorization: token,
+      },
+    }).then((res) => navigate(`/board/plan`));
+  };
+
   //장소별 note 변경
   const handleChangeNote = (e) => {
     let findIndex = placeNotes.findIndex(
-      (comment) => Number(comment.placeId) === Number(e.target.name)
+      (placeNote) => Number(placeNote.placeId) === Number(e.target.name)
     );
 
     if (findIndex === -1) {
@@ -116,14 +129,15 @@ const WriteSingleBoard = () => {
 
   return (
     <>
-      {mainData.planTitle && (
+      {mainData && (
         <BoardHeader
           mainData={mainData}
-          mode="write"
+          mode="edit"
           title={title}
           setTitle={setTitle}
           content={content}
-          handleCreateLog={handleCreateLog}
+          handleEditLog={handleEditLog}
+          handleDeleteLog={handleDeleteLog}
         />
       )}
       <MemoBox>
@@ -150,10 +164,9 @@ const WriteSingleBoard = () => {
                   <div>{place.index}</div>
                   <div>{place.placeName}</div>
                   <div>{place.placeAddress}</div>
-
                   <input
-                    name={place.index}
-                    placeholder="memo"
+                    name={place.placeId}
+                    defaultValue={place.description}
                     onChange={(e) => handleChangeNote(e)}
                   />
                 </div>
@@ -184,7 +197,7 @@ const WriteSingleBoard = () => {
 {
 }
 
-export default WriteSingleBoard;
+export default EditSingleBoard;
 
 const MemoBox = styled.div``;
 const ItineraryBox = styled.div``;
