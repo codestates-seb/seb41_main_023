@@ -6,11 +6,11 @@ import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
+import com.newyear.mainproject.plan.service.PlanService;
 import com.newyear.mainproject.security.logout.RedisUtil;
-import com.newyear.mainproject.security.oauth.CustomOAuth2UserService;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,8 +27,8 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class MemberService {
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
@@ -36,7 +36,20 @@ public class MemberService {
     private final CommentRepository commentRepository;
     private final S3Service s3Service;
     private final RedisUtil redisUtil;
+    private final PlanService planService;
 
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils,
+                         BoardRepository boardRepository, CommentRepository commentRepository, S3Service s3Service, RedisUtil redisUtil,
+                         @Lazy PlanService planService) {
+        this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authorityUtils = authorityUtils;
+        this.boardRepository = boardRepository;
+        this.commentRepository = commentRepository;
+        this.s3Service = s3Service;
+        this.redisUtil = redisUtil;
+        this.planService = planService;
+    }
 
     public Member createMember(Member member, String authNum) {
         if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
