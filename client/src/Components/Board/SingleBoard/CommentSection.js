@@ -1,14 +1,18 @@
-import {Fragment, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 import {getCookie} from "../../../Util/Cookies";
 import SingleComment from "./SingleComment";
+import Pagination from "../../../Util/Pagination";
 
 const CommentSection = ({boardData}) => {
     const {boardId} = useParams();
     const [commentList, setCommentList] = useState([]);
     const [commentRefresh, setCommentRefresh] = useState(1);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(3);
+    const offset = (page - 1) * limit;
     const commentRef = useRef();
 
     const handleCommentRefresh = () => {
@@ -44,42 +48,46 @@ const CommentSection = ({boardData}) => {
     }, [boardId, commentRefresh]);
 
     return (
-        <Fragment>
-            <CommentWrapper>
-                <CommentContainer>
-                    <div className={'comment_counts'}>{commentList.length} Comments</div>
-                    {commentList &&
-                        commentList.map((comment) => (
-                            <SingleComment
-                                key={comment.commentId}
-                                comment={comment}
-                                commentId={comment.commentId}
-                                handleCommentRefresh={handleCommentRefresh}
-                                memberId={comment.memberId}
-                            />
-                        ))
-                    }
-                    <div className={'comment_input_container'}>
-                        <div className={'comment_user_profile'}>
-                            <img src={boardData.profileImage} alt={`${boardData.displayName}의 이미지`}/>
-                        </div>
-                        <div className={'comment_input_box'}>
-                            <input
-                                type={'text'}
-                                placeholder={'Add a question or share your thoughts!!'}
-                                ref={commentRef}
-                            />
-                        </div>
-                        <div
-                            className={'comment_submit_button'}
-                            onClick={handleCommentSubmit}
-                        >
-                            <button>Post Comment</button>
-                        </div>
+        <CommentWrapper>
+            <CommentContainer>
+                <div className={'comment_counts'}>{commentList.length} Comments</div>
+                {commentList &&
+                    commentList.slice(offset, offset + limit).map((comment) => (
+                        <SingleComment
+                            key={comment.commentId}
+                            comment={comment}
+                            commentId={comment.commentId}
+                            handleCommentRefresh={handleCommentRefresh}
+                            memberId={comment.memberId}
+                        />
+                    ))
+                }
+                <div className={'comment_input_container'}>
+                    <div className={'comment_user_profile'}>
+                        <img src={boardData.profileImage} alt={`${boardData.displayName}의 이미지`}/>
                     </div>
-                </CommentContainer>
-            </CommentWrapper>
-        </Fragment>
+                    <div className={'comment_input_box'}>
+                        <input
+                            type={'text'}
+                            placeholder={'Add a question or share your opinion!!'}
+                            ref={commentRef}
+                        />
+                    </div>
+                    <div
+                        className={'comment_submit_button'}
+                        onClick={handleCommentSubmit}
+                    >
+                        <button>Post Comment</button>
+                    </div>
+                </div>
+            </CommentContainer>
+            <Pagination
+                total={commentList.length}
+                limit={limit}
+                page={page}
+                setPage={setPage}
+            />
+        </CommentWrapper>
     )
 };
 
