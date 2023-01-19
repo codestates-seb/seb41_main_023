@@ -41,6 +41,7 @@ const WriteSingleBoard = () => {
 
   const [zoom, setZoom] = useState(13);
 
+  // 여행 정보 요청
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/board/user/plan/${planId}`, {
@@ -109,6 +110,20 @@ const WriteSingleBoard = () => {
     }
   };
 
+  // 장소별 note 삭제
+  const handleDeleteNote = (e) => {
+    let findIndex = placeNotes.findIndex(
+      (comment) => Number(comment.placeId) === Number(e.target.name)
+    );
+    console.log(findIndex);
+
+    let changeNotes = [...placeNotes];
+    changeNotes[findIndex].description = "";
+    setPlaceNotes(changeNotes);
+  };
+
+  // console.log(placeNotes);
+
   // 위도, 경도 변경
   const handleGeoCode = (lat, lng) => {
     setGeocode({ lat, lng });
@@ -146,19 +161,25 @@ const WriteSingleBoard = () => {
                   onClick={() => {
                     handleGeoCode(place.latitude, place.longitude);
                   }}
+                  className="place"
                 >
                   <div>{place.index}</div>
                   <div>{place.placeName}</div>
                   <div>{place.placeAddress}</div>
-                  <div className="memo">
+                  <form className="memo">
                     <input
                       id="memo"
                       type="text"
-                      name={place.index}
+                      name={place.placeId}
                       placeholder="memo"
                       onChange={(e) => handleChangeNote(e)}
                     />
-                  </div>
+                    <input
+                      type="reset"
+                      value="reset"
+                      className="delete_memo"
+                    ></input>
+                  </form>
                 </div>
               ))}
             </div>
@@ -184,9 +205,6 @@ const WriteSingleBoard = () => {
   );
 };
 
-{
-}
-
 export default WriteSingleBoard;
 
 const MemoBox = styled.div`
@@ -194,5 +212,29 @@ const MemoBox = styled.div`
 `;
 const ItineraryBox = styled.div`
   background-color: var(--light-gray-1);
+  cursor: pointer;
+
+  & .place {
+    background-color: var(--light-gray-4);
+    margin: 10px 0;
+  }
+
+  & .memo {
+    background-color: var(--light-gray-2);
+    :hover > .delete_memo {
+      opacity: 1;
+    }
+
+    > input[type="reset"] {
+      border: none;
+      padding: 5px;
+      background-color: var(--light-gray-5);
+      cursor: pointer;
+    }
+  }
+
+  & .delete_memo {
+    opacity: 0;
+  }
 `;
 const MapBox = styled.div``;
