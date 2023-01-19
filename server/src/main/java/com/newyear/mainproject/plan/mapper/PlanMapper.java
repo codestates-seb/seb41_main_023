@@ -109,7 +109,7 @@ public interface PlanMapper {
             Date startIf = formatter.parse(plan.getStartDate());
             Date endIf = formatter.parse(plan.getEndDate());
             //endDate 보다 startDate 가 크면 안됨
-            if(!startIf.before(endIf)) throw new BusinessLogicException(ExceptionCode.INVALID_VALUES);
+            if(startIf.compareTo(endIf) > 0) throw new BusinessLogicException(ExceptionCode.INVALID_VALUES);
         }catch (ParseException e) {
             e.printStackTrace();
         }
