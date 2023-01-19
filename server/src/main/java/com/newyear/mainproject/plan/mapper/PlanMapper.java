@@ -36,6 +36,7 @@ public interface PlanMapper {
         plan.setPlanTitle("Trip to "+ post.getCityName());
 
         plan.setPlanDates(planDatesToPlanPlanDates(plan));
+        plan.setBoardCheck(false);
 
         //예산 연결
         Budget budget = new Budget();
@@ -75,6 +76,7 @@ public interface PlanMapper {
                                         .cityName(plan.getCityName())
                                         .placesCount(plan.getPlaces().size())
                                         .city(cityImageResponseToCity(plan.getCity()))
+                                        .boardCheck(plan.getBoardCheck())
                                         .build();
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);

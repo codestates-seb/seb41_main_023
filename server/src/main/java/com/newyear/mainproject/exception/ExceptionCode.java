@@ -17,6 +17,7 @@ public enum ExceptionCode {
     BOARD_NOT_PATCHED(403, "Board not patched"),
     BOARD_NOT_FOUND(404, "Board Not Found"),
     BOARD_CHECK_EXISTS(409, "Board Check exists"),
+    BOARD_EXISTS(409, "Board exists"),
 
     //comment
     COMMENT_NOT_PATCHED(403, "Comment not patched"),
