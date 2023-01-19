@@ -93,7 +93,8 @@ const MyLogsContainer = styled.div`
   .contents {
     display: flex;
     gap: var(--spacing-4);
-
+    flex-wrap: wrap;
+    
     .my-logs__card {
       position: relative;
       width: calc((100vw - 228px) / 5);
