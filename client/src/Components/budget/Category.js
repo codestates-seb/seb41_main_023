@@ -18,12 +18,12 @@ const Category = ({ setCategory, handleCategory }) => {
   ];
 
   return (
-    <CategoryDropdown>
+    <CategoryDropdown  onChange={(e) => handleCategory(e.target.value)}>
       <option value='' disabled selected>
         항목을 선택하세요
       </option>
       {categoryList.map((el, idx) => (
-        <option key={idx} className='category_item' onClick={() => handleCategory(el)}>
+        <option key={idx} className='category_item'>
           {el}
         </option>
       ))}
