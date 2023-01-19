@@ -197,9 +197,9 @@ const SignUpPage = () => {
                             xlink="http://www.w3.org/1999/xlink"
                             xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true"
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
+                            width="20"
+                            height="20"
+                            viewBox="-3 0 20 20"
                         >
                             <path
                                 d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18Z"
@@ -230,14 +230,12 @@ const SignUpPage = () => {
                         Sign up with Kakao
                     </button>
                     <button className="button--google"
-                            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/naver')}>
-                        <svg version="1.1" id="naver"
-                             xmlns="http://www.w3.org/2000/svg"
-                             xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200">
-                            <polygon className="logo" fill="#1ec800"
-                                     points="115.9,145.8 83.7,98.4 83.7,145.8 50,145.8 50,54.3 84.2,54.3 116.4,101.6 116.4,54.3    150,54.3 150,145.8 115.9,145.8"/>
+                            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/facebook')}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={'#4267B2'}>
+                            <path
+                                d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
                         </svg>
-                        Sign up with Naver
+                        Sign up with Facebook
                     </button>
 
                     <div className='signup__sub-message'>

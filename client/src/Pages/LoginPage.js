@@ -25,38 +25,6 @@ const LoginPage = () => {
     const [isEmail, setIsEmail] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
 
-    // // 구글 로그인 토큰 저장
-    // useEffect(() => {
-    //   let getAccessToken = (key) => {
-    //     return new URLSearchParams(location.search).get(key);
-    //   };
-    //   let getRefreshToken = (key) => {
-    //     return new URLSearchParams(location.search).get(key);
-    //   };
-    //   let getMemberId = (key) => {
-    //     return new URLSearchParams(location.search).get(key);
-    //   };
-    //   const searchAccessToken = getAccessToken("accessToken");
-    //   const searchRefreshToken = getRefreshToken("refreshToken");
-    //   const searchMemberId = getMemberId("memberId");
-    //
-    //   setCookie("memberId", searchMemberId);
-    //
-    //   if(searchAccessToken && searchRefreshToken) {
-    //   setCookie("accessToken", searchAccessToken);
-    //   localStorage.setItem("refreshToken", searchRefreshToken);
-    //   }
-    //
-    //   //console.log(`search : ${location.search}`);
-    //   //console.log(`access : ${searchAccessToken}, refresh : ${searchRefreshToken}`);
-    //   //console.log(`memberId : ${searchMemberId}`);
-    //
-    //   if(getCookie("accessToken")) {
-    //     console.log(getCookie("accessToken"));
-    //     window.location.replace("/")
-    //   }
-    // }, [])
-
     useEffect(() => {
         eref.current.focus();
     }, []);
@@ -96,24 +64,6 @@ const LoginPage = () => {
         else if (!isEmail) alert('Email을 확인해주세요.');
         else if (!isPassword) alert('Password를 확인해주세요.');
     };
-
-
-    // const googleLogin = async () => {
-    //   try {
-    //     const response = await axios.get(
-    //       "http://ec2-13-125-238-7.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google"
-    //     );
-    //     console.log(response);
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // };
-
-    // const gLogin = () => {
-    //   window.location.replace("http://ec2-13-125-238-7.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google")
-    //   navigate("//ec2-13-125-238-7.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google")
-    // }
-
 
     // email
     const onChangeEmail = useCallback((e) => {
@@ -206,16 +156,30 @@ const LoginPage = () => {
                     </button>
                     <button className="button--google"
                             onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/google')}>
-                        <svg id="google"
-                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35">
-                            <path className="logo" fill="#4285f4"
-                                  d="M26.64,18.2a10.34,10.34,0,0,0-.16-1.84H18v3.48h4.84A4.14,4.14,0,0,1,21,22.56v2.26H24a8.78,8.78,0,0,0,2.68-6.62Z"/>
-                            <path className="bottom logo" fill="#34a853"
-                                  d="M18,27a8.59,8.59,0,0,0,6-2.18L21,22.56A5.43,5.43,0,0,1,13,19.71H10V22a9,9,0,0,0,8,5Z"/>
-                            <path className="left logo" fill="#fbbc05"
-                                  d="M13,19.71a5.32,5.32,0,0,1,0-3.42V14H10A9,9,0,0,0,10,22l3-2.33Z"/>
-                            <path className="top logo" fill="#ea4335"
-                                  d="M18,12.58a4.86,4.86,0,0,1,3.44,1.35L24,11.34A8.65,8.65,0,0,0,18,9a9,9,0,0,0-8,5l3,2.33a5.36,5.36,0,0,1,5-3.71Z"/>
+                        <svg
+                            xlink="http://www.w3.org/1999/xlink"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            width="20"
+                            height="20"
+                            viewBox="-3 0 20 20"
+                        >
+                            <path
+                                d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18Z"
+                                fill="#4285F4"
+                            ></path>
+                            <path
+                                d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17Z"
+                                fill="#34A853"
+                            ></path>
+                            <path
+                                d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07Z"
+                                fill="#FBBC05"
+                            ></path>
+                            <path
+                                d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3Z"
+                                fill="#EA4335"
+                            ></path>
                         </svg>
                         Log in with Google
                     </button>
@@ -229,14 +193,12 @@ const LoginPage = () => {
                         Log in with Kakao
                     </button>
                     <button className="button--google"
-                            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/naver')}>
-                        <svg version="1.1" id="naver"
-                             xmlns="http://www.w3.org/2000/svg"
-                             xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200">
-                            <polygon className="logo" fill="#1ec800"
-                                     points="115.9,145.8 83.7,98.4 83.7,145.8 50,145.8 50,54.3 84.2,54.3 116.4,101.6 116.4,54.3    150,54.3 150,145.8 115.9,145.8"/>
+                            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/facebook')}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={'#4267B2'}>
+                            <path
+                                d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
                         </svg>
-                        Log in with Naver
+                        Log in with Facebook
                     </button>
 
                     <div className="log-in__sub-message">
