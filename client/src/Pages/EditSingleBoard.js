@@ -199,6 +199,10 @@ const EditSingleBoard = () => {
 
 export default EditSingleBoard;
 
-const MemoBox = styled.div``;
-const ItineraryBox = styled.div``;
+const MemoBox = styled.div`
+  background-color: var(--light-gray-3);
+`;
+const ItineraryBox = styled.div`
+  background-color: var(--light-gray-1);
+`;
 const MapBox = styled.div``;

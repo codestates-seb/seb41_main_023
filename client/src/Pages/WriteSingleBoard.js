@@ -150,12 +150,15 @@ const WriteSingleBoard = () => {
                   <div>{place.index}</div>
                   <div>{place.placeName}</div>
                   <div>{place.placeAddress}</div>
-
-                  <input
-                    name={place.index}
-                    placeholder="memo"
-                    onChange={(e) => handleChangeNote(e)}
-                  />
+                  <div className="memo">
+                    <input
+                      id="memo"
+                      type="text"
+                      name={place.index}
+                      placeholder="memo"
+                      onChange={(e) => handleChangeNote(e)}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
@@ -186,6 +189,10 @@ const WriteSingleBoard = () => {
 
 export default WriteSingleBoard;
 
-const MemoBox = styled.div``;
-const ItineraryBox = styled.div``;
+const MemoBox = styled.div`
+  background-color: var(--light-gray-3);
+`;
+const ItineraryBox = styled.div`
+  background-color: var(--light-gray-1);
+`;
 const MapBox = styled.div``;
