@@ -183,7 +183,7 @@ const SignUpPage = () => {
                         ref={pref}
                     />
                     {password.length > 0 && (
-                        <div className={`input__message message${isPassword ? 'success' : 'error'}`}>
+                        <div className={`input__message input__message-password message${isPassword ? 'success' : 'error'}`}>
                             {passwordMessage}
                         </div>
                     )}
@@ -330,13 +330,13 @@ const LeftContainer = styled.div`
       font-weight: normal !important;
     }
 
+    .input__message-password {
+        margin-bottom: 0;
+    }
+
     .signup__sub-message {
       text-align: center;
       color: var(--light);
-    }
-
-    > .button--primary {
-      margin-top: 0;
     }
   }
 `;
