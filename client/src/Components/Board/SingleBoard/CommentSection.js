@@ -14,7 +14,6 @@ const CommentSection = ({boardData}) => {
     const [limit, setLimit] = useState(3);
     const offset = (page - 1) * limit;
     const commentRef = useRef();
-
     const handleCommentRefresh = () => {
         setCommentRefresh(prevState => prevState * -1);
     };
@@ -32,7 +31,9 @@ const CommentSection = ({boardData}) => {
                 handleCommentRefresh()
                 commentRef.current.value = '';
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                alert(`댓글은 ${err.response.data.fieldErrors[0].reason}. 최소 1글자 이상 입력해주세요!`)
+            });
     }
 
     useEffect(() => {

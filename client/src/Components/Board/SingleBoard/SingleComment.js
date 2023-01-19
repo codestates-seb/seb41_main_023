@@ -6,16 +6,10 @@ import styled from "styled-components";
 const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => {
     const userMemberId = Number(getCookie('memberId'));
     const [isEdit, setIsEdit] = useState(false);
-    const [isMouseOn, setIsMouseOn] = useState(false);
     const editRef = useRef();
-    const outSectionRef = useRef();
     const handleEditMode = () => {
         setIsEdit(prevState => !prevState);
     };
-
-    const handleShowButton = () => {
-        setIsMouseOn(prevState => !prevState);
-    }
 
     const handleEditComment = (commentId) => {
         const editedComment = {"comment": editRef.current.value};
@@ -29,8 +23,8 @@ const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => 
                 setIsEdit(false);
             })
             .catch((err) => {
-                if(err.response.status === 400) {
-                    alert('수정할 댓글을 입력 후 수정 버튼을 눌러주세요!')
+                if (err.response.status === 400) {
+                    alert(`댓글은 ${err.response.data.fieldErrors[0].reason}. 최소 1글자 입력 후 수정 버튼을 눌러주세요!`)
                 }
             })
     };
@@ -49,13 +43,6 @@ const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => 
 
     return (
         <SingleCommentWrapper
-            ref={outSectionRef}
-            onClick={(event) => {
-                if(outSectionRef.current === event.target) {
-                    setIsEdit(false)
-                }
-            }
-            }
         >
             <div className={'comment_user_profile'}>
                 <img src={comment.profileImage} alt={`${comment.displayName}의 이미지`}/>
@@ -69,10 +56,10 @@ const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => 
                             <input
                                 type={'text'}
                                 placeholder={`${comment.comment}`}
-                                autoFocus
                                 ref={editRef}
+                                autoFocus
                                 onKeyDown={(e) => {
-                                    if(e.key === 'Enter') {
+                                    if (e.key === 'Enter') {
                                         handleEditComment(commentId)
                                     }
                                 }}
