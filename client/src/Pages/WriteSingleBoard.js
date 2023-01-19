@@ -16,7 +16,8 @@ const WriteSingleBoard = () => {
   const { planId } = useParams();
 
   const [mainData, setMainData] = useState({});
-  const [planDatesAndPlace, setPlanDatesAndPlace] = useState([]);
+  const [days, setDays] = useState([]);
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [placeNotes, setPlaceNotes] = useState([]);
 
@@ -40,18 +41,18 @@ const WriteSingleBoard = () => {
 
   const [zoom, setZoom] = useState(13);
 
-  //선택한 일정 조회
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/plans/${planId}`, {
+      .get(`${process.env.REACT_APP_API_URL}/board/user/plan/${planId}`, {
         headers: {
           Authorization: token,
         },
       })
       .then((res) => {
-        setMainData(res.data.data);
-        setPlanDatesAndPlace(res.data.data.planDatesAndPlace);
-        const startPlace = res.data.data.planDatesAndPlace[0].places[0];
+        setMainData(res.data);
+        setTitle(res.data.planTitle);
+        setDays(res.data.days);
+        const startPlace = res.data.days[0].placeDetails[0];
         setGeocode({
           lat: startPlace.latitude,
           lng: startPlace.longitude,
@@ -115,10 +116,12 @@ const WriteSingleBoard = () => {
 
   return (
     <>
-      {mainData && (
+      {mainData.planTitle && (
         <BoardHeader
           mainData={mainData}
           mode="write"
+          title={title}
+          setTitle={setTitle}
           content={content}
           handleCreateLog={handleCreateLog}
         />
@@ -134,20 +137,21 @@ const WriteSingleBoard = () => {
       <ItineraryBox>
         <h3>Itinerary</h3>
         {mainData &&
-          planDatesAndPlace.map((el) => (
-            <div key={el.planDateId}>
-              <div>{el.planDate}</div>
-              {el.places.map((place) => (
+          days.map((day) => (
+            <div key={day.index}>
+              <div>{day.day}</div>
+              {day.placeDetails.map((place) => (
                 <div
-                  key={place.placeId}
+                  key={place.index}
                   onClick={() => {
                     handleGeoCode(place.latitude, place.longitude);
                   }}
                 >
-                  <div>{place.placeId}</div>
+                  <div>{place.index}</div>
+                  <div>{place.placeName}</div>
                   <div>{place.placeAddress}</div>
                   <input
-                    name={place.placeId}
+                    name={place.index}
                     placeholder="memo"
                     onChange={(e) => handleChangeNote(e)}
                   />
@@ -163,10 +167,10 @@ const WriteSingleBoard = () => {
             center={geocode}
             mapContainerStyle={mapContainerStyle}
           >
-            {planDatesAndPlace.map((el) => (
-              <div key={el.planDateId}>
-                <div>{el.planDate}</div>
-                <SingleBoardMarker handleZoom={handleZoom} el={el} />
+            {days.map((day, idx) => (
+              <div key={idx}>
+                <div>{day.planDate}</div>
+                <SingleBoardMarker handleZoom={handleZoom} day={day} />
               </div>
             ))}
           </GoogleMap>
