@@ -256,9 +256,12 @@ a:hover {
   color: var(--dark-gray-1);
 }
 
+.poi-info-window .address {
+  margin-bottom: var(--spacing-2);
+}
+
 .poi-info-window .address div {
   color: var(--dark-gray-3) !important;
-  margin-bottom: var(--spacing-2);
 }
 
 .poi-info-window .address > div {
