@@ -45,11 +45,11 @@ const MarkerLists = (props) => {
     if (day === '일') return '#006a6b';
   };
 
-  const markerUrl = `data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="64" height="64" viewBox="0 -5 64 64"%3E%3Cpath fill="${makeColor(
+  const markerUrl = `data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="56" height="56" viewBox="0 -5 56 56"%3E%3Cpath fill="${makeColor(
     `${moment(data.planDate).format('ddd')}`
   )}" stroke="${makeStrokeColor(
     `${moment(data.planDate).format('ddd')}`
-  )}"  stroke-width="2" d="M32.9034 57.1083C33.1835 56.9665 33.4262 56.7608 33.612 56.5078C44.536 41.6478 50 31.0358 50 24.6758C50 14.6758 42 6.67578 32 6.67578C22 6.67578 14 14.6758 14 24.6758C14 31.0358 19.464 41.6478 30.388 56.5078C30.5738 56.7608 30.8165 56.9665 31.0966 57.1083C31.3766 57.2501 31.6861 57.324 32 57.324C32.3139 57.324 32.6234 57.2501 32.9034 57.1083Z"%2F%3E%3C%2Fsvg%3E`;
+  )}" stroke-width="2" d="M28 47.1389C23.5669 41.0517 20.2653 35.8721 18.058 31.5849C15.717 27.0377 14.75 23.762 14.75 21.5918C14.75 14.2225 20.6307 8.3418 28 8.3418C35.3693 8.3418 41.25 14.2225 41.25 21.5918C41.25 23.762 40.283 27.0377 37.942 31.5849C35.7347 35.8721 32.4331 41.0517 28 47.1389Z"%2F%3E%3C%2Fsvg%3E`;
 
   return (
     <Fragment>
