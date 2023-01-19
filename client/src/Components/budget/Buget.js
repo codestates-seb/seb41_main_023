@@ -16,117 +16,119 @@ const Budget = ({
   setBudget,
   expenses,
   setExpenses,
-  refresh,
-  handleRefresh,
 }) => {
-  const token = getCookie('accessToken');
-  const [currentExpenseId, setCurrentExpenseId] = useState();
+    const token = getCookie("accessToken");
+    const [currentExpenseId, setCurrentExpenseId] = useState();
+    const [budgetRefresh, setBudgetRefresh] = useState(1);
 
-  /* Modal */
-
-  // 예산 수정
-  const [editBudget, setEditBudget] = useState(false);
-
-  // 비용 추가
-  const [addExpenseModal, setAddExpenseModal] = useState(false);
-
-  // 비용 수정
-  const [editExpenseModal, setEditExpenseModal] = useState(false);
-
-  //비용 삭제
-  const [deleteExpenseModal, setDeleteExpenseModal] = useState(false);
-
-  // 예산과 비용 조회
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((res) => {
-        setBudget(res.data);
-        setExpenses(res?.data?.expenses || []);
-        handleRefresh();
-      })
-      .catch((err) => console.log('error'));
-  }, [refresh, budgetId, handleRefresh, token, setBudget, setExpenses]);
-
-  // 예산 수정 요청
-  const handleEditBudget = (inputBudget) => {
-    if (inputBudget < 1) {
-      return alert('예산은 1원 이상이어야 합니다.');
+    const handleBudgetRefresh = () => {
+        setBudgetRefresh(prevState => prevState * -1);
     }
 
-    axios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/budget/${budgetId}`,
-        {
-          expectedBudget: inputBudget,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
+    /* Modal */
+
+    // 예산 수정
+    const [editBudget, setEditBudget] = useState(false);
+
+    // 비용 추가
+    const [addExpenseModal, setAddExpenseModal] = useState(false);
+
+    // 비용 수정
+    const [editExpenseModal, setEditExpenseModal] = useState(false);
+
+    //비용 삭제
+    const [deleteExpenseModal, setDeleteExpenseModal] = useState(false);
+
+    // 예산과 비용 조회
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_API_URL}/budget/${budgetId}`, {
+                headers: {
+                    Authorization: token,
+                },
+            })
+            .then((res) => {
+                setBudget(res.data);
+                setExpenses(res?.data?.expenses || []);
+            })
+            .catch((err) => console.log("error"));
+    }, [budgetRefresh]);
+
+    // 예산 수정 요청
+    const handleEditBudget = (inputBudget) => {
+        if (inputBudget < 1) {
+            return alert("예산은 1원 이상이어야 합니다.");
         }
-      )
-      .then((res) => {
-        setBudget({ ...budget, expectedBudget: res.data.expectedBudget });
-      })
-      .then((res) => {
-        setEditBudget(false);
-      })
-      .catch((err) => console.log('error'));
-  };
 
-  // 비용 수정 요청
-  const handleEditExpense = (price, selectedCategory, item, expenseId) => {
-    console.log(price, selectedCategory, item, expenseId);
-    axios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/expenses/${expenseId}`,
-        {
-          category: selectedCategory,
-          item: item,
-          price: price,
-        },
-        {
-          headers: {
-            Authorization: token,
-            withCredentials: true,
-          },
+        axios
+            .patch(
+                `${process.env.REACT_APP_API_URL}/budget/${budgetId}`,
+                {
+                    expectedBudget: inputBudget,
+                },
+                {
+                    headers: {
+                        Authorization: token,
+                    },
+                }
+            )
+            .then((res) => {
+                setBudget({...budget, expectedBudget: res.data.expectedBudget});
+            })
+            .then((res) => {
+                setEditBudget(false);
+            })
+            .catch((err) => console.log("error"));
+    };
+
+    // 비용 수정 요청
+    const handleEditExpense = (price, selectedCategory, item, expenseId) => {
+        console.log(price, selectedCategory, item, expenseId);
+        axios
+            .patch(
+                `${process.env.REACT_APP_API_URL}/expenses/${expenseId}`,
+                {
+                    category: selectedCategory,
+                    item: item,
+                    price: price,
+                },
+                {
+                    headers: {
+                        Authorization: token,
+                        withCredentials: true,
+                    },
+                }
+            )
+            .then((res) => {
+                setEditExpenseModal(false);
+                handleBudgetRefresh();
+            })
+            .catch((err) => console.log(err));
+    };
+
+    // 비용 삭제 요청
+    const handleDeleteExpense = (expenseId) => {
+        axios
+            .delete(`${process.env.REACT_APP_API_URL}/expenses/${expenseId}`, {
+                headers: {
+                    Authorization: token,
+                    withCredentials: true,
+                },
+            })
+            .then((res) => {
+                handleBudgetRefresh();
+                setDeleteExpenseModal(false);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    const budgetUsage = () => {
+        if (!budget.totalExpenses) {
+            return 0;
+        } else {
+            return Math.floor((budget?.totalExpenses / budget?.expectedBudget) * 100);
         }
-      )
-      .then((res) => {
-        setEditExpenseModal(false);
-        handleRefresh();
-      })
-      .catch((err) => console.log('error'));
-  };
-
-  // 비용 삭제 요청
-  const handleDeleteExpense = (expenseId) => {
-    axios
-      .delete(`${process.env.REACT_APP_API_URL}/expenses/${expenseId}`, {
-        headers: {
-          Authorization: token,
-          withCredentials: true,
-        },
-      })
-      .then((res) => {
-        handleRefresh();
-        setDeleteExpenseModal(false);
-      })
-      .catch((err) => console.log('error'));
-  };
-
-  const budgetUsage = () => {
-    if (!budget.totalExpenses) {
-      return 0;
-    } else {
-      return Math.floor((budget?.totalExpenses / budget?.expectedBudget) * 100);
-    }
-  };
+    };
 
   return (
     <BudgetContainer>
@@ -148,14 +150,14 @@ const Budget = ({
       <Expense>
         <div className='expense__header'>
           <h3 className='plan__heading'>Expense</h3>
-          <AddExpenseBtn
-            className='button--primary'
-            onClick={() => {
-              setAddExpenseModal(!addExpenseModal);
-            }}
-          >
-            Add Expense
-          </AddExpenseBtn>
+          {/*<AddExpenseBtn*/}
+          {/*  className='button--primary'*/}
+          {/*  onClick={() => {*/}
+          {/*    setAddExpenseModal(!addExpenseModal);*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  Add Expense*/}
+          {/*</AddExpenseBtn>*/}
         </div>
 
         <AddExpense

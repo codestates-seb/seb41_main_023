@@ -17,7 +17,7 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
       <div className="input_area">
         <label>Username</label>
         <input
-          className="input"
+          className="input"ㄱ
           onChange={handleChange}
           name="id"
           id="username"
@@ -125,9 +125,9 @@ const Password = () => {
 
 /* 계정 삭제 */
 const DeleteAccount = ({ modal, setModal }) => {
-  const memberId = getCookie("memberId");
-  const token = getCookie("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
+  const memberId = getCookie('memberId');
+  const token = getCookie('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
   const navigate = useNavigate();
 
   const handleDeleteAccount = () => {
@@ -146,8 +146,8 @@ const DeleteAccount = ({ modal, setModal }) => {
         removeCookie('memberId');
       })
       .then((res) => {
-        localStorage.removeItem("refreshToken");
-        alert("그동안 이용해주셔서 감사합니다.");
+        localStorage.removeItem('refreshToken');
+        alert('그동안 이용해주셔서 감사합니다.');
       })
       .then((res) => {
         window.location.replace('/');

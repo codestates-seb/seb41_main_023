@@ -200,7 +200,6 @@ const SinglePlan = (props) => {
               }}
             >
               {moneySvg}
-              Add cost
               {data.expenses ? data.expenses.price : 'Add Cost'}
             </button>
           </PlaceAddingButtons>
