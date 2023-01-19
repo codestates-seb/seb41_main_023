@@ -26,6 +26,9 @@ public class ExpenseService {
     private final MemberService memberService;
 
     public Expenses createExpense(Expenses expenses, long budgetId, Long placeId) {
+        if (expenses.getItem() != null && expenses.getItem().trim().isEmpty()) {
+            expenses.setItem(null);
+        }
         //장소 연결
         if(placeId != null) {
             if(expenseRepository.findAllByPlacePlaceId(placeId).size() != 0){
