@@ -57,9 +57,9 @@ const MyTrips = ({ mode }) => {
                 {moment(trip.startDate).format("M월 D일")} -{" "}
                 {moment(trip.endDate).format("M월 D일")}
               </div>
-              <div>
+              {/* <div>
                 {trip.plans} places · {trip.cityName}
-              </div>
+              </div> */}
             </div>
           </div>
         ))}
