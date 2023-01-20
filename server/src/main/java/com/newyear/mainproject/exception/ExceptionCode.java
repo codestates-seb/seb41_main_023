@@ -13,6 +13,8 @@ public enum ExceptionCode {
     INVALID_VALUES(400, "Invalid Values"),
     INVALID_EMAIL_AUTH_NUMBER(400, "Invalid email authNumber"),
     INVALID_EMAIL_AUTH(400, "Invalid email auth"),
+    INVALID_REFRESH_TOKEN(400, "Invalid refresh token"),
+    EXPIRED_JWT_TOKEN(421, "Expired jwt token"),
 
     //board
     BOARD_NOT_PATCHED(403, "Board not patched"),

@@ -12,6 +12,5 @@ import javax.validation.constraints.NotBlank;
 public class LogoutDto{
     @NotBlank
     private String accessToken;
-    @NotBlank
     private String refreshToken;
 }

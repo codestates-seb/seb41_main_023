@@ -148,6 +148,11 @@ public class MemberService {
         //회원 탈퇴시 board, comment 삭제
         boardRepository.deleteAll(member.getBoards());
         commentRepository.deleteAll(member.getComments());
+
+        //refresh token 삭제
+        if (redisUtil.hasKey(member.getEmail())) {
+            redisUtil.delete(member.getEmail());
+        }
     }
 
     private void verifyExistsEmail(String email) {

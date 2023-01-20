@@ -1,11 +1,13 @@
 package com.newyear.mainproject.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -81,4 +83,17 @@ public class GlobalExceptionAdvice {
         return ErrorResponse.of(ExceptionCode.MAX_FILE_SIZE_2MB);
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleExpiredJwtException(ExpiredJwtException e) {
+        log.error("ExpiredJwtException", e);
+        return ErrorResponse.of(ExceptionCode.EXPIRED_JWT_TOKEN);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleExpiredJwtException(MissingRequestHeaderException e) {
+        log.error("MissingRequestHeaderException", e);
+        return ErrorResponse.of(e.getMessage());
+    }
 }
