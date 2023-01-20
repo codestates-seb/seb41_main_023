@@ -58,7 +58,8 @@ const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => 
                                 placeholder={`${comment.comment}`}
                                 ref={editRef}
                                 autoFocus
-                                onKeyDown={(e) => {
+                                onKeyUp={(e) => {
+                                    if(onkeyup) return;
                                     if (e.key === 'Enter') {
                                         handleEditComment(commentId)
                                     }

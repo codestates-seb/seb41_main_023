@@ -72,7 +72,8 @@ const CommentSection = ({boardData}) => {
                             type={'text'}
                             placeholder={'Add a question or share your opinion!!'}
                             ref={commentRef}
-                            onKeyDown={(e) => {
+                            onKeyUp={(e) => {
+                                if(onkeyup) return;
                                 if(e.key === 'Enter') {
                                     handleCommentSubmit();
                                 }
