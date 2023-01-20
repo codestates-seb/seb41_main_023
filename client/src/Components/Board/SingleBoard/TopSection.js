@@ -1,127 +1,164 @@
-import {useNavigate} from "react-router-dom";
-import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const TopSection = (props) => {
-    const navigate = useNavigate();
-    const {boardData} = props;
+  const navigate = useNavigate();
+  const { boardData } = props;
 
-    const {
-        cityImage,
-        checkLikes,
-        cityName,
-        createdAt,
-        displayName,
-        profileImage,
-        title,
-        views
-    } = boardData;
+  const { cityImage, checkLikes, cityName, createdAt, displayName, profileImage, title, views } =
+    boardData;
 
-    return (
-        <BoardTopNav cityImage={cityImage}>
-            <HeaderSection>
-                <div
-                    className={'logo'}
-                    onClick={() => navigate('/')}
-                >
-                    <p>Logo</p>
-                </div>
-                <div className={'liked'}>{checkLikes ? "❤️" : "♡"}</div>
-            </HeaderSection>
-            <TitleSection>
-                <div className={'city_name'}>{cityName}</div>
-                <div className={'title'}>{title}</div>
-                <div className={'writer_container'}>
-                    <div className={'writer_image'}>
-                        <img src={profileImage} alt={`${displayName}의 프로필 사진`}/>
-                    </div>
-                    <div className={'writer_info'}>
-                        <p className={'writer_name'}>{displayName}</p>
-                        <p className={'written_date_views'}>{createdAt} / {views} views</p>
-                    </div>
-                </div>
-            </TitleSection>
-        </BoardTopNav>
-    )
+  return (
+    <TopContainer cityImage={cityImage}>
+      <div className='top__gradient-bg'></div>
+      <Header>
+        <div className='header__logo' onClick={() => navigate('/')}>
+          website name
+        </div>
+        <div className={checkLikes ? 'meta_likes likes' : 'meta_likes'}>
+          <svg viewBox='0 0 16 16'>
+            <path
+              fillRule='evenodd'
+              fill='currentColor'
+              d='M7.29583817,13.7871612 C7.68473613,14.1808512 8.31605486,14.1828078 8.70304958,13.7885531 C8.70304958,13.7885531 10.9002368,11.6291175 13,9.00215315 C15,6.50000023 15.5000002,3.49999998 13,2.00000001 C10.5031852,0.501911222 8.00000022,3.00000005 8.00000022,3.00000005 C8.00000022,3.00000005 5.49772957,0.501362336 3.00000005,2.00000001 C0.500000019,3.49999999 0.999999993,6.50000023 2.99999999,9.00215315 C5.09401769,11.6219294 7.29583817,13.7871612 7.29583817,13.7871612 Z'
+            ></path>
+          </svg>
+        </div>
+      </Header>
+      <TripInfo>
+        <div className='city-name__label'>{cityName}</div>
+        <h2>{title}</h2>
+        <div className='writer-info__container'>
+          <div className='writer-image'>
+            <img src={profileImage} alt={`${displayName}의 프로필 사진`} />
+          </div>
+          <div className='writer-info'>
+            <p className='name'>{displayName}</p>
+            <p className='meta-info'>
+              {createdAt} · {views} views
+            </p>
+          </div>
+        </div>
+      </TripInfo>
+    </TopContainer>
+  );
 };
 
 export default TopSection;
 
-const BoardTopNav = styled.div`
+const TopContainer = styled.div`
+  position: relative;
   width: 50vw;
-  height: 300px;
-  border: 1px solid lightgray;
-  background-image: url(${props => props.cityImage});
+  height: 350px;
+  background-color: var(--primary-blue-light-1);
+  background-image: url(${(props) => props.cityImage});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px 30px;
+  cursor: default;
+
+  .top__gradient-bg {
+    position: absolute;
+    top: 0;
+    width: 50vw;
+    height: 350px;
+    background: rgb(15, 15, 15);
+    background: -moz-linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+    background: -webkit-linear-gradient(
+      0deg,
+      rgba(15, 15, 15, 0.5) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background: linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0f0f0f",endColorstr="#ffffff",GradientType=1);
+    z-index: 1;
+  }
 `;
 
-const HeaderSection = styled.div`
-  width: auto;
-  height: auto;
+const Header = styled.div`
+  position: fixed;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  margin: 0 50px;
+  height: 60px;
+  width: calc(50vw - 100px);
+  z-index: 100;
 
-  .logo {
-    width: 100px;
-    height: 30px;
-    background-color: gray;
+  > * {
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  }
 
-    p {
-      color: black;
+  > .meta_likes {
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+
+    svg path {
+      color: rgba(15, 15, 15, 0.25);
+      stroke-width: 1.5;
+      stroke: var(--white);
+    }
+
+    &:hover {
+      svg path {
+        color: rgba(202, 53, 53, 0.25);
+        stroke-width: 1.5;
+        stroke: var(--red-light-1);
+      }
+    }
+
+    &.likes {
+      svg path {
+        color: var(--red);
+        stroke: var(--red);
+      }
     }
   }
 `;
 
-const TitleSection = styled.div`
-  width: auto;
-  height: 130px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+const TripInfo = styled.div`
+  position: absolute;
+  bottom: 50px;
+  margin: 0 50px;
+  width: calc(50vw - 100px);
+  z-index: 100;
 
-  .city_name {
-    width: 80px;
-    height: 20px;
-    border-radius: 1rem;
-    background-color: gray;
-    color: black;
-    text-align: center;
+  .city-name__label {
+    display: inline-block;
+    margin-bottom: var(--spacing-1);
+    padding: 6px var(--spacing-2);
+    background-color: var(--primary-blue-dark);
+    color: var(--light-gray-3);
+    font-size: var(--small-text-size);
+    line-height: var(--samll-text-line-height);
+    font-weight: 500;
+    border-radius: 3px;
   }
 
-  .title {
-    font-size: 25px;
-    color: white;
+  h2 {
+    margin-bottom: var(--spacing-3);
+    font-size: var(--xx-large-heading-font-size);
+    line-height: var(--xx-large-heading-line-height);
+    font-weight: 600;
+    color: var(--white);
   }
 
-  .writer_container {
+  .writer-info__container {
     display: flex;
-    flex-direction: row;
+    gap: var(--spacing-2);
+    align-items: center;
 
-    .writer_image {
-      position: relative;
+    .writer-image {
+      background-color: var(--primary-blue-bright);
       width: 30px;
       height: 30px;
       border-radius: 50%;
-      overflow: hidden;
-      margin-right: 10px;
+    }
 
-      img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .writer-info {
+      > p {
+        color: var(--light-gray-3);
       }
     }
   }
