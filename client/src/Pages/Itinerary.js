@@ -1,6 +1,6 @@
 import PlanSection from "../Components/itinerary/PlanSection";
 import {Fragment, useEffect, useState} from "react";
-import {LoadScript} from "@react-google-maps/api";
+import {useJsApiLoader} from "@react-google-maps/api";
 import RenderMap from "../Components/itinerary/RenderMap";
 import TopNavigation from "../Components/itinerary/TopNavigation";
 import axios from "axios";
@@ -11,6 +11,11 @@ const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
 const Itinerary = () => {
     const [libraries] = useState(["places"]);
+    const {isLoaded} = useJsApiLoader({
+        googleMapsApiKey: API_KEY,
+        libraries: libraries
+    });
+
     const {itineraryId} = useParams();
 
     const [searchedGeocode, setSearchedGeocode] = useState({
@@ -76,34 +81,35 @@ const Itinerary = () => {
                 setMainData={setMainData}
                 handleRefresh={handleRefresh}
             />
-            <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
-                <RenderMap
-                    searchedGeocode={searchedGeocode}
-                    mainData={mainData}
-                    zoom={zoom}
-                    handleZoom={handleZoom}
-                    handleGeoCode={handleGeoCode}
-                />
-                <PlanSection
-                    searchedGeocode={searchedGeocode}
-                    setSearchedGeocode={setSearchedGeocode}
-                    searchBox={searchBox}
-                    setSearchBox={setSearchBox}
-                    searchData={searchData}
-                    setSearchData={setSearchData}
-                    startDate={startDate}
-                    setStartDate={setStartDate}
-                    endDate={endDate}
-                    setEndDate={setEndDate}
-                    mainData={mainData}
-                    handleGeoCode={handleGeoCode}
-                    handleZoom={handleZoom}
-                    handleRefresh={handleRefresh}
-                    budgetRefresh={budgetRefresh}
-                    handleBudgetRefresh={handleBudgetRefresh}
-                />
-            </LoadScript>
-
+            {isLoaded ? (
+                <Fragment>
+                    <RenderMap
+                        searchedGeocode={searchedGeocode}
+                        mainData={mainData}
+                        zoom={zoom}
+                        handleZoom={handleZoom}
+                        handleGeoCode={handleGeoCode}
+                    />
+                    <PlanSection
+                        searchedGeocode={searchedGeocode}
+                        setSearchedGeocode={setSearchedGeocode}
+                        searchBox={searchBox}
+                        setSearchBox={setSearchBox}
+                        searchData={searchData}
+                        setSearchData={setSearchData}
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                        mainData={mainData}
+                        handleGeoCode={handleGeoCode}
+                        handleZoom={handleZoom}
+                        handleRefresh={handleRefresh}
+                        budgetRefresh={budgetRefresh}
+                        handleBudgetRefresh={handleBudgetRefresh}
+                    />
+                </Fragment>
+            ) : <p>error!</p>}
         </Fragment>
     )
 };
