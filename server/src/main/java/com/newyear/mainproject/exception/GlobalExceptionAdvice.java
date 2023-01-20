@@ -12,6 +12,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolationException;
@@ -96,4 +97,13 @@ public class GlobalExceptionAdvice {
         log.error("MissingRequestHeaderException", e);
         return ErrorResponse.of(e.getMessage());
     }
+
+    //일정 선택 후 게시글 작성 화
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleExpiredJwtException(MethodArgumentTypeMismatchException e) {
+        log.error("MethodArgumentTypeMismatchException", e);
+        return ErrorResponse.of(e.getMessage());
+    }
+
 }
