@@ -82,14 +82,14 @@ const EditExpense = (props) => {
                   {selectedCategory || '항목을 선택하세요'}
                 </div> */}
               </div>
-              {/* <div className='input__container'>
-              <input
-                className='content'
-                placeholder='지출 항목을 입력해주세요.'
-                name='item'
-                onChange={handleInputs}
-              />
-            </div> */}
+              <div className='input__container'>
+                <input
+                  className='input--default'
+                  name='item'
+                  placeholder='비용 상세 내용을 입력해주세요'
+                  onChange={handleInputs}
+                />
+              </div>
             </div>
             <div className='submit_frame'>
               <button

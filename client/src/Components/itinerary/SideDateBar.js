@@ -19,20 +19,26 @@ const LeftSideBar = styled.div`
 
 const DateBox = styled.div`
   > button {
-    padding: var(--spacing-2) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--spacing-2);
     width: 100%;
-    font-size: var(--large-text-size);
-    line-height: var(--large-text-line-height);
     border-radius: 3px;
     background-color: transparent;
 
+    > span {
+      font-size: var(--large-text-size);
+      line-height: var(--large-text-line-height);
+      color: inherit;
+    }
+
     &:hover {
-      color: var(--primary-blue-dark);
-      /* font-weight: 600; */
+      color: var(--primary-blue);
     }
 
     &:active {
-      background-color: var(--light-gray-2);
+      color: var(--primary-blue-dark);
     }
   }
 `;
@@ -45,7 +51,10 @@ const SideDateBar = (props) => {
       <h5>Dates</h5>
       {singlePlanData.map((date) => (
         <DateBox key={date.planDateId}>
-          <button>{moment(date.planDate).format('M.D')}</button>
+          <button>
+            <span>{moment(date.planDate).format('M.D')}</span>
+            <span>{moment(date.planDate).format('ddd')}</span>
+          </button>
         </DateBox>
       ))}
     </LeftSideBar>

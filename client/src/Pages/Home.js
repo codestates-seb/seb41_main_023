@@ -10,7 +10,7 @@ import Calendar from "../Components/Calendar";
 import Autocomplete from "../Components/AutoComplete";
 
 import logOutBgImg from "../images/logged-out_background-image.jpg";
-import logInBgImg from "../images/login_background-image-02.jpg";
+import logInBgImg from "../images/login_background-image.jpg";
 
 const Home = ({ login }) => {
   const navigate = useNavigate();

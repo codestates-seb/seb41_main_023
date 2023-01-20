@@ -56,9 +56,9 @@ const EditBudget = (props) => {
               <button className='button--primary' onClick={() => handleEditBudget(inputBudget)}>
                 Set Budget
               </button>
-              <div className='button--default button--subtle' onClick={() => setEditBudget(false)}>
+              <button className='button--default button--subtle' onClick={() => setEditBudget(false)}>
                 Cancel
-              </div>
+              </button>
             </div>
           </ModalWrapper>
         </ModalContainer>

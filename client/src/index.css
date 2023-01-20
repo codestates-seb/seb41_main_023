@@ -18,13 +18,13 @@
   --primary-blue-dark: #2750ae;
   --primary-blue-light-1: #9cc7ff;
   --primary-blue-light-2: #cfdfff;
-  --primary-blue-light-3: #EAF1FF;
+  --primary-blue-light-3: #eaf1ff;
 
   /* color - danger, red */
   --red: #ca3521;
   --red-dark-1: #ae2a19;
   --red-dark-2: #601e16;
-  --red-light-1: #E86B5A;
+  --red-light-1: #e86b5a;
 
   /* font-size - text */
   --small-text-size: 11px;
@@ -67,7 +67,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, 'Helvetica', BlinkMacSystemFont, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: var(--default-text-size);
   line-height: var(--default-text-line-height);
   color: var(--dark-gray-2);
@@ -86,7 +86,7 @@ input {
 
 input:focus {
   border-color: var(--primary-blue-light-1);
-  box-shadow: 0 0 0 var(--spacing-1) rgba(156, 199, 255, .5);
+  box-shadow: 0 0 0 var(--spacing-1) rgba(156, 199, 255, 0.5);
 }
 
 input::placeholder {
@@ -101,19 +101,25 @@ input::placeholder {
 }
 
 .input--large-icon {
-  padding: 15px 12px; 
-  padding-left: 42px; 
+  padding: 15px 12px;
+  padding-left: 42px;
   font-size: var(--large-text-size);
   line-height: 18px;
   border: 1px solid var(--light-gray-4);
-  border-radius: 3px; 
+  border-radius: 3px;
 }
 
 .input--default-icon {
-  padding: 10px 14px; 
-  padding-left: 36px; 
+  padding: 10px 14px;
+  padding-left: 36px;
   border: 1px solid var(--light-gray-4);
-  border-radius: 3px; 
+  border-radius: 3px;
+}
+
+.input--default {
+  padding: 10px 14px;
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px;
 }
 
 .svg-icon--20 {
@@ -129,13 +135,13 @@ input::placeholder {
 
 button {
   outline: 0;
-  border: 0; 
+  border: 0;
   cursor: pointer;
-  transition: all .1s ease-in;
+  transition: all 0.1s ease-in;
 }
 
 .button--primary {
-  padding: 10px 14px; 
+  padding: 10px 14px;
   font-weight: 500;
   background-color: var(--primary-blue-bright);
   color: var(--white);
@@ -161,15 +167,15 @@ button {
 }
 
 .button--default {
-  padding: 10px 14px; 
+  padding: 10px 14px;
   background-color: transparent;
-  font-weight: 500; 
+  font-weight: 500;
   color: var(--dark-gray-1);
-  border-radius: 3px; 
+  border-radius: 3px;
 }
 
 .button--google {
-  padding: 10px 14px; 
+  padding: 10px 14px;
   font-weight: 500;
   background-color: var(--white);
   color: var(--dark-gray-1);
@@ -190,7 +196,7 @@ button {
 }
 
 .button--subtle {
-  font-weight: 400; 
+  font-weight: 400;
 }
 
 .button--subtle:hover {
@@ -211,7 +217,7 @@ a:hover {
 }
 
 .button--danger {
-  padding: 10px 14px; 
+  padding: 10px 14px;
   font-weight: 500;
   background-color: var(--red);
   color: var(--white);
@@ -228,4 +234,55 @@ a:hover {
 
 #mapping {
   position: fixed !important;
+}
+
+.poi-info-window div, .poi-info-window a {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+.gm-style .gm-style-iw-c {
+  padding: var(--spacing-3) !important;
+  min-width: 300px !important;
+  max-width: 400px !important;
+}
+
+.gm-ui-hover-effect {
+  top: 12px !important;
+  right: 12px !important;
+}
+
+.poi-info-window .title {
+  margin-bottom: var(--spacing-1);
+  margin-right: var(--spacing-4);
+  font-size: var(--small-heading-font-size);
+  line-height: var(--small-heading-line-height);
+  font-weight: 600;
+  color: var(--dark-gray-1);
+}
+
+.poi-info-window .address {
+  margin-bottom: var(--spacing-2);
+}
+
+.poi-info-window .address div {
+  color: var(--dark-gray-3) !important;
+}
+
+.poi-info-window .address > div {
+  width: 100%;
+}
+
+.poi-info-window .view-link a span {
+  color: var(--primary-blue-dark) !important;
+  text-decoration: none !important;
+}
+
+.poi-info-window .view-link:hover,
+.poi-info-window a:hover {
+  text-decoration: none !important;
+}
+
+.poi-info-window .view-link a span:hover {
+  color: var(--primary-blue) !important;
+  text-decoration: none !important;
 }

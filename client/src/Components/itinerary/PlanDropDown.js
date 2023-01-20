@@ -6,6 +6,10 @@ import moment from 'moment';
 export const Container = styled.div`
   position: relative;
   min-width: 77px;
+
+  > button {
+    min-width: 77px;
+  }
 `;
 
 export const StyledOptionList = styled.ul`
@@ -22,6 +26,7 @@ export const StyledOptionList = styled.ul`
   list-style: none;
   transition: all 0.1s ease-in;
   display: ${(props) => (props.active ? 'block' : 'none')};
+  z-index: 1000000;
 `;
 
 export const StyledOptionItem = styled.li`

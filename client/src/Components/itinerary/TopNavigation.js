@@ -10,7 +10,6 @@ const TopContainer = styled.div`
   position: relative;
   width: 50vw;
   height: 350px;
-  background-color: var(--primary-blue-light-1);
   background-image: url(${(props) => props.cityImage});
   background-repeat: no-repeat;
   background-size: cover;

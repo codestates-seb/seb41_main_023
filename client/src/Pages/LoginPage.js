@@ -239,7 +239,7 @@ const LeftContainer = styled.div`
   float: left;
 
   .content {
-    min-width: 350px;
+    width: 350px;
 
     h2 {
       margin-bottom: var(--spacing-2);
