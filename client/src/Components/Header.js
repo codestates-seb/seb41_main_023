@@ -43,17 +43,16 @@ const Header = ({login}) => {
     };
 
     // 로그아웃
-    const handleSignout = async () => {
+    const handleSignout = () => {
         if (window.confirm("로그아웃 하시겠습니까?")) {
-            await postData("/members/logout", {
+            postData("/members/logout", {
                 accessToken: token,
                 refreshToken: refreshToken,
             }).then((res) => {
                 removeCookie("accessToken");
                 removeCookie("memberId");
                 localStorage.removeItem("refreshToken");
-                window.location.replace("/");
-            });
+            }).then(res => window.location.replace("/"))
         }
     };
 
