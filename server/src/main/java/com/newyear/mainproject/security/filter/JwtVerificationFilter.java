@@ -4,7 +4,6 @@ import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
 import com.newyear.mainproject.security.logout.RedisUtil;
-import com.newyear.mainproject.security.logout.RefreshTokenRepository;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -28,15 +27,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter{
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final RedisUtil redisUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     public JwtVerificationFilter(JwtTokenizer jwtTokenizer,
                                  CustomAuthorityUtils authorityUtils,
-                                 RedisUtil redisUtil, RefreshTokenRepository refreshTokenRepository) {
+                                 RedisUtil redisUtil) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.redisUtil = redisUtil;
-        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @Override
