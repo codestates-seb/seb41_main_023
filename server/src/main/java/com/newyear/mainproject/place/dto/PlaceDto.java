@@ -45,7 +45,6 @@ public class PlaceDto {
     @Builder
     @Getter
     @Setter
-    @JsonInclude(JsonInclude.Include.NON_NULL) // response null 필드 제외
     public static class Response {
         private PlanDto.PlanDatesResponse planDates;
         private Long placeId;

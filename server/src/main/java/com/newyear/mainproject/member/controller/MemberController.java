@@ -12,8 +12,6 @@ import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.service.PlanService;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
 import com.newyear.mainproject.security.logout.RedisUtil;
-import com.newyear.mainproject.security.logout.RefreshToken;
-import com.newyear.mainproject.security.logout.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -39,18 +38,26 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenizer jwtTokenizer;
     private final RedisUtil redisUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final PlanService planService;
 
     @PostMapping("/signup")
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post post){
-        Member member = mapper.memberPostToMember(post);
-        Member createMember = memberService.createMember(member);
+        Member member = memberService.createMember(mapper.memberPostToMember(post));
 
-        MemberDto.Response response = mapper.memberToMemberResponseDto(createMember);
-
-        return new ResponseEntity<> (new SingleResponseDto<>(response), HttpStatus.CREATED);
+        return new ResponseEntity<> (new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)), HttpStatus.CREATED);
     }
+
+//TODO : 주석 해제 예정
+//    @PostMapping("/signup")
+//    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post post,
+//                                     @RequestParam String authNum){
+//        Member member = mapper.memberPostToMember(post);
+//        Member createMember = memberService.createMember(member, authNum);
+//
+//        MemberDto.Response response = mapper.memberToMemberResponseDto(createMember);
+//
+//        return new ResponseEntity<> (new SingleResponseDto<>(response), HttpStatus.CREATED);
+//    }
 
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@PathVariable("member-id") @Positive long memberId,
@@ -124,17 +131,21 @@ public class MemberController {
 
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId,
-                                       @RequestBody MemberDto.Delete delete){
+                                       @RequestHeader("Authorization") @NotBlank String token){
         memberService.deleteMember(memberId);
 
-        String accessToken = delete.getAccessToken().replace("Bearer ", "");
-        String refreshToken = delete.getRefreshToken();
+        String accessToken =token.replace("Bearer ", "");
 //        String key = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        String encodeBase64SecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
-        RefreshToken findRefreshToken = refreshTokenRepository.findByRefreshToken(refreshToken);
-        redisUtil.setBlackList(accessToken, "access_token", jwtTokenizer.getBlacklistTime(findRefreshToken.getEndedAt()));
+        System.out.println("access 토큰 남은 유효시간 : " + jwtTokenizer.getExpiration(accessToken, encodeBase64SecretKey));
 
-        refreshTokenRepository.delete(findRefreshToken);
+        try{
+            redisUtil.setBlackList(accessToken, "access_token", jwtTokenizer.getBlacklistTime(jwtTokenizer.getExpiration(accessToken, encodeBase64SecretKey)));
+        }
+        catch (NullPointerException e){
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_LOGIN);
+        }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
