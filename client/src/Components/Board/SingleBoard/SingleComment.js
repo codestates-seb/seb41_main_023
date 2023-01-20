@@ -12,7 +12,7 @@ const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => 
     };
 
     const handleEditComment = (commentId) => {
-        const editedComment = {"comment": editRef.current.value};
+        const editedComment = {"comment": editRef.current?.value};
         axios.patch(`${process.env.REACT_APP_API_URL}/comments/${commentId}`, editedComment, {
             headers: {
                 Authorization: getCookie('accessToken')
@@ -55,7 +55,7 @@ const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => 
                         {isEdit ? (
                             <input
                                 type={'text'}
-                                placeholder={`${comment.comment}`}
+                                defaultValue={`${comment.comment}`}
                                 ref={editRef}
                                 autoFocus
                                 onKeyUp={(e) => {
