@@ -57,9 +57,9 @@ const MyTrips = ({ mode }) => {
                 {moment(trip.startDate).format("M월 D일")} -{" "}
                 {moment(trip.endDate).format("M월 D일")}
               </div>
-              <div>
+              {/* <div>
                 {trip.plans} places · {trip.cityName}
-              </div>
+              </div> */}
             </div>
           </div>
         ))}
@@ -85,6 +85,7 @@ const MyTripsContainer = styled.div`
   .contents {
     display: flex;
     gap: var(--spacing-4);
+    flex-wrap: wrap;
 
     .my-trips__card {
       width: calc((100vw - 228px) / 5);

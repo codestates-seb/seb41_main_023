@@ -116,13 +116,15 @@ const AddExpense = (props) => {
                   {currentPlace || '장소를 선택하세요'}
                 </div>
               </div>
+              <div className='input__container'>
+                <input
+                  className='input--default'
+                  name='item'
+                  placeholder='비용 상세 내용을 입력해주세요'
+                  onChange={handleInputs}
+                />
+              </div>
             </div>
-            <input
-              className='content'
-              name='item'
-              placeholder='비용 상세 내용을 입력해주세요.'
-              onChange={handleInputs}
-            />
             <div className='submit_frame'>
               <button
                 className='button--primary'
@@ -204,6 +206,10 @@ const ModalWrapper = styled.div`
     > .input__container {
       position: relative;
       width: 100%;
+
+      > .input--default {
+        width: 100%;
+      }
 
       > .input--default-icon {
         width: 100%;
