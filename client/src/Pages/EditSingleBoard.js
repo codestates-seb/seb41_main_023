@@ -200,20 +200,20 @@ const EditSingleBoard = () => {
           ))}
       </ItineraryBox>
       <MapBox>
-        <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
-          <GoogleMap
-            zoom={zoom}
-            center={geocode}
-            mapContainerStyle={mapContainerStyle}
-          >
-            {days.map((day, idx) => (
-              <div key={idx}>
-                <div>{day.planDate}</div>
-                <SingleBoardMarker handleZoom={handleZoom} day={day} />
-              </div>
-            ))}
-          </GoogleMap>
-        </LoadScript>
+          {isLoaded && (
+              <GoogleMap
+                  zoom={zoom}
+                  center={geocode}
+                  mapContainerStyle={mapContainerStyle}
+              >
+                  {days.map((day, idx) => (
+                      <div key={idx}>
+                          <div>{day.planDate}</div>
+                          <SingleBoardMarker handleZoom={handleZoom} day={day}/>
+                      </div>
+                  ))}
+              </GoogleMap>
+          )}
       </MapBox>
     </>
   );
