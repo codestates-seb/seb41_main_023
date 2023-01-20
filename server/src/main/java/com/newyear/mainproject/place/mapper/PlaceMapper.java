@@ -17,7 +17,6 @@ public interface PlaceMapper {
         place.setLatitude(post.getLatitude());
         place.setLongitude(post.getLongitude());
         place.setPlaceAddress(post.getPlaceAddress());
-
         if(post.getRatings() == null) {
             place.setRatings(0.0);
         }else {
@@ -27,7 +26,6 @@ public interface PlaceMapper {
         place.setWebsite(post.getWebsite());
         place.setPhone(post.getPhone());
         place.setOpeningHours(post.getOpeningHours());
-        place.setRatings(0.0);
 
 
         //plan_date, plan 연결
