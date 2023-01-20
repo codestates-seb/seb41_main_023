@@ -36,6 +36,11 @@ public class PlaceService {
         if (!plan.getMember().equals(memberService.getLoginMember())) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
+
+        if(place.getRatings() == null){
+            place.setRatings(0.0);
+        }
+
         return placeRepository.save(place);
     }
 
