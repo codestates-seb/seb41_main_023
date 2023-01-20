@@ -5,12 +5,9 @@ import com.google.gson.Gson;
 import com.newyear.mainproject.exception.ErrorResponse;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
-import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.dto.LoginDto;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
 import com.newyear.mainproject.security.logout.RedisUtil;
-import com.newyear.mainproject.security.logout.RefreshToken;
-import com.newyear.mainproject.security.logout.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.MediaType;
@@ -33,11 +30,7 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
-    private final MemberRepository memberRepository;
-
     private final RedisUtil redisUtil;
-
-    private final RefreshTokenRepository refreshTokenRepository;
 
     //메서드 내부에서 인증을 시도하는 로직
     @SneakyThrows
@@ -137,12 +130,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         //리프레시 토큰 redis에 저장
         redisUtil.set(subject, refreshToken, jwtTokenizer.getRefreshTokenExpirationMinutes());
-
-        RefreshToken token = new RefreshToken(refreshToken);
-        token.setEndedAt(LocalDateTime.now());
-        token.setEndedAt(token.getEndedAt().plusMinutes(jwtTokenizer.getAccessTokenExpirationMinutes()));
-
-        refreshTokenRepository.save(token);
 
         return refreshToken;
     }

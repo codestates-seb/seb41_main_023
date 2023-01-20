@@ -113,7 +113,7 @@ public class JwtTokenizer {
     //access토큰 유효성, 만료일자 확인
     public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             log.info(e.getMessage());
@@ -121,11 +121,40 @@ public class JwtTokenizer {
         }
     }
 
+    //시간비교해서 블랙리스트 작성
     public Long getBlacklistTime(LocalDateTime localDateTime){
         Duration duration = Duration.between(LocalDateTime.now(), localDateTime);
+
+        System.out.println("duration : " + duration );
+
         Long blacklistTime = duration.getSeconds() + 1;
 
-        System.out.println(blacklistTime);
+        System.out.println("blackListTime : " + blacklistTime);
+
+        return blacklistTime;
+    }
+
+    public Long getBlacklistTime(){
+        Duration duration = Duration.ofMinutes(getAccessTokenExpirationMinutes());
+
+        System.out.println("duration : " + duration );
+
+        Long blacklistTime = duration.getSeconds() + 1;
+
+        System.out.println("blackListTime : " + blacklistTime);
+
+        return blacklistTime;
+    }
+
+    //getExpiration 으로 얻은 시간 비교
+    public Long getBlacklistTime(long millis){
+        Duration duration = Duration.ofMillis(millis);
+
+        System.out.println("남은 유효시간 Duration 으로 변환 : " + duration );
+
+        Long blacklistTime = duration.getSeconds() + 1;
+
+        System.out.println("blackListTime : " + blacklistTime);
 
         return blacklistTime;
     }
