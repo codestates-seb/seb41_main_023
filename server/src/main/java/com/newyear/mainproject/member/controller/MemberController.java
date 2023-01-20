@@ -43,15 +43,23 @@ public class MemberController {
     private final PlanService planService;
 
     @PostMapping("/signup")
-    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post post,
-                                     @RequestParam String authNum){
-        Member member = mapper.memberPostToMember(post);
-        Member createMember = memberService.createMember(member, authNum);
+    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post post){
+        Member member = memberService.createMember(mapper.memberPostToMember(post));
 
-        MemberDto.Response response = mapper.memberToMemberResponseDto(createMember);
-
-        return new ResponseEntity<> (new SingleResponseDto<>(response), HttpStatus.CREATED);
+        return new ResponseEntity<> (new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)), HttpStatus.CREATED);
     }
+
+//TODO : 주석 해제 예정
+//    @PostMapping("/signup")
+//    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post post,
+//                                     @RequestParam String authNum){
+//        Member member = mapper.memberPostToMember(post);
+//        Member createMember = memberService.createMember(member, authNum);
+//
+//        MemberDto.Response response = mapper.memberToMemberResponseDto(createMember);
+//
+//        return new ResponseEntity<> (new SingleResponseDto<>(response), HttpStatus.CREATED);
+//    }
 
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@PathVariable("member-id") @Positive long memberId,
