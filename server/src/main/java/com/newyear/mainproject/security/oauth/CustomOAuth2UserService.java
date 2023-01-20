@@ -49,7 +49,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
         //일반 가입으로되어 있을 경우 예외 발생
-        else if (!password.equals("KAKAO") && !password.equals("FACEBOOK") && !password.equals("GOOGLE")) {
+        if (!password.equals("KAKAO") && !password.equals("FACEBOOK") && !password.equals("GOOGLE")) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
 
