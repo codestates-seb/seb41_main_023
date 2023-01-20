@@ -38,15 +38,13 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 	implementation 'org.hamcrest:hamcrest:2.2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	//s3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws-parameter-store-config'
 	implementation group: 'org.json', name: 'json', version: '20220320'
-}
-
-dependencyManagement { // 블록 추가
-	imports {
-		mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:2.3.3"
-	}
+	implementation group: 'org.kohsuke', name: 'github-api', version: '1.125'
 }
 
 

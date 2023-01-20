@@ -5,12 +5,9 @@ import com.google.gson.Gson;
 import com.newyear.mainproject.exception.ErrorResponse;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
-import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.dto.LoginDto;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
 import com.newyear.mainproject.security.logout.RedisUtil;
-import com.newyear.mainproject.security.logout.RefreshToken;
-import com.newyear.mainproject.security.logout.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.MediaType;
@@ -33,11 +30,7 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
-    private final MemberRepository memberRepository;
-
     private final RedisUtil redisUtil;
-
-    private final RefreshTokenRepository refreshTokenRepository;
 
     //메서드 내부에서 인증을 시도하는 로직
     @SneakyThrows
@@ -74,13 +67,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Member member = (Member) authResult.getPrincipal();
 
         //Access Token을 생성
-        String accessToken = delegateAccessToken(member);
+        Map<String, Object> map = delegateAccessToken(member);
+        String accessToken = map.get("accessToken").toString();
+        String expiration = map.get("expiration").toString().substring(0, 19).replace("T", " ");
+
         //Refresh Token을 생성
         String refreshToken = delegateRefreshToken(member);
 
         //response header(Authorization)에 Access Token을 추가.
         // Access Token은 클라이언트 측에서 백엔드 애플리케이션 측에 요청을 보낼때 마다 request header에 추가해서 클라이언트 측의 자격 증명 용도로 사용
         response.setHeader("Authorization", "Bearer " + accessToken);
+        response.setHeader("expiration", expiration);
 
         //response header(Refresh)에 Refresh Token을 추가
         //Refresh Token은 Access Token이 만료될 경우, Access Token을 새로 발급받기 위한 용도이며
@@ -104,19 +101,23 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     //Access Token을 생성
-    private String delegateAccessToken(Member member) {
+    private Map<String, Object> delegateAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", member.getEmail());
         claims.put("roles", member.getRoles());
 
         String subject = member.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
+        LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(jwtTokenizer.getAccessTokenExpirationMinutes());
 
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
         String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+        Map<String, Object> map = new HashMap<>();
+        map.put("accessToken", accessToken);
+        map.put("expiration", localDateTime);
 
-        return accessToken;
+        return map;
     }
 
     //Refresh Token을 생성
@@ -127,11 +128,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
 
-        RefreshToken token = new RefreshToken(refreshToken);
-        token.setEndedAt(LocalDateTime.now());
-        token.setEndedAt(token.getEndedAt().plusMinutes(jwtTokenizer.getAccessTokenExpirationMinutes()));
-
-        refreshTokenRepository.save(token);
+        //리프레시 토큰 redis에 저장
+        redisUtil.set(subject, refreshToken, jwtTokenizer.getRefreshTokenExpirationMinutes());
 
         return refreshToken;
     }
