@@ -5,24 +5,26 @@ import SinglePlanBox from './SinglePlanBox';
 import AddExpense from '../budget/AddExpense';
 import Budget from '../budget/Buget';
 import axios from 'axios';
-import { getCookie } from '../../Util/Cookies';
-import { useState } from 'react';
+import {getCookie} from '../../Util/Cookies';
+import {useState} from 'react';
 import styled from 'styled-components';
 
 const PlanSection = (props) => {
-  const {
-    searchBox,
-    setSearchBox,
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate,
-    mainData,
-    handleGeoCode,
-    handleZoom,
-    refresh,
-    handleRefresh,
-  } = props;
+    const {
+        searchBox,
+        setSearchBox,
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate,
+        mainData,
+        handleGeoCode,
+        handleZoom,
+        refresh,
+        handleRefresh,
+        budgetRefresh,
+        handleBudgetRefresh
+    } = props;
 
     const [addExpenseModal, setAddExpenseModal] = useState(false);
     const [currentDate, setCurrentDate] = useState(null);
@@ -73,88 +75,91 @@ const PlanSection = (props) => {
             .then((res) => {
                 setAddExpenseModal(false);
                 handleRefresh();
+                handleBudgetRefresh();
             })
             .catch((err) => console.log(err));
     };
 
-  return (
-    <Container>
-      <ItineraryContainer>
-        <h3 className='section__title'>Itinerary</h3>
-        <div className='itinerary__content'>
-          <div className='itinerary__side-bar'>
-            <SideDateBar
-              startDate={startDate}
-              setStartDate={setStartDate}
-              endDate={endDate}
-              setEndDate={setEndDate}
-              singlePlanData={singlePlanData}
-            />
-          </div>
-          <div className='itinerary__main'>
-            <InputContainer>
-              <h3 className='plan__heading'>Add places</h3>
-              <PlaceInputBox
-                searchBox={searchBox}
-                setSearchBox={setSearchBox}
-                singlePlanData={singlePlanData}
-                handleGeoCode={handleGeoCode}
-                refresh={refresh}
-                handleRefresh={handleRefresh}
-              />
-            </InputContainer>
-            <PlanContainer>
-              {singlePlanData !== null
-                ? singlePlanData.map((singleData) => (
-                    <SectionComponent key={singleData.planDateId}>
-                      <h3 className='plan__heading'>{moment(singleData.planDate).format('M월 D일, ddd요일')}</h3>
-                      <SinglePlanBox
-                        planDate={singleData.planDate}
-                        singleData={singleData}
+    return (
+        <Container>
+            <ItineraryContainer>
+                <h3 className='section__title'>Itinerary</h3>
+                <div className='itinerary__content'>
+                    <div className='itinerary__side-bar'>
+                        <SideDateBar
+                            startDate={startDate}
+                            setStartDate={setStartDate}
+                            endDate={endDate}
+                            setEndDate={setEndDate}
+                            singlePlanData={singlePlanData}
+                        />
+                    </div>
+                    <div className='itinerary__main'>
+                        <InputContainer>
+                            <h3 className='plan__heading'>Add places</h3>
+                            <PlaceInputBox
+                                searchBox={searchBox}
+                                setSearchBox={setSearchBox}
+                                singlePlanData={singlePlanData}
+                                handleGeoCode={handleGeoCode}
+                                handleRefresh={handleRefresh}
+                            />
+                        </InputContainer>
+                        <PlanContainer>
+                            {singlePlanData !== null
+                                ? singlePlanData.map((singleData) => (
+                                    <SectionComponent key={singleData.planDateId}>
+                                        <h3 className='plan__heading'>{moment(singleData.planDate).format('M월 D일, ddd요일')}</h3>
+                                        <SinglePlanBox
+                                            planDate={singleData.planDate}
+                                            singleData={singleData}
+                                            setAddExpenseModal={setAddExpenseModal}
+                                            setCurrentDate={setCurrentDate}
+                                            setCurrentPlace={setCurrentPlace}
+                                            setCurrentPlaceId={setCurrentPlaceId}
+                                            handleGeoCode={handleGeoCode}
+                                            handleZoom={handleZoom}
+                                            expenses={expenses}
+                                            refresh={refresh}
+                                            handleRefresh={handleRefresh}
+                                            handleBudgetRefresh={handleBudgetRefresh}
+                                        />
+                                    </SectionComponent>
+                                ))
+                                : null}
+                            <AddExpense
+                                currentPlace={currentPlace}
+                                currentPlaceId={currentPlaceId}
+                                planDate={currentDate}
+                                addExpenseModal={addExpenseModal}
+                                setAddExpenseModal={setAddExpenseModal}
+                                handleAddExpense={handleAddExpense}
+                                handleRefresh={handleRefresh}
+                            />
+                        </PlanContainer>
+                    </div>
+                </div>
+            </ItineraryContainer>
+            <div className='budget__container'>
+                {budgetId && (
+                    <Budget
+                        budgetId={budgetId}
+                        addExpenseModal={addExpenseModal}
                         setAddExpenseModal={setAddExpenseModal}
-                        setCurrentDate={setCurrentDate}
-                        setCurrentPlace={setCurrentPlace}
-                        setCurrentPlaceId={setCurrentPlaceId}
-                        handleGeoCode={handleGeoCode}
-                        handleZoom={handleZoom}
+                        handleAddExpense={handleAddExpense}
+                        budget={budget}
+                        setBudget={setBudget}
                         expenses={expenses}
+                        setExpenses={setExpenses}
                         refresh={refresh}
                         handleRefresh={handleRefresh}
-                      />
-                    </SectionComponent>
-                  ))
-                : null}
-              <AddExpense
-                currentPlace={currentPlace}
-                currentPlaceId={currentPlaceId}
-                planDate={currentDate}
-                addExpenseModal={addExpenseModal}
-                setAddExpenseModal={setAddExpenseModal}
-                handleAddExpense={handleAddExpense}
-                handleRefresh={handleRefresh}
-              />
-            </PlanContainer>
-          </div>
-        </div>
-      </ItineraryContainer>
-      <div className='budget__container'>
-        {budgetId && (
-          <Budget
-            budgetId={budgetId}
-            addExpenseModal={addExpenseModal}
-            setAddExpenseModal={setAddExpenseModal}
-            handleAddExpense={handleAddExpense}
-            budget={budget}
-            setBudget={setBudget}
-            expenses={expenses}
-            setExpenses={setExpenses}
-            refresh={refresh}
-            handleRefresh={handleRefresh}
-          />
-        )}
-      </div>
-    </Container>
-  );
+                        budgetRefresh={budgetRefresh}
+                        handleBudgetRefresh={handleBudgetRefresh}
+                    />
+                )}
+            </div>
+        </Container>
+    );
 };
 
 export default PlanSection;

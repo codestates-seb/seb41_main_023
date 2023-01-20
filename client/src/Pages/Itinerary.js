@@ -32,6 +32,11 @@ const Itinerary = () => {
         planDatesAndPlace: [],
     });
     const [refresh, setRefresh] = useState(1);
+    const [budgetRefresh, setBudgetRefresh] = useState(1);
+
+    const handleBudgetRefresh = () => {
+        setBudgetRefresh((prevState) => prevState * -1);
+    };
 
     //refresh function
     const handleRefresh = () => {
@@ -94,6 +99,8 @@ const Itinerary = () => {
                     handleGeoCode={handleGeoCode}
                     handleZoom={handleZoom}
                     handleRefresh={handleRefresh}
+                    budgetRefresh={budgetRefresh}
+                    handleBudgetRefresh={handleBudgetRefresh}
                 />
             </LoadScript>
 
