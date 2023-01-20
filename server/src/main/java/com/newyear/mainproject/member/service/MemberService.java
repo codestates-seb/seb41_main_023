@@ -1,12 +1,13 @@
 package com.newyear.mainproject.member.service;
 
-import com.newyear.mainproject.board.repository.BoardRepository;
 import com.newyear.mainproject.comment.repository.CommentRepository;
+import com.newyear.mainproject.board.repository.BoardRepository;
+import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
-import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.plan.service.PlanService;
+import com.newyear.mainproject.security.logout.RedisUtil;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -27,16 +28,18 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class MemberService {
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final S3Service s3Service;
+    private final RedisUtil redisUtil;
+    private final PlanService planService;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
-                         CustomAuthorityUtils authorityUtils, BoardRepository boardRepository,
-                         CommentRepository commentRepository, S3Service s3Service,
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils,
+                         BoardRepository boardRepository, CommentRepository commentRepository, S3Service s3Service, RedisUtil redisUtil,
                          @Lazy PlanService planService) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
@@ -44,13 +47,26 @@ public class MemberService {
         this.boardRepository = boardRepository;
         this.commentRepository = commentRepository;
         this.s3Service = s3Service;
+        this.redisUtil = redisUtil;
         this.planService = planService;
     }
 
-    private final PlanService planService;
+    public Member createMember(Member member, String authNum) {
+        if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
+            Member findMember = memberRepository.findByEmail(member.getEmail()).get();
+            if (findMember.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)) {
+                memberRepository.delete(findMember);
+            } else throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+        }
 
-    public Member createMember(Member member) {
-        verifyExistsEmail(member.getEmail());
+        //이메일 인증 (인증 번호)
+        try {
+            if (!redisUtil.get(member.getEmail() + "_auth").equals(authNum)) {
+                throw new BusinessLogicException(ExceptionCode.INVALID_EMAIL_AUTH_NUMBER);
+            }
+        } catch (NullPointerException e) { //인증번호 발송되지 않은 이메일인 경우 예외처리
+            throw new BusinessLogicException(ExceptionCode.INVALID_EMAIL_AUTH);
+        }
 
         //패스워드 암호화
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
@@ -60,10 +76,8 @@ public class MemberService {
         member.setRoles(roles);
 
         // 기본 프로필 이미지 설정
-        if (member.getProfileImage() == null) {
-            member.setProfileImage("https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png");
-            member.setProfileKey("basic.png");
-        }
+        member.setProfileImage("https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png");
+        member.setProfileKey("basic.png");
 
         Member savedMember = memberRepository.save(member);
 

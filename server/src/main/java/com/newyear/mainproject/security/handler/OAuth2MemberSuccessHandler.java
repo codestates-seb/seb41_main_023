@@ -36,13 +36,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String email;
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        Map<String,Object> naver = (Map<String, Object>) attributes.get("response");
         Map<String,Object> kakao = (Map<String, Object>) attributes.get("kakao_account");
 
         if (kakao != null) {
             email = kakao.get("email").toString();
-        } else if (naver != null) {
-            email = naver.get("email").toString();
         } else {
             email = attributes.get("email").toString();
         }
@@ -107,6 +104,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         queryParams.add("accessToken", accessToken);
         queryParams.add("refreshToken", refreshToken);
         queryParams.add("memberId", String.valueOf(memberId));
+        queryParams.add("newyear", "login");
 
         return UriComponentsBuilder
                 .newInstance()

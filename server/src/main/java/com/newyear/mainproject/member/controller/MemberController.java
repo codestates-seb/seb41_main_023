@@ -43,9 +43,10 @@ public class MemberController {
     private final PlanService planService;
 
     @PostMapping("/signup")
-    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post post){
+    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post post,
+                                     @RequestParam String authNum){
         Member member = mapper.memberPostToMember(post);
-        Member createMember = memberService.createMember(member);
+        Member createMember = memberService.createMember(member, authNum);
 
         MemberDto.Response response = mapper.memberToMemberResponseDto(createMember);
 
