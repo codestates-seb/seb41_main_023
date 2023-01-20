@@ -167,13 +167,13 @@ const WriteSingleBoard = () => {
                   <div>{place.placeName}</div>
                   <div>{place.placeAddress}</div>
                   <form className="memo">
-                    <input
+                    <textarea
                       id="memo"
                       type="text"
                       name={place.placeId}
                       placeholder="memo"
                       onChange={(e) => handleChangeNote(e)}
-                    />
+                    ></textarea>
                     <input
                       type="reset"
                       value="reset"

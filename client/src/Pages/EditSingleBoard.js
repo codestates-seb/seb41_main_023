@@ -96,13 +96,15 @@ const EditSingleBoard = () => {
 
   //게시물 삭제 요청
   const handleDeleteLog = async () => {
-    await axios({
-      method: "DELETE",
-      url: `${process.env.REACT_APP_API_URL}/board/${boardId}`,
-      headers: {
-        Authorization: token,
-      },
-    }).then((res) => navigate(`/board/plan`));
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      await axios({
+        method: "DELETE",
+        url: `${process.env.REACT_APP_API_URL}/board/${boardId}`,
+        headers: {
+          Authorization: token,
+        },
+      }).then((res) => navigate(`/board/plan`));
+    }
   };
 
   //장소별 note 변경
@@ -175,13 +177,13 @@ const EditSingleBoard = () => {
                   <div>{place.placeName}</div>
                   <div>{place.placeAddress}</div>
                   <div className="memo">
-                    <input
+                    <textarea
                       name={place.placeId}
-                      // 기존 값
-                      defaultValue={place.description}
                       onChange={(e) => handleChangeNote(e)}
                       ref={(el) => (memoRef.current[place.placeId] = el)}
-                    />
+                    >
+                      {place.description}
+                    </textarea>
                     <input
                       type="reset"
                       value="reset"
