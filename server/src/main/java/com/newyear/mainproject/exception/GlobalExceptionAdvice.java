@@ -1,15 +1,19 @@
 package com.newyear.mainproject.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolationException;
 import java.util.NoSuchElementException;
@@ -70,6 +74,35 @@ public class GlobalExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException e) {
         log.error("InvalidDataAccessApiUsageException", e);
+        return ErrorResponse.of(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        log.error("MaxUploadSizeExceededException", e);
+        return ErrorResponse.of(ExceptionCode.MAX_FILE_SIZE_2MB);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleExpiredJwtException(ExpiredJwtException e) {
+        log.error("ExpiredJwtException", e);
+        return ErrorResponse.of(ExceptionCode.EXPIRED_JWT_TOKEN);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleExpiredJwtException(MissingRequestHeaderException e) {
+        log.error("MissingRequestHeaderException", e);
+        return ErrorResponse.of(e.getMessage());
+    }
+
+    //일정 선택 후 게시글 작성 화
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleExpiredJwtException(MethodArgumentTypeMismatchException e) {
+        log.error("MethodArgumentTypeMismatchException", e);
         return ErrorResponse.of(e.getMessage());
     }
 

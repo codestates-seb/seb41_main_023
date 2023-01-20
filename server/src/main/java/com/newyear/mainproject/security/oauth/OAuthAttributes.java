@@ -20,9 +20,9 @@ public class OAuthAttributes {
     public static OAuthAttributes of(String registrationId, String userNameAttributeName,
                                      Map<String ,Object> attributes) throws BusinessLogicException {
 
-        if ("naver".equals(registrationId)) {
-            log.info("=== 네이버 로그인 ===");
-            return ofNaver("id", attributes);
+        if ("facebook".equals(registrationId)) {
+            log.info("=== 페이스북 로그인 ===");
+            return ofFacebook("id", attributes);
         } else if ("kakao".equals(registrationId)) {
             log.info("=== 카카오 로그인 ===");
             return ofKakao("id", attributes);
@@ -35,17 +35,17 @@ public class OAuthAttributes {
         return ofGoogle(userNameAttributeName, attributes);
     }
 
-    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String,Object> attributes) {
-        Map<String,Object> response = (Map<String, Object>) attributes.get("response");
-
-        return OAuthAttributes.builder()
-                .name((String) response.get("name"))
-                .email((String) response.get("email"))
-                .picture((String) response.get("profile_image"))
-                .nameAttributeKey(userNameAttributeName)
-                .attributes(response)
-                .build();
-    }
+//    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String,Object> attributes) {
+//        Map<String,Object> response = (Map<String, Object>) attributes.get("response");
+//
+//        return OAuthAttributes.builder()
+//                .name((String) response.get("name"))
+//                .email((String) response.get("email"))
+//                .picture((String) response.get("profile_image"))
+//                .nameAttributeKey(userNameAttributeName)
+//                .attributes(response)
+//                .build();
+//    }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String,Object> attributes) {
 
@@ -66,6 +66,17 @@ public class OAuthAttributes {
                 .name((String) kakaoProfile.get("nickname"))
                 .email((String) kakaoAccount.get("email"))
                 .picture((String) kakaoProfile.get("profile_image_url"))
+                .nameAttributeKey(userNameAttributeName)
+                .attributes(attributes)
+                .build();
+    }
+
+    private static OAuthAttributes ofFacebook(String userNameAttributeName, Map<String,Object> attributes) {
+
+        return OAuthAttributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .picture("https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png")
                 .nameAttributeKey(userNameAttributeName)
                 .attributes(attributes)
                 .build();

@@ -12,6 +12,9 @@ public enum ExceptionCode {
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     INVALID_VALUES(400, "Invalid Values"),
     INVALID_EMAIL_AUTH_NUMBER(400, "Invalid email authNumber"),
+    INVALID_EMAIL_AUTH(400, "Invalid email auth"),
+    INVALID_REFRESH_TOKEN(400, "Invalid refresh token"),
+    EXPIRED_JWT_TOKEN(421, "Expired jwt token"),
 
     //board
     BOARD_NOT_PATCHED(403, "Board not patched"),
@@ -53,6 +56,7 @@ public enum ExceptionCode {
 
     //member
     INVALID_MEMBER_STATUS(400, "Invalid member status"),
+    MAX_FILE_SIZE_2MB(400, "Max file size 2MB"),
     MEMBER_EXISTS(409, "Member exists"),
     MEMBER_NOT_FOUND(404, "Member not found"),
     INVALID_PASSWORD (400, "Invalid Password"),
