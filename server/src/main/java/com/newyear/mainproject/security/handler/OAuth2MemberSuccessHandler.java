@@ -3,8 +3,7 @@ package com.newyear.mainproject.security.handler;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
-import com.newyear.mainproject.security.logout.RefreshToken;
-import com.newyear.mainproject.security.logout.RefreshTokenRepository;
+import com.newyear.mainproject.security.logout.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -18,15 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenizer jwtTokenizer;
     private final MemberRepository memberRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisUtil redisUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -36,13 +37,10 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String email;
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        Map<String,Object> naver = (Map<String, Object>) attributes.get("response");
         Map<String,Object> kakao = (Map<String, Object>) attributes.get("kakao_account");
 
         if (kakao != null) {
             email = kakao.get("email").toString();
-        } else if (naver != null) {
-            email = naver.get("email").toString();
         } else {
             email = attributes.get("email").toString();
         }
@@ -91,13 +89,11 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
 
-        RefreshToken token = new RefreshToken(refreshToken);
-        token.setEndedAt(LocalDateTime.now());
-        token.setEndedAt(token.getEndedAt().plusMinutes(jwtTokenizer.getAccessTokenExpirationMinutes()));
+
+        //리프레시 토큰 redis에 저장
+        redisUtil.set(subject, refreshToken, jwtTokenizer.getRefreshTokenExpirationMinutes());
 
         System.out.println("리프레쉬토큰 생성됨★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-
-        refreshTokenRepository.save(token);
 
         return refreshToken;
     }
@@ -107,6 +103,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         queryParams.add("accessToken", accessToken);
         queryParams.add("refreshToken", refreshToken);
         queryParams.add("memberId", String.valueOf(memberId));
+        queryParams.add("newyear", "login");
 
         return UriComponentsBuilder
                 .newInstance()

@@ -6,7 +6,6 @@ import com.newyear.mainproject.security.filter.JwtVerificationFilter;
 import com.newyear.mainproject.security.handler.*;
 import com.newyear.mainproject.security.jwt.JwtTokenizer;
 import com.newyear.mainproject.security.logout.RedisUtil;
-import com.newyear.mainproject.security.logout.RefreshTokenRepository;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +29,6 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final MemberRepository memberRepository;
     private final RedisUtil redisUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -59,7 +57,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                                .antMatchers(HttpMethod.POST, "/members/signup", "/members/login", "/login/**", "/email/auth").permitAll()
+                                .antMatchers(HttpMethod.POST, "/members/signup", "/members/login", "/login/**", "/email/auth", "/token/reissue").permitAll()
                                 .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
                                 .antMatchers(HttpMethod.POST, "/members/logout").permitAll()
                                 .antMatchers(HttpMethod.GET, "/members", "/board/user/plan/**").hasAnyRole("ADMIN", "USER")
@@ -73,7 +71,7 @@ public class SecurityConfiguration {
                         .authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, memberRepository, refreshTokenRepository))
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, memberRepository, redisUtil))
                 );
 
         return http.build();
@@ -93,12 +91,12 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             //wtAuthenticationFilter를 생성하면서 JwtAuthenticationFilter에서 사용되는 AuthenticationManager와 JwtTokenizer를 DI해줌
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, memberRepository, redisUtil, refreshTokenRepository);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisUtil);
             jwtAuthenticationFilter.setFilterProcessesUrl("/members/login/**");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils, redisUtil, refreshTokenRepository);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils, redisUtil);
 
             builder
                     .addFilter(jwtAuthenticationFilter)

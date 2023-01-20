@@ -17,7 +17,7 @@ public class Expenses extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long expenseId;
 
-    @Column(nullable = false)
+    @Column
     private String item;
 
     @Column(nullable = false)
