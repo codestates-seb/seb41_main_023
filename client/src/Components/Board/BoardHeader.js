@@ -3,8 +3,18 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { Mode } from "../../Util/constants";
 
-const BoardHeader = ({ mainData, mode, handleCreateLog, content }) => {
+const BoardHeader = ({
+  mainData,
+  mode,
+  handleCreateLog,
+  handleEditLog,
+  handleDeleteLog,
+  title,
+  setTitle,
+  content,
+}) => {
   const navigate = useNavigate();
+
   return (
     <TopNavBar>
       <LogoButtonContainer>
@@ -18,23 +28,29 @@ const BoardHeader = ({ mainData, mode, handleCreateLog, content }) => {
         {mode === Mode.Write ? (
           <SaveButton
             onClick={() => {
-              handleCreateLog(mainData.planTitle, content);
+              handleCreateLog(title, content);
             }}
           >
             Save travel log
           </SaveButton>
         ) : (
           <>
-            <SaveButton>Save edits</SaveButton>
-            <SaveButton>Delete</SaveButton>
+            <SaveButton
+              onClick={() => {
+                handleEditLog(title, content);
+              }}
+            >
+              Save edits
+            </SaveButton>
+            <SaveButton onClick={handleDeleteLog}>Delete</SaveButton>
           </>
         )}
       </LogoButtonContainer>
       <TripTitleContainer>
         <h1>{mainData.cityName}</h1>
-        <h1>{mainData.planTitle}</h1>
-        {moment(mainData.startDate).format("M월 D일")} ~
-        {moment(mainData.endDate).format("M월 D일")}
+        <input onChange={(e) => setTitle(e.target.value)} value={title} />
+        {/* {moment(mainData.startDate).format("M월 D일")} ~
+        {moment(mainData.endDate).format("M월 D일")} */}
       </TripTitleContainer>
     </TopNavBar>
   );

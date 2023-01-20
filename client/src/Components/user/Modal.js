@@ -49,7 +49,7 @@ const ModalContainer = styled.div`
 
 const ModalWrapper = styled.div`
   padding: 24px;
-  min-width: 460px;
+  width: 460px;
   background-color: var(--white);
   border-radius: 5px;
   box-shadow: 0px 0px 1px rgba(9, 30, 66, 0.31), 0px 8px 12px rgba(9, 30, 66, 0.15);

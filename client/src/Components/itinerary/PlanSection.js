@@ -186,7 +186,8 @@ const ItineraryContainer = styled.div`
 
   .itinerary__content {
     display: flex;
-    gap: var(--spacing-4);
+    gap: 50px;
+    /* gap: var(--spacing-4); */
   }
 
   .itinerary__side-bar {

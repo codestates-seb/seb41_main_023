@@ -9,7 +9,7 @@ const SingleDate = (props) => {
     <StyledOptionItem
       onClick={() => {
         setIsShow(false);
-        setSelected(moment(data.planDate).format('M월 D일(ddd)'));
+        setSelected(moment(data.planDate).format('M.D'));
         setSelectedDateId(id);
       }}
     >
