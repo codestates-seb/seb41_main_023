@@ -21,6 +21,7 @@ public interface PlaceMapper {
         place.setWebsite(post.getWebsite());
         place.setPhone(post.getPhone());
         place.setOpeningHours(post.getOpeningHours());
+        place.setRatings(0.0);
 
         //plan_date, plan 연결
         PlanDates planDates = planService.findPlanDates(post.getPlaceDateId());
