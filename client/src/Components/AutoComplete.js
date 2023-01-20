@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { getData } from "../Util/api";
 import { useState, useEffect } from "react";
 
-const Autocomplete = ({ handleDestination, inputRef }) => {
+const Autocomplete = ({ handleDestination, inputRef, setSearchs, handleSearch }) => {
   const [city, setCity] = useState();
 
   /* 도시 정보 조회 */
@@ -104,6 +104,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
     if (inputValue === "") {
       setHasText(false);
       setOptions([]);
+      setSearchs && setSearchs(false);
     } else {
       setOptions(matchStock(city, inputValue));
       handleDestination(inputValue);
@@ -129,6 +130,7 @@ const Autocomplete = ({ handleDestination, inputRef }) => {
       setInputValue(options[activeSuggestion]);
       setActiveSuggestion(0);
       setHasText(false);
+      handleSearch && handleSearch();
     }
 
     // arrow 키를 누르면 활성화된 옵션 -1
