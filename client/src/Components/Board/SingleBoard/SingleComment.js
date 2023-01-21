@@ -1,43 +1,33 @@
-import {Fragment, useRef, useState} from "react";
-import axios from "axios";
-import {getCookie} from "../../../Util/Cookies";
-import styled from "styled-components";
+import { Fragment, useRef, useState } from 'react';
+import axios from 'axios';
+import { getCookie } from '../../../Util/Cookies';
+import styled from 'styled-components';
 
-const SingleComment = ({comment, commentId, handleCommentRefresh, memberId}) => {
-    const userMemberId = Number(getCookie('memberId'));
-    const [isEdit, setIsEdit] = useState(false);
-    const editRef = useRef();
-    const handleEditMode = () => {
-        setIsEdit(prevState => !prevState);
-    };
+const SingleComment = ({ comment, commentId, handleCommentRefresh, memberId }) => {
+  const userMemberId = Number(getCookie('memberId'));
+  const [isEdit, setIsEdit] = useState(false);
+  const editRef = useRef();
+  const handleEditMode = () => {
+    setIsEdit((prevState) => !prevState);
+  };
 
-    const handleEditComment = (commentId) => {
-        const editedComment = {"comment": editRef.current?.value};
-        axios.patch(`${process.env.REACT_APP_API_URL}/comments/${commentId}`, editedComment, {
-            headers: {
-                Authorization: getCookie('accessToken')
-            }
-        })
-            .then((res) => {
-                handleCommentRefresh();
-                setIsEdit(false);
-            })
-            .catch((err) => {
-                if (err.response.status === 400) {
-                    alert(`댓글은 ${err.response.data.fieldErrors[0].reason}. 최소 1글자 입력 후 수정 버튼을 눌러주세요!`)
-                }
-            })
-    };
-
-    const handleDeleteComment = (commentId) => {
-        if (window.confirm('댓글을 삭제하시겠습니까?')) {
-            axios.delete(`${process.env.REACT_APP_API_URL}/comments/${commentId}`, {
-                headers: {
-                    Authorization: getCookie('accessToken')
-                }
-            })
-                .then((res) => handleCommentRefresh())
-                .catch((err) => console.log(err));
+  const handleEditComment = (commentId) => {
+    const editedComment = { comment: editRef.current?.value };
+    axios
+      .patch(`${process.env.REACT_APP_API_URL}/comments/${commentId}`, editedComment, {
+        headers: {
+          Authorization: getCookie('accessToken'),
+        },
+      })
+      .then((res) => {
+        handleCommentRefresh();
+        setIsEdit(false);
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          alert(
+            `댓글은 ${err.response.data.fieldErrors[0].reason}. 최소 1글자 입력 후 수정 버튼을 눌러주세요!`
+          );
         }
       });
   };
