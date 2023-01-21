@@ -40,7 +40,7 @@ const StarRate = ({ rating }) => {
   }, []);
 
   return (
-    <StarRateWrap>
+    <StarRateWrap className='star-rate__container'>
       <span>{rating}</span>
 
       <div className='star-icon__container'>
