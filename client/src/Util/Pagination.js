@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-const Pagination = ({ total, limit, page, setPage }) => {
-  const numPages = Math.ceil(total / limit);
+const Pagination = ({total, limit, page, setPage}) => {
+    const numPages = Math.ceil((total === 0 ? 1 : total) / limit);
 
   return (
     <>
