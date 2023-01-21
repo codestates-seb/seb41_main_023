@@ -154,6 +154,12 @@ const TripInfo = styled.div`
       width: 30px;
       height: 30px;
       border-radius: 50%;
+
+      > img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+      }
     }
 
     .writer-info {
