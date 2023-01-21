@@ -86,4 +86,6 @@ const SingleInfoContainer = styled.div`
   }
 `;
 
-const SingleDescriptionContainer = styled.div``;
+const SingleDescriptionContainer = styled.div`
+  margin-bottom: var(--spacing-3);
+`;
