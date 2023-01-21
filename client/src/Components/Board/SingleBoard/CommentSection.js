@@ -6,22 +6,23 @@ import { getCookie } from '../../../Util/Cookies';
 import SingleComment from './SingleComment';
 import Pagination from '../../../Util/Pagination';
 
-const CommentSection = ({ boardData }) => {
-  const { boardId } = useParams();
-  const [commentList, setCommentList] = useState([]);
-  const [commentRefresh, setCommentRefresh] = useState(1);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(3);
-  const offset = (page - 1) * limit;
-  const commentRef = useRef();
-  const handleCommentRefresh = () => {
-    setCommentRefresh((prevState) => prevState * -1);
-  };
+const CommentSection = ({boardData}) => {
+    const {boardId} = useParams();
+    const [commentList, setCommentList] = useState([]);
+    const [commentRefresh, setCommentRefresh] = useState(1);
+    const [comment, setComment] = useState('');
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(3);
+    const offset = (page - 1) * limit;
+    const commentRef = useRef();
+    const handleCommentRefresh = () => {
+        setCommentRefresh(prevState => prevState * -1);
+    };
 
-  const handleCommentSubmit = () => {
-    const commentData = { comment: commentRef.current.value };
-
+    const handleCommentSubmit = () => {
+        const commentData = {"comment": commentRef.current?.value};
     axios
+    
       .post(`${process.env.REACT_APP_API_URL}/comments/board/${boardId}`, commentData, {
         headers: {
           Authorization: getCookie('accessToken'),

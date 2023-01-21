@@ -2,7 +2,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { LoadScript, GoogleMap } from "@react-google-maps/api";
+import {LoadScript, GoogleMap, useJsApiLoader} from "@react-google-maps/api";
 
 import { getCookie } from "../Util/Cookies";
 
@@ -22,6 +22,11 @@ const WriteSingleBoard = () => {
   const [placeNotes, setPlaceNotes] = useState([]);
   // const [boardId, setBoardId] = useState(null);
   const [libraries] = useState(["places"]);
+
+    const {isLoaded} = useJsApiLoader({
+        googleMapsApiKey: API_KEY,
+        libraries: libraries
+    });
 
   const mapContainerStyle = {
     width: "50%",
@@ -167,13 +172,13 @@ const WriteSingleBoard = () => {
                   <div>{place.placeName}</div>
                   <div>{place.placeAddress}</div>
                   <form className="memo">
-                    <input
+                    <textarea
                       id="memo"
                       type="text"
                       name={place.placeId}
                       placeholder="memo"
                       onChange={(e) => handleChangeNote(e)}
-                    />
+                    ></textarea>
                     <input
                       type="reset"
                       value="reset"
@@ -186,20 +191,20 @@ const WriteSingleBoard = () => {
           ))}
       </ItineraryBox>
       <MapBox>
-        <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
-          <GoogleMap
-            zoom={zoom}
-            center={geocode}
-            mapContainerStyle={mapContainerStyle}
-          >
-            {days.map((day, idx) => (
-              <div key={idx}>
-                <div>{day.planDate}</div>
-                <SingleBoardMarker handleZoom={handleZoom} day={day} />
-              </div>
-            ))}
-          </GoogleMap>
-        </LoadScript>
+          {isLoaded && (
+              <GoogleMap
+                  zoom={zoom}
+                  center={geocode}
+                  mapContainerStyle={mapContainerStyle}
+              >
+                  {days.map((day, idx) => (
+                      <div key={idx}>
+                          <div>{day.planDate}</div>
+                          <SingleBoardMarker handleZoom={handleZoom} day={day}/>
+                      </div>
+                  ))}
+              </GoogleMap>
+          )}
       </MapBox>
     </>
   );
