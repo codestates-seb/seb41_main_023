@@ -57,9 +57,9 @@ const SingleBoard = () => {
       {boardData ? (
         <BoardWrapper>
           <TopSection boardData={boardData} />
-          {/* <MapSection boardData={boardData} geocode={geocode} handleGeoCode={handleGeoCode} />
+          <MapSection boardData={boardData} geocode={geocode} handleGeoCode={handleGeoCode} />
           <BoardSection boardData={boardData} handleGeoCode={handleGeoCode} />
-          <CommentSection boardData={boardData} /> */}
+          <CommentSection boardData={boardData} />
         </BoardWrapper>
       ) : null}
     </Fragment>
@@ -69,6 +69,7 @@ const SingleBoard = () => {
 export default SingleBoard;
 
 const BoardWrapper = styled.div`
+  position: relative;
   width: 100vw;
   height: 100vh;
 `;
