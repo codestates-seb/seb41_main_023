@@ -4,14 +4,12 @@ import {Markers} from "./Markers";
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 const mapContainerStyle = {
-    width: "50vw",
-    minWidth: "400px",
-    position: "absolute",
-    height: "100vh",
-    zIndex: "60",
-    top: "0",
-    bottom: "0",
-    right: "0",
+  position: 'fixed',
+  width: '50vw',
+  height: '100vh',
+  zIndex: '60',
+  top: '0',
+  right: '0',
 };
 export const MapSection = (props) => {
     const {boardData, geocode, handleGeoCode} = props;
@@ -23,9 +21,9 @@ export const MapSection = (props) => {
         libraries: libraries
     });
 
-    const handleZoom = () => {
-        setIsZoom(17);
-    }
+  const handleZoom = () => {
+    setIsZoom(17);
+  };
 
     return (
         <Fragment>
