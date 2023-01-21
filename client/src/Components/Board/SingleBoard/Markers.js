@@ -15,33 +15,33 @@ export const Markers = (props) => {
   };
 
   const makeColor = (day) => {
-    if (day === '월') return 'deepskyblue';
-    if (day === '화') return 'orchid';
-    if (day === '수') return 'lightcoral';
-    if (day === '목') return 'orange';
-    if (day === '금') return 'gold';
-    if (day === '토') return 'mediumseagreen';
-    if (day === '일') return 'turquoise';
+    if (day % 7 === 0) return 'deepskyblue';
+    if (day % 7 === 1) return 'orchid';
+    if (day % 7 === 2) return 'lightcoral';
+    if (day % 7 === 3) return 'orange';
+    if (day % 7 === 4) return 'gold';
+    if (day % 7 === 5) return 'mediumseagreen';
+    if (day % 7 === 6) return 'turquoise';
   };
 
   const makeStrokeColor = (day) => {
-    if (day === '월') return 'dodgerblue';
-    if (day === '화') return 'mediumorchid';
-    if (day === '수') return 'indianred';
-    if (day === '목') return 'darkorange';
-    if (day === '금') return 'goldenrod';
-    if (day === '토') return 'seagreen';
-    if (day === '일') return 'darkturquoise';
+    if (day % 7 === 0) return 'dodgerblue';
+    if (day % 7 === 1) return 'mediumorchid';
+    if (day % 7 === 2) return 'indianred';
+    if (day % 7 === 3) return 'darkorange';
+    if (day % 7 === 4) return 'goldenrod';
+    if (day % 7 === 5) return 'seagreen';
+    if (day % 7 === 6) return 'darkturquoise';
   };
 
   const makeLabelColor = (day) => {
-    if (day === '월') return '#115496';
-    if (day === '화') return '#7d1596';
-    if (day === '수') return '#731717';
-    if (day === '목') return '#804600';
-    if (day === '금') return '#8a6508';
-    if (day === '토') return '#08572a';
-    if (day === '일') return '#006a6b';
+    if (day % 7 === 0) return '#115496';
+    if (day % 7 === 1) return '#7d1596';
+    if (day % 7 === 2) return '#731717';
+    if (day % 7 === 3) return '#804600';
+    if (day % 7 === 4) return '#8a6508';
+    if (day % 7 === 5) return '#08572a';
+    if (day % 7 === 6) return '#006a6b';
   };
 
   const markerUrl = `data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="56" height="56" viewBox="0 -5 56 56"%3E%3Cpath fill="${makeColor(
