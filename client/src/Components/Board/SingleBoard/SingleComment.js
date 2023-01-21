@@ -65,7 +65,7 @@ const SingleComment = ({ comment, commentId, handleCommentRefresh, memberId }) =
                 <input
                   className='input--default comment__edit-input'
                   type={'text'}
-                  placeholder={`${comment.comment}`}
+                  defaultValue={`${comment.comment}`}
                   ref={editRef}
                   autoFocus
                   onKeyUp={(e) => {
