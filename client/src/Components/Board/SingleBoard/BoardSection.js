@@ -1,62 +1,67 @@
-import styled from "styled-components";
-import SingleItinerary from "./SingleItinerary";
+import styled from 'styled-components';
+import SingleItinerary from './SingleItinerary';
 
 const BoardSection = (props) => {
-    const {boardData, handleGeoCode} = props;
+  const { boardData, handleGeoCode } = props;
+  const { content, days } = boardData;
 
-    const {content, days} = boardData;
-
-    return (
-        <ContentWrapper>
-            <ContentTitle>Travel Experience</ContentTitle>
-            <Content>
-                {content}
-            </Content>
-            <ItineraryTitle>Itinerary</ItineraryTitle>
-            {days ? (
-                days.map((day, idx) => (
-                    <ItinerarySection key={idx}>
-                        <div className={'itinerary_day'}>{day.day}</div>
-                        <SingleItinerary
-                            data={day.placeDetails}
-                            handleGeoCode={handleGeoCode}
-                        />
-                    </ItinerarySection>
-                ))
-            ) : null}
-        </ContentWrapper>
-    )
+  return (
+    <Container>
+      <h3 className='section__title'>Travel Experience</h3>
+      <p className='travel-experience__content'>{content}</p>
+      <h3 className='section__title'>Itinerary</h3>
+      <div className='itinerary__container'>
+        {days
+          ? days.map((day, idx) => (
+              <ItineraryItem key={idx}>
+                <div className={'itinerary__day'}>{day.day}</div>
+                <SingleItinerary data={day.placeDetails} handleGeoCode={handleGeoCode} />
+              </ItineraryItem>
+            ))
+          : null}
+      </div>
+    </Container>
+  );
 };
 
 export default BoardSection;
 
-const ContentWrapper = styled.div`
+const Container = styled.div`
+  position: relative;
   width: 50vw;
-  height: calc(100vh - 300px);
-  padding: 40px 30px;
+  padding: 50px;
+  padding-bottom: 0;
+  margin-bottom: var(--spacing-5);
+
+  > .section__title {
+    margin-bottom: var(--spacing-4);
+    font-size: var(--large-heading-font-size);
+    line-height: var(--large-heading-line-height);
+    color: var(--black);
+    font-weight: 600;
+  }
+
+  > .travel-experience__content {
+    margin-bottom: var(--spacing-5);
+  }
+
+  > .itinerary__container {
+    .itinerary__item:last-child {
+      margin-bottom: 0;
+    }
+  }
 `;
 
-const ContentTitle = styled.h1`
-  font-size: 20px;
-`;
+const ItineraryItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
 
-const Content = styled.div`
-  margin: 30px 0;
-  width: 100%;
-  height: auto;
-  word-wrap: break-word;
-`;
-
-const ItineraryTitle = styled.h1`
-  font-size: 20px;
-`;
-
-const ItinerarySection = styled.div`
-  width: 100%;
-  height: auto;
-  margin: 30px 0;
-
-  .itinerary_day {
-    font-size: 18px;
+  .itinerary__day {
+    font-size: var(--large-heading-font-size);
+    line-height: var(--large-heading-line-height);
+    color: var(--dark-gray-1);
+    font-weight: normal;
   }
 `;
