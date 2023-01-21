@@ -147,6 +147,10 @@ const Budget = ({
                 <h1 className='budget__current-amount'>
                     ₩ {budget?.expectedBudget?.toLocaleString('ko-KR')}
                 </h1>
+                <div>예산 사용량 : {budgetUsage()} %</div>
+                <BudgetBar>
+                    <BudgetData usageData={budgetUsage()}/>
+                </BudgetBar>
             </CurrentBudget>
             <Expense>
                 <div className='expense__header'>
@@ -225,8 +229,6 @@ const Budget = ({
                     handleBudgetRefresh={handleBudgetRefresh}
                 />
             ) : null}
-            <div>예산 사용량</div>
-            <div>{budgetUsage()} %</div>
         </BudgetContainer>
     );
 };
@@ -262,6 +264,22 @@ const CurrentBudget = styled.div`
     font-weight: bold;
     color: var(--black);
   }
+`;
+
+const BudgetBar = styled.div`
+  width: inherit;
+  height: 15px;
+  background-color: white;
+  border: 0.5px solid lightgray;
+  border-radius: 10px;
+`;
+
+const BudgetData = styled.div`
+  background-color: skyblue;
+  width: ${(props) => props.usageData + "%"};
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1s;
 `;
 
 const Expense = styled.div`
@@ -353,8 +371,4 @@ const MyExpenses = styled.div`
       }
     }
   }
-`;
-
-const AddExpenseBtn = styled.div`
-  cursor: pointer;
 `;
