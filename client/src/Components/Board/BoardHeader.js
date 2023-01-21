@@ -41,7 +41,9 @@ const BoardHeader = ({
               >
                 Save edits
               </button>
-              <button onClick={handleDeleteLog}>Delete</button>
+              <button className='button--default button--subtle' onClick={handleDeleteLog}>
+                Delete
+              </button>
             </>
           )}
         </div>
@@ -88,8 +90,8 @@ const TopContainer = styled.nav`
 const Header = styled.div`
   position: fixed;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin: 0 50px;
   height: 60px;
   width: calc(50vw - 100px);
@@ -97,6 +99,15 @@ const Header = styled.div`
 
   > * {
     cursor: pointer;
+  }
+
+  .top__button-container {
+    display: flex;
+    gap: var(--spacing-2);
+
+    > .button--subtle {
+      color: var(--dark-gray-2);
+    }
   }
 `;
 
