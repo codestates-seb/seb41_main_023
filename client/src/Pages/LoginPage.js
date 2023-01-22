@@ -112,7 +112,7 @@ const LoginPage = () => {
                 <Link to="/">
                     <div className="header__logo">website name</div>
                 </Link>
-                <Link to="/blog">
+                <Link to="/board">
                     <button className="button--default button--subtle">Travel logs</button>
                 </Link>
             </Header>

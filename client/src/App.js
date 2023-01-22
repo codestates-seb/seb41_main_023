@@ -12,6 +12,7 @@ import UserProfile from "./Pages/UserProfile";
 import UserProfileEdit from "./Pages/UserProfileEdit";
 import WriteBoard from "./Pages/WriteBoard";
 import WriteSingleBoard from "./Pages/WriteSingleBoard";
+import Board from "./Pages/Board";
 import EditSingleBoard from "./Pages/EditSingleBoard";
 import SingleBoard from "./Pages/SingleBoard";
 import LoadingPage from "./Pages/LoadingPage";
@@ -36,7 +37,7 @@ function App() {
         <Route path="/user/:memberId/edit" element={<UserProfileEdit />} />
         <Route path="/itinerary/:itineraryId" element={<Itinerary />} />
         {/*  /!*서비스 이용자들의 모든 게시글이 노출되는 전체 게시글 목록 페이지*!/*/}
-        {/*<Route path="/board" element={<Board/>}/>*/}
+        <Route path="/board" element={<Board />} />
         {/*  /!*게시글 작성 시작을 위한 여행선택 페이지*!/*/}
         <Route path="/board/plan" element={<WriteBoard />} />
         {/*  /!*특정 게시글 조회한 페이지*!/*/}
