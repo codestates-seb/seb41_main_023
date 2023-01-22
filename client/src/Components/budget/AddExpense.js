@@ -99,12 +99,6 @@ const AddExpense = (props) => {
               </div>
               <div className='input__container'>
                 <Category setCategory={setCategory} handleCategory={handleCategory} />
-
-                {/* <div className='input__item' onClick={() => setCategory(!category)}>
-                  {selectedCategory || '항목을 선택하세요'}
-                  <Category setCategory={setCategory} handleCategory={handleCategory} />
-
-                </div> */}
               </div>
               <div className='input__container'>
                 <div className='input__item' onClick={() => setDateCategory(!dateCategory)}>

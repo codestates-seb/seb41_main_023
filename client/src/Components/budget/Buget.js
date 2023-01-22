@@ -268,14 +268,14 @@ const CurrentBudget = styled.div`
 
 const BudgetBar = styled.div`
   width: inherit;
-  height: 15px;
+  height: 20px;
   background-color: white;
   border: 0.5px solid lightgray;
   border-radius: 10px;
 `;
 
 const BudgetData = styled.div`
-  background-color: skyblue;
+  background-color: #2d7ff9;
   width: ${(props) => props.usageData + "%"};
   height: 100%;
   border-radius: 10px;
