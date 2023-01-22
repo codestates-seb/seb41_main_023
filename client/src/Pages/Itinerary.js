@@ -36,6 +36,7 @@ const Itinerary = () => {
         planDates: [],
         planDatesAndPlace: [],
     });
+    const [title, setTitle] = useState('');
     const [refresh, setRefresh] = useState(1);
     const [budgetRefresh, setBudgetRefresh] = useState(1);
 
@@ -59,6 +60,7 @@ const Itinerary = () => {
         )
             .then((res) => {
                 setMainData(res.data.data);
+                setTitle(res.data.data.planTitle)
             })
     }, [itineraryId, refresh]);
 
@@ -79,6 +81,8 @@ const Itinerary = () => {
                 setEndDate={setEndDate}
                 mainData={mainData}
                 setMainData={setMainData}
+                title={title}
+                setTitle={setTitle}
                 handleRefresh={handleRefresh}
             />
             {isLoaded ? (

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {useState} from 'react';
 import axios from 'axios';
-import { getCookie } from '../../Util/Cookies';
+import {getCookie} from '../../Util/Cookies';
 import moment from 'moment';
 import Calendar from '../Calendar';
 
@@ -23,11 +23,9 @@ const TopContainer = styled.div`
     height: 350px;
     background: rgb(15, 15, 15);
     background: -moz-linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
-    background: -webkit-linear-gradient(
-      0deg,
-      rgba(15, 15, 15, 0.5) 0%,
-      rgba(255, 255, 255, 0) 100%
-    );
+    background: -webkit-linear-gradient(0deg,
+    rgba(15, 15, 15, 0.5) 0%,
+    rgba(255, 255, 255, 0) 100%);
     background: linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0f0f0f",endColorstr="#ffffff",GradientType=1);
     z-index: 1;
@@ -55,12 +53,24 @@ const TripInfo = styled.div`
   margin: 0 50px;
   z-index: 100;
 
-  h2 {
-    margin-bottom: var(--spacing-2);
+  > input {
+    display: block;
     font-size: var(--xx-large-heading-font-size);
     line-height: var(--xx-large-heading-line-height);
-    font-weight: 600;
     color: var(--white);
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    cursor: pointer;
+    padding-bottom: var(--spacing-2);
+    border-bottom: 2px solid transparent;
+    margin-bottom: 10px;
+
+    &:focus {
+      border: 0;
+      box-shadow: none;
+      border-bottom: 2px solid var(--primary-blue-light-2);
+    }
   }
 
   .trip__info-date {
@@ -104,74 +114,103 @@ const TripInfo = styled.div`
 `;
 
 const TopNavigation = (props) => {
-  const { startDate, setStartDate, endDate, setEndDate, mainData, setMainData, handleRefresh } =
-    props;
-  const { itineraryId } = useParams();
-  const navigate = useNavigate();
-  const token = getCookie('accessToken');
-  const cityImage = getCookie('cityImage');
-  const [showCalendar, setShowCalendar] = useState(false);
+    const {startDate, setStartDate, endDate, setEndDate, mainData, setMainData, handleRefresh, title, setTitle} =
+        props;
+    const {itineraryId} = useParams();
+    const navigate = useNavigate();
+    const token = getCookie('accessToken');
+    const [showCalendar, setShowCalendar] = useState(false);
 
-  const handleDate = (date) => {
-    setStartDate(moment(date[0].startDate).format('YYYY-MM-DD'));
-    setEndDate(moment(date[0].endDate).format('YYYY-MM-DD'));
-  };
+    const handleDate = (date) => {
+        setStartDate(moment(date[0].startDate).format('YYYY-MM-DD'));
+        setEndDate(moment(date[0].endDate).format('YYYY-MM-DD'));
+    };
 
-  const handleCalendar = () => {
-    setShowCalendar((prevState) => !prevState);
-  };
+    const handleCalendar = () => {
+        setShowCalendar((prevState) => !prevState);
+    };
 
-  const changeDateHandler = () => {
-    if (window.confirm('정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!'))
-      axios
-        .patch(
-          `${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
-          {
-            startDate,
-            endDate,
-          },
-          {
-            headers: {
-              Authorization: token,
-              withCredentials: true,
+    const changeDateHandler = () => {
+        if (window.confirm('정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!'))
+            axios
+                .patch(
+                    `${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
+                    {
+                        startDate,
+                        endDate,
+                    },
+                    {
+                        headers: {
+                            Authorization: token,
+                            withCredentials: true,
+                        },
+                    }
+                )
+                .then((res) => {
+                    setMainData({
+                        ...mainData,
+                        startDate: startDate,
+                        endDate: endDate,
+                    });
+                    handleRefresh();
+                })
+                .then((res) => handleCalendar());
+    };
+    const changeTitleHandler = () => {
+        axios.patch(
+            `${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
+                planTitle: title,
+                startDate: moment(mainData.startDate).format('YYYY-MM-DD'),
+                endDate: moment(mainData.endDate).format('YYYY-MM-DD'),
             },
-          }
+            {
+                headers: {
+                    Authorization: token,
+                    withCredentials: true,
+                },
+            }
         )
-        .then((res) => {
-          setMainData({
-            ...mainData,
-            startDate: startDate,
-            endDate: endDate,
-          });
-          handleRefresh();
-        })
-        .then((res) => handleCalendar());
-  };
+            .then((res) => {
+                setTitle(title);
+                handleRefresh();
+            })
+    }
 
-  return (
-    <TopContainer cityImage={cityImage}>
-      <div className='top__gradient-bg'></div>
-      <Header>
-        <div className='header__logo' onClick={() => navigate('/')}>
-          website name
-        </div>
-        <button className='button--primary'>Save Trip</button>
-      </Header>
-      <TripInfo>
-        <h2>{mainData.planTitle}</h2>
-        <div className='trip__info-date'>
-          <button className='button__date' onClick={handleCalendar}>
-            <span>{moment(mainData.startDate).format('M월 D일')} -</span>
-            <span> {moment(mainData.endDate).format('M월 D일')}</span>
-          </button>
-          <button className='button__change-date' onClick={changeDateHandler} disabled={showCalendar === false}>
-            날짜 변경
-          </button>
-        </div>
-        {showCalendar ? <Calendar handleDate={handleDate} /> : null}
-      </TripInfo>
-    </TopContainer>
-  );
+    return (
+        <TopContainer cityImage={mainData.city?.cityImage}>
+            <div className='top__gradient-bg'></div>
+            <Header>
+                <div className='header__logo' onClick={() => navigate('/')}>
+                    website name
+                </div>
+                <button className='button--primary'>Save Trip</button>
+            </Header>
+            <TripInfo>
+                <input
+                    onChange={(e) => setTitle(e.target.value)}
+                    value={title}
+                    onKeyUp={(e) => {
+                        if(e.key === 'Enter') {
+                            e.preventDefault();
+                            e.target.blur();
+                            return changeTitleHandler()
+                        }
+                    }}
+                />
+                <div className='trip__info-date'>
+                    <button className='button__date' onClick={handleCalendar}>
+                        <span>{moment(mainData.startDate).format('M월 D일')} -</span>
+                        <span> {moment(mainData.endDate).format('M월 D일')}</span>
+                    </button>
+                    <button className='button__change-date' onClick={changeDateHandler}
+                            disabled={showCalendar === false}>
+                        날짜 변경
+                    </button>
+                </div>
+                {showCalendar ? <Calendar handleDate={handleDate}/> : null}
+            </TripInfo>
+        </TopContainer>
+    );
 };
 
 export default TopNavigation;
