@@ -93,7 +93,7 @@ const SingleComment = ({ comment, commentId, handleCommentRefresh, memberId }) =
                 handleEditComment(commentId);
               }}
             >
-              <svg viewBox='0 0 16 16' class='svg-icon--20 icon__edit'>
+              <svg viewBox='0 0 16 16' className='svg-icon--20 icon__edit'>
                 <path
                   fillRule='evenodd'
                   fill='currentColor'
@@ -106,7 +106,7 @@ const SingleComment = ({ comment, commentId, handleCommentRefresh, memberId }) =
                 handleDeleteComment(commentId);
               }}
             >
-              <svg viewBox='0 0 16 16' class='svg-icon--20 icon__delete'>
+              <svg viewBox='0 0 16 16' className='svg-icon--20 icon__delete'>
                 <path
                   fillRule='evenodd'
                   fill='currentColor'
