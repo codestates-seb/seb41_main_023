@@ -3,6 +3,8 @@ import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import bgImage from '../images/signup-page_side-image.jpg';
+import Modal from "../Components/user/Modal";
+import {getCookie} from "../Util/Cookies";
 
 //const clientId = process.env.REACT_APP_CLIENT_ID;
 
@@ -26,6 +28,11 @@ const SignUpPage = () => {
     const [isName, setIsName] = useState(false);
     const [isEmail, setIsEmail] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
+
+    //이메일 인증번호 검사 모달창
+    const [verificationIsOpened, setVerificationIsOpened] = useState(false);
+    const [authNum, setAuthNum] = useState('');
+    const [isAuth, setIsAuth] = useState(false);
 
     // 렌더링 될때 username input으로 focus
     useEffect(() => {
@@ -127,6 +134,45 @@ const SignUpPage = () => {
         if (e.key === 'Enter') onSignUp();
     };
 
+    const handleEmailVerificationModal = () => {
+        setVerificationIsOpened(prevState => !prevState);
+    };
+
+    const handleSendEmailCode = () => {
+        axios.post(`${process.env.REACT_APP_API_URL}/email/auth`, {
+            email
+        }, {
+            headers: {
+                Authorization: getCookie('accessToken')
+            }
+        })
+            .then((res) => {
+                console.log(res)
+                console.log('이메일 전송완료!')
+            })
+            .catch((err) => console.log(err))
+    }
+
+    const handleEmailAuth = (authNum) => {
+        axios.post(`${process.env.REACT_APP_API_URL}/email/auth?authNum=${authNum}`, {
+            email
+        }, {
+            headers: {
+                Authorization: getCookie('accessToken')
+            }
+        })
+            .then((res) => {
+                setVerificationIsOpened(false);
+                setIsAuth(true);
+                setAuthNum('');
+            })
+            .catch((err) => {
+                console.log(err)
+                alert('인증번호가 잘못되었습니다. 다시 한 번 입력해주세요!');
+                setAuthNum('');
+            })
+    }
+
     return (
         <>
             <Header>
@@ -168,7 +214,17 @@ const SignUpPage = () => {
                     />
                     {email.length > 0 && (
                         <label className={`input__message message${isEmail ? 'success' : 'error'}`}>
-                            {emailMessage}
+                            {isEmail ?
+                            <span>
+                                {emailMessage} {isAuth ? (
+                                    <span className={'email__done'}>✓ 이메일 인증완료</span>
+                            ) : (
+                                <a onClick={() => {
+                                    handleEmailVerificationModal()
+                                    handleSendEmailCode()
+                                }}>인증번호 발송하기</a>
+                            )}
+                            </span> : emailMessage}
                         </label>
                     )}
 
@@ -186,7 +242,18 @@ const SignUpPage = () => {
                             {passwordMessage}
                         </div>
                     )}
-
+                    {verificationIsOpened &&
+                        <Modal
+                            title={'이메일 인증하기'}
+                            setModal={handleEmailVerificationModal}
+                            content={'이메일로 발송된 인증번호를 입력해주세요'}
+                            input={true}
+                            buttonName={'인증하기'}
+                            handleClick={() => handleEmailAuth(authNum)}
+                            authNum={authNum}
+                            setAuthNum={setAuthNum}
+                        />
+                    }
                     <button className="button--primary" onClick={onSignUp}>
                         Sign up
                     </button>
@@ -297,6 +364,15 @@ const LeftContainer = styled.div`
 
       &:not(:first-child) {
         margin-top: var(--spacing-3);
+      }
+      
+      a {
+        padding-left: 140px;
+        cursor: pointer;
+      }
+      
+      .email__done {
+        padding-left: 130px;
       }
     }
 
