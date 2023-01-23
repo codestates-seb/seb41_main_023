@@ -149,8 +149,7 @@ const SignUpPage = () => {
             }
         })
             .then((res) => {
-                console.log(res)
-                console.log('이메일 전송완료!')
+                alert('인증번호가 발송되었습니다. 인증번호를 입력헤주세요')
             })
             .catch((err) => console.log(err))
     }
@@ -164,6 +163,7 @@ const SignUpPage = () => {
             }
         })
             .then((res) => {
+                alert('이메일 인증이 완료되었습니다!');
                 setVerificationIsOpened(false);
                 setIsAuth(true);
                 setAuthNum('');
@@ -221,10 +221,11 @@ const SignUpPage = () => {
                                 {emailMessage} {isAuth ? (
                                     <span className={'email__done'}>✓ 이메일 인증완료</span>
                             ) : (
-                                <a onClick={() => {
+                                <span className={'email__sending'}
+                                    onClick={() => {
                                     handleEmailVerificationModal()
                                     handleSendEmailCode()
-                                }}>인증번호 발송하기</a>
+                                }}>인증번호 발송하기</span>
                             )}
                             </span> : emailMessage}
                         </label>
@@ -368,9 +369,11 @@ const LeftContainer = styled.div`
         margin-top: var(--spacing-3);
       }
       
-      a {
+      .email__sending {
         padding-left: 140px;
         cursor: pointer;
+        text-decoration: underline;
+        color: var(--primary-blue-bright)
       }
       
       .email__done {
