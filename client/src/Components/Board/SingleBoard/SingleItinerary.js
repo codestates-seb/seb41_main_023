@@ -1,89 +1,91 @@
-import styled from "styled-components";
-import StarRate from "../../itinerary/StarRate";
+import styled from 'styled-components';
+import StarRate from '../../itinerary/StarRate';
 
 const SingleItinerary = (props) => {
-    const {data, handleGeoCode} = props;
+  const { data, handleGeoCode } = props;
 
-    return (
-        <DayWrapper>
-            {data ? (
-                data.map((place) => (
-                    <SinglePlanContainer
-                        key={place.index}
-                        onClick={() => {
-                            handleGeoCode(
-                                place.latitude,
-                                place.longitude
-                            );
-                        }
-                    }
-                    >
-                        <div className={'single_index'}>{place.index}</div>
-                        <SingleInfoContainer>
-                            <div className={'place_name'}>{place.placeName}</div>
-                            <div className={'place_address'}>{place.placeAddress}</div>
-                            <StarRate rating={place.ratings}/>
-                            {/*<div className={'place_description'}>{place.description}</div>*/}
-                        </SingleInfoContainer>
-                        <SingleDescriptionContainer>
-                            {place.description}
-                        </SingleDescriptionContainer>
-                    </SinglePlanContainer>
-                ))
-            ) : null}
-        </DayWrapper>
-    )
+  return (
+    <Container>
+      {data
+        ? data.map((place) => (
+            <SinglePlanContainer
+              key={place.index}
+              onClick={() => {
+                handleGeoCode(place.latitude, place.longitude);
+              }}
+            >
+              <div className='location-number__container'>
+                <div className='location-number'>{place.index}</div>
+              </div>
+              <div className='place-info__main'>
+                <SingleInfoContainer>
+                  <div className='location-name'>{place.placeName}</div>
+                  <div className='location-address'>{place.placeAddress}</div>
+                  <StarRate rating={place.ratings} />
+                </SingleInfoContainer>
+                <SingleDescriptionContainer>{place.description}</SingleDescriptionContainer>
+              </div>
+            </SinglePlanContainer>
+          ))
+        : null}
+    </Container>
+  );
 };
 
 export default SingleItinerary;
 
-const DayWrapper = styled.div`
-  margin: 30px 0;
-  width: 100%;
-  height: auto;
+const Container = styled.div`
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-3);
+  cursor: default;
 `;
 
 const SinglePlanContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  cursor: pointer;
-  border-bottom: 1px solid lightgray;
-  margin-bottom: 20px;
-  
-  .single_index {
-    padding: 0 20px;
+  gap: var(--spacing-3);
+  width: 100%;
+  min-height: 150px;
+  border-bottom: 1px solid var(--light-gray-4);
+
+  > .location-number__container {
+    .location-number {
+      font-size: var(--small-heading-font-size);
+      line-height: var(--small-heading-line-height);
+      color: var(--primary-blue-bright);
+      font-weight: 600;
+    }
+  }
+
+  > .place-info__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    width: 100%;
   }
 `;
 
 const SingleInfoContainer = styled.div`
-  width: 30%;
-  height: auto;
-  max-height: 170px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  
-  div {
-    margin-bottom: 15px;
+  cursor: pointer;
+
+  > .location-name {
+    margin-bottom: var(--spacing-1);
+    font-size: var(--small-heading-font-size);
+    line-height: var(--small-heading-line-height);
+    color: var(--dark-gray-1);
+    font-weight: 600;
   }
-  
-  .place_name {
-    font-size: 15px;
-    font-weight: bold;
+
+  > .location-address {
+    margin-bottom: var(--spacing-1);
+    color: var(--light);
   }
-  
-  //.place_description {
-  //  word-break: break-word;
-  //}
+
+  > .star-rate__container {
+    margin-bottom: 0;
+  }
 `;
 
 const SingleDescriptionContainer = styled.div`
-  width: 70%;
-  margin: 0 10px 5px 10px;
-  padding: 0 20px 10px 30px;
-  text-overflow: ellipsis;
-  overflow: scroll;
+  margin-bottom: var(--spacing-3);
 `;

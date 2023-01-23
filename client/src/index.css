@@ -286,3 +286,7 @@ a:hover {
   color: var(--primary-blue) !important;
   text-decoration: none !important;
 }
+
+#board-map {
+  position: fixed !important;
+}
