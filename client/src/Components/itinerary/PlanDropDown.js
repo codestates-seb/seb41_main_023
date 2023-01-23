@@ -27,6 +27,10 @@ export const StyledOptionList = styled.ul`
   transition: all 0.1s ease-in;
   display: ${(props) => (props.active ? 'block' : 'none')};
   z-index: 1000000;
+  
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const StyledOptionItem = styled.li`
