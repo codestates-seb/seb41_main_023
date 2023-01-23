@@ -44,7 +44,6 @@ public class LogoutController{
         }
 
         //refresh token 삭제
-        //TODO : 테스트해보기
         if (redisUtil.hasKey(member.getEmail())) {
             redisUtil.delete(member.getEmail());
         }
