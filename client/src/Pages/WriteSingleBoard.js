@@ -158,8 +158,8 @@ const WriteSingleBoard = () => {
           <h3 className='section__title'>Itinerary</h3>
           <div className='itinerary__container'>
             {mainData &&
-              days.map((day) => (
-                <div className='itinerary__item' key={day.index}>
+              days.map((day, index) => (
+                <div className='itinerary__item' key={index}>
                   <div className='itinerary__day'>{day.day}</div>
                   <div className='itinerary__plan-container'>
                     {day.placeDetails.map((place) => (
