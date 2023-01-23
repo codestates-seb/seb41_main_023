@@ -35,6 +35,13 @@ const UserProfileEdit = () => {
     setRefresh(refresh * -1);
   };
 
+  //회원 탈퇴 시 화면 이동
+  useEffect(() => {
+    if (!memberId) {
+      window.location.replace("/");
+    }
+  }, [memberId]);
+
   // const getUserInfo = async () => {
   //   const data = await getData(`/members/userProfile/${memberId}`);
   //   setUserInfo(data);
@@ -59,8 +66,13 @@ const UserProfileEdit = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const nameRegex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
+
     if (!submitInfo.id) {
       nameRef.current.focus();
+    } else if (!nameRegex.test(submitInfo.id)) {
+      alert("영문과 한글 또는 숫자를 3~20자리로 입력하세요.");
+      return;
     } else {
       const data = {
         displayName: submitInfo.id,
