@@ -41,8 +41,7 @@ const SignUpPage = () => {
                 password,
             });
             alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
-            navigate('/login');
-            //console.log(response);
+            navigate('/login', {replace: true});
         } catch (err) {
             console.error(err);
             if (err.response.status === 404) alert('페이지를 찾을 수 없습니다.');
