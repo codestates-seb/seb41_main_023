@@ -11,9 +11,7 @@ import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.service.PlanService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,7 +110,17 @@ public class BoardService {
      tab=views : 조회수순
      */
     @Transactional(readOnly = true)
-    public Page<Board> findOptionalBoards(int page, int size, String tab) {
+    public Page<Board> findOptionalBoards(int page, int size, String tab, String city) {
+        if (city != null) {
+            List<Board> boards = boardRepository.findAll(Sort.by(tab).descending());
+            List<Board> findBoards = boards.stream().filter(board -> board.getPlan().getCityName().equals(city)).collect(Collectors.toList());
+
+            Pageable pageable = PageRequest.of(page, size);
+            int start = (int) pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), findBoards.size());
+
+            return new PageImpl<>(findBoards.subList(start, end), pageable , findBoards.size());
+        }
         return boardRepository.findAll(PageRequest.of(page, size, Sort.by(tab).descending()));
     }
 
@@ -122,11 +130,17 @@ public class BoardService {
     }
 
     // 지역으로 검색
-    @Transactional(readOnly = true)
-    public List<Board> findCityBoards(String cityName, String tab) {
-        List<Board> boards = boardRepository.findAll(Sort.by(tab).descending());
-        return boards.stream().filter(b -> b.getPlan().getCityName().equals(cityName)).collect(Collectors.toList());
-    }
+//    @Transactional(readOnly = true)
+//    public Page<Board> findCityBoards(int page, int size, String cityName, String tab) {
+//        List<Board> boards = boardRepository.findAll(Sort.by(tab).descending());
+//        List<Board> findBoards = boards.stream().filter(board -> board.getPlan().getCityName().equals(cityName)).collect(Collectors.toList());
+//
+//        Pageable pageable = PageRequest.of(page, size);
+//        int start = (int) pageable.getOffset();
+//        int end = (start + pageable.getPageSize()) > findBoards.size() ? findBoards.size() : (start + pageable.getPageSize());
+//
+//        return new PageImpl<>(findBoards.subList(start, end), pageable , findBoards.size());
+//    }
 
     //좋아요 등록 & 해제
     public void clickLikes(long boardId) {
