@@ -47,8 +47,6 @@ jobs:
         spring.security.oauth2.client.registration.google.clientSecret=${{ secrets.GOOGLE_SECRET }}
         spring.security.oauth2.client.registration.kakao.client-id=${{ secrets.KAKAO_CLIENT_ID }}
         spring.security.oauth2.client.registration.kakao.client-secret=${{ secrets.KAKAO_SECRET }}
-        spring.security.oauth2.client.registration.naver.clientId=${{ secrets.NAVER_CLIENT_ID }}
-        spring.security.oauth2.client.registration.naver.client-secret=${{ secrets.NAVER_SECRET }}
         spring.security.oauth2.client.registration.facebook.clientId=${{ secrets.FACEBOOK_CLIENT_ID }}
         spring.security.oauth2.client.registration.facebook.clientSecret=${{ secrets.FACEBOOK_SECRET }}
         spring.mail.username=${{ secrets.MAIL_USERNAME }}

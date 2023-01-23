@@ -17,10 +17,16 @@ public interface PlaceMapper {
         place.setLatitude(post.getLatitude());
         place.setLongitude(post.getLongitude());
         place.setPlaceAddress(post.getPlaceAddress());
-        place.setRatings(post.getRatings());
+        if(post.getRatings() == null) {
+            place.setRatings(0.0);
+        }else {
+            place.setRatings(post.getRatings());
+        }
+
         place.setWebsite(post.getWebsite());
         place.setPhone(post.getPhone());
         place.setOpeningHours(post.getOpeningHours());
+
 
         //plan_date, plan 연결
         PlanDates planDates = planService.findPlanDates(post.getPlaceDateId());
