@@ -1,84 +1,84 @@
 import Header from "../Components/Header";
 import Autocomplete from "../Components/AutoComplete";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getCookie } from "../Util/Cookies";
+import {useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {getCookie} from "../Util/Cookies";
 import Explore from "../Components/Board/Explore";
 
 const Board = () => {
-  const [login, setLogin] = useState(false);
-  const [destination, setDestination] = useState("");
-  const [searchs, setSearchs] = useState(false);
+    const [login, setLogin] = useState(false);
+    const [destination, setDestination] = useState("");
+    const [searches, setSearches] = useState(false);
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const url = searchs
-    ? `/board/plan?city=${destination}&tab=boardId`
-    : "/board?page=1&size=100&tab=views";
+    // const url = searches
+    //     ? `/board/plan?city=${destination}&tab=boardId`
+    //     : `/board?page=${page.current}&size=5&tab=views`;
 
-  useEffect(() => {
-    if (getCookie("accessToken")) {
-      setLogin(true);
-    }
-  }, []);
+    useEffect(() => {
+        if (getCookie("accessToken")) {
+            setLogin(true);
+        }
+    }, []);
 
-  const handleSearch = () => {
-    setSearchs(true);
-  };
+    const handleSearch = () => {
+        setSearches(true);
+    };
 
-  const handleDestination = (destination) => {
-    setDestination(destination);
-  };
+    const handleDestination = (destination) => {
+        setDestination(destination);
+    };
 
-  const TopMove = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+    const TopMove = () => {
+        window.scrollTo({top: 0, behavior: "smooth"});
+    };
 
-  const handleWrite = () => {
-    if (login) {
-      navigate("/board/plan");
-    } else {
-      alert("로그인 후 이용해주세요.");
-      navigate("/login");
-    }
-  };
+    const handleWrite = () => {
+        if (login) {
+            navigate("/board/plan");
+        } else {
+            alert("로그인 후 이용해주세요.");
+            navigate("/login");
+        }
+    };
 
-  return (
-    <BlogPageStyle>
-      <Header login={login} />
+    return (
+        <BlogPageStyle>
+            <Header login={login}/>
 
-      <TopStyle>
-        <div className="text">Explore travel logs and itineraries</div>
-        <BlockStyle>
-          <Autocomplete
-            handleDestination={handleDestination}
-            setSearchs={setSearchs}
-            handleSearch={handleSearch}
-          />
-          <button className="sbtn" onClick={handleSearch}>
-            submit
-          </button>
-        </BlockStyle>
-      </TopStyle>
+            <TopStyle>
+                <div className="text">Explore travel logs and itineraries</div>
+                <BlockStyle>
+                    <Autocomplete
+                        handleDestination={handleDestination}
+                        setSearches={setSearches}
+                        handleSearch={handleSearch}
+                    />
+                    <button className="sbtn" onClick={handleSearch}>
+                        submit
+                    </button>
+                </BlockStyle>
+            </TopStyle>
 
-      <MarginStyle>
-        <Style>
-          <h2>Explore</h2>
-          <button className="wbtn" onClick={handleWrite}>
-            Write travel log
-          </button>
-        </Style>
+            <MarginStyle>
+                <Style>
+                    <h2>Explore</h2>
+                    <button className="wbtn" onClick={handleWrite}>
+                        Write travel log
+                    </button>
+                </Style>
 
-        <MainStyle>
-          <Explore url={url} searchs={searchs} />
-          <button className="tbtn" onClick={TopMove}>
-            top
-          </button>
-        </MainStyle>
-      </MarginStyle>
-    </BlogPageStyle>
-  );
+                <MainStyle>
+                    <Explore searches={searches} destination={destination}/>
+                    <button className="tbtn" onClick={TopMove}>
+                        top
+                    </button>
+                </MainStyle>
+            </MarginStyle>
+        </BlogPageStyle>
+    );
 };
 
 export default Board;

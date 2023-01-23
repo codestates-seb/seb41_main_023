@@ -6,7 +6,7 @@ import AddExpense from '../budget/AddExpense';
 import Budget from '../budget/Buget';
 import axios from 'axios';
 import {getCookie} from '../../Util/Cookies';
-import {useState} from 'react';
+import {createRef, useRef, useState} from 'react';
 import styled from 'styled-components';
 
 const PlanSection = (props) => {
@@ -37,6 +37,10 @@ const PlanSection = (props) => {
 
     const [budget, setBudget] = useState({});
     const [expenses, setExpenses] = useState([]);
+    const planDateRef = useRef([]);
+    const onDateClick = (planDateId) => {
+        planDateRef.current[planDateId].scrollIntoView({behavior: "smooth"});
+    }
 
     // 비용 추가 요청
     const handleAddExpense = (price, selectedCategory, item, placeId) => {
@@ -92,6 +96,7 @@ const PlanSection = (props) => {
                             endDate={endDate}
                             setEndDate={setEndDate}
                             singlePlanData={singlePlanData}
+                            onDateClick={onDateClick}
                         />
                     </div>
                     <div className='itinerary__main'>
@@ -109,7 +114,10 @@ const PlanSection = (props) => {
                             {singlePlanData !== null
                                 ? singlePlanData.map((singleData) => (
                                     <SectionComponent key={singleData.planDateId}>
-                                        <h3 className='plan__heading'>{moment(singleData.planDate).format('M월 D일, ddd요일')}</h3>
+                                        <h3
+                                            className='plan__heading'
+                                            ref={(element) => planDateRef.current[singleData.planDateId] = element}
+                                        >{moment(singleData.planDate).format('M월 D일, ddd요일')}</h3>
                                         <SinglePlanBox
                                             planDate={singleData.planDate}
                                             singleData={singleData}
