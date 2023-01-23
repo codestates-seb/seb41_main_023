@@ -119,6 +119,7 @@ const TopNavigation = (props) => {
     const {itineraryId} = useParams();
     const navigate = useNavigate();
     const token = getCookie('accessToken');
+    const memberId = getCookie('memberId');
     const [showCalendar, setShowCalendar] = useState(false);
 
     const handleDate = (date) => {
@@ -183,7 +184,7 @@ const TopNavigation = (props) => {
                 <div className='header__logo' onClick={() => navigate('/')}>
                     website name
                 </div>
-                <button className='button--primary'>Save Trip</button>
+                <button className='button--primary' onClick={() => navigate(`/user/${memberId}`, {replace : true})}>Save Trip</button>
             </Header>
             <TripInfo>
                 <input
