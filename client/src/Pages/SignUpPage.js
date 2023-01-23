@@ -66,12 +66,14 @@ const SignUpPage = () => {
             password.length !== 0 &&
             isName === true &&
             isEmail === true &&
-            isPassword === true
+            isPassword === true &&
+            isAuth === true
         )
             signUp();
         else if (!isName) alert('Username을 확인해주세요.');
         else if (!isEmail) alert('Email을 확인해주세요.');
         else if (!isPassword) alert('Password를 확인해주세요.');
+        else if(!isAuth) alert('Email 인증을 먼저 해주세요');
     };
 
     // userName
