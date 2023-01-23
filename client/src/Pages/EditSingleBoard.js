@@ -62,6 +62,18 @@ const EditSingleBoard = () => {
           lat: startPlace.latitude,
           lng: startPlace.longitude,
         });
+
+        res.data.days.map((day) =>
+          day.placeDetails.map((place) =>
+            setPlaceNotes([
+              ...placeNotes,
+              {
+                placeId: Number(place.placeId),
+                description: place.description,
+              },
+            ])
+          )
+        );
       });
   }, []);
 
@@ -172,11 +184,19 @@ const EditSingleBoard = () => {
 
   //입력값 초기화
   const handelClear = (id) => {
+    let findIndex = placeNotes.findIndex(
+      (placeNote) => Number(placeNote.placeId) === Number(id)
+    );
+    // console.log(findIndex);
     const placeId = Object.keys(memoRef.current).filter(
       (key) => Number(key) === id
     );
     memoRef.current[placeId].value = "";
+    let changeNotes = [...placeNotes];
+    changeNotes[findIndex].description = "";
+    setPlaceNotes(changeNotes);
   };
+
   return (
     <>
       {mainData && (
@@ -226,7 +246,7 @@ const EditSingleBoard = () => {
                               {place.placeAddress}
                             </div>
                           </div>
-                          <form className="location-memo__container">
+                          <div className="location-memo__container">
                             <textarea
                               className="location-memo__text-area"
                               name={place.placeId}
@@ -236,13 +256,15 @@ const EditSingleBoard = () => {
                               }
                               defaultValue={place.description}
                             ></textarea>
-                            <input
-                              type="reset"
+                            <div
+                              // type="reset"
                               value="reset"
                               className="location-memo__reset"
                               onClick={() => handelClear(place.placeId)}
-                            ></input>
-                          </form>
+                            >
+                              reset
+                            </div>
+                          </div>
                         </div>
                       </div>
                     ))}
