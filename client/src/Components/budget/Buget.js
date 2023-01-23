@@ -147,7 +147,7 @@ const Budget = ({
                 <h1 className='budget__current-amount'>
                     ₩ {budget?.expectedBudget?.toLocaleString('ko-KR')}
                 </h1>
-                <div>예산 사용량 : {budgetUsage()} %</div>
+                <div className={'budget__percentage'}>예산 사용량 : {budgetUsage()} %</div>
                 <BudgetBar>
                     <BudgetData usageData={budgetUsage()}/>
                 </BudgetBar>
@@ -263,6 +263,12 @@ const CurrentBudget = styled.div`
     line-height: 52px;
     font-weight: bold;
     color: var(--black);
+  }
+  
+  .budget__percentage {
+    text-align: right;
+    padding: 10px 5px;
+    color: var(--light);
   }
 `;
 
