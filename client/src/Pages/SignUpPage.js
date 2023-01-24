@@ -3,6 +3,8 @@ import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import bgImage from '../images/signup-page_side-image.jpg';
+import Modal from "../Components/user/Modal";
+import {getCookie} from "../Util/Cookies";
 
 //const clientId = process.env.REACT_APP_CLIENT_ID;
 
@@ -27,6 +29,11 @@ const SignUpPage = () => {
     const [isEmail, setIsEmail] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
 
+    //이메일 인증번호 검사 모달창
+    const [verificationIsOpened, setVerificationIsOpened] = useState(false);
+    const [authNum, setAuthNum] = useState('');
+    const [isAuth, setIsAuth] = useState(false);
+
     // 렌더링 될때 username input으로 focus
     useEffect(() => {
         uref.current.focus();
@@ -41,8 +48,7 @@ const SignUpPage = () => {
                 password,
             });
             alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
-            navigate('/login');
-            //console.log(response);
+            navigate('/login', {replace: true});
         } catch (err) {
             console.error(err);
             if (err.response.status === 404) alert('페이지를 찾을 수 없습니다.');
@@ -60,12 +66,14 @@ const SignUpPage = () => {
             password.length !== 0 &&
             isName === true &&
             isEmail === true &&
-            isPassword === true
+            isPassword === true &&
+            isAuth === true
         )
             signUp();
         else if (!isName) alert('Username을 확인해주세요.');
         else if (!isEmail) alert('Email을 확인해주세요.');
         else if (!isPassword) alert('Password를 확인해주세요.');
+        else if(!isAuth) alert('Email 인증을 먼저 해주세요');
     };
 
     // userName
@@ -128,6 +136,45 @@ const SignUpPage = () => {
         if (e.key === 'Enter') onSignUp();
     };
 
+    const handleEmailVerificationModal = () => {
+        setVerificationIsOpened(prevState => !prevState);
+    };
+
+    const handleSendEmailCode = () => {
+        axios.post(`${process.env.REACT_APP_API_URL}/email/auth`, {
+            email
+        }, {
+            headers: {
+                Authorization: getCookie('accessToken')
+            }
+        })
+            .then((res) => {
+                alert('인증번호가 발송되었습니다. 인증번호를 입력헤주세요')
+            })
+            .catch((err) => console.log(err))
+    }
+
+    const handleEmailAuth = (authNum) => {
+        axios.post(`${process.env.REACT_APP_API_URL}/email/auth?authNum=${authNum}`, {
+            email
+        }, {
+            headers: {
+                Authorization: getCookie('accessToken')
+            }
+        })
+            .then((res) => {
+                alert('이메일 인증이 완료되었습니다!');
+                setVerificationIsOpened(false);
+                setIsAuth(true);
+                setAuthNum('');
+            })
+            .catch((err) => {
+                console.log(err)
+                alert('인증번호가 잘못되었습니다. 다시 한 번 입력해주세요!');
+                setAuthNum('');
+            })
+    }
+
     return (
         <>
             <Header>
@@ -169,7 +216,18 @@ const SignUpPage = () => {
                     />
                     {email.length > 0 && (
                         <label className={`input__message message${isEmail ? 'success' : 'error'}`}>
-                            {emailMessage}
+                            {isEmail ?
+                            <span>
+                                {emailMessage} {isAuth ? (
+                                    <span className={'email__done'}>✓ 이메일 인증완료</span>
+                            ) : (
+                                <span className={'email__sending'}
+                                    onClick={() => {
+                                    handleEmailVerificationModal()
+                                    handleSendEmailCode()
+                                }}>인증번호 발송하기</span>
+                            )}
+                            </span> : emailMessage}
                         </label>
                     )}
 
@@ -187,7 +245,18 @@ const SignUpPage = () => {
                             {passwordMessage}
                         </div>
                     )}
-
+                    {verificationIsOpened &&
+                        <Modal
+                            title={'이메일 인증하기'}
+                            setModal={handleEmailVerificationModal}
+                            content={'이메일로 발송된 인증번호를 입력해주세요'}
+                            input={true}
+                            buttonName={'인증하기'}
+                            handleClick={() => handleEmailAuth(authNum)}
+                            authNum={authNum}
+                            setAuthNum={setAuthNum}
+                        />
+                    }
                     <button className="button--primary" onClick={onSignUp}>
                         Sign up
                     </button>
@@ -298,6 +367,17 @@ const LeftContainer = styled.div`
 
       &:not(:first-child) {
         margin-top: var(--spacing-3);
+      }
+      
+      .email__sending {
+        padding-left: 140px;
+        cursor: pointer;
+        text-decoration: underline;
+        color: var(--primary-blue-bright)
+      }
+      
+      .email__done {
+        padding-left: 130px;
       }
     }
 

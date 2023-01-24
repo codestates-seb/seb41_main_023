@@ -3,6 +3,8 @@ import moment from 'moment';
 import 'moment/locale/ko';
 
 const LeftSideBar = styled.div`
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,14 +46,14 @@ const DateBox = styled.div`
 `;
 
 const SideDateBar = (props) => {
-  const { singlePlanData } = props;
+  const { singlePlanData, onDateClick } = props;
 
   return (
     <LeftSideBar>
       <h5>Dates</h5>
       {singlePlanData.map((date) => (
         <DateBox key={date.planDateId}>
-          <button>
+          <button onClick={() => onDateClick(date.planDateId)}>
             <span>{moment(date.planDate).format('M.D')}</span>
             <span>{moment(date.planDate).format('ddd')}</span>
           </button>

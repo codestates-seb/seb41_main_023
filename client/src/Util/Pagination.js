@@ -1,11 +1,14 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-const Pagination = ({ total, limit, page, setPage }) => {
-  const numPages = Math.ceil(total / limit);
+const Pagination = ({total, limit, page, setPage}) => {
+    const numPages = Math.ceil((total === 0 ? 1 : total) / limit);
 
   return (
     <>
       <Nav>
+          <Button onClick={() => setPage(1)} disabled={page === 1}>
+              &lt;&lt;
+          </Button>
         <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
           &lt;
         </Button>
@@ -23,6 +26,9 @@ const Pagination = ({ total, limit, page, setPage }) => {
         <Button onClick={() => setPage(page + 1)} disabled={page === numPages}>
           &gt;
         </Button>
+          <Button onClick={() => setPage(numPages)} disabled={page === numPages}>
+              &gt;&gt;
+          </Button>
       </Nav>
     </>
   );

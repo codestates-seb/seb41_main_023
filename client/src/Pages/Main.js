@@ -5,6 +5,7 @@ import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
 import Explore from "../Components/Board/Explore";
 import Footer from "./Footer";
+import {useLocation} from "react-router-dom";
 
 const MainContainer = styled.div`
   position: relative;
@@ -25,8 +26,7 @@ const Content = styled.div`
 
 
 const Main = () => {
-  const url = "/board?page=1&size=100&tab=views";
-  
+  // const url = "/board?page=1&size=5&tab=views";
   return (
     <MainContainer>
       <Home login={true} />
@@ -34,7 +34,7 @@ const Main = () => {
         <MyTrips mode="plan" />
         <MyLogs mode="plan" />
         <h2>Explore</h2>
-        <Explore url={url} />
+        <Explore />
       </Content>
       <Footer />
     </MainContainer>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { getData } from "../Util/api";
 import { useState, useEffect } from "react";
 
-const Autocomplete = ({ handleDestination, inputRef, setSearchs, handleSearch }) => {
+const Autocomplete = ({ handleDestination, inputRef, setSearches, handleSearch }) => {
   const [city, setCity] = useState();
 
   /* 도시 정보 조회 */
@@ -104,7 +104,7 @@ const Autocomplete = ({ handleDestination, inputRef, setSearchs, handleSearch })
     if (inputValue === "") {
       setHasText(false);
       setOptions([]);
-      setSearchs && setSearchs(false);
+      setSearches && setSearches(false);
     } else {
       setOptions(matchStock(city, inputValue));
       handleDestination(inputValue);
