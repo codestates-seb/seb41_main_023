@@ -33,7 +33,7 @@ const TopContainer = styled.div`
 `;
 
 const Header = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: space-between;
   align-items: center;
