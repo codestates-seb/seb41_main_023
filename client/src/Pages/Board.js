@@ -1,156 +1,162 @@
-import Header from "../Components/Header";
-import Autocomplete from "../Components/AutoComplete";
-import styled from "styled-components";
-import {useEffect, useRef, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {getCookie} from "../Util/Cookies";
-import Explore from "../Components/Board/Explore";
+import Header from '../Components/Header';
+import Autocomplete from '../Components/AutoComplete';
+import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getCookie } from '../Util/Cookies';
+import Explore from '../Components/Board/Explore';
+import bgImg from '../images/login_background-image.jpg';
 
 const Board = () => {
-    const [login, setLogin] = useState(false);
-    const [destination, setDestination] = useState("");
-    const [searches, setSearches] = useState(false);
+  const [login, setLogin] = useState(false);
+  const [destination, setDestination] = useState('');
+  const [searches, setSearches] = useState(false);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    // const url = searches
-    //     ? `/board/plan?city=${destination}&tab=boardId`
-    //     : `/board?page=${page.current}&size=5&tab=views`;
+  // const url = searches
+  //     ? `/board/plan?city=${destination}&tab=boardId`
+  //     : `/board?page=${page.current}&size=5&tab=views`;
 
-    useEffect(() => {
-        if (getCookie("accessToken")) {
-            setLogin(true);
-        }
-    }, []);
+  useEffect(() => {
+    if (getCookie('accessToken')) {
+      setLogin(true);
+    }
+  }, []);
 
-    const handleSearch = () => {
-        setSearches(true);
-    };
+  const handleSearch = () => {
+    setSearches(true);
+  };
 
-    const handleDestination = (destination) => {
-        setDestination(destination);
-    };
+  const handleDestination = (destination) => {
+    setDestination(destination);
+  };
 
-    const TopMove = () => {
-        window.scrollTo({top: 0, behavior: "smooth"});
-    };
+  const TopMove = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-    const handleWrite = () => {
-        if (login) {
-            navigate("/board/plan");
-        } else {
-            alert("로그인 후 이용해주세요.");
-            navigate("/login");
-        }
-    };
+  const handleWrite = () => {
+    if (login) {
+      navigate('/board/plan');
+    } else {
+      alert('로그인 후 이용해주세요.');
+      navigate('/login');
+    }
+  };
 
-    return (
-        <BlogPageStyle>
-            <Header login={login}/>
-
-            <TopStyle>
-                <div className="text">Explore travel logs and itineraries</div>
-                <BlockStyle>
-                    <Autocomplete
-                        handleDestination={handleDestination}
-                        setSearches={setSearches}
-                        handleSearch={handleSearch}
-                    />
-                    <button className="sbtn" onClick={handleSearch}>
-                        submit
-                    </button>
-                </BlockStyle>
-            </TopStyle>
-
-            <MarginStyle>
-                <Style>
-                    <h2>Explore</h2>
-                    <button className="wbtn" onClick={handleWrite}>
-                        Write travel log
-                    </button>
-                </Style>
-
-                <MainStyle>
-                    <Explore searches={searches} destination={destination}/>
-                    <button className="tbtn" onClick={TopMove}>
-                        top
-                    </button>
-                </MainStyle>
-            </MarginStyle>
-        </BlogPageStyle>
-    );
+  return (
+    <LogContainer>
+      <Header login={login} />
+      <TopContainer>
+        <div className='top__container'>
+          <div className='top__content'>
+            <h1>Explore travel logs and itineraries</h1>
+            <Autocomplete
+              handleDestination={handleDestination}
+              setSearches={setSearches}
+              handleSearch={handleSearch}
+            />
+          </div>
+        </div>
+      </TopContainer>
+      <MainContainer>
+        <div className='main__header'>
+          <h2>Explore</h2>
+          <button className='button--primary' onClick={handleWrite}>
+            Write log
+          </button>
+        </div>
+        <Explore searches={searches} destination={destination} />
+        <button className='button--default button--subtle button--top' onClick={TopMove}>
+          Top
+        </button>
+      </MainContainer>
+    </LogContainer>
+  );
 };
 
 export default Board;
 
-const BlogPageStyle = styled.div`
-  width: 100vw;
-  height: 100vh;
+const LogContainer = styled.div`
+  position: relative;
+`;
 
-  .tbtn {
-    position: fixed;
-    bottom: 50px;
-    right: 100px;
-    background-color: cyan;
-    font-size: 24px;
-    padding: 6px;
+const TopContainer = styled.div`
+  position: absolute;
+  position: relative;
+  width: 100vw;
+  height: 400px;
+  background-image: url(${bgImg});
+  background-size: cover;
+  background-position: 25% 60%;
+
+  > .top__container {
+    position: absolute;
+    display: flex;
+    width: 100vw;
+    align-items: flex-end;
+    height: 400px;
+    background-color: rgba(15, 15, 15, 0.15);
+
+    > .top__content {
+      position: relative;
+      margin: 0px auto;
+      padding: 50px;
+      width: 100%;
+      min-width: 1024px;
+      max-width: 1920px;
+    }
+  }
+
+  h1 {
+    margin-bottom: var(--spacing-4);
+    font-size: var(--xx-large-heading-font-size);
+    line-height: var(--xx-large-heading-line-height);
+    font-weight: 500;
+    color: var(--white);
   }
 `;
 
-const TopStyle = styled.div`
-  width: 100vw;
-  height: 300px;
-  margin-top: 60px;
-  background-color: lightgray;
+const MainContainer = styled.div`
+  position: relative;
+  margin: 50px;
 
-  .text {
-    display: inline-block;
-    margin: 180px 0 20px 50px;
+  > .main__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-4);
   }
-
-  .autocomplete {
-    display: inline-block;
-    margin-left: 50px;
-  }
-
-  .sbtn {
-    display: inline-block;
-    font-size: 26px;
-    padding: 12px;
-  }
-`;
-
-const Style = styled.div`
-  display: flex;
-  justify-content: space-between;
 
   h2 {
-    margin-bottom: var(--spacing-4);
     font-size: var(--large-heading-font-size);
     line-height: var(--large-heading-line-height);
     font-weight: 600;
     color: var(--black);
   }
 
-  .wbtn {
-    background-color: white;
-    margin-bottom: var(--spacing-4);
-    font-size: var(--large-heading-font-size);
-    line-height: var(--large-heading-line-height);
-    font-weight: 600;
-    color: var(--black);
+  .button--top {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    padding: 0;
+    width: var(--spacing-5);
+    height: var(--spacing-5);
+    border-radius: 50%;
+    background-color: transparent;
+    font-weight: 500;
+    transition: all .2s ease-in;
+
+    &:hover {
+      background-color: var(--primary-blue-bright);
+      color: var(--white);
+    }
   }
 `;
 
-const MainStyle = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const BlockStyle = styled.div`
-  position: block;
-`;
-
-const MarginStyle = styled.div`
-  margin: 50px;
-`;
+// const MainContent = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   row-gap
+// `;
