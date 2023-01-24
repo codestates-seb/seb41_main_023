@@ -8,6 +8,7 @@ import Footer from "./Footer";
 
 const MainContainer = styled.div`
   position: relative;
+  
   h2 {
     margin-bottom: var(--spacing-4);
     font-size: var(--large-heading-font-size);
@@ -15,7 +16,6 @@ const MainContainer = styled.div`
     font-weight: 600;
     color: var(--black);
   }
-
 `;
 
 const Content = styled.div`
@@ -25,7 +25,7 @@ const Content = styled.div`
 
 
 const Main = () => {
-  const url = "/board?page=1&size=5&tab=views";
+  const url = "/board?page=1&size=100&tab=views";
   
   return (
     <MainContainer>

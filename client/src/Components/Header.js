@@ -46,8 +46,9 @@ const Header = ({login}) => {
     const handleSignout = () => {
         if (window.confirm("로그아웃 하시겠습니까?")) {
             postData("/members/logout", {
-                accessToken: token,
-                refreshToken: refreshToken,
+                headers: {
+                    Authorization: token,
+                  }
             }).then((res) => {
                 removeCookie("accessToken");
                 removeCookie("memberId");

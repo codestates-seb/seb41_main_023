@@ -10,8 +10,6 @@ const Explore = (props) => {
   const token = getCookie("accessToken");
   const navigate = useNavigate();
 
-  //console.log("url: " + props.url)
-  //console.log(exploreList);
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}${props.url}`, {

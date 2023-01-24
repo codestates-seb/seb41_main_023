@@ -44,8 +44,9 @@ const UserProfile = () => {
   const handleSignout = async () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
       await postData("/members/logout", {
-        accessToken: token,
-        refreshToken: refreshToken,
+        headers: {
+          Authorization: token,
+        }
       }).then((res) => {
         removeCookie("accessToken");
         removeCookie("memberId");

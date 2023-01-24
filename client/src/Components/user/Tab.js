@@ -17,7 +17,7 @@ const General = ({ handleChange, handleSubmit, nameRef }) => {
       <div className="input_area">
         <label>Username</label>
         <input
-          className="input"ㄱ
+          className="input"
           onChange={handleChange}
           name="id"
           id="username"
@@ -135,11 +135,7 @@ const DeleteAccount = ({ modal, setModal }) => {
       .delete(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
         headers: {
           Authorization: token,
-        },
-        data: {
-          accessToken: token,
-          refreshToken: refreshToken,
-        },
+        }
       })
       .then((res) => {
         removeCookie('accessToken');
