@@ -45,6 +45,15 @@ const Header = styled.div`
   > * {
     cursor: pointer;
   }
+
+  .button--container {
+    display: flex;
+    flex-direction: row;
+
+    .button--primary {
+      margin-left: 10px;
+    }
+  }
 `;
 
 const TripInfo = styled.div`
@@ -175,6 +184,29 @@ const TopNavigation = (props) => {
                 setTitle(title);
                 handleRefresh();
             })
+    };
+
+    const deletePlanHandler = (itineraryId) => {
+        if (window.confirm('정말 작성중인 여행 일정을 삭제하시겠습니까?')) {
+            axios.delete(`${process.env.REACT_APP_API_URL}/board/${itineraryId}`, {
+                headers: {
+                    Authorization: token,
+                },
+            })
+                .then(res => {
+                    axios.delete(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
+                        headers: {
+                            Authorization: token,
+                        },
+                    })
+                        .then((res) => {
+                            console.log('deleted plan!!')
+                            navigate('/', {replace: true})
+                        })
+                        .catch((err) => console.log(err))
+                })
+
+        }
     }
 
     return (
@@ -184,14 +216,20 @@ const TopNavigation = (props) => {
                 <div className='header__logo' onClick={() => navigate('/')}>
                     website name
                 </div>
-                <button className='button--primary' onClick={() => navigate(`/user/${memberId}`, {replace : true})}>Save Trip</button>
+                <div className={'button--container'}>
+                    <button className='button--primary' onClick={() => navigate(`/`, {replace: true})}>Save Trip
+                    </button>
+                    <button className='button--primary'
+                            onClick={() => deletePlanHandler(itineraryId)}>Delete Trip
+                    </button>
+                </div>
             </Header>
             <TripInfo>
                 <input
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
                     onKeyUp={(e) => {
-                        if(e.key === 'Enter') {
+                        if (e.key === 'Enter') {
                             e.preventDefault();
                             e.target.blur();
                             return changeTitleHandler()
