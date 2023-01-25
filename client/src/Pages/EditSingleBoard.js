@@ -130,7 +130,9 @@ const EditSingleBoard = () => {
         },
         data: data,
       })
-        .then((res) => navigate(`/board/${res.data.boardId}`))
+        .then((res) =>
+          navigate(`/board/${res.data.boardId}`, { replace: true })
+        )
         .then(() => {
           axios({
             method: "PATCH",
