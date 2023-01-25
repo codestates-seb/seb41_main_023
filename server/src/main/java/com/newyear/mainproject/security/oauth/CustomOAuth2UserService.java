@@ -1,7 +1,5 @@
 package com.newyear.mainproject.security.oauth;
 
-import com.newyear.mainproject.exception.BusinessLogicException;
-import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
@@ -40,17 +38,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (memberRepository.findByEmail(attributes.getEmail()).isEmpty()) {
             log.info("=============== 소셜 회원 신규 가입 ================");
             saveMember(attributes.getEmail(), attributes.getName(), attributes.getPicture(), registrationId.toUpperCase());
-        }
-
-        Member member = memberRepository.findByEmail(attributes.getEmail()).get();
-        String password = member.getPassword();
-        //해당 이메일이 다른 소셜로 가입되어 있을 경우 예외 발생
-        if (!password.equals(registrationId.toUpperCase())) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-        }
-        //일반 가입으로되어 있을 경우 예외 발생
-        else if (!password.equals("KAKAO") && !password.equals("FACEBOOK") && !password.equals("GOOGLE")) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")),

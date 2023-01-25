@@ -84,9 +84,10 @@ public class BoardController {
     @GetMapping
     public ResponseEntity getBoards(@RequestParam @Positive int page,
                                     @RequestParam @Positive int size,
-                                    @RequestParam(required = false) String tab) {
+                                    @RequestParam(required = false) String tab,
+                                    @RequestParam(required = false) String city) {
         if (tab == null) tab = "likes";
-        Page<Board> pages = boardService.findOptionalBoards(page-1, size, tab);
+        Page<Board> pages = boardService.findOptionalBoards(page-1, size, tab, city);
         List<Board> boards = pages.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(mapper.boardsToBoardResponseDto(boards), pages), HttpStatus.OK);
@@ -102,13 +103,16 @@ public class BoardController {
     }
 
     // 도시 이름으로 조회
-    @GetMapping("/plan")
-    public ResponseEntity getBoardForCity(@RequestParam @NotBlank String city,
-                                          @RequestParam(required = false) String tab) {
-        if (tab == null) tab = "likes";
-        List<Board> boards = boardService.findCityBoards(city, tab);
-        return new ResponseEntity<>(mapper.boardsToBoardResponseDto(boards), HttpStatus.OK);
-    }
+//    @GetMapping("/plan")
+//    public ResponseEntity getBoardForCity(@RequestParam @NotBlank String city,
+//                                          @RequestParam(required = false) String tab,
+//                                          @RequestParam @Positive int page,
+//                                          @RequestParam @Positive int size) {
+//        if (tab == null) tab = "likes";
+//        Page<Board> pages = boardService.findCityBoards(page-1, size, city, tab);
+//        List<Board> boards = pages.getContent();
+//        return new ResponseEntity<>(new MultiResponseDto<>(mapper.boardsToBoardResponseDto(boards), pages), HttpStatus.OK);
+//    }
 
     // 좋아요 클릭
     @PostMapping("{board-id}/likes")

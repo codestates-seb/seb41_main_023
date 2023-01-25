@@ -1,4 +1,4 @@
-package com.newyear.mainproject.refresh;
+package com.newyear.mainproject.security.refresh;
 
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
@@ -7,6 +7,9 @@ import com.newyear.mainproject.security.logout.RedisUtil;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.io.DecodingException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +42,12 @@ public class TokenController {
 
         String encodeBase64SecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
+        try {
+            jwtTokenizer.verifySignature(refreshToken, encodeBase64SecretKey);
+        } catch (SignatureException | MalformedJwtException | DecodingException e) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_VALUES);
+        }
+
         //토큰 유효성 검증
         Jws<Claims> claims = jwtTokenizer.getClaims(refreshToken, encodeBase64SecretKey);
 
@@ -59,7 +68,7 @@ public class TokenController {
         String newAccessToken = jwtTokenizer.generateAccessToken(map, email, expiration, encodeBase64SecretKey);
         response.setHeader("Authorization", "Bearer " + newAccessToken);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 }

@@ -50,6 +50,7 @@ public class MemberService {
         this.redisUtil = redisUtil;
         this.planService = planService;
     }
+
     public Member createMember(Member member) {
         if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
             Member findMember = memberRepository.findByEmail(member.getEmail()).get();
@@ -57,6 +58,12 @@ public class MemberService {
                 memberRepository.delete(findMember);
             } else throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
+
+        //이메일 인증 전 회원 가입 요청시 예외
+        if (redisUtil.get(member.getEmail() + "_confirm") == null) {
+            throw new BusinessLogicException(ExceptionCode.EMAIL_AUTH_REQUIRED);
+        }
+        redisUtil.delete(member.getEmail() + "_confirm");
 
         //패스워드 암호화
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
@@ -73,40 +80,6 @@ public class MemberService {
 
         return savedMember;
     }
-
-//TODO : 주석 해제 예정
-//    public Member createMember(Member member, String authNum) {
-//        if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
-//            Member findMember = memberRepository.findByEmail(member.getEmail()).get();
-//            if (findMember.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)) {
-//                memberRepository.delete(findMember);
-//            } else throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-//        }
-//
-//        //이메일 인증 (인증 번호)
-//        try {
-//            if (!redisUtil.get(member.getEmail() + "_auth").equals(authNum)) {
-//                throw new BusinessLogicException(ExceptionCode.INVALID_EMAIL_AUTH_NUMBER);
-//            }
-//        } catch (NullPointerException e) { //인증번호 발송되지 않은 이메일인 경우 예외처리
-//            throw new BusinessLogicException(ExceptionCode.INVALID_EMAIL_AUTH);
-//        }
-//
-//        //패스워드 암호화
-//        String encryptedPassword = passwordEncoder.encode(member.getPassword());
-//        member.setPassword(encryptedPassword);
-//
-//        List<String> roles = authorityUtils.createRoles(member.getEmail());
-//        member.setRoles(roles);
-//
-//        // 기본 프로필 이미지 설정
-//        member.setProfileImage("https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png");
-//        member.setProfileKey("basic.png");
-//
-//        Member savedMember = memberRepository.save(member);
-//
-//        return savedMember;
-//    }
 
     public Member updateMember(Member member) {
         Member findMember = findVerifiedMember(member.getMemberId());
