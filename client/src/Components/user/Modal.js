@@ -28,7 +28,7 @@ const Modal = (props) => {
         )}
         <div className='submit_frame'>
           <div onClick={props.handleClear}>
-            <button className='button--danger' onClick={props.handleClick}>
+            <button className='button--danger' onClick={props.handleClick} disabled={props.disable}>
               {props.buttonName}
             </button>
           </div>
@@ -108,7 +108,7 @@ const ModalWrapper = styled.div`
     .button--danger {
       &:disabled {
         cursor: not-allowed;
-        background-color: var(--light);
+        background-color: var(--light-gray-5);
       }
     }
 
