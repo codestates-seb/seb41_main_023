@@ -1,14 +1,12 @@
-import styled from "styled-components";
-import axios from "axios";
 import { useState, useRef, useCallback, useEffect } from "react";
+import axios from "axios";
+import styled from "styled-components";
 
 import Header from "../Components/Header";
+import Footer from "./Footer";
 import { General, Password, DeleteAccount } from "../Components/user/Tab";
 
 import { getCookie } from "../Util/Cookies";
-
-// import { getData, patchData, postData } from '../Util/api';
-import Footer from "./Footer";
 
 const UserProfileEdit = () => {
   const memberId = getCookie("memberId");
