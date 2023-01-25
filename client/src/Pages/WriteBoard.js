@@ -1,19 +1,23 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import Header from "../Components/Header";
-import MyTrips from "../Components/user/MyTrips";
-import MyLogs from "../Components/user/MyLogs";
+import Header from '../Components/Header';
+import MyTrips from '../Components/user/MyTrips';
+import MyLogs from '../Components/user/MyLogs';
+import Footer from './Footer';
 
 const WriteBoard = () => {
   return (
     <WriteBoardContainer>
       <Header login={true} />
-      <Content>
-        <h1>Write your travel log</h1>
-        <div>Reflect your trips and share it with other travellers!</div>
-      </Content>
-      <MyTrips mode="write" />
-      <MyLogs mode="write" />
+      <Main>
+        <div className='main__header'>
+          <h1>Write your travel log</h1>
+          <p>Reflect your trips and share it with other travellers!</p>
+        </div>
+        <MyTrips mode='write' />
+        <MyLogs mode='write' />
+      </Main>
+      <Footer />
     </WriteBoardContainer>
   );
 };
@@ -24,7 +28,30 @@ const WriteBoardContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Content = styled.div`
-  margin-top: 50px;
-  margin-bottom: 50px;
+
+const Main = styled.div`
+  width: 100vw;
+  padding: 50px;
+
+  > .main__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 300px;
+    padding-bottom: 50px;
+    margin-bottom: 50px;
+
+    h1 {
+      margin-bottom: var(--spacing-3);
+      font-size: var(--xx-large-heading-font-size);
+      line-height: var(--xx-large-heading-line-height);
+      font-weight: 500;
+      color: var(--black);
+    }
+
+    p {
+      font-size: var(--large-text-size);
+      line-height: var(--large-text-line-height);
+    }
+  }
 `;

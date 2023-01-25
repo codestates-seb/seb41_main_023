@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import moment from 'moment';
-import 'moment/locale/ko';
+import styled from "styled-components";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
 
 const LeftSideBar = styled.div`
   position: sticky;
@@ -54,8 +54,8 @@ const SideDateBar = (props) => {
       {singlePlanData.map((date) => (
         <DateBox key={date.planDateId}>
           <button onClick={() => onDateClick(date.planDateId)}>
-            <span>{moment(date.planDate).format('M.D')}</span>
-            <span>{moment(date.planDate).format('ddd')}</span>
+            <span>{dayjs(date.planDate).format("M.D")}</span>
+            <span>{dayjs(date.planDate).format("ddd")}</span>
           </button>
         </DateBox>
       ))}

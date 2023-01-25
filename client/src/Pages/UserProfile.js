@@ -7,7 +7,6 @@ import Header from "../Components/Header";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
 
-// import { getData } from "../Util/api";
 import { postData } from "../Util/api";
 import { getCookie, removeCookie } from "../Util/Cookies";
 import Footer from "./Footer";

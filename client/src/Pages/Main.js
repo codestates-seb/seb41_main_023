@@ -1,11 +1,9 @@
 import styled from "styled-components";
-
 import Home from "../Pages/Home";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
 import Explore from "../Components/Board/Explore";
 import Footer from "./Footer";
-import {useLocation} from "react-router-dom";
 
 const MainContainer = styled.div`
   position: relative;
@@ -17,6 +15,24 @@ const MainContainer = styled.div`
     font-weight: 600;
     color: var(--black);
   }
+
+  .button--top {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    padding: 0;
+    width: var(--spacing-5);
+    height: var(--spacing-5);
+    border-radius: 50%;
+    background-color: transparent;
+    font-weight: 500;
+    transition: all 0.2s ease-in;
+
+    &:hover {
+      background-color: var(--primary-blue-bright);
+      color: var(--white);
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -24,9 +40,11 @@ const Content = styled.div`
   margin: 50px;
 `;
 
-
 const Main = () => {
-  // const url = "/board?page=1&size=5&tab=views";
+  const TopMove = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <MainContainer>
       <Home login={true} />
@@ -37,6 +55,12 @@ const Main = () => {
         <Explore />
       </Content>
       <Footer />
+      <button
+        className="button--default button--subtle button--top"
+        onClick={TopMove}
+      >
+        Top
+      </button>
     </MainContainer>
   );
 };

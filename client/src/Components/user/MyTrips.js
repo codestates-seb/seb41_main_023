@@ -1,4 +1,4 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import axios from "axios";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
@@ -54,8 +54,8 @@ const MyTrips = ({ mode }) => {
             <div className="meta_title">{trip.planTitle}</div>
             <div className="meta_content">
               <div>
-                {moment(trip.startDate).format("M월 D일")} -{" "}
-                {moment(trip.endDate).format("M월 D일")}
+                {dayjs(trip.startDate).format("M월 D일")} -{" "}
+                {dayjs(trip.endDate).format("M월 D일")}
               </div>
               {/* <div>
                 {trip.plans} places · {trip.cityName}

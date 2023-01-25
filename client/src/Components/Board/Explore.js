@@ -1,24 +1,19 @@
 import styled from "styled-components";
 import axios from "axios";
+import dayjs from "dayjs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../Util/Cookies";
-import moment from "moment";
 
 const Explore = (props) => {
   const [exploreList, setExploreList] = useState([]);
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const [loading, setLoading] = useState(false);
-
   const token = getCookie("accessToken");
   const navigate = useNavigate();
-
+  const page = useRef(1);
+  const [hasNextPage, setHasNextPage] = useState(true);
   const observerTargetEl = useRef(null);
-  const page = useRef(2);
 
-  // 무한 스크롤
   const fetchMoreExplores = useCallback(async () => {
-    setLoading(true);
     await axios
       .get(
         `${process.env.REACT_APP_API_URL}/board?page=${page.current}&size=5&tab=likes`,
@@ -29,32 +24,14 @@ const Explore = (props) => {
         }
       )
       .then((res) => {
-        setTimeout(() => {
-          setExploreList((prevState) => [...prevState, ...res.data.data]);
-          setLoading(false);
-        }, 1500);
+        setExploreList((prevState) => [...prevState, ...res.data.data]);
         setHasNextPage(res.data.data.length === 5);
         if (res.data.data.length) page.current += 1;
       })
       .catch((err) => console.log(err));
   }, [page.current]);
 
-  // 게시판 접근 시
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=likes`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((res) => {
-        setExploreList(res.data.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    // 검색
     if (props.searches) {
       axios
         .get(
@@ -70,16 +47,14 @@ const Explore = (props) => {
         })
         .catch((err) => console.log(err));
     } else {
-      // 게시판
       if (window.location.pathname === "/board") {
         if (!observerTargetEl.current || !hasNextPage) return;
-        const options = { threshold: 1.0 };
 
         const io = new IntersectionObserver((entries, observer) => {
           if (entries[0].isIntersecting) {
             fetchMoreExplores();
           }
-        }, options);
+        });
         io.observe(observerTargetEl.current);
 
         return () => {
@@ -125,8 +100,8 @@ const Explore = (props) => {
               />
               <div className="meta_title">{explore.title}</div>
               <div className="meta_content">
-                {moment(explore.travelPeriod.split("-")[0]).format("M월 D일")} -{" "}
-                {moment(explore.travelPeriod.split("-")[1]).format("M월 D일")}
+                {dayjs(explore.travelPeriod.split("-")[0]).format("M월 D일")} -{" "}
+                {dayjs(explore.travelPeriod.split("-")[1]).format("M월 D일")}
               </div>
               <div className="meta_profile">
                 <img
@@ -211,13 +186,8 @@ const ExploreContainer = styled.div`
     gap: var(--spacing-4);
 
     .search__error {
-      width: 1820px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       font-size: var(--large-text-size);
       line-height: var(--large-text-line-height);
-      font-weight: 600;
     }
 
     .my-logs__card {
