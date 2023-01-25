@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -97,6 +98,8 @@ public interface PlanMapper {
         response.setPlanDatesAndPlace(planDatesToPlanDatesDetailResponseDtos(plan.getPlanDates()));
         response.setBudget(budgetToBudgetSimpleResponseDto(plan.getBudget()));
         response.setCity(cityImageResponseToCity(plan.getCity()));
+        Optional.ofNullable(plan.getBoard())
+                .ifPresent(board -> response.setBoardId(board.getBoardId()));
         return response;
     }
 
