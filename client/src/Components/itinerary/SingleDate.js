@@ -1,6 +1,6 @@
-import moment from 'moment/moment';
-import { StyledOptionItem } from './PlanDropDown';
-import 'moment/locale/ko';
+import dayjs from "dayjs";
+import { StyledOptionItem } from "./PlanDropDown";
+import "dayjs/locale/ko";
 
 const SingleDate = (props) => {
   const { id, data, setIsShow, setSelected, setSelectedDateId } = props;
@@ -9,11 +9,11 @@ const SingleDate = (props) => {
     <StyledOptionItem
       onClick={() => {
         setIsShow(false);
-        setSelected(moment(data.planDate).format('M.D'));
+        setSelected(dayjs(data.planDate).format("M.D"));
         setSelectedDateId(id);
       }}
     >
-      {moment(data.planDate).format('M/D')}
+      {dayjs(data.planDate).format("M/D")}
     </StyledOptionItem>
   );
 };

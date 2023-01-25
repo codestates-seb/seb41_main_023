@@ -2,7 +2,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
+import dayjs from "dayjs";
 
 import { Mode } from "../../Util/constants";
 import { getCookie } from "../../Util/Cookies";
@@ -49,8 +49,8 @@ const MyLogs = ({ mode }) => {
             />
             <div className="meta_title">{log.title}</div>
             <div className="meta_content">
-              {moment(log.travelPeriod.split("-")[0]).format("M월 D일")} -{" "}
-              {moment(log.travelPeriod.split("-")[1]).format("M월 D일")}
+              {dayjs(log.travelPeriod.split("-")[0]).format("M월 D일")} -{" "}
+              {dayjs(log.travelPeriod.split("-")[1]).format("M월 D일")}
             </div>
             <div className="meta_profile">
               <img
@@ -94,7 +94,7 @@ const MyLogsContainer = styled.div`
     display: flex;
     gap: var(--spacing-4);
     flex-wrap: wrap;
-    
+
     .my-logs__card {
       position: relative;
       width: calc((100vw - 228px) / 5);

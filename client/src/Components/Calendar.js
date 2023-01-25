@@ -1,10 +1,9 @@
-import moment from 'moment';
-import styled from 'styled-components';
-import 'react-date-range/dist/styles.css'; // 메인 css 파일
-import 'react-date-range/dist/theme/default.css'; // 테마 CSS 파일
-import { addDays } from 'date-fns';
-import { useEffect, useState } from 'react';
-import { DateRange } from 'react-date-range';
+import styled from "styled-components";
+import "react-date-range/dist/styles.css"; // 메인 css 파일
+import "react-date-range/dist/theme/default.css"; // 테마 CSS 파일
+import { useEffect, useState } from "react";
+import { DateRange } from "react-date-range";
+import dayjs from "dayjs";
 
 const CalendarContainer = styled.div`
   position: relative;
@@ -22,7 +21,8 @@ const CalendarContainer = styled.div`
     background-color: white;
     border: 1px solid var(--light-gray-4);
     border-radius: 3px;
-    box-shadow: 0px 0px 1px rgba(9, 30, 66, 0.31), 0px 8px 12px rgba(9, 30, 66, 0.15);
+    box-shadow: 0px 0px 1px rgba(9, 30, 66, 0.31),
+      0px 8px 12px rgba(9, 30, 66, 0.15);
 
     > .rdrCalendarWrapper {
       width: 100%;
@@ -142,13 +142,14 @@ const CalendarContainer = styled.div`
 `;
 
 const Calendar = ({ handleDate, login, calenderRef }) => {
-  const tomorrow = moment().add(1, "d").toDate();
+  const day = new Date();
+  const tomorrow = dayjs(day).add(1, "d").toDate();
 
   const [date, setDate] = useState([
     {
       startDate: tomorrow,
       endDate: tomorrow,
-      key: 'selection',
+      key: "selection",
     },
   ]);
 
@@ -157,7 +158,10 @@ const Calendar = ({ handleDate, login, calenderRef }) => {
   }, [date[0].startDate, date[0].endDate]);
 
   return (
-    <CalendarContainer ref={calenderRef} className={`calendar__container ${login ? 'login' : null}`}>
+    <CalendarContainer
+      ref={calenderRef}
+      className={`calendar__container ${login ? "login" : null}`}
+    >
       <div className="calendar">
         <DateRange
           editableDateInputs={true}
@@ -166,7 +170,7 @@ const Calendar = ({ handleDate, login, calenderRef }) => {
           ranges={date}
           months={2}
           direction="horizontal"
-          dateDisplayFormat={'LLLL yyyy'} // 날짜 포맷값
+          dateDisplayFormat={"LLLL yyyy"} // 날짜 포맷값
         />
       </div>
     </CalendarContainer>

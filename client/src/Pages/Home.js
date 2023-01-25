@@ -1,5 +1,5 @@
 import axios from "axios";
-import moment from "moment";
+import dayjs from "dayjs";
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -40,8 +40,8 @@ const Home = ({ login }) => {
   }, [showCalendar]);
 
   const handleDate = (date) => {
-    setStartDate(moment(date[0].startDate).format("YYYY-MM-DD"));
-    setEndDate(moment(date[0].endDate).format("YYYY-MM-DD"));
+    setStartDate(dayjs(date[0].startDate).format("YYYY-MM-DD"));
+    setEndDate(dayjs(date[0].endDate).format("YYYY-MM-DD"));
   };
 
   const handleDestination = (destination) => {
