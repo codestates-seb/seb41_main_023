@@ -64,7 +64,7 @@ const WriteSingleBoard = () => {
             lng: startPlace.longitude,
           });
       });
-  }, []);
+  }, [planId, token]);
 
   // 창 닫기 & 새로고침 막기
   const preventClose = (e) => {
@@ -138,15 +138,15 @@ const WriteSingleBoard = () => {
   };
 
   // 장소별 note 삭제
-  const handleDeleteNote = (e) => {
-    let findIndex = placeNotes.findIndex(
-      (comment) => Number(comment.placeId) === Number(e.target.name)
-    );
+  // const handleDeleteNote = (e) => {
+  //   let findIndex = placeNotes.findIndex(
+  //     (comment) => Number(comment.placeId) === Number(e.target.name)
+  //   );
 
-    let changeNotes = [...placeNotes];
-    changeNotes[findIndex].description = "";
-    setPlaceNotes(changeNotes);
-  };
+  //   let changeNotes = [...placeNotes];
+  //   changeNotes[findIndex].description = "";
+  //   setPlaceNotes(changeNotes);
+  // };
 
   // 위도, 경도 변경
   const handleGeoCode = (lat, lng) => {

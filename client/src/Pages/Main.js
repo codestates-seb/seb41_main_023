@@ -1,11 +1,9 @@
 import styled from "styled-components";
-
 import Home from "../Pages/Home";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
 import Explore from "../Components/Board/Explore";
 import Footer from "./Footer";
-import {topScrollBtn} from "../images/topScroll";
 
 const MainContainer = styled.div`
   position: relative;
@@ -28,7 +26,7 @@ const MainContainer = styled.div`
     border-radius: 50%;
     background-color: transparent;
     font-weight: 500;
-    transition: all .2s ease-in;
+    transition: all 0.2s ease-in;
 
     &:hover {
       background-color: var(--primary-blue-bright);
@@ -42,27 +40,29 @@ const Content = styled.div`
   margin: 50px;
 `;
 
-
 const Main = () => {
-    const TopMove = () => {
-        window.scrollTo({top: 0, behavior: "smooth"});
-    };
+  const TopMove = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-    return (
-        <MainContainer>
-            <Home login={true}/>
-            <Content>
-                <MyTrips mode="plan"/>
-                <MyLogs mode="plan"/>
-                <h2>Explore</h2>
-                <Explore/>
-            </Content>
-            <Footer/>
-            <button className='button--default button--subtle button--top' onClick={TopMove}>
-                Top
-            </button>
-        </MainContainer>
-    );
+  return (
+    <MainContainer>
+      <Home login={true} />
+      <Content>
+        <MyTrips mode="plan" />
+        <MyLogs mode="plan" />
+        <h2>Explore</h2>
+        <Explore />
+      </Content>
+      <Footer />
+      <button
+        className="button--default button--subtle button--top"
+        onClick={TopMove}
+      >
+        Top
+      </button>
+    </MainContainer>
+  );
 };
 
 export default Main;

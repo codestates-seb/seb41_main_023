@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import SingleDate from "./SingleDate";
 
 export const Container = styled.div`
