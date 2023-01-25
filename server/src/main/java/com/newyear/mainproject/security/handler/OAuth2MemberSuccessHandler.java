@@ -35,28 +35,40 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                                         Authentication authentication) throws IOException {
 
         String email;
+        String clientId;
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oAuth2User.getAttributes();
         Map<String,Object> kakao = (Map<String, Object>) attributes.get("kakao_account");
 
         if (kakao != null) {
             email = kakao.get("email").toString();
+            clientId = "KAKAO";
         } else {
             email = attributes.get("email").toString();
+            clientId = "FACEBOOK";
+            if (attributes.get("sub") != null) {
+                clientId = "GOOGLE";
+            }
         }
+
+        String password = memberRepository.findByEmail(email).get().getPassword();
 
         log.info("member's email : {}", email);
 
-        redirect(request, response, email);
+        redirect(request, response, email, password.equals(clientId));
     }
 
-    private void redirect(HttpServletRequest request, HttpServletResponse response, String username) throws IOException {
+    private void redirect(HttpServletRequest request, HttpServletResponse response, String username, boolean isMember) throws IOException {
+        String accessToken = "";
+        String refreshToken = "";
 
-        String accessToken = delegateAccessToken(username, List.of("USER"));
-        String refreshToken = delegateRefreshToken(username);
+        if (isMember) {
+            accessToken = delegateAccessToken(username, List.of("USER"));
+            refreshToken = delegateRefreshToken(username);
 
-        response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("Refresh", refreshToken);
+            response.setHeader("Authorization", "Bearer " + accessToken);
+            response.setHeader("Refresh", refreshToken);
+        }
 
         Member member = memberRepository.findByEmail(username).get();
         String uri = createURI("Bearer " + accessToken, refreshToken, member.getMemberId()).toString();
@@ -100,6 +112,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     private URI createURI(String accessToken, String refreshToken, long memberId) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+
         queryParams.add("accessToken", accessToken);
         queryParams.add("refreshToken", refreshToken);
         queryParams.add("memberId", String.valueOf(memberId));
@@ -108,9 +121,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("travel-logs.s3-website.ap-northeast-2.amazonaws.com")//S3주소로
-//                .host("localhost")
-//                .port(8080)
+//                .host("travel-logs.s3-website.ap-northeast-2.amazonaws.com")//S3주소로
+                .host("localhost")
+                .port(8080)
                 .path("/loading")
                 .queryParams(queryParams)
                 .build()

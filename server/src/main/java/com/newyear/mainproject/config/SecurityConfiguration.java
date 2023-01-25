@@ -57,7 +57,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                                .antMatchers(HttpMethod.POST, "/members/signup", "/members/login", "/login/**", "/email/auth", "/token/reissue").permitAll()
+                                .antMatchers(HttpMethod.POST, "/members/signup", "/members/login", "/login/**", "/email/**", "/token/reissue").permitAll()
                                 .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER")
                                 .antMatchers(HttpMethod.POST, "/members/logout").permitAll()
                                 .antMatchers(HttpMethod.GET, "/members", "/board/user/plan/**").hasAnyRole("ADMIN", "USER")
@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                                 .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
                                 .antMatchers("/h2/**").permitAll() // h2 콘솔 사용을 위한 설정
                                 .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                                .antMatchers("/login/**", "/oauth2/**").permitAll()
+                                .antMatchers("/login/**", "/oauth2/**", "/loading/**").permitAll()
                         .anyRequest()
 //                                .permitAll()
                         .authenticated()
