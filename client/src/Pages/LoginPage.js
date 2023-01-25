@@ -44,6 +44,7 @@ const LoginPage = () => {
                 localStorage.setItem("refreshToken", response.headers.refresh);
                 alert("로그인되었습니다. 메인 페이지로 이동합니다.");
                 window.location.replace("/");
+                // setInterval(onRefresh, 10000);
             }
         } catch (err) {
             console.error(err);
@@ -64,6 +65,22 @@ const LoginPage = () => {
         else if (!isEmail) alert('Email을 확인해주세요.');
         else if (!isPassword) alert('Password를 확인해주세요.');
     };
+
+    // const refreshToken = localStorage.getItem("refreshToken");
+
+    // const onRefresh = async () => {
+    //     try {
+    //         const response = await axios.post(`${process.env.REACT_APP_API_URL}/token/reissue`, {
+    //             headers: {
+    //                 Refresh: refreshToken
+    //             }
+    //         })
+    //         if (response.status === 200) setCookie("accessToken", response.headers.authorization);
+    //     }
+    //     catch (err) {
+    //         console.error(err);
+    //     }
+    // }
 
     // email
     const onChangeEmail = useCallback((e) => {

@@ -32,15 +32,15 @@ const Explore = (props) => {
         setTimeout(() => {
           setExploreList((prevState) => [...prevState, ...res.data.data]);
           setLoading(false);
-        }, 2000);
+        }, 1500);
         setHasNextPage(res.data.data.length === 5);
         if (res.data.data.length) page.current += 1;
       })
       .catch((err) => console.log(err));
   }, [page.current]);
 
+  // 게시판 접근 시
   useEffect(() => {
-    // 게시판 접근 시
     axios
       .get(`${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=likes`, {
         headers: {
@@ -171,9 +171,8 @@ const ExploreContainer = styled.div`
   margin-bottom: 50px;
 
   .target {
-    margin-top: 180px;
+    margin-top: 390px;
     bottom: 0px;
-    color: white;
   }
 
   .loader {
