@@ -1,15 +1,15 @@
-import Header from '../Components/Header';
-import Autocomplete from '../Components/AutoComplete';
-import styled from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getCookie } from '../Util/Cookies';
-import Explore from '../Components/Board/Explore';
-import bgImg from '../images/login_background-image.jpg';
+import Header from "../Components/Header";
+import Autocomplete from "../Components/AutoComplete";
+import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getCookie } from "../Util/Cookies";
+import Explore from "../Components/Board/Explore";
+import bgImg from "../images/login_background-image.jpg";
 
 const Board = () => {
   const [login, setLogin] = useState(false);
-  const [destination, setDestination] = useState('');
+  const [destination, setDestination] = useState("");
   const [searches, setSearches] = useState(false);
 
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Board = () => {
   //     : `/board?page=${page.current}&size=5&tab=views`;
 
   useEffect(() => {
-    if (getCookie('accessToken')) {
+    if (getCookie("accessToken")) {
       setLogin(true);
     }
   }, []);
@@ -33,15 +33,15 @@ const Board = () => {
   };
 
   const TopMove = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleWrite = () => {
     if (login) {
-      navigate('/board/plan');
+      navigate("/board/plan");
     } else {
-      alert('로그인 후 이용해주세요.');
-      navigate('/login');
+      alert("로그인 후 이용해주세요.");
+      navigate("/login");
     }
   };
 
@@ -49,8 +49,8 @@ const Board = () => {
     <LogContainer>
       <Header login={login} />
       <TopContainer>
-        <div className='top__container'>
-          <div className='top__content'>
+        <div className="top__container">
+          <div className="top__content">
             <h1>Explore travel logs and itineraries</h1>
             <Autocomplete
               handleDestination={handleDestination}
@@ -61,14 +61,17 @@ const Board = () => {
         </div>
       </TopContainer>
       <MainContainer>
-        <div className='main__header'>
+        <div className="main__header">
           <h2>Explore</h2>
-          <button className='button--primary' onClick={handleWrite}>
+          <button className="button--primary" onClick={handleWrite}>
             Write log
           </button>
         </div>
         <Explore searches={searches} destination={destination} />
-        <button className='button--default button--subtle button--top' onClick={TopMove}>
+        <button
+          className="button--default button--subtle button--top"
+          onClick={TopMove}
+        >
           Top
         </button>
       </MainContainer>
@@ -146,7 +149,7 @@ const MainContainer = styled.div`
     border-radius: 50%;
     background-color: transparent;
     font-weight: 500;
-    transition: all .2s ease-in;
+    transition: all 0.2s ease-in;
 
     &:hover {
       background-color: var(--primary-blue-bright);

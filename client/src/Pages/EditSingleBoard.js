@@ -94,21 +94,6 @@ const EditSingleBoard = () => {
     };
   }, []);
 
-  // 뒤로가기 막기
-  // const preventGoBack = () => {
-  //   if (window.confirm("페이지를 나가시겠습니까?")) {
-  //     history.go(-1);
-  //   } else {
-  //     history.pushState(null, "", location.href);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   history.pushState(null, "", location.href);
-  //   window.addEventListener("popstate", preventGoBack);
-  //   return () => window.removeEventListener("popstate", preventGoBack);
-  // }, []);
-
   const handleZoom = (el) => {
     setZoom(el);
   };
