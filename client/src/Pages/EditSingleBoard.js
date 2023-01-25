@@ -319,6 +319,7 @@ const MainContainer = styled.div`
     border-radius: 5px;
     outline: 0;
     margin-bottom: var(--spacing-5);
+    resize: none;
 
     &:focus {
       border-color: var(--primary-blue-light-1);
@@ -410,6 +411,7 @@ const ItineraryWrapper = styled.div`
     border-radius: 5px;
     outline: 0;
     margin-bottom: var(--spacing-3);
+    resize: none;
 
     &:focus {
       border-color: var(--primary-blue-light-1);
