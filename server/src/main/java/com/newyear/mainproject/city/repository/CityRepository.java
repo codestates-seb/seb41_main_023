@@ -1,5 +1,6 @@
-package com.newyear.mainproject.city;
+package com.newyear.mainproject.city.repository;
 
+import com.newyear.mainproject.city.entity.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

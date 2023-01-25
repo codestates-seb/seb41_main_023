@@ -2,7 +2,7 @@ package com.newyear.mainproject.plan.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.newyear.mainproject.budget.dto.BudgetDto;
-import com.newyear.mainproject.city.CityDto;
+import com.newyear.mainproject.city.dto.CityDto;
 import com.newyear.mainproject.place.dto.PlaceDto;
 import lombok.*;
 
@@ -69,6 +69,7 @@ public class PlanDto {
         private CityDto.ImageResponse city;
         private List<PlanDatesResponse> planDates = new ArrayList<>();
         private List<PlanDto.PlanDatesDetailResponse> planDatesAndPlace = new ArrayList<>();
+        private Long boardId;
     }
     @Getter
     @Setter
