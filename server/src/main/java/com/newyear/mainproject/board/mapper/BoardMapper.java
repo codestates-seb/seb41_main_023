@@ -3,7 +3,7 @@ package com.newyear.mainproject.board.mapper;
 import com.newyear.mainproject.board.dto.BoardDto;
 import com.newyear.mainproject.board.entity.Board;
 import com.newyear.mainproject.board.likes.Likes;
-import com.newyear.mainproject.city.City;
+import com.newyear.mainproject.city.entity.City;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.plan.entity.Plan;

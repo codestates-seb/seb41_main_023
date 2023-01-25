@@ -3,7 +3,7 @@ package com.newyear.mainproject.plan.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.newyear.mainproject.board.entity.Board;
 import com.newyear.mainproject.budget.entity.Budget;
-import com.newyear.mainproject.city.City;
+import com.newyear.mainproject.city.entity.City;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.place.entity.Place;
 import lombok.Getter;
