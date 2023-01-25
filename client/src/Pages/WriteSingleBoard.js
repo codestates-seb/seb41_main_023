@@ -2,7 +2,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { LoadScript, GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 
 import { getCookie } from "../Util/Cookies";
 
@@ -20,7 +20,6 @@ const WriteSingleBoard = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [placeNotes, setPlaceNotes] = useState([]);
-  // const [boardId, setBoardId] = useState(null);
   const [libraries] = useState(["places"]);
 
   const { isLoaded } = useJsApiLoader({
