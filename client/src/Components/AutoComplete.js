@@ -14,7 +14,8 @@ const Autocomplete = ({
   /* 도시 정보 조회 */
   // const getCity = async () => {
   //   const data = await getData(`/city`);
-  //   setCity(data.data.map((el) => el.cityName));
+  //   console.log(data);
+  //   // setCity(data.data.map((el) => el.cityName));
   // };
 
   const getCity = () => {
