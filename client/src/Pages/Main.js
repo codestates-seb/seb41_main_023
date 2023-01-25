@@ -18,14 +18,22 @@ const MainContainer = styled.div`
     color: var(--black);
   }
 
-  .topBtn {
+  .button--top {
     position: fixed;
     bottom: 50px;
     right: 50px;
-    background-color: var(--primary-blue-light-1);
-    font-size: 24px;
-    padding: 6px;
+    padding: 0;
+    width: var(--spacing-5);
+    height: var(--spacing-5);
     border-radius: 50%;
+    background-color: transparent;
+    font-weight: 500;
+    transition: all .2s ease-in;
+
+    &:hover {
+      background-color: var(--primary-blue-bright);
+      color: var(--white);
+    }
   }
 `;
 
@@ -50,8 +58,8 @@ const Main = () => {
                 <Explore/>
             </Content>
             <Footer/>
-            <button className="topBtn" onClick={TopMove}>
-                {topScrollBtn}
+            <button className='button--default button--subtle button--top' onClick={TopMove}>
+                Top
             </button>
         </MainContainer>
     );

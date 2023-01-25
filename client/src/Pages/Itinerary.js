@@ -113,7 +113,7 @@ const Itinerary = () => {
                         handleBudgetRefresh={handleBudgetRefresh}
                     />
                 </Fragment>
-            ) : <p>error!</p>}
+            ) : <p>Loading</p>}
         </Fragment>
     )
 };
