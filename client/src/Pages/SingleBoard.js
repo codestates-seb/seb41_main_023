@@ -37,10 +37,11 @@ const SingleBoard = () => {
       .then((res) => {
         setBoardData(res.data);
         const startCode = res.data.days[0].placeDetails[0];
-        setGeocode({
-          lat: startCode.latitude,
-          lng: startCode.longitude,
-        });
+        startCode &&
+          setGeocode({
+            lat: startCode.latitude,
+            lng: startCode.longitude,
+          });
       })
       .catch((err) => console.log(err));
   }, [boardId]);

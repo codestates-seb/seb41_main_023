@@ -58,10 +58,11 @@ const WriteSingleBoard = () => {
         setTitle(res.data.planTitle);
         setDays(res.data.days);
         const startPlace = res.data.days[0].placeDetails[0];
-        setGeocode({
-          lat: startPlace.latitude,
-          lng: startPlace.longitude,
-        });
+        startPlace &&
+          setGeocode({
+            lat: startPlace.latitude,
+            lng: startPlace.longitude,
+          });
       });
   }, []);
 

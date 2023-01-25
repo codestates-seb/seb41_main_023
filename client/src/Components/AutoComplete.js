@@ -1,6 +1,6 @@
 import axios from "axios";
 import styled from "styled-components";
-import { getData } from "../Util/api";
+// import { getData } from "../Util/api";
 import { useState, useEffect } from "react";
 
 const Autocomplete = ({

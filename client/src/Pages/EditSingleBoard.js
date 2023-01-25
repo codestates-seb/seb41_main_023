@@ -58,10 +58,11 @@ const EditSingleBoard = () => {
         setContent(res.data.content);
         setDays(res.data.days);
         const startPlace = res.data.days[0].placeDetails[0];
-        setGeocode({
-          lat: startPlace.latitude,
-          lng: startPlace.longitude,
-        });
+        startPlace &&
+          setGeocode({
+            lat: startPlace.latitude,
+            lng: startPlace.longitude,
+          });
 
         res.data.days.map((day) =>
           day.placeDetails.map((place) =>
