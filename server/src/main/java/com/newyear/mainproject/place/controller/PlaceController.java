@@ -5,7 +5,7 @@ import com.newyear.mainproject.place.dto.PlaceDto;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.place.mapper.PlaceMapper;
 import com.newyear.mainproject.place.service.PlaceService;
-import com.newyear.mainproject.plan.service.PlanService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +19,10 @@ import javax.validation.constraints.Positive;
 @RequestMapping("/places")
 @Slf4j
 @Validated
+@RequiredArgsConstructor
 public class PlaceController {
     private final PlaceService placeService;
-    private final PlanService planService;
     private final PlaceMapper placeMapper;
-
-    public PlaceController(PlaceService placeService, PlanService planService, PlaceMapper placeMapper) {
-        this.placeService = placeService;
-        this.planService = planService;
-        this.placeMapper = placeMapper;
-    }
 
     /**
      * 해당 일정에 대한 장소 정보 등록
@@ -37,7 +31,7 @@ public class PlaceController {
     public ResponseEntity postPlace(@PathVariable("plan-date-id") @Positive Long planDateId,
                                     @Valid @RequestBody PlaceDto.Post post) {
         post.setPlaceDateId(planDateId);
-        Place place = placeService.createPlace(placeMapper.placePostDtoToPlace(post, planService));
+        Place place = placeService.createPlace(placeMapper.placePostDtoToPlace(post));
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(placeMapper.placeToPlaceResponseDto(place)), HttpStatus.CREATED);
