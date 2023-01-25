@@ -7,16 +7,21 @@ import { getCookie } from "../../Util/Cookies";
 
 const Explore = (props) => {
   const [exploreList, setExploreList] = useState([]);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   const token = getCookie("accessToken");
   const navigate = useNavigate();
-  const page = useRef(1);
-  const [hasNextPage, setHasNextPage] = useState(true);
-  const observerTargetEl = useRef(null);
 
+  const observerTargetEl = useRef(null);
+  const page = useRef(2);
+
+  // 무한 스크롤
   const fetchMoreExplores = useCallback(async () => {
+    setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/board?page=${page.current}&size=5&tab=likes`,
+        `${process.env.REACT_APP_API_URL}/board?page=${page.current}&size=5&tab=boardId`,
         {
           headers: {
             Authorization: token,
@@ -24,14 +29,32 @@ const Explore = (props) => {
         }
       )
       .then((res) => {
-        setExploreList((prevState) => [...prevState, ...res.data.data]);
+        setTimeout(() => {
+          setExploreList((prevState) => [...prevState, ...res.data.data]);
+          setLoading(false);
+        }, 1500);
         setHasNextPage(res.data.data.length === 5);
         if (res.data.data.length) page.current += 1;
       })
       .catch((err) => console.log(err));
   }, [page.current]);
 
+  // 게시판 접근 시
   useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=boardId`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        setExploreList(res.data.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    // 검색
     if (props.searches) {
       axios
         .get(
@@ -47,14 +70,19 @@ const Explore = (props) => {
         })
         .catch((err) => console.log(err));
     } else {
+      // 게시판
       if (window.location.pathname === "/board") {
         if (!observerTargetEl.current || !hasNextPage) return;
+        const options = { 
+          root: null,
+          rootMargin: '0px 0px -30px 0px',
+          threshold: 1 };
 
         const io = new IntersectionObserver((entries, observer) => {
           if (entries[0].isIntersecting) {
             fetchMoreExplores();
           }
-        });
+        }, options);
         io.observe(observerTargetEl.current);
 
         return () => {
@@ -64,7 +92,7 @@ const Explore = (props) => {
         // 메인
         axios
           .get(
-            `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=likes`,
+            `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=boardId`,
             {
               headers: {
                 Authorization: token,
@@ -133,7 +161,7 @@ const Explore = (props) => {
         )}
         {loading ? <div className="loader"></div> : <div></div>}
         <div ref={observerTargetEl} className="target">
-          target
+           
         </div>
       </div>
     </ExploreContainer>
@@ -141,18 +169,21 @@ const Explore = (props) => {
 };
 export default Explore;
 
+
 const ExploreContainer = styled.div`
   position: relative;
   margin-bottom: 50px;
 
   .target {
-    margin-top: 390px;
-    bottom: 0px;
+    width: 150px;
+    height: 150px;
+    margin-top: 225px;
+    color: white;
   }
 
   .loader {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
     border: 5px solid lightgray;
     border-bottom-color: transparent;
     border-radius: 50%;
@@ -160,7 +191,7 @@ const ExploreContainer = styled.div`
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 100px;
   }
 
   @keyframes rotation {
