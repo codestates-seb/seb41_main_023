@@ -29,10 +29,11 @@ const SignUpPage = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
-  //이메일 인증번호 검사 모달창
-  const [verificationIsOpened, setVerificationIsOpened] = useState(false);
-  const [authNum, setAuthNum] = useState('');
-  const [isAuth, setIsAuth] = useState(false);
+    //이메일 인증번호 검사 모달창
+    const [verificationIsOpened, setVerificationIsOpened] = useState(false);
+    const [authNum, setAuthNum] = useState('');
+    const [isAuth, setIsAuth] = useState(false);
+    const [disable, setDisable] = useState(true);
 
   // 렌더링 될때 username input으로 focus
   useEffect(() => {
@@ -136,54 +137,46 @@ const SignUpPage = () => {
     if (e.key === 'Enter') onSignUp();
   };
 
-  const handleEmailVerificationModal = () => {
-    setVerificationIsOpened((prevState) => !prevState);
-  };
+    const handleEmailVerificationModal = () => {
+        setVerificationIsOpened(prevState => !prevState);
+        setDisable(true);
+    };
 
-  const handleSendEmailCode = () => {
-    axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/email/auth`,
-        {
-          email,
-        },
-        {
-          headers: {
-            Authorization: getCookie('accessToken'),
-          },
-        }
-      )
-      .then((res) => {
-        alert('인증번호가 발송되었습니다. 인증번호를 입력헤주세요');
-      })
-      .catch((err) => console.log(err));
-  };
+    const handleSendEmailCode = () => {
+        axios.post(`${process.env.REACT_APP_API_URL}/email/auth`, {
+            email
+        }, {
+            headers: {
+                Authorization: getCookie('accessToken')
+            }
+        })
+            .then((res) => {
+                alert('인증번호가 발송되었습니다. 인증번호를 입력해주세요')
+                setDisable(false);
+            })
+            .catch((err) => console.log(err))
+    }
 
-  const handleEmailAuth = (authNum) => {
-    axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/email/auth?authNum=${authNum}`,
-        {
-          email,
-        },
-        {
-          headers: {
-            Authorization: getCookie('accessToken'),
-          },
-        }
-      )
-      .then((res) => {
-        alert('이메일 인증이 완료되었습니다!');
-        setVerificationIsOpened(false);
-        setIsAuth(true);
-        setAuthNum('');
-      })
-      .catch((err) => {
-        console.log(err);
-        alert('인증번호가 잘못되었습니다. 다시 한 번 입력해주세요!');
-        setAuthNum('');
-      });
-  };
+    const handleEmailAuth = (authNum) => {
+        axios.post(`${process.env.REACT_APP_API_URL}/email/confirm?authNum=${authNum}`, {
+            email
+        }, {
+            headers: {
+                Authorization: getCookie('accessToken')
+            }
+        })
+            .then((res) => {
+                alert('이메일 인증이 완료되었습니다!');
+                setVerificationIsOpened(false);
+                setIsAuth(true);
+                setAuthNum('');
+            })
+            .catch((err) => {
+                console.log(err)
+                alert('인증번호가 잘못되었습니다. 다시 한 번 입력해주세요!');
+                setAuthNum('');
+            })
+    }
 
   return (
     <>
@@ -253,95 +246,84 @@ const SignUpPage = () => {
             </div>
           )}
 
-          <label>Password</label>
-          <input
-            className='input'
-            type='password'
-            placeholder='Enter your password'
-            onChange={onChangePassword}
-            onKeyDown={pwEnter}
-            ref={pref}
-          />
-          {password.length > 0 && (
-            <div
-              className={`input__message input__message-password message${
-                isPassword ? 'success' : 'error'
-              }`}
-            >
-              {passwordMessage}
-            </div>
-          )}
-          {verificationIsOpened && (
-            <Modal
-              title={'이메일 인증하기'}
-              setModal={handleEmailVerificationModal}
-              content={'이메일로 발송된 인증번호를 입력해주세요'}
-              input={true}
-              buttonName={'인증하기'}
-              handleClick={() => handleEmailAuth(authNum)}
-              authNum={authNum}
-              setAuthNum={setAuthNum}
-            />
-          )}
-          <button className='button--primary' onClick={onSignUp}>
-            Sign up
-          </button>
-          <button
-            className='button--google'
-            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/google')}
-          >
-            <svg
-              xlink='http://www.w3.org/1999/xlink'
-              xmlns='http://www.w3.org/2000/svg'
-              aria-hidden='true'
-              width='20'
-              height='20'
-              viewBox='-3 0 20 20'
-            >
-              <path
-                d='M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18Z'
-                fill='#4285F4'
-              ></path>
-              <path
-                d='M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17Z'
-                fill='#34A853'
-              ></path>
-              <path
-                d='M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07Z'
-                fill='#FBBC05'
-              ></path>
-              <path
-                d='M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3Z'
-                fill='#EA4335'
-              ></path>
-            </svg>
-            Sign up with Google
-          </button>
-          <button
-            className='button--google'
-            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/kakao')}
-          >
-            <svg id='kakao' xmlns='http://www.w3.org/2000/svg' viewBox='-75 -90 350 350'>
-              <polygon className='kakao logo' fill='#3c1e1e' points='45 140 40 185 90 150 45 140' />
-              <ellipse className='kakao logo' fill='#3c1e1e' cx='100' cy='80' rx='100' ry='80' />
-            </svg>
-            Sign up with Kakao
-          </button>
-          <button
-            className='button--google'
-            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/facebook')}
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
-              fill={'#4267B2'}
-            >
-              <path d='M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z' />
-            </svg>
-            Sign up with Facebook
-          </button>
+                    <label>Password</label>
+                    <input
+                        className="input"
+                        type="password"
+                        placeholder="Enter your password"
+                        onChange={onChangePassword}
+                        onKeyDown={pwEnter}
+                        ref={pref}
+                    />
+                    {password.length > 0 && (
+                        <div className={`input__message input__message-password message${isPassword ? 'success' : 'error'}`}>
+                            {passwordMessage}
+                        </div>
+                    )}
+                    {verificationIsOpened &&
+                        <Modal
+                            title={'이메일 인증하기'}
+                            setModal={handleEmailVerificationModal}
+                            content={'이메일로 발송된 인증번호를 입력해주세요'}
+                            input={true}
+                            buttonName={'인증하기'}
+                            handleClick={() => handleEmailAuth(authNum)}
+                            authNum={authNum}
+                            setAuthNum={setAuthNum}
+                            disable={disable}
+                            setDisable={setDisable}
+                        />
+                    }
+                    <button className="button--primary" onClick={onSignUp}>
+                        Sign up
+                    </button>
+                    <button className="button--google"
+                            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/google')}>
+                        <svg
+                            xlink="http://www.w3.org/1999/xlink"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            width="20"
+                            height="20"
+                            viewBox="-3 0 20 20"
+                        >
+                            <path
+                                d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18Z"
+                                fill="#4285F4"
+                            ></path>
+                            <path
+                                d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17Z"
+                                fill="#34A853"
+                            ></path>
+                            <path
+                                d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07Z"
+                                fill="#FBBC05"
+                            ></path>
+                            <path
+                                d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3Z"
+                                fill="#EA4335"
+                            ></path>
+                        </svg>
+                        Sign up with Google
+                    </button>
+                    <button className="button--google"
+                            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/kakao')}>
+                        <svg id="kakao"
+                             xmlns="http://www.w3.org/2000/svg" viewBox="-75 -90 350 350">
+                            <polygon className="kakao logo" fill="#3c1e1e" points="45 140 40 185 90 150 45 140"/>
+                            <ellipse className="kakao logo" fill="#3c1e1e" cx="100" cy="80" rx="100" ry="80"/>
+                        </svg>
+                        Sign up with Kakao
+                    </button>
+                    <button className="button--google"
+                            onClick={() => navigate('//sebmain41team23.shop/oauth2/authorization/facebook')}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             fill={'#4267B2'}>
+                            <path
+                                d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+                        </svg>
+                        Sign up with Facebook
+                    </button>
 
           <div className='signup__sub-message'>
             Already a member? <Link to='/login'>Log in</Link>

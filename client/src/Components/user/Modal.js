@@ -104,6 +104,13 @@ const ModalWrapper = styled.div`
   > .submit_frame {
     display: flex;
     gap: var(--spacing-2);
+    
+    .button--danger {
+      &:disabled {
+        cursor: not-allowed;
+        background-color: var(--light);
+      }
+    }
 
     > .button--subtle {
       color: var(--light);
