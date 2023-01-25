@@ -6,8 +6,9 @@ import AddExpense from '../budget/AddExpense';
 import Budget from '../budget/Buget';
 import axios from 'axios';
 import {getCookie} from '../../Util/Cookies';
-import {createRef, useRef, useState} from 'react';
+import {Fragment, useRef, useState} from 'react';
 import styled from 'styled-components';
+import {topScrollBtn} from "../../images/topScroll";
 
 const PlanSection = (props) => {
     const {
@@ -38,9 +39,19 @@ const PlanSection = (props) => {
     const [budget, setBudget] = useState({});
     const [expenses, setExpenses] = useState([]);
     const planDateRef = useRef([]);
+    const itineraryRef = useRef();
+    const budgetingRef = useRef();
     const onDateClick = (planDateId) => {
         planDateRef.current[planDateId].scrollIntoView({behavior: "smooth"});
-    }
+    };
+
+    const onTabClick = (ref) => {
+        ref.current.scrollIntoView({behavior: "smooth"});
+    };
+
+    const TopMove = () => {
+        window.scrollTo({top: 0, behavior: "smooth"});
+    };
 
     // 비용 추가 요청
     const handleAddExpense = (price, selectedCategory, item, placeId) => {
@@ -87,7 +98,11 @@ const PlanSection = (props) => {
     return (
         <Container>
             <ItineraryContainer>
-                <h3 className='section__title'>Itinerary</h3>
+                <div className={'section__nav'}>
+                    <div className='itinerary__nav' onClick={() => onTabClick(itineraryRef)}>Itinerary</div>
+                    <div className='budget__nav' onClick={() => onTabClick(budgetingRef)}>Budgeting</div>
+                </div>
+                <h3 className='section__title' ref={itineraryRef}>Itinerary</h3>
                 <div className='itinerary__content'>
                     <div className='itinerary__side-bar'>
                         <SideDateBar
@@ -148,22 +163,27 @@ const PlanSection = (props) => {
                     </div>
                 </div>
             </ItineraryContainer>
-            <div className='budget__container'>
+            <div className='budget__container' ref={budgetingRef}>
                 {budgetId && (
-                    <Budget
-                        budgetId={budgetId}
-                        addExpenseModal={addExpenseModal}
-                        setAddExpenseModal={setAddExpenseModal}
-                        handleAddExpense={handleAddExpense}
-                        budget={budget}
-                        setBudget={setBudget}
-                        expenses={expenses}
-                        setExpenses={setExpenses}
-                        refresh={refresh}
-                        handleRefresh={handleRefresh}
-                        budgetRefresh={budgetRefresh}
-                        handleBudgetRefresh={handleBudgetRefresh}
-                    />
+                    <Fragment>
+                        <Budget
+                            budgetId={budgetId}
+                            addExpenseModal={addExpenseModal}
+                            setAddExpenseModal={setAddExpenseModal}
+                            handleAddExpense={handleAddExpense}
+                            budget={budget}
+                            setBudget={setBudget}
+                            expenses={expenses}
+                            setExpenses={setExpenses}
+                            refresh={refresh}
+                            handleRefresh={handleRefresh}
+                            budgetRefresh={budgetRefresh}
+                            handleBudgetRefresh={handleBudgetRefresh}
+                        />
+                        <button className="topBtn" onClick={TopMove}>
+                            {topScrollBtn}
+                        </button>
+                    </Fragment>
                 )}
             </div>
         </Container>
@@ -192,15 +212,52 @@ const Container = styled.div`
     color: var(--dark-gray-1);
     font-weight: normal;
   }
+
+  .budget__container {
+    .topBtn {
+      position: fixed;
+      bottom: 50px;
+      left: calc(45vw);
+      background-color: var(--primary-blue-light-1);
+      font-size: 24px;
+      padding: 6px;
+      border-radius: 50%;
+    }
+  }
 `;
 
 const ItineraryContainer = styled.div`
   margin-bottom: var(--spacing-5);
 
+  .section__nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--spacing-4);
+
+    div {
+      display: flex;
+      justify-content: center;
+      padding: 10px 20px;
+      font-size: var(--small-heading-font-size);
+      border: 1px solid var(--light-gray-5);
+      color: var(--light);
+      width: calc(100% / 2);
+      transition: 0.5s;
+      border-radius: 10px 10px 0 0;
+      cursor: pointer;
+
+      .focused {
+        //선택된 Tabmenu 에만 적용되는 CSS를 구현
+        background-color: rgb(255, 255, 255);
+        color: rgb(21, 20, 20);
+      }
+    }
+  }
+
   .itinerary__content {
     display: flex;
     gap: 50px;
-    /* gap: var(--spacing-4); */
   }
 
   .itinerary__side-bar {
