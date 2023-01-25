@@ -211,29 +211,40 @@ const TopNavigation = (props) => {
       });
   };
 
-  const deletePlanHandler = (itineraryId) => {
-    if (window.confirm("정말 작성중인 여행 일정을 삭제하시겠습니까?")) {
-      axios
-        .delete(`${process.env.REACT_APP_API_URL}/board/${itineraryId}`, {
-          headers: {
-            Authorization: token,
-          },
-        })
-        .then((res) => {
-          axios
-            .delete(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
-              headers: {
-                Authorization: token,
-              },
-            })
-            .then((res) => {
-              console.log("deleted plan!!");
-              navigate("/", { replace: true });
-            })
-            .catch((err) => console.log(err));
-        });
+    const deletePlanHandler = (itineraryId) => {
+        if (window.confirm('정말 작성중인 여행 일정을 삭제하시겠습니까? 작성된 게시물이 있을 경우 함께 삭제됩니다.')) {
+            if(mainData.boardId) {
+                axios.delete(`${process.env.REACT_APP_API_URL}/board/${mainData.boardId}`, {
+                    headers: {
+                        Authorization: token,
+                    },
+                })
+                .then(res => {
+                    axios.delete(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
+                        headers: {
+                            Authorization: token,
+                        },
+                    })
+                        .then((res) => {
+                            console.log('deleted plan!!')
+                            navigate('/', {replace: true})
+                        })
+                        .catch((err) => console.log(err))
+                })
+            } else {
+                axios.delete(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
+                    headers: {
+                        Authorization: token,
+                    },
+                })
+                    .then((res) => {
+                        console.log('deleted plan!!')
+                        navigate('/', {replace: true})
+                    })
+                    .catch((err) => console.log(err))
+            }
+        }
     }
-  };
 
   return (
     <TopContainer cityImage={mainData.city?.cityImage}>
