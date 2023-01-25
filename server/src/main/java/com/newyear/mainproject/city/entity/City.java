@@ -1,4 +1,4 @@
-package com.newyear.mainproject.city;
+package com.newyear.mainproject.city.entity;
 
 import lombok.Getter;
 import lombok.Setter;

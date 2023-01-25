@@ -6,7 +6,9 @@ import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.place.repository.PlaceRepository;
 import com.newyear.mainproject.plan.entity.Plan;
+import com.newyear.mainproject.plan.entity.PlanDates;
 import com.newyear.mainproject.plan.service.PlanService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,30 +17,28 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
     private final MemberService memberService;
     private final PlanService planService;
 
-    public PlaceService(PlaceRepository placeRepository, MemberService memberService, PlanService planService) {
-        this.placeRepository = placeRepository;
-        this.memberService = memberService;
-        this.planService = planService;
-    }
-
     /**
      * 해당 일정에 대한 장소 정보 등록
      */
     public Place createPlace(Place place) {
+        if(place.getRatings() == null){
+            place.setRatings(0.0);
+        }
+
+        PlanDates planDates = planService.findPlanDates(place.getPlanDates().getPlanDateId());
+        place.setPlan(planDates.getPlan());
+
         //plan 작성자만 place 생성 가능
         Plan plan = planService.findPlan(place.getPlan().getPlanId());
         if (!plan.getMember().equals(memberService.getLoginMember())) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
-        }
-
-        if(place.getRatings() == null){
-            place.setRatings(0.0);
         }
 
         return placeRepository.save(place);

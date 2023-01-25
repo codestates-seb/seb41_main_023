@@ -1,7 +1,7 @@
 package com.newyear.mainproject.plan.service;
 
 import com.newyear.mainproject.board.service.BoardService;
-import com.newyear.mainproject.city.CityService;
+import com.newyear.mainproject.city.service.CityService;
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
@@ -33,7 +33,6 @@ public class PlanService {
         this.cityService = cityService;
         this.boardService = boardService;
     }
-
     /**
      * 일정 등록
      */

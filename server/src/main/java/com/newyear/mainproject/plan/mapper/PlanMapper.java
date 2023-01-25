@@ -2,8 +2,8 @@ package com.newyear.mainproject.plan.mapper;
 
 import com.newyear.mainproject.budget.dto.BudgetDto;
 import com.newyear.mainproject.budget.entity.Budget;
-import com.newyear.mainproject.city.City;
-import com.newyear.mainproject.city.CityDto;
+import com.newyear.mainproject.city.entity.City;
+import com.newyear.mainproject.city.dto.CityDto;
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.expense.dto.ExpenseDto;
@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -97,6 +98,8 @@ public interface PlanMapper {
         response.setPlanDatesAndPlace(planDatesToPlanDatesDetailResponseDtos(plan.getPlanDates()));
         response.setBudget(budgetToBudgetSimpleResponseDto(plan.getBudget()));
         response.setCity(cityImageResponseToCity(plan.getCity()));
+        Optional.ofNullable(plan.getBoard())
+                .ifPresent(board -> response.setBoardId(board.getBoardId()));
         return response;
     }
 

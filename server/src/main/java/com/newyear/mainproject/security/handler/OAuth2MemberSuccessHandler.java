@@ -128,5 +128,6 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .queryParams(queryParams)
                 .build()
                 .toUri();
+
     }
 }
