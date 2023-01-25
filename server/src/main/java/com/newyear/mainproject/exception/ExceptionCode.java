@@ -15,6 +15,7 @@ public enum ExceptionCode {
     INVALID_EMAIL_AUTH(400, "Invalid email auth"),
     INVALID_REFRESH_TOKEN(400, "Invalid refresh token"),
     EXPIRED_JWT_TOKEN(421, "Expired jwt token"),
+    EMAIL_AUTH_REQUIRED(403, "Email auth required"),
 
     //board
     BOARD_NOT_PATCHED(403, "Board not patched"),
