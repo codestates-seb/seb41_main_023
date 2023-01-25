@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                                 .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER")
                                 .antMatchers("/h2/**").permitAll() // h2 콘솔 사용을 위한 설정
                                 .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                                .antMatchers("/login/**", "/oauth2/**").permitAll()
+                                .antMatchers("/login/**", "/oauth2/**", "/loading/**").permitAll()
                         .anyRequest()
 //                                .permitAll()
                         .authenticated()
