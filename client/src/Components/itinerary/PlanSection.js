@@ -233,8 +233,8 @@ const Container = styled.div`
   .budget__container {
     .button--top {
       position: fixed;
-      bottom: 50px;
-      right: 50px;
+      bottom: 20px;
+      left: calc(50vw - 70px);
       padding: 0;
       width: var(--spacing-5);
       height: var(--spacing-5);
