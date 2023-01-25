@@ -69,6 +69,7 @@ public class PlanDto {
         private CityDto.ImageResponse city;
         private List<PlanDatesResponse> planDates = new ArrayList<>();
         private List<PlanDto.PlanDatesDetailResponse> planDatesAndPlace = new ArrayList<>();
+        private Long boardId;
     }
     @Getter
     @Setter
