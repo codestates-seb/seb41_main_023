@@ -17,8 +17,8 @@ const axiosAuthApi = (url, options) => {
   return instance;
 };
 
-export const baseInstance = baseAPI("https://www.sebmain41team23.shop");
-export const authInstance = axiosAuthApi("https://www.sebmain41team23.shop");
+export const baseInstance = baseAPI(`${process.env.REACT_APP_API_URL}`);
+export const authInstance = axiosAuthApi(`${process.env.REACT_APP_API_URL}`);
 
 /* baseInstance */
 
