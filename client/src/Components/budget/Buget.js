@@ -58,29 +58,31 @@ const Budget = ({
   const handleEditBudget = inputBudget => {
     if (inputBudget < 1) {
       return alert('예산은 1원 이상이어야 합니다.');
-    }
-
-    axios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/budget/${budgetId}`,
-        {
-          expectedBudget: inputBudget,
-        },
-        {
-          headers: {
-            Authorization: token,
+    } else if (inputBudget < budget.totalExpenses) {
+      return alert('편성된 비용이 입력된 예산보다 많습니다');
+    } else {
+      axios
+        .patch(
+          `${process.env.REACT_APP_API_URL}/budget/${budgetId}`,
+          {
+            expectedBudget: inputBudget,
           },
-        },
-      )
-      .then(res => {
-        setBudget({ ...budget, expectedBudget: res.data.expectedBudget });
-      })
-      .then(res => {
-        setEditBudget(false);
-        handleRefresh();
-        handleBudgetRefresh();
-      })
-      .catch(err => console.log('error'));
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        )
+        .then(res => {
+          setBudget({ ...budget, expectedBudget: res.data.expectedBudget });
+        })
+        .then(res => {
+          setEditBudget(false);
+          handleRefresh();
+          handleBudgetRefresh();
+        })
+        .catch(err => console.log('error'));
+    }
   };
 
   // 비용 수정 요청
@@ -138,6 +140,7 @@ const Budget = ({
         <div className="budget__header">
           <h3 className="plan__heading">My current budget</h3>
           <EditBudget
+            budget={budget}
             editBudget={editBudget}
             setEditBudget={setEditBudget}
             handleEditBudget={handleEditBudget}

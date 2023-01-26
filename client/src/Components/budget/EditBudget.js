@@ -2,7 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 const EditBudget = props => {
-  const { editBudget, setEditBudget, handleEditBudget, originBudget } = props;
+  const { budget, editBudget, setEditBudget, handleEditBudget, originBudget } =
+    props;
   const [inputBudget, setInputBudget] = useState(originBudget);
 
   const handleInputBudget = e => {
@@ -58,7 +59,14 @@ const EditBudget = props => {
             <div className="submit_frame">
               <button
                 className="button--primary"
-                onClick={() => handleEditBudget(inputBudget)}
+                onClick={() => {
+                  if (inputBudget < budget.totalExpenses) {
+                    handleEditBudget(inputBudget);
+                    setInputBudget('');
+                  } else {
+                    handleEditBudget(inputBudget);
+                  }
+                }}
               >
                 Set Budget
               </button>
