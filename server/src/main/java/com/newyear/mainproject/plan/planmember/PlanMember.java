@@ -17,6 +17,9 @@ public class PlanMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long planMemberId;
 
+    @Column(nullable = false)
+    private boolean isOwner;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id")
     private Plan plan;

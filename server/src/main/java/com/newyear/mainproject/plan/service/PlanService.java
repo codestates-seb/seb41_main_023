@@ -29,6 +29,7 @@ public class PlanService {
    private final MemberService memberService;
    private final CityService cityService;
    private final BoardService boardService;
+   private final PlanMemberRepository planMemberRepository;
 
     public PlanService(PlanRepository planRepository, PlanDateRepository planDateRepository, MemberService memberService, CityService cityService, @Lazy BoardService boardService, PlanMemberRepository planMemberRepository) {
         this.planRepository = planRepository;
@@ -36,6 +37,7 @@ public class PlanService {
         this.memberService = memberService;
         this.cityService = cityService;
         this.boardService = boardService;
+        this.planMemberRepository = planMemberRepository;
     }
 
     /**
@@ -45,6 +47,7 @@ public class PlanService {
         PlanMember planMember = new PlanMember();
         planMember.setPlan(plan);
         planMember.setMember(memberService.getLoginMember());
+        planMember.setOwner(true); //일정 생성하는 유저가 방장권한을 가진다
         plan.setCity(cityService.findCity(plan.getCityName()));
         plan.addPlanMember(planMember);
 
@@ -117,17 +120,22 @@ public class PlanService {
      * 일정 삭제
      */
     public void deletePlan(Long planId) {
-        Plan findPlan = findVerifiedPlan(planId);
-        //작성자만 삭제 가능
-        containsMember(findPlan);
 
+        Plan findPlan = findVerifiedPlan(planId);
+
+        PlanMember findPlanMember = planMemberRepository.findByPlanAndMember(findPlan, memberService.getLoginMember());
         //이 일정에 관련된 게시물이 있으면 게시물 삭제 먼저 하도록 예외 처리
         if(!boardService.findPlanBoards(findPlan.getPlanId()).isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.BOARD_CHECK_EXISTS);
         }
-        //TODO : 방장은 일정 삭제 / 나머지는 자신에게만 일정 삭제 처리
 
-        planRepository.delete(findPlan);
+        if(findPlanMember.isOwner()) { //방장일 때 -> 일정 전체 삭제
+            //작성자만 삭제 가능
+            containsMember(findPlan);
+            planRepository.delete(findPlan);
+        }else { //손님일 때 -> 본인 일정만 삭제
+            planMemberRepository.delete(findPlanMember);
+        }
     }
 
     /**
@@ -137,6 +145,7 @@ public class PlanService {
         Optional<Plan> optionalPlan = planRepository.findById(planId);
         return optionalPlan.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PLAN_NOT_FOUND));
     }
+
 
     /**
      * 특정 일정 조회
@@ -178,6 +187,7 @@ public class PlanService {
         containsMember(plan);
 
         PlanMember planMember = new PlanMember();
+        planMember.setOwner(false); //손님 권한
         member.addPlanMember(planMember);
         plan.addPlanMember(planMember);
         planRepository.save(plan);
