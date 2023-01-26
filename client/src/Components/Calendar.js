@@ -3,7 +3,7 @@ import "react-date-range/dist/styles.css"; // 메인 css 파일
 import "react-date-range/dist/theme/default.css"; // 테마 CSS 파일
 import { useEffect, useState } from "react";
 import { DateRange } from "react-date-range";
-import dayjs from "dayjs";
+import { formatTomorrow } from "../Util/dayUtil";
 
 const CalendarContainer = styled.div`
   position: relative;
@@ -143,7 +143,7 @@ const CalendarContainer = styled.div`
 
 const Calendar = ({ handleDate, login, calenderRef }) => {
   const day = new Date();
-  const tomorrow = dayjs(day).add(1, "d").toDate();
+  const tomorrow = formatTomorrow(day);
 
   const [date, setDate] = useState([
     {

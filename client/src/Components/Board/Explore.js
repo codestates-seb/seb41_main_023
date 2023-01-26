@@ -1,13 +1,14 @@
-import styled from "styled-components";
-import axios from "axios";
-import dayjs from "dayjs";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getCookie } from "../../Util/Cookies";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
 
-const Explore = (props) => {
+import { getCookie } from '../../Util/Cookies';
+import { formatDateKo } from '../../Util/dayUtil';
+
+const Explore = props => {
   const [exploreList, setExploreList] = useState([]);
-  const token = getCookie("accessToken");
+  const token = getCookie('accessToken');
   const navigate = useNavigate();
   const page = useRef(1);
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -21,14 +22,14 @@ const Explore = (props) => {
           headers: {
             Authorization: token,
           },
-        }
+        },
       )
-      .then((res) => {
-        setExploreList((prevState) => [...prevState, ...res.data.data]);
+      .then(res => {
+        setExploreList(prevState => [...prevState, ...res.data.data]);
         setHasNextPage(res.data.data.length === 5);
         if (res.data.data.length) page.current += 1;
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }, [page.current]);
 
   useEffect(() => {
@@ -40,14 +41,14 @@ const Explore = (props) => {
             headers: {
               Authorization: token,
             },
-          }
+          },
         )
-        .then((res) => {
+        .then(res => {
           setExploreList(res.data.data);
         })
-        .catch((err) => console.log(err));
+        .catch(err => console.log(err));
     } else {
-      if (window.location.pathname === "/board") {
+      if (window.location.pathname === '/board') {
         if (!observerTargetEl.current || !hasNextPage) return;
 
         const io = new IntersectionObserver((entries, observer) => {
@@ -68,17 +69,17 @@ const Explore = (props) => {
               headers: {
                 Authorization: token,
               },
-            }
+            },
           )
-          .then((res) => {
+          .then(res => {
             setExploreList(res.data.data);
           })
-          .catch((err) => console.log(err));
+          .catch(err => console.log(err));
       }
     }
   }, [fetchMoreExplores, hasNextPage, token, props.destination]);
 
-  const handleNavigate = (explore) => {
+  const handleNavigate = explore => {
     navigate(`/board/${explore.boardId}`);
   };
 
@@ -99,8 +100,8 @@ const Explore = (props) => {
               />
               <div className="meta_title">{explore.title}</div>
               <div className="meta_content">
-                {dayjs(explore.travelPeriod.split("-")[0]).format("M월 D일")} -{" "}
-                {dayjs(explore.travelPeriod.split("-")[1]).format("M월 D일")}
+                {formatDateKo(explore.travelPeriod.split('-')[0])} -{' '}
+                {formatDateKo(explore.travelPeriod.split('-')[1])}
               </div>
               <div className="meta_profile">
                 <img
@@ -112,7 +113,7 @@ const Explore = (props) => {
               </div>
               <div
                 className={
-                  explore.checkLikes ? "meta_likes likes" : "meta_likes"
+                  explore.checkLikes ? 'meta_likes likes' : 'meta_likes'
                 }
               >
                 <svg viewBox="0 0 16 16">
@@ -126,7 +127,7 @@ const Explore = (props) => {
             </div>
           ))
         ) : (
-          <div className={"search__error"}>
+          <div className={'search__error'}>
             검색어와 일치하는 게시글이 없습니다
           </div>
         )}

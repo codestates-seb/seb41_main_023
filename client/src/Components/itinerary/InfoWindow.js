@@ -1,7 +1,8 @@
+import { Fragment } from 'react';
 import { InfoWindowF } from '@react-google-maps/api';
 import styled from 'styled-components';
+
 import StarRate from './StarRate';
-import { Fragment } from 'react';
 
 const InfoStyle = styled.div`
   background: var(--white);
@@ -74,10 +75,11 @@ const InfoContainer = styled.div`
   }
 `;
 
-const InfoWindow = (props) => {
+const InfoWindow = props => {
   const { singleData, setActiveMarker } = props;
 
-  const { placeName, openingHours, phone, placeAddress, ratings, website } = singleData;
+  const { placeName, openingHours, phone, placeAddress, ratings, website } =
+    singleData;
 
   return (
     <Fragment>
@@ -94,26 +96,28 @@ const InfoWindow = (props) => {
         <InfoStyle>
           <InfoContainer>
             <h5>{placeName}</h5>
-            <p className='info__address'>{placeAddress}</p>
+            <p className="info__address">{placeAddress}</p>
             {ratings ? <StarRate rating={ratings} /> : null}
-            <div className='hours__container'>
-              {openingHours ? <h6 className='title'>영업시간</h6> : null}
-              <div className='hours__list'>
+            <div className="hours__container">
+              {openingHours ? <h6 className="title">영업시간</h6> : null}
+              <div className="hours__list">
                 {openingHours
-                  ? openingHours.split(',').map((day, idx) => <p key={idx}>{day}</p>)
+                  ? openingHours
+                      .split(',')
+                      .map((day, idx) => <p key={idx}>{day}</p>)
                   : null}
               </div>
             </div>
             {phone ? (
-              <div className='contact__container container'>
-                <h6 className='title'>전화번호</h6>
+              <div className="contact__container container">
+                <h6 className="title">전화번호</h6>
                 <a href={`tel:${phone}`}>{phone}</a>
               </div>
             ) : null}
             {website ? (
-              <div className='website__container container'>
-                <h6 className='title'>웹사이트</h6>
-                <a href={website} rel='noreferrer' target='_blank'>
+              <div className="website__container container">
+                <h6 className="title">웹사이트</h6>
+                <a href={website} rel="noreferrer" target="_blank">
                   {website}
                 </a>
               </div>

@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import dayjs from "dayjs";
-import "dayjs/locale/ko";
+import styled from 'styled-components';
+
+import { dayOfTheWeekKo } from '../../Util/dayUtil';
+import { formatMonthAndDay } from '../../Util/dayUtil';
 
 const LeftSideBar = styled.div`
   position: sticky;
@@ -45,17 +46,17 @@ const DateBox = styled.div`
   }
 `;
 
-const SideDateBar = (props) => {
+const SideDateBar = props => {
   const { singlePlanData, onDateClick } = props;
 
   return (
     <LeftSideBar>
       <h5>Dates</h5>
-      {singlePlanData.map((date) => (
+      {singlePlanData.map(date => (
         <DateBox key={date.planDateId}>
           <button onClick={() => onDateClick(date.planDateId)}>
-            <span>{dayjs(date.planDate).format("M.D")}</span>
-            <span>{dayjs(date.planDate).format("ddd")}</span>
+            <span>{formatMonthAndDay(date.planDate)}</span>
+            <span>{dayOfTheWeekKo(date.planDate)}</span>
           </button>
         </DateBox>
       ))}

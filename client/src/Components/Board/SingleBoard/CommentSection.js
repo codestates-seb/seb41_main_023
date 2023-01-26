@@ -1,64 +1,75 @@
 import { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { getCookie } from '../../../Util/Cookies';
+import styled from 'styled-components';
+
 import SingleComment from './SingleComment';
+
+import { getCookie } from '../../../Util/Cookies';
 import Pagination from '../../../Util/Pagination';
 
-const CommentSection = ({boardData}) => {
-    const {boardId} = useParams();
-    const [commentList, setCommentList] = useState([]);
-    const [commentRefresh, setCommentRefresh] = useState(1);
-    const [comment, setComment] = useState('');
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(3);
-    const offset = (page - 1) * limit;
-    const commentRef = useRef();
-    const handleCommentRefresh = () => {
-        setCommentRefresh(prevState => prevState * -1);
-    };
+const CommentSection = ({ boardData }) => {
+  const { boardId } = useParams();
+  const [commentList, setCommentList] = useState([]);
+  const [commentRefresh, setCommentRefresh] = useState(1);
+  const [comment, setComment] = useState('');
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(3);
+  const offset = (page - 1) * limit;
+  const commentRef = useRef();
+  const handleCommentRefresh = () => {
+    setCommentRefresh(prevState => prevState * -1);
+  };
 
-    const handleCommentSubmit = () => {
-        const commentData = {"comment": commentRef.current?.value};
+  const handleCommentSubmit = () => {
+    const commentData = { comment: commentRef.current?.value };
     axios
-    
-      .post(`${process.env.REACT_APP_API_URL}/comments/board/${boardId}`, commentData, {
-        headers: {
-          Authorization: getCookie('accessToken'),
+
+      .post(
+        `${process.env.REACT_APP_API_URL}/comments/board/${boardId}`,
+        commentData,
+        {
+          headers: {
+            Authorization: getCookie('accessToken'),
+          },
         },
-      })
-      .then((res) => {
+      )
+      .then(res => {
         handleCommentRefresh();
         commentRef.current.value = '';
       })
-      .catch((err) => {
-        alert(`댓글은 ${err.response.data.fieldErrors[0].reason}. 최소 1글자 이상 입력해주세요!`);
+      .catch(err => {
+        alert(
+          `댓글은 ${err.response.data.fieldErrors[0].reason}. 최소 1글자 이상 입력해주세요!`,
+        );
       });
   };
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/comments/board/${boardId}?page=1&size=100`, {
-        headers: {
-          Authorization: getCookie('accessToken'),
+      .get(
+        `${process.env.REACT_APP_API_URL}/comments/board/${boardId}?page=1&size=100`,
+        {
+          headers: {
+            Authorization: getCookie('accessToken'),
+          },
         },
-      })
-      .then((res) => {
+      )
+      .then(res => {
         setCommentList(res.data.data);
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }, [boardId, commentRefresh]);
 
   return (
     <CommentWrapper>
-      <h3 className='comment__heading'>{commentList.length} Comments</h3>
-      <div className='comment__main-container'>
+      <h3 className="comment__heading">{commentList.length} Comments</h3>
+      <div className="comment__main-container">
         <CommentContainer>
           {commentList &&
             commentList
               .slice(offset, offset + limit)
-              .map((comment) => (
+              .map(comment => (
                 <SingleComment
                   key={comment.commentId}
                   comment={comment}
@@ -69,26 +80,34 @@ const CommentSection = ({boardData}) => {
               ))}
         </CommentContainer>
         <CommentInputContainer>
-          <div className='comment__user-image'>
-            <img src={boardData.profileImage} alt={`${boardData.displayName}의 이미지`} />
+          <div className="comment__user-image">
+            <img
+              src={boardData.profileImage}
+              alt={`${boardData.displayName}의 이미지`}
+            />
           </div>
           <input
-            className='input--default'
+            className="input--default"
             type={'text'}
             placeholder={'Add a question or share your opinion!!'}
             ref={commentRef}
-            onKeyUp={(e) => {
+            onKeyUp={e => {
               if (e.key === 'Enter') {
                 return handleCommentSubmit();
               }
             }}
           />
-          <button className='button--primary' onClick={handleCommentSubmit}>
+          <button className="button--primary" onClick={handleCommentSubmit}>
             댓글 쓰기
           </button>
         </CommentInputContainer>
       </div>
-      <Pagination total={commentList.length} limit={limit} page={page} setPage={setPage} />
+      <Pagination
+        total={commentList.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
     </CommentWrapper>
   );
 };
