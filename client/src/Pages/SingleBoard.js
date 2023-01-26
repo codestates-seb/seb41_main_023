@@ -8,8 +8,11 @@ import BoardSection from '../Components/Board/SingleBoard/BoardSection';
 import TopSection from '../Components/Board/SingleBoard/TopSection';
 import CommentSection from '../Components/Board/SingleBoard/CommentSection';
 
+import { getCookie } from '../Util/Cookies';
+
 const SingleBoard = () => {
   const { boardId } = useParams();
+  const token = getCookie('accessToken');
 
   const [boardData, setBoardData] = useState({
     boardId: boardId,
@@ -32,9 +35,15 @@ const SingleBoard = () => {
     lng: 126.972336,
   });
 
+  const [refresh, setRefresh] = useState(1);
+
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/board/${boardId}`)
+      .get(`${process.env.REACT_APP_API_URL}/board/${boardId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
       .then(res => {
         setBoardData(res.data);
         const startCode = res.data.days[0].placeDetails[0];
@@ -45,17 +54,22 @@ const SingleBoard = () => {
           });
       })
       .catch(err => console.log(err));
-  }, [boardId]);
+  }, [boardId, refresh]);
 
   const handleGeoCode = (lat, lng) => {
     setGeocode({ lat, lng });
+  };
+
+  //refresh function
+  const handleRefresh = () => {
+    setRefresh(refresh * -1);
   };
 
   return (
     <Fragment>
       {boardData ? (
         <BoardWrapper>
-          <TopSection boardData={boardData} />
+          <TopSection boardData={boardData} handleRefresh={handleRefresh} />
           <MapSection
             boardData={boardData}
             geocode={geocode}

@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import styled from "styled-components";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
 
-import { postData } from "../Util/api.js";
-import { getCookie, removeCookie } from "../Util/Cookies";
+import { postData } from '../Util/api.js';
+import { getCookie, removeCookie } from '../Util/Cookies';
 
 const Header = ({ login }) => {
   const navigate = useNavigate();
 
-  const token = getCookie("accessToken");
-  const memberId = getCookie("memberId");
-  const refreshToken = localStorage.getItem("refreshToken");
+  const token = getCookie('accessToken');
+  const memberId = getCookie('memberId');
+  const refreshToken = localStorage.getItem('refreshToken');
 
   const [userInfo, setUserInfo] = useState({});
 
@@ -28,8 +28,8 @@ const Header = ({ login }) => {
           Authorization: token,
         },
       })
-      .then((res) =>
-        setUserInfo({ ...userInfo, profileImage: res.data.profileImage })
+      .then(res =>
+        setUserInfo({ ...userInfo, profileImage: res.data.profileImage }),
       );
   };
 
@@ -39,36 +39,36 @@ const Header = ({ login }) => {
     }
   }, []);
 
-  const handleNavigate = (path) => {
+  const handleNavigate = path => {
     navigate(path);
   };
 
   // 로그아웃
   const handleSignout = () => {
-    if (window.confirm("로그아웃 하시겠습니까?")) {
-      postData("/members/logout", {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      postData('/members/logout', {
         headers: {
           Authorization: token,
         },
       })
-        .then((res) => {
-          removeCookie("accessToken");
-          removeCookie("memberId");
-          localStorage.removeItem("refreshToken");
+        .then(res => {
+          removeCookie('accessToken');
+          removeCookie('memberId');
+          localStorage.removeItem('refreshToken');
         })
-        .then((res) => window.location.replace("/"));
+        .then(res => window.location.replace('/'));
     }
   };
 
   return (
     <HeadContainer className="header__container">
       <LeftSection>
-        <div className="header__logo" onClick={() => handleNavigate("/")}>
+        <div className="header__logo" onClick={() => handleNavigate('/')}>
           website name
         </div>
         <button
           className="button--default button--subtle"
-          onClick={() => handleNavigate("/board")}
+          onClick={() => handleNavigate('/board')}
         >
           Travel Logs
         </button>
@@ -92,13 +92,13 @@ const Header = ({ login }) => {
           <>
             <button
               className="button--default"
-              onClick={() => handleNavigate("/login")}
+              onClick={() => handleNavigate('/login')}
             >
               Log In
             </button>
             <button
               className="button--primary"
-              onClick={() => handleNavigate("/signup")}
+              onClick={() => handleNavigate('/signup')}
             >
               Sign Up
             </button>
@@ -115,18 +115,20 @@ const HeadContainer = styled.div`
   position: fixed;
   display: flex;
   justify-content: space-between;
-  margin: 0 50px;
-  width: calc(100vw - 100px);
+  width: 100vw;
   height: 60px;
   z-index: 9999;
   top: 0;
   left: 0;
+  background-color: whitesmoke;
+  mix-blend-mode: overlay;
 `;
 
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
+  margin-left: 50px;
 
   .header__logo {
     cursor: pointer;
@@ -137,6 +139,7 @@ const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
+  margin-right: 50px;
 
   > img {
     width: 36px;
