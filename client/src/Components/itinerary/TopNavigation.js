@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -6,8 +6,7 @@ import styled from 'styled-components';
 import Calendar from '../Calendar';
 
 import { getCookie } from '../../Util/Cookies';
-import { formatDate } from '../../Util/dayUtil';
-import { formatDateKo } from '../../Util/dayUtil';
+import { formatDate, formatDateKo } from '../../Util/dayUtil';
 
 const TopContainer = styled.div`
   position: relative;
@@ -148,8 +147,8 @@ const TopNavigation = props => {
     setTitle,
   } = props;
 
+  const outSideRef = useRef();
   const token = getCookie('accessToken');
-
   const { itineraryId } = useParams();
   const navigate = useNavigate();
   const [showCalendar, setShowCalendar] = useState(false);
@@ -162,6 +161,25 @@ const TopNavigation = props => {
   const handleCalendar = () => {
     setShowCalendar(prevState => !prevState);
   };
+
+  useEffect(() => {
+    const clickOutside = e => {
+      // 모달이 열려 있고 모달의 바깥쪽을 눌렀을 때 창 닫기
+      if (
+        showCalendar &&
+        outSideRef.current &&
+        !outSideRef.current.contains(e.target)
+      ) {
+        setShowCalendar(false);
+      }
+    };
+    document.addEventListener('mousedown', clickOutside);
+
+    return () => {
+      // Cleanup the event listener
+      document.removeEventListener('mousedown', clickOutside);
+    };
+  }, [showCalendar]);
 
   const changeDateHandler = () => {
     if (
@@ -261,7 +279,7 @@ const TopNavigation = props => {
   };
 
   return (
-    <TopContainer cityImage={mainData.city?.cityImage}>
+    <TopContainer cityImage={mainData.city?.cityImage} ref={outSideRef}>
       <div className="top__gradient-bg"></div>
       <Header>
         <div className="header__logo" onClick={() => navigate('/')}>
