@@ -14,6 +14,7 @@ const AddExpense = props => {
     setAddExpenseModal,
     handleAddExpense,
     handleRefresh,
+    budget,
   } = props;
   const [inputs, setInputs] = useState({ price: '', item: '' });
 
@@ -138,8 +139,16 @@ const AddExpense = props => {
                     inputs.item,
                     currentPlaceId,
                   );
-                  handleClear();
-                  handleRefresh();
+                  if (
+                    budget.expectedBudget <
+                    parseInt(budget.totalExpenses) + parseInt(inputs.price)
+                  ) {
+                    setAddExpenseModal(true);
+                    setInputs({ price: '', item: '' });
+                  } else {
+                    handleClear();
+                    handleRefresh();
+                  }
                 }}
               >
                 비용 추가

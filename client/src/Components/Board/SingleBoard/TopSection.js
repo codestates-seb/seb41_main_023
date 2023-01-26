@@ -131,6 +131,12 @@ const TopContainer = styled.div`
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0f0f0f",endColorstr="#ffffff",GradientType=1);
     z-index: 1;
   }
+
+  .writer-image {
+    img {
+      cursor: pointer;
+    }
+  }
 `;
 
 const Header = styled.div`
