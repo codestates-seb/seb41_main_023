@@ -10,7 +10,6 @@ import SinglePlanBox from './SinglePlanBox';
 
 import { getCookie } from '../../Util/Cookies';
 import { formatDateAndWeekdayKo } from '../../Util/dayUtil';
-import EditExpense from '../budget/EditExpense';
 
 const PlanSection = props => {
   const {
@@ -60,41 +59,39 @@ const PlanSection = props => {
     console.log(price, selectedCategory, item, placeId);
     if (budget.expectedBudget < 1) {
       return alert('예산을 설정해주세요.');
-    }
-    if (
+    } else if (
       budget.expectedBudget <
       parseInt(budget.totalExpenses) + parseInt(price)
     ) {
-      return alert('예산을 초과하였습니다.');
-    }
-
-    if (price < 1) {
+      alert('예산을 초과하였습니다.');
+      setAddExpenseModal(true);
+    } else if (price < 1) {
       return alert('지출 금액은 1원 이상이어야 합니다.');
-    }
-
-    axios
-      .post(
-        `${process.env.REACT_APP_API_URL}/expenses/budget/${budgetId}/places/${placeId}`,
-        {
-          category: selectedCategory,
-          item: item,
-          price: price,
-        },
-        {
-          headers: {
-            Authorization: getCookie('accessToken'),
+    } else {
+      axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/expenses/budget/${budgetId}/places/${placeId}`,
+          {
+            category: selectedCategory,
+            item: item,
+            price: price,
           },
-        },
-      )
-      .then(res => {
-        setExpenses([...expenses, res.data]); //비용에 추가
-      })
-      .then(res => {
-        setAddExpenseModal(false);
-        handleRefresh();
-        handleBudgetRefresh();
-      })
-      .catch(err => console.log(err));
+          {
+            headers: {
+              Authorization: getCookie('accessToken'),
+            },
+          },
+        )
+        .then(res => {
+          setExpenses([...expenses, res.data]); //비용에 추가
+        })
+        .then(res => {
+          setAddExpenseModal(false);
+          handleRefresh();
+          handleBudgetRefresh();
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   return (
@@ -161,6 +158,7 @@ const PlanSection = props => {
                         refresh={refresh}
                         handleRefresh={handleRefresh}
                         handleBudgetRefresh={handleBudgetRefresh}
+                        budget={budget}
                       />
                     </SectionComponent>
                   ))
@@ -173,6 +171,7 @@ const PlanSection = props => {
                 setAddExpenseModal={setAddExpenseModal}
                 handleAddExpense={handleAddExpense}
                 handleRefresh={handleRefresh}
+                budget={budget}
               />
             </PlanContainer>
           </div>

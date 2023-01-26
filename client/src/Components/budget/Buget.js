@@ -234,6 +234,7 @@ const Budget = ({
           editExpenseModal={editExpenseModal}
           handleRefresh={handleRefresh}
           handleBudgetRefresh={handleBudgetRefresh}
+          budget={budget}
         />
       ) : null}
     </BudgetContainer>

@@ -9,8 +9,8 @@ const EditExpense = props => {
     setEditExpenseModal,
     handleEditExpense,
     expenseId,
-    handleRefresh,
     handleBudgetRefresh,
+    budget,
   } = props;
   const [inputs, setInputs] = useState({ price: '', item: '' });
 
@@ -103,13 +103,22 @@ const EditExpense = props => {
               <button
                 className="button--primary"
                 onClick={() => {
-                  handleEditExpense(
-                    inputs.price,
-                    selectedCategory,
-                    inputs.item,
-                    expenseId,
-                  );
-                  handleBudgetRefresh();
+                  if (
+                    budget.expectedBudget <
+                    parseInt(budget.totalExpenses) + parseInt(inputs.price)
+                  ) {
+                    alert('비용이 예산을 초과합니다!!');
+                    setEditExpenseModal(true);
+                    setInputs({ price: '', item: '' });
+                  } else {
+                    handleEditExpense(
+                      inputs.price,
+                      selectedCategory,
+                      inputs.item,
+                      expenseId,
+                    );
+                    handleBudgetRefresh();
+                  }
                 }}
               >
                 Edit expense

@@ -144,7 +144,7 @@ const SinglePlan = props => {
     setCurrentPlaceId,
     handleRefresh,
     handleBudgetRefresh,
-    expenses,
+    budget,
   } = props;
   const [delButtonIsShow, setDelButtonIsShow] = useState(false);
   // 비용 수정
@@ -250,6 +250,7 @@ const SinglePlan = props => {
               editExpenseModal={editExpenseModal}
               handleRefresh={handleRefresh}
               handleBudgetRefresh={handleBudgetRefresh}
+              budget={budget}
             />
           ) : null}
         </div>
