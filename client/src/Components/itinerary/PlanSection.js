@@ -10,6 +10,7 @@ import SinglePlanBox from './SinglePlanBox';
 
 import { getCookie } from '../../Util/Cookies';
 import { formatDateAndWeekdayKo } from '../../Util/dayUtil';
+import EditExpense from '../budget/EditExpense';
 
 const PlanSection = props => {
   const {
