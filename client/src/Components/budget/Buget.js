@@ -1,13 +1,14 @@
-import axios from "axios";
-import dayjs from "dayjs";
-import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { getCookie } from "../../Util/Cookies";
+import { useEffect, useState } from 'react';
+import { getCookie } from '../../Util/Cookies';
+import axios from 'axios';
+import styled from 'styled-components';
 
-import EditBudget from "./EditBudget";
-import AddExpense from "./AddExpense";
-import EditExpense from "./EditExpense";
-import DeleteExpense from "./DeleteExpense";
+import EditBudget from './EditBudget';
+import AddExpense from './AddExpense';
+import EditExpense from './EditExpense';
+import DeleteExpense from './DeleteExpense';
+
+import { formatDateKo } from '../../Util/dayUtil';
 
 const Budget = ({
   budgetId,
@@ -20,7 +21,7 @@ const Budget = ({
   handleBudgetRefresh,
   budgetRefresh,
 }) => {
-  const token = getCookie("accessToken");
+  const token = getCookie('accessToken');
   const [currentExpenseId, setCurrentExpenseId] = useState();
 
   /* Modal */
@@ -45,18 +46,18 @@ const Budget = ({
           Authorization: token,
         },
       })
-      .then((res) => {
+      .then(res => {
         setBudget(res.data);
         setExpenses(res?.data?.expenses || []);
         handleRefresh();
       })
-      .catch((err) => console.log("error"));
+      .catch(err => console.log('error'));
   }, [budgetRefresh]);
 
   // 예산 수정 요청
-  const handleEditBudget = (inputBudget) => {
+  const handleEditBudget = inputBudget => {
     if (inputBudget < 1) {
-      return alert("예산은 1원 이상이어야 합니다.");
+      return alert('예산은 1원 이상이어야 합니다.');
     }
 
     axios
@@ -69,22 +70,21 @@ const Budget = ({
           headers: {
             Authorization: token,
           },
-        }
+        },
       )
-      .then((res) => {
+      .then(res => {
         setBudget({ ...budget, expectedBudget: res.data.expectedBudget });
       })
-      .then((res) => {
+      .then(res => {
         setEditBudget(false);
         handleRefresh();
         handleBudgetRefresh();
       })
-      .catch((err) => console.log("error"));
+      .catch(err => console.log('error'));
   };
 
   // 비용 수정 요청
   const handleEditExpense = (price, selectedCategory, item, expenseId) => {
-    console.log(price, selectedCategory, item, expenseId);
     axios
       .patch(
         `${process.env.REACT_APP_API_URL}/expenses/${expenseId}`,
@@ -98,17 +98,17 @@ const Budget = ({
             Authorization: token,
             withCredentials: true,
           },
-        }
+        },
       )
-      .then((res) => {
+      .then(res => {
         setEditExpenseModal(false);
         handleBudgetRefresh();
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
 
   // 비용 삭제 요청
-  const handleDeleteExpense = (expenseId) => {
+  const handleDeleteExpense = expenseId => {
     axios
       .delete(`${process.env.REACT_APP_API_URL}/expenses/${expenseId}`, {
         headers: {
@@ -116,11 +116,11 @@ const Budget = ({
           withCredentials: true,
         },
       })
-      .then((res) => {
+      .then(res => {
         setDeleteExpenseModal(false);
         handleBudgetRefresh();
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
 
   const budgetUsage = () => {
@@ -145,9 +145,9 @@ const Budget = ({
           />
         </div>
         <h1 className="budget__current-amount">
-          ₩ {budget?.expectedBudget?.toLocaleString("ko-KR")}
+          ₩ {budget?.expectedBudget?.toLocaleString('ko-KR')}
         </h1>
-        <div className={"budget__percentage"}>
+        <div className={'budget__percentage'}>
           예산 사용량 : {budgetUsage()} %
         </div>
         <BudgetBar>
@@ -165,18 +165,18 @@ const Budget = ({
         />
       </Expense>
       <div className="my-expense__container">
-        {expenses.map((el) => {
+        {expenses.map(el => {
           return (
             <MyExpenses key={el.expenseId}>
               <div className="expense__item">
                 <div className="expense__item-top">
                   <div>{el.placeName}</div>
                   <div className="meta_user_expense">
-                    ₩ {el.price.toLocaleString("ko-KR")}
+                    ₩ {el.price.toLocaleString('ko-KR')}
                   </div>
                 </div>
                 <div className="expense__item-date">
-                  {dayjs(el.createdAt).format("M월 DD일")} • {el.category}
+                  {formatDateKo(el.createdAt)} • {el.category}
                 </div>
                 <div className="expense__message">{el.item}</div>
               </div>
@@ -289,7 +289,7 @@ const BudgetBar = styled.div`
 
 const BudgetData = styled.div`
   background-color: #2d7ff9;
-  width: ${(props) => props.usageData + "%"};
+  width: ${props => props.usageData + '%'};
   height: 100%;
   border-radius: 10px;
   transition: width 1s;

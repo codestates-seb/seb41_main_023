@@ -1,12 +1,11 @@
 /* 유저이름, 비밀번호 수정, 계정 삭제 */
 
-import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { getCookie, removeCookie } from "../../Util/Cookies";
-import { patchData } from "../../Util/api";
 import axios from "axios";
+import styled from "styled-components";
+
+import { patchData } from "../../Util/api";
+import { getCookie, removeCookie } from "../../Util/Cookies";
 
 import Modal from "./Modal";
 

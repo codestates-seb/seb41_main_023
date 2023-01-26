@@ -1,5 +1,6 @@
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
 import { Mode } from '../../Util/constants';
 
 const BoardHeader = ({
@@ -16,15 +17,15 @@ const BoardHeader = ({
 
   return (
     <TopContainer>
-      <div className='top__gradient-bg'></div>
+      <div className="top__gradient-bg"></div>
       <Header>
-        <div className='header__logo' onClick={() => navigate('/')}>
+        <div className="header__logo" onClick={() => navigate('/')}>
           website name
         </div>
-        <div className='top__button-container'>
+        <div className="top__button-container">
           {mode === Mode.Write ? (
             <button
-              className='button--primary'
+              className="button--primary"
               onClick={() => {
                 handleCreateLog(title, content);
               }}
@@ -34,14 +35,17 @@ const BoardHeader = ({
           ) : (
             <>
               <button
-                className='button--primary'
+                className="button--primary"
                 onClick={() => {
                   handleEditLog(title, content);
                 }}
               >
                 Save edits
               </button>
-              <button className='button--default button--subtle' onClick={handleDeleteLog}>
+              <button
+                className="button--default button--subtle"
+                onClick={handleDeleteLog}
+              >
                 Delete
               </button>
             </>
@@ -49,8 +53,8 @@ const BoardHeader = ({
         </div>
       </Header>
       <TripInfo>
-        <div className='city-name__label'>{mainData.cityName}</div>
-        <input onChange={(e) => setTitle(e.target.value)} value={title} />
+        <div className="city-name__label">{mainData.cityName}</div>
+        <input onChange={e => setTitle(e.target.value)} value={title} />
       </TripInfo>
     </TopContainer>
   );
@@ -63,7 +67,7 @@ const TopContainer = styled.nav`
   width: 50vw;
   height: 350px;
   background-color: var(--primary-blue-light-1);
-  background-image: url(${(props) => props.cityImage});
+  background-image: url(${props => props.cityImage});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -75,13 +79,21 @@ const TopContainer = styled.nav`
     width: 50vw;
     height: 350px;
     background: rgb(15, 15, 15);
-    background: -moz-linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+    background: -moz-linear-gradient(
+      0deg,
+      rgba(15, 15, 15, 0.5) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
     background: -webkit-linear-gradient(
       0deg,
       rgba(15, 15, 15, 0.5) 0%,
       rgba(255, 255, 255, 0) 100%
     );
-    background: linear-gradient(0deg, rgba(15, 15, 15, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(
+      0deg,
+      rgba(15, 15, 15, 0.5) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0f0f0f",endColorstr="#ffffff",GradientType=1);
     z-index: 1;
   }

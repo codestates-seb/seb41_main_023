@@ -1,109 +1,112 @@
-import styled from "styled-components";
-import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {getCookie, removeCookie} from "../Util/Cookies";
-import {postData} from "../Util/api.js";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import styled from "styled-components";
 
-const Header = ({login}) => {
-    const navigate = useNavigate();
+import { postData } from "../Util/api.js";
+import { getCookie, removeCookie } from "../Util/Cookies";
 
-    const token = getCookie("accessToken");
-    const memberId = getCookie("memberId");
-    const refreshToken = localStorage.getItem("refreshToken");
+const Header = ({ login }) => {
+  const navigate = useNavigate();
 
-    const [userInfo, setUserInfo] = useState({});
+  const token = getCookie("accessToken");
+  const memberId = getCookie("memberId");
+  const refreshToken = localStorage.getItem("refreshToken");
 
-    // const getUserInfo = async () => {
-    //   const data = await getData(`/members/userProfile/${memberId}`);
-    //   console.log(data.data);
-    //   // setUserInfo(data);
-    // };
+  const [userInfo, setUserInfo] = useState({});
 
-    const getUserInfo = () => {
-        axios
-            .get(`${process.env.REACT_APP_API_URL}/members/userProfile/${memberId}`, {
-                headers: {
-                    Authorization: token,
-                },
-            })
-            .then((res) =>
-                setUserInfo({...userInfo, profileImage: res.data.profileImage})
-            );
-    };
+  // const getUserInfo = async () => {
+  //   const data = await getData(`/members/userProfile/${memberId}`);
+  //   console.log(data.data);
+  //   // setUserInfo(data);
+  // };
 
-    useEffect(() => {
-        if (token) {
-            getUserInfo();
-        }
-    }, []);
+  const getUserInfo = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/members/userProfile/${memberId}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) =>
+        setUserInfo({ ...userInfo, profileImage: res.data.profileImage })
+      );
+  };
 
-    const handleNavigate = (path) => {
-        navigate(path);
-    };
+  useEffect(() => {
+    if (token) {
+      getUserInfo();
+    }
+  }, []);
 
-    // 로그아웃
-    const handleSignout = () => {
-        if (window.confirm("로그아웃 하시겠습니까?")) {
-            postData("/members/logout", {
-                headers: {
-                    Authorization: token,
-                  }
-            }).then((res) => {
-                removeCookie("accessToken");
-                removeCookie("memberId");
-                localStorage.removeItem("refreshToken");
-            }).then(res => window.location.replace("/"))
-        }
-    };
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
-    return (
-        <HeadContainer className="header__container">
-            <LeftSection>
-                <div className="header__logo" onClick={() => handleNavigate("/")}>
-                    website name
-                </div>
-                <button
-                    className="button--default button--subtle"
-                    onClick={() => handleNavigate("/board")}
-                >
-                    Travel Logs
-                </button>
-            </LeftSection>
-            <RightSection>
-                {login ? (
-                    <>
-                        <img
-                            onClick={() => handleNavigate(`/user/${memberId}`)}
-                            alt="profile_image"
-                            src={userInfo.profileImage}
-                        />
-                        <button
-                            className="button--default button--subtle"
-                            onClick={handleSignout}
-                        >
-                            Sign out
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        <button
-                            className="button--default"
-                            onClick={() => handleNavigate("/login")}
-                        >
-                            Log In
-                        </button>
-                        <button
-                            className="button--primary"
-                            onClick={() => handleNavigate("/signup")}
-                        >
-                            Sign Up
-                        </button>
-                    </>
-                )}
-            </RightSection>
-        </HeadContainer>
-    );
+  // 로그아웃
+  const handleSignout = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      postData("/members/logout", {
+        headers: {
+          Authorization: token,
+        },
+      })
+        .then((res) => {
+          removeCookie("accessToken");
+          removeCookie("memberId");
+          localStorage.removeItem("refreshToken");
+        })
+        .then((res) => window.location.replace("/"));
+    }
+  };
+
+  return (
+    <HeadContainer className="header__container">
+      <LeftSection>
+        <div className="header__logo" onClick={() => handleNavigate("/")}>
+          website name
+        </div>
+        <button
+          className="button--default button--subtle"
+          onClick={() => handleNavigate("/board")}
+        >
+          Travel Logs
+        </button>
+      </LeftSection>
+      <RightSection>
+        {login ? (
+          <>
+            <img
+              onClick={() => handleNavigate(`/user/${memberId}`)}
+              alt="profile_image"
+              src={userInfo.profileImage}
+            />
+            <button
+              className="button--default button--subtle"
+              onClick={handleSignout}
+            >
+              Sign out
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              className="button--default"
+              onClick={() => handleNavigate("/login")}
+            >
+              Log In
+            </button>
+            <button
+              className="button--primary"
+              onClick={() => handleNavigate("/signup")}
+            >
+              Sign Up
+            </button>
+          </>
+        )}
+      </RightSection>
+    </HeadContainer>
+  );
 };
 
 export default Header;

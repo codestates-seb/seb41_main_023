@@ -1,18 +1,18 @@
-import axios from "axios";
-import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
 
-import { Mode } from "../../Util/constants";
-import { getCookie } from "../../Util/Cookies";
+import { Mode } from '../../Util/constants';
+import { getCookie } from '../../Util/Cookies';
+import { formatDateKo } from '../../Util/dayUtil';
 
 const MyLogs = ({ mode }) => {
   const navigate = useNavigate();
   const [logList, setLogList] = useState([]);
 
-  const token = getCookie("accessToken");
-  const memberId = getCookie("memberId");
+  const token = getCookie('accessToken');
+  const memberId = getCookie('memberId');
 
   useEffect(() => {
     axios
@@ -21,14 +21,14 @@ const MyLogs = ({ mode }) => {
           Authorization: token,
         },
       })
-      .then((res) => setLogList(res.data));
+      .then(res => setLogList(res.data));
   }, []);
 
-  const handleNavigate = (log) => {
+  const handleNavigate = log => {
     navigate(
       mode === Mode.Plan
         ? `/board/${log.boardId}`
-        : `/board/edit/${log.boardId}`
+        : `/board/edit/${log.boardId}`,
     );
   };
 
@@ -36,7 +36,7 @@ const MyLogs = ({ mode }) => {
     <MyLogsContainer className="my-logs">
       <h2>My Logs</h2>
       <div className="contents">
-        {logList.map((log) => (
+        {logList.map(log => (
           <div
             className="my-logs__card"
             key={log.boardId}
@@ -49,8 +49,8 @@ const MyLogs = ({ mode }) => {
             />
             <div className="meta_title">{log.title}</div>
             <div className="meta_content">
-              {dayjs(log.travelPeriod.split("-")[0]).format("M월 D일")} -{" "}
-              {dayjs(log.travelPeriod.split("-")[1]).format("M월 D일")}
+              {formatDateKo(log.travelPeriod.split('-')[0])} -{' '}
+              {formatDateKo(log.travelPeriod.split('-')[1])}
             </div>
             <div className="meta_profile">
               <img
@@ -60,7 +60,7 @@ const MyLogs = ({ mode }) => {
               />
               <span>{log.displayName} </span>
             </div>
-            <div className={log.checkLikes ? "meta_likes likes" : "meta_likes"}>
+            <div className={log.checkLikes ? 'meta_likes likes' : 'meta_likes'}>
               <svg viewBox="0 0 16 16">
                 <path
                   fillRule="evenodd"

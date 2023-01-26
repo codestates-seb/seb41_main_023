@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import Home from "../Pages/Home";
+
+import Home from "./Home";
+import Footer from "./Footer";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
 import Explore from "../Components/Board/Explore";
-import Footer from "./Footer";
 
 const MainContainer = styled.div`
   position: relative;

@@ -1,13 +1,13 @@
-import styled from "styled-components";
-import { useState } from "react";
+import { useState } from 'react';
+import styled from 'styled-components';
 
-const EditBudget = (props) => {
+const EditBudget = props => {
   const { editBudget, setEditBudget, handleEditBudget, originBudget } = props;
   const [inputBudget, setInputBudget] = useState(originBudget);
 
-  const handleInputBudget = (e) => {
+  const handleInputBudget = e => {
     const value = e.target.value;
-    const onlyNumber = value.replace(/[^0-9]/g, "");
+    const onlyNumber = value.replace(/[^0-9]/g, '');
     setInputBudget(onlyNumber);
   };
 
@@ -15,7 +15,7 @@ const EditBudget = (props) => {
     <>
       {editBudget ? (
         <ModalContainer onClick={() => setEditBudget(false)}>
-          <ModalWrapper onClick={(e) => e.stopPropagation()}>
+          <ModalWrapper onClick={e => e.stopPropagation()}>
             <div className="modal__header">
               <div className="title">Set budget</div>
               <div
@@ -50,8 +50,8 @@ const EditBudget = (props) => {
               <input
                 id="budget"
                 className="input--default-icon"
-                placeholder={"예산을 입력해주세요"}
-                value={inputBudget || ""}
+                placeholder={'예산을 입력해주세요'}
+                value={inputBudget || ''}
                 onChange={handleInputBudget}
               />
             </div>

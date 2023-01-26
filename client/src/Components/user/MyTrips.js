@@ -1,15 +1,15 @@
-import dayjs from "dayjs";
-import axios from "axios";
-import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
 
-import { Mode } from "../../Util/constants";
-import { getCookie } from "../../Util/Cookies";
+import { Mode } from '../../Util/constants';
+import { getCookie } from '../../Util/Cookies';
+import { formatDateKo } from '../../Util/dayUtil';
 
 const MyTrips = ({ mode }) => {
   const navigate = useNavigate();
-  const token = getCookie("accessToken");
+  const token = getCookie('accessToken');
 
   //초기값 배열 설정하기
   const [tripList, setTripList] = useState([]);
@@ -21,22 +21,20 @@ const MyTrips = ({ mode }) => {
           Authorization: token,
         },
       })
-      .then((res) => {
+      .then(res => {
         if (mode === Mode.Write) {
-          setTripList(
-            res.data.data.filter((trip) => trip.boardCheck === false)
-          );
+          setTripList(res.data.data.filter(trip => trip.boardCheck === false));
         } else {
           setTripList(res.data.data);
         }
       });
   }, []);
 
-  const handleNavigate = (trip) => {
+  const handleNavigate = trip => {
     navigate(
       mode === Mode.Plan
         ? `/itinerary/${trip.planId}`
-        : `/board/plan/${trip.planId}`
+        : `/board/plan/${trip.planId}`,
     );
   };
 
@@ -44,7 +42,7 @@ const MyTrips = ({ mode }) => {
     <MyTripsContainer>
       <h2>My Trips</h2>
       <div className="contents">
-        {tripList.map((trip) => (
+        {tripList.map(trip => (
           <div
             className="my-trips__card"
             key={trip.planId}
@@ -54,12 +52,8 @@ const MyTrips = ({ mode }) => {
             <div className="meta_title">{trip.planTitle}</div>
             <div className="meta_content">
               <div>
-                {dayjs(trip.startDate).format("M월 D일")} -{" "}
-                {dayjs(trip.endDate).format("M월 D일")}
+                {formatDateKo(trip.startDate)} - {formatDateKo(trip.endDate)}
               </div>
-              {/* <div>
-                {trip.plans} places · {trip.cityName}
-              </div> */}
             </div>
           </div>
         ))}

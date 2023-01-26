@@ -1,9 +1,11 @@
-import { StandaloneSearchBox } from '@react-google-maps/api';
-import styled from 'styled-components';
-import axios from 'axios';
-import { getCookie } from '../../Util/Cookies';
-import PlanDropDown from './PlanDropDown';
 import { useState } from 'react';
+import { StandaloneSearchBox } from '@react-google-maps/api';
+import axios from 'axios';
+import styled from 'styled-components';
+
+import PlanDropDown from './PlanDropDown';
+
+import { getCookie } from '../../Util/Cookies';
 
 const InputContainer = styled.div`
   display: flex;
@@ -27,12 +29,19 @@ const InputContainer = styled.div`
   }
 `;
 
-const PlaceInputBox = (props) => {
-  const { searchBox, setSearchBox, singlePlanData, handleGeoCode, refresh, handleRefresh } = props;
+const PlaceInputBox = props => {
+  const {
+    searchBox,
+    setSearchBox,
+    singlePlanData,
+    handleGeoCode,
+    refresh,
+    handleRefresh,
+  } = props;
 
   const [selectedDateId, setSelectedDateId] = useState(null);
 
-  const onLoad = (ref) => {
+  const onLoad = ref => {
     setSearchBox(ref);
   };
 
@@ -70,12 +79,12 @@ const PlaceInputBox = (props) => {
             headers: {
               Authorization: getCookie('accessToken'),
             },
-          }
+          },
         )
-        .then((res) => {
+        .then(res => {
           handleRefresh();
         })
-        .catch((err) => console.log(err));
+        .catch(err => console.log(err));
 
       handleGeoCode(lat, lng);
     }
@@ -85,7 +94,7 @@ const PlaceInputBox = (props) => {
     }
   };
 
-  const handleOnKeyPress = (event) => {
+  const handleOnKeyPress = event => {
     if (event.key === 'Enter') {
       event.target.value = '';
     }
@@ -93,18 +102,27 @@ const PlaceInputBox = (props) => {
 
   return (
     <InputContainer>
-      <div className='search__input'>
-        <div className='svg-icon--20'>
-          <svg viewBox='0 0 16 16'>
+      <div className="search__input">
+        <div className="svg-icon--20">
+          <svg viewBox="0 0 16 16">
             <path
-              fillRule='evenodd'
-              fill='currentColor'
-              d='M8.403 13.958a.5.5 0 0 1-.806 0C4.866 10.243 3.5 7.59 3.5 6c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5c0 1.59-1.366 4.243-4.097 7.958zM8 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z'
+              fillRule="evenodd"
+              fill="currentColor"
+              d="M8.403 13.958a.5.5 0 0 1-.806 0C4.866 10.243 3.5 7.59 3.5 6c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5c0 1.59-1.366 4.243-4.097 7.958zM8 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
             ></path>
           </svg>
         </div>
-        <StandaloneSearchBox className='search__box' onLoad={onLoad} onPlacesChanged={onPlacesChanged}>
-          <input className='input--default-icon' type={'text'} placeholder={'Add a place'} onKeyPress={handleOnKeyPress} />
+        <StandaloneSearchBox
+          className="search__box"
+          onLoad={onLoad}
+          onPlacesChanged={onPlacesChanged}
+        >
+          <input
+            className="input--default-icon"
+            type={'text'}
+            placeholder={'Add a place'}
+            onKeyPress={handleOnKeyPress}
+          />
         </StandaloneSearchBox>
       </div>
       <PlanDropDown

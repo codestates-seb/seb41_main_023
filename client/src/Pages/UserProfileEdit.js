@@ -1,27 +1,25 @@
-import styled from "styled-components";
-import axios from "axios";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
 
-import Header from "../Components/Header";
-import { General, Password, DeleteAccount } from "../Components/user/Tab";
+import Header from '../Components/Header';
+import Footer from './Footer';
+import { General, Password, DeleteAccount } from '../Components/user/Tab';
 
-import { getCookie } from "../Util/Cookies";
-
-// import { getData, patchData, postData } from '../Util/api';
-import Footer from "./Footer";
+import { getCookie } from '../Util/Cookies';
 
 const UserProfileEdit = () => {
-  const memberId = getCookie("memberId");
-  const token = getCookie("accessToken");
+  const memberId = getCookie('memberId');
+  const token = getCookie('accessToken');
   const [currentTab, clickTab] = useState(0);
   const [modal, setModal] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [submitInfo, setSubmitInfo] = useState({
-    id: "",
+    id: '',
   });
   const nameRef = useRef([]);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setSubmitInfo({
       ...submitInfo,
       [e.target.name]: e.target.value,
@@ -38,7 +36,7 @@ const UserProfileEdit = () => {
   //회원 탈퇴 시 화면 이동
   useEffect(() => {
     if (!memberId) {
-      window.location.replace("/");
+      window.location.replace('/');
     }
   }, [memberId]);
 
@@ -55,7 +53,7 @@ const UserProfileEdit = () => {
           Authorization: token,
         },
       })
-      .then((res) => setUserInfo(res.data));
+      .then(res => setUserInfo(res.data));
   };
 
   useEffect(() => {
@@ -63,7 +61,7 @@ const UserProfileEdit = () => {
   }, [refresh]);
 
   //유저 정보 patch 요청
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     const nameRegex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
@@ -71,23 +69,23 @@ const UserProfileEdit = () => {
     if (!submitInfo.id) {
       nameRef.current.focus();
     } else if (!nameRegex.test(submitInfo.id)) {
-      alert("영문과 한글 또는 숫자를 3~20자리로 입력하세요.");
+      alert('영문과 한글 또는 숫자를 3~20자리로 입력하세요.');
       return;
     } else {
       const data = {
         displayName: submitInfo.id,
       };
 
-      if (window.confirm("수정사항을 저장하시겠습니까?")) {
+      if (window.confirm('수정사항을 저장하시겠습니까?')) {
         axios
           .patch(
             `${process.env.REACT_APP_API_URL}/members/displayName/${memberId}`,
             { ...data },
-            { headers: { Authorization: token } }
+            { headers: { Authorization: token } },
           )
-          .then((res) => {
+          .then(res => {
             setUserInfo({ ...userInfo, displayName: res.data.displayName });
-            nameRef.current.value = "";
+            nameRef.current.value = '';
           });
       }
     }
@@ -95,7 +93,7 @@ const UserProfileEdit = () => {
 
   const menuArr = [
     {
-      name: "General",
+      name: 'General',
       content: (
         <General
           handleChange={handleChange}
@@ -104,10 +102,10 @@ const UserProfileEdit = () => {
         />
       ),
     },
-    { name: "Password", content: <Password /> },
+    { name: 'Password', content: <Password /> },
   ];
 
-  const selectMenuHandler = (index) => {
+  const selectMenuHandler = index => {
     clickTab(index);
   };
 
@@ -115,23 +113,23 @@ const UserProfileEdit = () => {
   const SettingUserThumbnail = () => {
     const inputRef = useRef(null);
 
-    const onUploadImage = async (e) => {
+    const onUploadImage = async e => {
       if (!e.target.files) {
         return;
       }
-      if (window.confirm("프로필을 변경하시겠습니까?")) {
+      if (window.confirm('프로필을 변경하시겠습니까?')) {
         const formData = new FormData();
         //formData.append : FormData 객체안에 이미 키가 존재하면 그 키에 새로운 값을 추가하고, 키가 없으면 추가
-        formData.append("multipartFile", e.target.files[0]);
+        formData.append('multipartFile', e.target.files[0]);
         await axios({
-          method: "POST",
+          method: 'POST',
           url: `${process.env.REACT_APP_API_URL}/members/${memberId}/profile`,
           headers: {
             Authorization: token,
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
           data: formData,
-        }).then((res) => {
+        }).then(res => {
           setUserInfo({ ...userInfo, profileImage: res.data.profileImage });
           handleRefresh();
         });
@@ -188,7 +186,7 @@ const UserProfileEdit = () => {
             {menuArr.map((el, index) => (
               <li
                 key={el.name}
-                className={index === currentTab ? "submenu focused" : "submenu"}
+                className={index === currentTab ? 'submenu focused' : 'submenu'}
                 onClick={() => {
                   selectMenuHandler(index);
                 }}

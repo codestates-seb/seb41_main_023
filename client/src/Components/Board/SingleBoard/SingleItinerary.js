@@ -1,29 +1,32 @@
 import styled from 'styled-components';
+
 import StarRate from '../../itinerary/StarRate';
 
-const SingleItinerary = (props) => {
+const SingleItinerary = props => {
   const { data, handleGeoCode } = props;
 
   return (
     <Container>
       {data
-        ? data.map((place) => (
+        ? data.map(place => (
             <SinglePlanContainer
               key={place.index}
               onClick={() => {
                 handleGeoCode(place.latitude, place.longitude);
               }}
             >
-              <div className='location-number__container'>
-                <div className='location-number'>{place.index}</div>
+              <div className="location-number__container">
+                <div className="location-number">{place.index}</div>
               </div>
-              <div className='place-info__main'>
+              <div className="place-info__main">
                 <SingleInfoContainer>
-                  <div className='location-name'>{place.placeName}</div>
-                  <div className='location-address'>{place.placeAddress}</div>
+                  <div className="location-name">{place.placeName}</div>
+                  <div className="location-address">{place.placeAddress}</div>
                   <StarRate rating={place.ratings} />
                 </SingleInfoContainer>
-                <SingleDescriptionContainer>{place.description}</SingleDescriptionContainer>
+                <SingleDescriptionContainer>
+                  {place.description}
+                </SingleDescriptionContainer>
               </div>
             </SinglePlanContainer>
           ))

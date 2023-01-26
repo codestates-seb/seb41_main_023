@@ -1,26 +1,26 @@
-import axios from "axios";
-import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import axios from 'axios';
+import styled from 'styled-components';
 
-import { getCookie } from "../Util/Cookies";
+import BoardHeader from '../Components/Board/BoardHeader';
+import SingleBoardMarker from '../Components/Board/SingleBoardMarker';
 
-import SingleBoardMarker from "../Components/Board/SingleBoardMarker";
-import BoardHeader from "../Components/Board/BoardHeader";
+import { getCookie } from '../Util/Cookies';
 
 const WriteSingleBoard = () => {
   const navigate = useNavigate();
-  const token = getCookie("accessToken");
+  const token = getCookie('accessToken');
   const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
   const { planId } = useParams();
 
   const [mainData, setMainData] = useState({});
   const [days, setDays] = useState([]);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [placeNotes, setPlaceNotes] = useState([]);
-  const [libraries] = useState(["places"]);
+  const [libraries] = useState(['places']);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: API_KEY,
@@ -28,14 +28,14 @@ const WriteSingleBoard = () => {
   });
 
   const mapContainerStyle = {
-    width: "50%",
-    minWidth: "400px",
-    position: "absolute",
-    height: "100%",
-    zIndex: "60",
-    top: "0",
-    bottom: "0",
-    right: "0",
+    width: '50%',
+    minWidth: '400px',
+    position: 'absolute',
+    height: '100%',
+    zIndex: '60',
+    top: '0',
+    bottom: '0',
+    right: '0',
   };
 
   const [geocode, setGeocode] = useState({
@@ -53,7 +53,7 @@ const WriteSingleBoard = () => {
           Authorization: token,
         },
       })
-      .then((res) => {
+      .then(res => {
         setMainData(res.data);
         setTitle(res.data.planTitle);
         setDays(res.data.days);
@@ -67,62 +67,60 @@ const WriteSingleBoard = () => {
   }, [planId, token]);
 
   // 창 닫기 & 새로고침 막기
-  const preventClose = (e) => {
+  const preventClose = e => {
     e.preventDefault();
-    e.returnValue = "";
+    e.returnValue = '';
   };
 
   useEffect(() => {
     (() => {
-      window.addEventListener("beforeunload", preventClose);
+      window.addEventListener('beforeunload', preventClose);
     })();
 
     return () => {
-      window.removeEventListener("beforeunload", preventClose);
+      window.removeEventListener('beforeunload', preventClose);
     };
   }, []);
 
-  const handleZoom = (el) => {
+  const handleZoom = el => {
     setZoom(el);
   };
 
   //게시물 등록
   const handleCreateLog = async (title, content) => {
     if (title.length < 1) {
-      alert("제목은 한 글자 이상이어야 합니다.");
+      alert('제목은 한 글자 이상이어야 합니다.');
     } else {
       const data = {
         title,
         content,
       };
       await axios({
-        method: "POST",
+        method: 'POST',
         url: `${process.env.REACT_APP_API_URL}/board/plan/${planId}`,
         headers: {
           Authorization: token,
         },
         data: data,
       })
-        .then((res) =>
-          navigate(`/board/${res.data.boardId}`, { replace: true })
-        )
+        .then(res => navigate(`/board/${res.data.boardId}`, { replace: true }))
         .then(() => {
           axios({
-            method: "PATCH",
+            method: 'PATCH',
             url: `${process.env.REACT_APP_API_URL}/places/desc`,
             headers: {
               Authorization: token,
             },
             data: { placeDesc: placeNotes },
-          }).then((res) => console.log(res));
+          }).then(res => console.log(res));
         });
     }
   };
 
   //장소별 note 변경
-  const handleChangeNote = (e) => {
+  const handleChangeNote = e => {
     let findIndex = placeNotes.findIndex(
-      (comment) => Number(comment.placeId) === Number(e.target.name)
+      comment => Number(comment.placeId) === Number(e.target.name),
     );
 
     if (findIndex === -1) {
@@ -171,7 +169,7 @@ const WriteSingleBoard = () => {
           className="travel-experience__text-area"
           placeholder="Share your travel experience"
           defaultValue={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={e => setContent(e.target.value)}
         ></textarea>
         <ItineraryWrapper>
           <h3 className="section__title">Itinerary</h3>
@@ -181,7 +179,7 @@ const WriteSingleBoard = () => {
                 <div className="itinerary__item" key={idx}>
                   <div className="itinerary__day">{day.day}</div>
                   <div className="itinerary__plan-container">
-                    {day.placeDetails.map((place) => (
+                    {day.placeDetails.map(place => (
                       <div
                         key={place.index}
                         onClick={() => {
@@ -207,7 +205,7 @@ const WriteSingleBoard = () => {
                               type="text"
                               name={place.placeId}
                               placeholder="Add note"
-                              onChange={(e) => handleChangeNote(e)}
+                              onChange={e => handleChangeNote(e)}
                             ></textarea>
                             <input
                               type="reset"

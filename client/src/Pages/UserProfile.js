@@ -1,15 +1,15 @@
-import axios from "axios";
-import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import styled from "styled-components";
 
 import Header from "../Components/Header";
+import Footer from "./Footer";
 import MyTrips from "../Components/user/MyTrips";
 import MyLogs from "../Components/user/MyLogs";
 
 import { postData } from "../Util/api";
 import { getCookie, removeCookie } from "../Util/Cookies";
-import Footer from "./Footer";
 
 const UserProfile = () => {
   const navigate = useNavigate();

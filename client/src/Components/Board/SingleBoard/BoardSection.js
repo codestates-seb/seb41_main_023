@@ -1,21 +1,25 @@
 import styled from 'styled-components';
+
 import SingleItinerary from './SingleItinerary';
 
-const BoardSection = (props) => {
+const BoardSection = props => {
   const { boardData, handleGeoCode } = props;
   const { content, days } = boardData;
 
   return (
     <Container>
-      <h3 className='section__title'>Travel Experience</h3>
-      <p className='travel-experience__content'>{content}</p>
-      <h3 className='section__title'>Itinerary</h3>
-      <div className='itinerary__container'>
+      <h3 className="section__title">Travel Experience</h3>
+      <p className="travel-experience__content">{content}</p>
+      <h3 className="section__title">Itinerary</h3>
+      <div className="itinerary__container">
         {days
           ? days.map((day, idx) => (
               <ItineraryItem key={idx}>
                 <div className={'itinerary__day'}>{day.day}</div>
-                <SingleItinerary data={day.placeDetails} handleGeoCode={handleGeoCode} />
+                <SingleItinerary
+                  data={day.placeDetails}
+                  handleGeoCode={handleGeoCode}
+                />
               </ItineraryItem>
             ))
           : null}

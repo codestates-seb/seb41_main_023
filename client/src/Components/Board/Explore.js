@@ -1,9 +1,10 @@
-import styled from "styled-components";
-import axios from "axios";
-import dayjs from "dayjs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import styled from "styled-components";
+
 import { getCookie } from "../../Util/Cookies";
+import { formatDateKo } from "../../Util/dayUtil";
 
 const Explore = (props) => {
   const [exploreList, setExploreList] = useState([]);
@@ -129,8 +130,8 @@ const Explore = (props) => {
               />
               <div className="meta_title">{explore.title}</div>
               <div className="meta_content">
-                {dayjs(explore.travelPeriod.split("-")[0]).format("M월 D일")} -{" "}
-                {dayjs(explore.travelPeriod.split("-")[1]).format("M월 D일")}
+                {formatDateKo(explore.travelPeriod.split("-")[0])} -{" "}
+                {formatDateKo(explore.travelPeriod.split("-")[1])}
               </div>
               <div className="meta_profile">
                 <img

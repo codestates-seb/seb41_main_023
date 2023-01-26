@@ -1,15 +1,17 @@
-import SideDateBar from "./SideDateBar";
-import PlaceInputBox from "./PlaceInputBox";
-import dayjs from "dayjs";
-import SinglePlanBox from "./SinglePlanBox";
-import AddExpense from "../budget/AddExpense";
-import Budget from "../budget/Buget";
-import axios from "axios";
-import { getCookie } from "../../Util/Cookies";
-import { Fragment, useRef, useState } from "react";
-import styled from "styled-components";
+import { Fragment, useRef, useState } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
-const PlanSection = (props) => {
+import Budget from '../budget/Buget';
+import AddExpense from '../budget/AddExpense';
+import SideDateBar from './SideDateBar';
+import PlaceInputBox from './PlaceInputBox';
+import SinglePlanBox from './SinglePlanBox';
+
+import { getCookie } from '../../Util/Cookies';
+import { formatDateAndWeekdayKo } from '../../Util/dayUtil';
+
+const PlanSection = props => {
   const {
     searchBox,
     setSearchBox,
@@ -40,33 +42,33 @@ const PlanSection = (props) => {
   const planDateRef = useRef([]);
   const itineraryRef = useRef();
   const budgetingRef = useRef();
-  const onDateClick = (planDateId) => {
-    planDateRef.current[planDateId].scrollIntoView({ behavior: "smooth" });
+  const onDateClick = planDateId => {
+    planDateRef.current[planDateId].scrollIntoView({ behavior: 'smooth' });
   };
 
-  const onTabClick = (ref) => {
-    ref.current.scrollIntoView({ behavior: "smooth" });
+  const onTabClick = ref => {
+    ref.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   const TopMove = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // 비용 추가 요청
   const handleAddExpense = (price, selectedCategory, item, placeId) => {
     console.log(price, selectedCategory, item, placeId);
     if (budget.expectedBudget < 1) {
-      return alert("예산을 설정해주세요.");
+      return alert('예산을 설정해주세요.');
     }
     if (
       budget.expectedBudget <
       parseInt(budget.totalExpenses) + parseInt(price)
     ) {
-      return alert("예산을 초과하였습니다.");
+      return alert('예산을 초과하였습니다.');
     }
 
     if (price < 1) {
-      return alert("지출 금액은 1원 이상이어야 합니다.");
+      return alert('지출 금액은 1원 이상이어야 합니다.');
     }
 
     axios
@@ -79,25 +81,25 @@ const PlanSection = (props) => {
         },
         {
           headers: {
-            Authorization: getCookie("accessToken"),
+            Authorization: getCookie('accessToken'),
           },
-        }
+        },
       )
-      .then((res) => {
+      .then(res => {
         setExpenses([...expenses, res.data]); //비용에 추가
       })
-      .then((res) => {
+      .then(res => {
         setAddExpenseModal(false);
         handleRefresh();
         handleBudgetRefresh();
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
 
   return (
     <Container>
       <ItineraryContainer>
-        <div className={"section__nav"}>
+        <div className={'section__nav'}>
           <div
             className="itinerary__nav"
             onClick={() => onTabClick(itineraryRef)}
@@ -135,15 +137,15 @@ const PlanSection = (props) => {
             </InputContainer>
             <PlanContainer>
               {singlePlanData !== null
-                ? singlePlanData.map((singleData) => (
+                ? singlePlanData.map(singleData => (
                     <SectionComponent key={singleData.planDateId}>
                       <h3
                         className="plan__heading"
-                        ref={(element) =>
+                        ref={element =>
                           (planDateRef.current[singleData.planDateId] = element)
                         }
                       >
-                        {dayjs(singleData.planDate).format("M월 D일, ddd요일")}
+                        {formatDateAndWeekdayKo(singleData.planDate)}
                       </h3>
                       <SinglePlanBox
                         planDate={singleData.planDate}
