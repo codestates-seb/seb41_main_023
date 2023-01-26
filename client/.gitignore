@@ -24,3 +24,4 @@ yarn-error.log*
 
 #Google Map API
 .env
+.prettierrc.js

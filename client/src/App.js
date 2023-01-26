@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import { getCookie } from "./Util/Cookies";
+import { getRefresh } from "./Util/api";
 
 import Home from "./Pages/Home";
 import Main from "./Pages/Main";
@@ -24,6 +25,24 @@ function App() {
     if (getCookie("accessToken")) {
       setIsLoggedIn(true);
     }
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (document.hasFocus()) {
+        getRefresh();
+      }
+    }, 1800000);
+
+    if (performance.navigation.type === 1) {
+      setTimeout(() => {
+        getRefresh();
+      }, 600000);
+    }
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   return (

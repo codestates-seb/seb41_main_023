@@ -73,10 +73,11 @@ const Explore = (props) => {
       // 게시판
       if (window.location.pathname === "/board") {
         if (!observerTargetEl.current || !hasNextPage) return;
-        const options = { 
+        const options = {
           root: null,
-          rootMargin: '0px 0px -30px 0px',
-          threshold: 1 };
+          rootMargin: "0px 0px -30px 0px",
+          threshold: 1,
+        };
 
         const io = new IntersectionObserver((entries, observer) => {
           if (entries[0].isIntersecting) {
@@ -161,7 +162,7 @@ const Explore = (props) => {
         )}
         {loading ? <div className="loader"></div> : <div></div>}
         <div ref={observerTargetEl} className="target">
-           
+          t
         </div>
       </div>
     </ExploreContainer>
@@ -169,13 +170,11 @@ const Explore = (props) => {
 };
 export default Explore;
 
-
 const ExploreContainer = styled.div`
   position: relative;
   margin-bottom: 50px;
 
   .target {
-    width: 150px;
     height: 150px;
     margin-top: 225px;
     color: white;

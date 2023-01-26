@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCookie } from "./Cookies";
+import { getCookie, setCookie } from "./Cookies";
 
 // api 요청 시 인증값이 필요없는 경우
 export const baseAPI = (url, options) => {
@@ -103,6 +103,25 @@ const deleteData = async (url) => {
   }
 };
 
+const getRefresh = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/token/reissue`,
+      {},
+      {
+        headers: {
+          Refresh: refreshToken,
+        },
+      }
+    );
+    if (response.status === 200)
+      setCookie("accessToken", response.headers.authorization);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export {
   getBaseData,
   postBaseData,
@@ -112,4 +131,5 @@ export {
   postData,
   patchData,
   deleteData,
+  getRefresh,
 };
