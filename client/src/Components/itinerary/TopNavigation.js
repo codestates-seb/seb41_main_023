@@ -300,7 +300,7 @@ const TopNavigation = props => {
           </button>
         </div>
       </Header>
-      <TripInfo ref={outSideRef}>
+      <TripInfo>
         <input
           onChange={e => setTitle(e.target.value)}
           value={title}
@@ -325,7 +325,9 @@ const TopNavigation = props => {
             날짜 변경
           </button>
         </div>
-        {showCalendar ? <Calendar handleDate={handleDate} /> : null}
+        <div ref={outSideRef}>
+          {showCalendar ? <Calendar handleDate={handleDate} /> : null}
+        </div>
       </TripInfo>
     </TopContainer>
   );
