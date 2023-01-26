@@ -8,7 +8,7 @@ import Explore from "../Components/Board/Explore";
 
 const MainContainer = styled.div`
   position: relative;
-
+  
   h2 {
     margin-bottom: var(--spacing-4);
     font-size: var(--large-heading-font-size);
