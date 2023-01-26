@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
-import { setCookie } from '../Util/Cookies';
+import { getCookie, setCookie } from '../Util/Cookies';
 import bgImage from '../images/login-page_side-image.jpg';
 
 const LoginPage = () => {
@@ -42,8 +42,30 @@ const LoginPage = () => {
         setCookie('accessToken', response.headers.authorization);
         setCookie('memberId', response.data.memberId);
         localStorage.setItem('refreshToken', response.headers.refresh);
-        alert('로그인되었습니다. 메인 페이지로 이동합니다.');
-        window.location.replace('/');
+        if (localStorage.getItem('plan')) {
+          const getPlanData = JSON.parse(localStorage.getItem('plan'));
+          axios
+            .post(
+              `${process.env.REACT_APP_API_URL}/plans`,
+              {
+                cityName: getPlanData.cityName,
+                startDate: getPlanData.startDate,
+                endDate: getPlanData.endDate,
+              },
+              {
+                headers: {
+                  Authorization: getCookie('accessToken'),
+                },
+              },
+            )
+            .then(res => {
+              window.location.replace(`/itinerary/${res.data.data.planId}`);
+            })
+            .then(res => localStorage.removeItem('plan'))
+            .catch(err => console.log(err));
+        } else {
+          window.location.replace('/');
+        }
       }
     } catch (err) {
       console.error(err);
