@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import { useState } from "react";
-import SingleDate from "./SingleDate";
+import { useState } from 'react';
+import styled from 'styled-components';
+
+import SingleDate from './SingleDate';
 
 export const Container = styled.div`
   position: relative;
@@ -25,7 +26,7 @@ export const StyledOptionList = styled.ul`
     0px 4px 6px rgba(9, 30, 66, 0.15);
   list-style: none;
   transition: all 0.1s ease-in;
-  display: ${(props) => (props.active ? "block" : "none")};
+  display: ${props => (props.active ? 'block' : 'none')};
   z-index: 1000000;
 
   ::-webkit-scrollbar {
@@ -59,13 +60,13 @@ const dropDownSvg = (
   </svg>
 );
 
-const PlanDropDown = (props) => {
+const PlanDropDown = props => {
   const { singlePlanData, setSelectedDateId } = props;
-  const [selected, setSelected] = useState("날짜 선택");
+  const [selected, setSelected] = useState('날짜 선택');
   const [isShow, setIsShow] = useState(false);
 
   const showMenu = () => {
-    setIsShow((prevState) => !prevState);
+    setIsShow(prevState => !prevState);
   };
 
   return (
@@ -74,7 +75,7 @@ const PlanDropDown = (props) => {
         {selected}
       </button>
       <StyledOptionList active={isShow}>
-        {singlePlanData.map((data) => (
+        {singlePlanData.map(data => (
           <SingleDate
             key={data.planDateId}
             id={data.planDateId}

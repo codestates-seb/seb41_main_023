@@ -1,19 +1,19 @@
-import dayjs from "dayjs";
-import { StyledOptionItem } from "./PlanDropDown";
-import "dayjs/locale/ko";
+import { StyledOptionItem } from './PlanDropDown';
 
-const SingleDate = (props) => {
+import { formatMonthAndDay } from '../../Util/dayUtil';
+
+const SingleDate = props => {
   const { id, data, setIsShow, setSelected, setSelectedDateId } = props;
 
   return (
     <StyledOptionItem
       onClick={() => {
         setIsShow(false);
-        setSelected(dayjs(data.planDate).format("M.D"));
+        setSelected(formatMonthAndDay(data.planDate));
         setSelectedDateId(id);
       }}
     >
-      {dayjs(data.planDate).format("M/D")}
+      {formatMonthAndDay(data.planDate)}
     </StyledOptionItem>
   );
 };

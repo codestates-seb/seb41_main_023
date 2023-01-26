@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { useState } from "react";
+import styled from 'styled-components';
+import { useState } from 'react';
 
-import Category from "./Category";
-import dayjs from "dayjs";
-import "dayjs/locale/ko";
+import Category from './Category';
 
-const AddExpense = (props) => {
+import { formatDateAndWeekdayKo } from '../../Util/dayUtil';
+
+const AddExpense = props => {
   const {
     currentPlaceId,
     planDate,
@@ -15,7 +15,7 @@ const AddExpense = (props) => {
     handleAddExpense,
     handleRefresh,
   } = props;
-  const [inputs, setInputs] = useState({ price: "", item: "" });
+  const [inputs, setInputs] = useState({ price: '', item: '' });
 
   // 카테고리 모달창 활성화
   const [category, setCategory] = useState(false);
@@ -28,17 +28,17 @@ const AddExpense = (props) => {
   const [selectedPlace, setSelectedPlace] = useState(null);
 
   //카테고리 변경
-  const handleCategory = (el) => {
+  const handleCategory = el => {
     setSelectedCategory(el);
     setCategory(false);
   };
 
   // 지출 금액, 지출 항목 변경
-  const handleInputs = (e) => {
+  const handleInputs = e => {
     // 지출 금액에 숫자 외의 입력 값은 ""로 대체
-    if (e.target.name === "price") {
+    if (e.target.name === 'price') {
       const value = e.target.value;
-      const onlyNumber = value.replace(/[^0-9]/g, "");
+      const onlyNumber = value.replace(/[^0-9]/g, '');
       return setInputs({ ...inputs, [e.target.name]: onlyNumber });
     } else {
       setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -47,7 +47,7 @@ const AddExpense = (props) => {
 
   //입력창 초기화
   const handleClear = () => {
-    setInputs({ price: "", item: "" });
+    setInputs({ price: '', item: '' });
     setSelectedCategory(null);
     setSelectedDate(null);
     setSelectedPlace(null);
@@ -58,7 +58,7 @@ const AddExpense = (props) => {
     <>
       {addExpenseModal ? (
         <ModalContainer onClick={handleClear}>
-          <ModalWrapper onClick={(e) => e.stopPropagation()}>
+          <ModalWrapper onClick={e => e.stopPropagation()}>
             <div className="modal__header">
               <div className="title">Add expense</div>
               <div className="cancel-button" onClick={handleClear}>
@@ -108,8 +108,7 @@ const AddExpense = (props) => {
                   className="input__item"
                   onClick={() => setDateCategory(!dateCategory)}
                 >
-                  {dayjs(planDate).format("M월 D일, ddd요일") ||
-                    "날짜를 선택하세요"}
+                  {formatDateAndWeekdayKo(planDate) || '날짜를 선택하세요'}
                 </div>
               </div>
               <div className="input__container">
@@ -117,7 +116,7 @@ const AddExpense = (props) => {
                   className="input__item"
                   onClick={() => setPlaceCategory(!placeCategory)}
                 >
-                  {currentPlace || "장소를 선택하세요"}
+                  {currentPlace || '장소를 선택하세요'}
                 </div>
               </div>
               <div className="input__container">
@@ -137,7 +136,7 @@ const AddExpense = (props) => {
                     inputs.price,
                     selectedCategory,
                     inputs.item,
-                    currentPlaceId
+                    currentPlaceId,
                   );
                   handleClear();
                   handleRefresh();

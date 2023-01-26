@@ -12,7 +12,6 @@
     "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
     "lodash.escaperegexp": "^4.1.2",
-    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-date-range": "^1.4.0",
@@ -46,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "2.8.3"
   }
 }

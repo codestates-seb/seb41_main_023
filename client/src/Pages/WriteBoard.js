@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 
 import Header from '../Components/Header';
+import Footer from './Footer';
 import MyTrips from '../Components/user/MyTrips';
 import MyLogs from '../Components/user/MyLogs';
-import Footer from './Footer';
 
 const WriteBoard = () => {
   return (
     <WriteBoardContainer>
       <Header login={true} />
       <Main>
-        <div className='main__header'>
+        <div className="main__header">
           <h1>Write your travel log</h1>
           <p>Reflect your trips and share it with other travellers!</p>
         </div>
-        <MyTrips mode='write' />
-        <MyLogs mode='write' />
+        <MyTrips mode="write" />
+        <MyLogs mode="write" />
       </Main>
       <Footer />
     </WriteBoardContainer>

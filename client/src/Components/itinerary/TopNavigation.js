@@ -1,16 +1,19 @@
-import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
-import { getCookie } from "../../Util/Cookies";
-import dayjs from "dayjs";
-import Calendar from "../Calendar";
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
+
+import Calendar from '../Calendar';
+
+import { getCookie } from '../../Util/Cookies';
+import { formatDate } from '../../Util/dayUtil';
+import { formatDateKo } from '../../Util/dayUtil';
 
 const TopContainer = styled.div`
   position: relative;
   width: 50vw;
   height: 350px;
-  background-image: url(${(props) => props.cityImage});
+  background-image: url(${props => props.cityImage});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -132,7 +135,7 @@ const TripInfo = styled.div`
   }
 `;
 
-const TopNavigation = (props) => {
+const TopNavigation = props => {
   const {
     startDate,
     setStartDate,
@@ -144,25 +147,26 @@ const TopNavigation = (props) => {
     title,
     setTitle,
   } = props;
+
+  const token = getCookie('accessToken');
+
   const { itineraryId } = useParams();
   const navigate = useNavigate();
-  const token = getCookie("accessToken");
-  const memberId = getCookie("memberId");
   const [showCalendar, setShowCalendar] = useState(false);
 
-  const handleDate = (date) => {
-    setStartDate(dayjs(date[0].startDate).format("YYYY-MM-DD"));
-    setEndDate(dayjs(date[0].endDate).format("YYYY-MM-DD"));
+  const handleDate = date => {
+    setStartDate(formatDate(date[0].startDate));
+    setEndDate(formatDate(date[0].endDate));
   };
 
   const handleCalendar = () => {
-    setShowCalendar((prevState) => !prevState);
+    setShowCalendar(prevState => !prevState);
   };
 
   const changeDateHandler = () => {
     if (
       window.confirm(
-        "정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!"
+        '정말 날짜를 변경하십니까? 변경시 작성한 일정이 모두 초기화됩니다!',
       )
     )
       axios
@@ -177,9 +181,9 @@ const TopNavigation = (props) => {
               Authorization: token,
               withCredentials: true,
             },
-          }
+          },
         )
-        .then((res) => {
+        .then(res => {
           setMainData({
             ...mainData,
             startDate: startDate,
@@ -187,7 +191,7 @@ const TopNavigation = (props) => {
           });
           handleRefresh();
         })
-        .then((res) => handleCalendar());
+        .then(res => handleCalendar());
   };
   const changeTitleHandler = () => {
     axios
@@ -195,65 +199,75 @@ const TopNavigation = (props) => {
         `${process.env.REACT_APP_API_URL}/plans/${itineraryId}`,
         {
           planTitle: title,
-          startDate: dayjs(mainData.startDate).format("YYYY-MM-DD"),
-          endDate: dayjs(mainData.endDate).format("YYYY-MM-DD"),
+          startDate: formatDate(mainData.startDate),
+          endDate: formatDate(mainData.endDate),
         },
         {
           headers: {
             Authorization: token,
             withCredentials: true,
           },
-        }
+        },
       )
-      .then((res) => {
+      .then(res => {
         setTitle(title);
         handleRefresh();
       });
   };
 
-    const deletePlanHandler = (itineraryId) => {
-        if (window.confirm('정말 작성중인 여행 일정을 삭제하시겠습니까? 작성된 게시물이 있을 경우 함께 삭제됩니다.')) {
-            if(mainData.boardId) {
-                axios.delete(`${process.env.REACT_APP_API_URL}/board/${mainData.boardId}`, {
-                    headers: {
-                        Authorization: token,
-                    },
-                })
-                .then(res => {
-                    axios.delete(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
-                        headers: {
-                            Authorization: token,
-                        },
-                    })
-                        .then((res) => {
-                            console.log('deleted plan!!')
-                            navigate('/', {replace: true})
-                        })
-                        .catch((err) => console.log(err))
-                })
-            } else {
-                axios.delete(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
-                    headers: {
-                        Authorization: token,
-                    },
-                })
-                    .then((res) => {
-                        console.log('deleted plan!!')
-                        navigate('/', {replace: true})
-                    })
-                    .catch((err) => console.log(err))
-            }
-        }
+  const deletePlanHandler = itineraryId => {
+    if (
+      window.confirm(
+        '정말 작성중인 여행 일정을 삭제하시겠습니까? 작성된 게시물이 있을 경우 함께 삭제됩니다.',
+      )
+    ) {
+      if (mainData.boardId) {
+        axios
+          .delete(
+            `${process.env.REACT_APP_API_URL}/board/${mainData.boardId}`,
+            {
+              headers: {
+                Authorization: token,
+              },
+            },
+          )
+          .then(res => {
+            axios
+              .delete(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
+                headers: {
+                  Authorization: token,
+                },
+              })
+              .then(res => {
+                console.log('deleted plan!!');
+                navigate('/', { replace: true });
+              })
+              .catch(err => console.log(err));
+          });
+      } else {
+        axios
+          .delete(`${process.env.REACT_APP_API_URL}/plans/${itineraryId}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
+          .then(res => {
+            console.log('deleted plan!!');
+            navigate('/', { replace: true });
+          })
+          .catch(err => console.log(err));
+      }
     }
+  };
 
   return (
     <TopContainer cityImage={mainData.city?.cityImage}>
       <div className="top__gradient-bg"></div>
       <Header>
-        <div className="header__logo" onClick={() => navigate("/")}>
+        <div className="header__logo" onClick={() => navigate('/')}>
           website name
         </div>
-        <div className={"button--container"}>
+        <div className={'button--container'}>
           <button
             className="button--primary"
             onClick={() => navigate(`/`, { replace: true })}
@@ -270,10 +284,10 @@ const TopNavigation = (props) => {
       </Header>
       <TripInfo>
         <input
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={e => setTitle(e.target.value)}
           value={title}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
+          onKeyUp={e => {
+            if (e.key === 'Enter') {
               e.preventDefault();
               e.target.blur();
               return changeTitleHandler();
@@ -282,8 +296,8 @@ const TopNavigation = (props) => {
         />
         <div className="trip__info-date">
           <button className="button__date" onClick={handleCalendar}>
-            <span>{dayjs(mainData.startDate).format("M월 D일")} -</span>
-            <span> {dayjs(mainData.endDate).format("M월 D일")}</span>
+            <span>{formatDateKo(mainData.startDate)} -</span>
+            <span> {formatDateKo(mainData.endDate)}</span>
           </button>
           <button
             className="button__change-date"

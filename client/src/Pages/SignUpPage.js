@@ -1,10 +1,12 @@
-import styled from "styled-components";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import bgImage from "../images/signup-page_side-image.jpg";
-import Modal from "../Components/user/Modal";
-import { getCookie } from "../Util/Cookies";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
+
+import Modal from '../Components/user/Modal';
+
+import { getCookie } from '../Util/Cookies';
+import bgImage from '../images/signup-page_side-image.jpg';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -13,14 +15,14 @@ const SignUpPage = () => {
   const pref = useRef();
 
   // 이름, 이메일, 비밀번호
-  const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   // success, error 메세지
-  const [nameMessage, setNameMessage] = useState("");
-  const [emailMessage, setEmailMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
+  const [nameMessage, setNameMessage] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
 
   // 유효성 검사
   const [isName, setIsName] = useState(false);
@@ -29,7 +31,7 @@ const SignUpPage = () => {
 
   //이메일 인증번호 검사 모달창
   const [verificationIsOpened, setVerificationIsOpened] = useState(false);
-  const [authNum, setAuthNum] = useState("");
+  const [authNum, setAuthNum] = useState('');
   const [isAuth, setIsAuth] = useState(false);
   const [disable, setDisable] = useState(true);
 
@@ -47,21 +49,21 @@ const SignUpPage = () => {
           email,
           displayName,
           password,
-        }
+        },
       );
-      alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
-      navigate("/login", { replace: true });
+      alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+      navigate('/login', { replace: true });
     } catch (err) {
       console.error(err);
-      if (err.response.status === 404) alert("페이지를 찾을 수 없습니다.");
+      if (err.response.status === 404) alert('페이지를 찾을 수 없습니다.');
       else if (err.response.status === 409)
-        alert("이미 가입된 회원입니다. 이메일을 확인해주세요.");
-      else if (err.response.status === 500) alert("서버 점검 중...");
+        alert('이미 가입된 회원입니다. 이메일을 확인해주세요.');
+      else if (err.response.status === 500) alert('서버 점검 중...');
     }
   };
 
   // 회원가입, 모든 유효성 검사가 통과되어야 sign up 가능
-  const onSignUp = (e) => {
+  const onSignUp = e => {
     //e.preventDefault();
     if (
       displayName.length !== 0 &&
@@ -73,75 +75,75 @@ const SignUpPage = () => {
       isAuth === true
     )
       signUp();
-    else if (!isName) alert("Username을 확인해주세요.");
-    else if (!isEmail) alert("Email을 확인해주세요.");
-    else if (!isPassword) alert("Password를 확인해주세요.");
-    else if (!isAuth) alert("Email 인증을 먼저 해주세요");
+    else if (!isName) alert('Username을 확인해주세요.');
+    else if (!isEmail) alert('Email을 확인해주세요.');
+    else if (!isPassword) alert('Password를 확인해주세요.');
+    else if (!isAuth) alert('Email 인증을 먼저 해주세요');
   };
 
   // userName
-  const onChangeName = useCallback((e) => {
+  const onChangeName = useCallback(e => {
     const nameRegex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
     setDisplayName(e.target.value);
 
     if (!nameRegex.test(e.target.value)) {
-      setNameMessage("영문과 한글 또는 숫자를 3~20자리로 입력하세요.");
+      setNameMessage('영문과 한글 또는 숫자를 3~20자리로 입력하세요.');
       setIsName(false);
     } else {
-      setNameMessage("올바른 이름입니다.");
+      setNameMessage('올바른 이름입니다.');
       setIsName(true);
     }
   }, []);
 
   // email
-  const onChangeEmail = useCallback((e) => {
+  const onChangeEmail = useCallback(e => {
     const emailRegex =
       /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     setEmail(e.target.value);
 
     if (!emailRegex.test(e.target.value)) {
-      setEmailMessage("이메일 형식을 확인해주세요.");
+      setEmailMessage('이메일 형식을 확인해주세요.');
       setIsEmail(false);
     } else {
-      setEmailMessage("올바른 이메일입니다.");
+      setEmailMessage('올바른 이메일입니다.');
       setIsEmail(true);
     }
   }, []);
 
   // password
-  const onChangePassword = useCallback((e) => {
+  const onChangePassword = useCallback(e => {
     const passwordRegex =
       /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=\S+$).{8,20}$/;
     setPassword(e.target.value);
 
     if (!passwordRegex.test(e.target.value)) {
       setPasswordMessage(
-        "숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요."
+        '숫자, 영문, 특수문자(!, & 등)를 조합한 8~20자리의 비밀번호를 입력하세요.',
       );
       setIsPassword(false);
     } else {
-      setPasswordMessage("올바른 비밀번호입니다.");
+      setPasswordMessage('올바른 비밀번호입니다.');
       setIsPassword(true);
     }
   }, []);
 
   // username 'enter' -> email
-  const usernameEnter = (e) => {
-    if (e.key === "Enter") eref.current.focus();
+  const usernameEnter = e => {
+    if (e.key === 'Enter') eref.current.focus();
   };
 
   // email 'enter' -> pw
-  const emailEnter = (e) => {
-    if (e.key === "Enter") pref.current.focus();
+  const emailEnter = e => {
+    if (e.key === 'Enter') pref.current.focus();
   };
 
   // pw 'enter' -> Sign up
-  const pwEnter = (e) => {
-    if (e.key === "Enter") onSignUp();
+  const pwEnter = e => {
+    if (e.key === 'Enter') onSignUp();
   };
 
   const handleEmailVerificationModal = () => {
-    setVerificationIsOpened((prevState) => !prevState);
+    setVerificationIsOpened(prevState => !prevState);
     setDisable(true);
   };
 
@@ -154,18 +156,18 @@ const SignUpPage = () => {
         },
         {
           headers: {
-            Authorization: getCookie("accessToken"),
+            Authorization: getCookie('accessToken'),
           },
-        }
+        },
       )
-      .then((res) => {
-        alert("인증번호가 발송되었습니다. 인증번호를 입력해주세요");
+      .then(res => {
+        alert('인증번호가 발송되었습니다. 인증번호를 입력해주세요');
         setDisable(false);
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   };
 
-  const handleEmailAuth = (authNum) => {
+  const handleEmailAuth = authNum => {
     axios
       .post(
         `${process.env.REACT_APP_API_URL}/email/confirm?authNum=${authNum}`,
@@ -174,20 +176,20 @@ const SignUpPage = () => {
         },
         {
           headers: {
-            Authorization: getCookie("accessToken"),
+            Authorization: getCookie('accessToken'),
           },
-        }
+        },
       )
-      .then((res) => {
-        alert("이메일 인증이 완료되었습니다!");
+      .then(res => {
+        alert('이메일 인증이 완료되었습니다!');
         setVerificationIsOpened(false);
         setIsAuth(true);
-        setAuthNum("");
+        setAuthNum('');
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
-        alert("인증번호가 잘못되었습니다. 다시 한 번 입력해주세요!");
-        setAuthNum("");
+        alert('인증번호가 잘못되었습니다. 다시 한 번 입력해주세요!');
+        setAuthNum('');
       });
   };
 
@@ -220,7 +222,7 @@ const SignUpPage = () => {
           {displayName.length > 0 && (
             <div
               className={`input__message message${
-                isName ? "success" : "error"
+                isName ? 'success' : 'error'
               }`}
             >
               {nameMessage}
@@ -239,7 +241,7 @@ const SignUpPage = () => {
           {email.length > 0 && (
             <div
               className={`email__message-container input__message message${
-                isEmail ? "success" : "error"
+                isEmail ? 'success' : 'error'
               }`}
             >
               {isEmail ? (
@@ -277,7 +279,7 @@ const SignUpPage = () => {
           {password.length > 0 && (
             <div
               className={`input__message input__message-password message${
-                isPassword ? "success" : "error"
+                isPassword ? 'success' : 'error'
               }`}
             >
               {passwordMessage}
@@ -285,11 +287,11 @@ const SignUpPage = () => {
           )}
           {verificationIsOpened && (
             <Modal
-              title={"이메일 인증하기"}
+              title={'이메일 인증하기'}
               setModal={handleEmailVerificationModal}
-              content={"이메일로 발송된 인증번호를 입력해주세요"}
+              content={'이메일로 발송된 인증번호를 입력해주세요'}
               input={true}
-              buttonName={"인증하기"}
+              buttonName={'인증하기'}
               handleClick={() => handleEmailAuth(authNum)}
               authNum={authNum}
               setAuthNum={setAuthNum}
@@ -303,7 +305,7 @@ const SignUpPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate("//sebmain41team23.shop/oauth2/authorization/google")
+              navigate('//sebmain41team23.shop/oauth2/authorization/google')
             }
           >
             <svg
@@ -336,7 +338,7 @@ const SignUpPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate("//sebmain41team23.shop/oauth2/authorization/kakao")
+              navigate('//sebmain41team23.shop/oauth2/authorization/kakao')
             }
           >
             <svg
@@ -363,7 +365,7 @@ const SignUpPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate("//sebmain41team23.shop/oauth2/authorization/facebook")
+              navigate('//sebmain41team23.shop/oauth2/authorization/facebook')
             }
           >
             <svg
@@ -371,7 +373,7 @@ const SignUpPage = () => {
               width="24"
               height="24"
               viewBox="0 0 24 24"
-              fill={"#4267B2"}
+              fill={'#4267B2'}
             >
               <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
             </svg>

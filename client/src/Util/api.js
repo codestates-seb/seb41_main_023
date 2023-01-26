@@ -1,5 +1,6 @@
-import axios from "axios";
-import { getCookie } from "./Cookies";
+import axios from 'axios';
+
+import { getCookie } from './Cookies';
 
 // api 요청 시 인증값이 필요없는 경우
 export const baseAPI = (url, options) => {
@@ -8,7 +9,7 @@ export const baseAPI = (url, options) => {
 
 // api 요청 시 인증값이 필요한 경우
 const axiosAuthApi = (url, options) => {
-  const token = getCookie("accessToken");
+  const token = getCookie('accessToken');
   const instance = axios.create({
     baseURL: url,
     headers: { Authorization: token },
@@ -52,7 +53,7 @@ const patchBaseData = async (url, data) => {
 };
 
 //delete 요청
-const deleteBaseData = async (url) => {
+const deleteBaseData = async url => {
   try {
     const res = await baseInstance.delete(url);
     return res;
@@ -94,7 +95,7 @@ const patchData = async (url, data) => {
 };
 
 //delete 요청
-const deleteData = async (url) => {
+const deleteData = async url => {
   try {
     const res = await authInstance.delete(url);
     return res;

@@ -1,35 +1,36 @@
-import { getCookie, setCookie } from "../Util/Cookies";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
-import loadingImg from "../images/loading.gif";
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { getCookie, setCookie } from '../Util/Cookies';
+import loadingImg from '../images/loading.gif';
 
 const LoadingPage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    let getAccessToken = (key) => {
+    let getAccessToken = key => {
       return new URLSearchParams(location.search).get(key);
     };
-    let getRefreshToken = (key) => {
+    let getRefreshToken = key => {
       return new URLSearchParams(location.search).get(key);
     };
-    let getMemberId = (key) => {
+    let getMemberId = key => {
       return new URLSearchParams(location.search).get(key);
     };
-    const searchAccessToken = getAccessToken("accessToken");
-    const searchRefreshToken = getRefreshToken("refreshToken");
-    const searchMemberId = getMemberId("memberId");
+    const searchAccessToken = getAccessToken('accessToken');
+    const searchRefreshToken = getRefreshToken('refreshToken');
+    const searchMemberId = getMemberId('memberId');
 
-    setCookie("memberId", searchMemberId);
+    setCookie('memberId', searchMemberId);
 
     if (searchAccessToken && searchRefreshToken) {
-      setCookie("accessToken", searchAccessToken);
-      localStorage.setItem("refreshToken", searchRefreshToken);
+      setCookie('accessToken', searchAccessToken);
+      localStorage.setItem('refreshToken', searchRefreshToken);
     }
 
-    if (getCookie("accessToken")) {
-      window.location.replace("/");
+    if (getCookie('accessToken')) {
+      window.location.replace('/');
     }
   }, []);
 

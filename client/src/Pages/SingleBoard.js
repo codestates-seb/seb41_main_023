@@ -1,30 +1,31 @@
-import { Fragment, useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { MapSection } from "../Components/Board/SingleBoard/MapSection";
-import BoardSection from "../Components/Board/SingleBoard/BoardSection";
-import TopSection from "../Components/Board/SingleBoard/TopSection";
-import CommentSection from "../Components/Board/SingleBoard/CommentSection";
+import { Fragment, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
+
+import { MapSection } from '../Components/Board/SingleBoard/MapSection';
+import BoardSection from '../Components/Board/SingleBoard/BoardSection';
+import TopSection from '../Components/Board/SingleBoard/TopSection';
+import CommentSection from '../Components/Board/SingleBoard/CommentSection';
 
 const SingleBoard = () => {
   const { boardId } = useParams();
 
   const [boardData, setBoardData] = useState({
     boardId: boardId,
-    title: "",
-    content: "",
+    title: '',
+    content: '',
     likes: 0,
     views: 0,
-    createdAt: "",
-    memberId: "",
-    displayName: "",
-    profileImage: "",
+    createdAt: '',
+    memberId: '',
+    displayName: '',
+    profileImage: '',
     checkLikes: false,
     planId: boardId,
-    cityName: "",
+    cityName: '',
     days: [],
-    cityImage: "",
+    cityImage: '',
   });
   const [geocode, setGeocode] = useState({
     lat: 37.555969,
@@ -34,7 +35,7 @@ const SingleBoard = () => {
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/board/${boardId}`)
-      .then((res) => {
+      .then(res => {
         setBoardData(res.data);
         const startCode = res.data.days[0].placeDetails[0];
         startCode &&
@@ -43,7 +44,7 @@ const SingleBoard = () => {
             lng: startCode.longitude,
           });
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }, [boardId]);
 
   const handleGeoCode = (lat, lng) => {
