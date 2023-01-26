@@ -40,11 +40,6 @@ const UserProfileEdit = () => {
     }
   }, [memberId]);
 
-  // const getUserInfo = async () => {
-  //   const data = await getData(`/members/userProfile/${memberId}`);
-  //   setUserInfo(data);
-  // };
-
   // 유저 정보 요청
   const getUserInfo = () => {
     axios

@@ -124,14 +124,6 @@ const EditExpense = props => {
           </ModalWrapper>
         </ModalContainer>
       ) : null}
-
-      <EditExpenseBtn
-        onClick={() => {
-          setEditExpenseModal(!editExpenseModal);
-        }}
-      >
-        Edit Expense
-      </EditExpenseBtn>
     </>
   );
 };

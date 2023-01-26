@@ -10,6 +10,7 @@ import SinglePlanBox from './SinglePlanBox';
 
 import { getCookie } from '../../Util/Cookies';
 import { formatDateAndWeekdayKo } from '../../Util/dayUtil';
+import EditExpense from '../budget/EditExpense';
 
 const PlanSection = props => {
   const {
@@ -233,8 +234,8 @@ const Container = styled.div`
   .budget__container {
     .button--top {
       position: fixed;
-      bottom: 20px;
-      left: calc(50vw - 70px);
+      bottom: 10px;
+      left: 10px;
       padding: 0;
       width: var(--spacing-5);
       height: var(--spacing-5);
