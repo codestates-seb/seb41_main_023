@@ -279,7 +279,7 @@ const TopNavigation = props => {
   };
 
   return (
-    <TopContainer cityImage={mainData.city?.cityImage}>
+    <TopContainer cityImage={mainData.city?.cityImage} ref={outSideRef}>
       <div className="top__gradient-bg"></div>
       <Header>
         <div className="header__logo" onClick={() => navigate('/')}>
