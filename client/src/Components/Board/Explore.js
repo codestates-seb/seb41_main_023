@@ -94,7 +94,7 @@ const Explore = props => {
         // 메인
         axios
           .get(
-            `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=boardId`,
+            `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=boardId`,
             {
               headers: {
                 Authorization: token,

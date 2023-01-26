@@ -25,7 +25,7 @@ const SingleBoard = () => {
     displayName: '',
     profileImage: '',
     checkLikes: false,
-    planId: boardId,
+    planId: '',
     cityName: '',
     days: [],
     cityImage: '',
