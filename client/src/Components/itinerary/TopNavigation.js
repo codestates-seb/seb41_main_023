@@ -279,7 +279,7 @@ const TopNavigation = props => {
   };
 
   return (
-    <TopContainer cityImage={mainData.city?.cityImage} ref={outSideRef}>
+    <TopContainer cityImage={mainData.city?.cityImage}>
       <div className="top__gradient-bg"></div>
       <Header>
         <div className="header__logo" onClick={() => navigate('/')}>
@@ -300,7 +300,7 @@ const TopNavigation = props => {
           </button>
         </div>
       </Header>
-      <TripInfo>
+      <TripInfo ref={outSideRef}>
         <input
           onChange={e => setTitle(e.target.value)}
           value={title}

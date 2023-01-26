@@ -5,10 +5,10 @@ import Category from './Category';
 
 const EditExpense = props => {
   const {
+    expenses,
     editExpenseModal,
     setEditExpenseModal,
     handleEditExpense,
-    expenseId,
     handleBudgetRefresh,
     budget,
   } = props;
@@ -105,7 +105,9 @@ const EditExpense = props => {
                 onClick={() => {
                   if (
                     budget.expectedBudget <
-                    parseInt(budget.totalExpenses) + parseInt(inputs.price)
+                    parseInt(budget.totalExpenses) -
+                      parseInt(expenses.price) +
+                      parseInt(inputs.price)
                   ) {
                     alert('비용이 예산을 초과합니다!!');
                     setEditExpenseModal(true);
@@ -115,7 +117,7 @@ const EditExpense = props => {
                       inputs.price,
                       selectedCategory,
                       inputs.item,
-                      expenseId,
+                      expenses.expenseId,
                     );
                     handleBudgetRefresh();
                   }
