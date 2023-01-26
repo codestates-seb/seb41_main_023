@@ -54,7 +54,8 @@ public class PlanDto {
         private BudgetDto.SimpleResponse budget;
         private CityDto.ImageResponse city;
         private Boolean boardCheck;
-
+        //회원 프로필
+        private List<MemberInfos> memberInfos;
     }
 
     @Getter
@@ -70,6 +71,8 @@ public class PlanDto {
         private List<PlanDatesResponse> planDates = new ArrayList<>();
         private List<PlanDto.PlanDatesDetailResponse> planDatesAndPlace = new ArrayList<>();
         private Long boardId;
+        //회원 프로필
+        private List<MemberInfos> memberInfos;
     }
     @Getter
     @Setter
@@ -109,5 +112,15 @@ public class PlanDto {
         private String planDate;
         private String subTitle;
         private List<PlaceDto.Response> places;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberInfos {
+        private long memberId;
+        private String displayName;
+        private String profileImage;
     }
 }

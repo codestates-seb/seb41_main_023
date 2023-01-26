@@ -8,14 +8,18 @@ import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.entity.PlanDates;
+import com.newyear.mainproject.plan.planmember.PlanMember;
+import com.newyear.mainproject.plan.planmember.PlanMemberRepository;
 import com.newyear.mainproject.plan.repository.PlanDateRepository;
 import com.newyear.mainproject.plan.repository.PlanRepository;
 import com.newyear.mainproject.util.DateCalculation;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -26,7 +30,7 @@ public class PlanService {
    private final CityService cityService;
    private final BoardService boardService;
 
-    public PlanService(PlanRepository planRepository, PlanDateRepository planDateRepository, MemberService memberService, CityService cityService, @Lazy BoardService boardService) {
+    public PlanService(PlanRepository planRepository, PlanDateRepository planDateRepository, MemberService memberService, CityService cityService, @Lazy BoardService boardService, PlanMemberRepository planMemberRepository) {
         this.planRepository = planRepository;
         this.planDateRepository = planDateRepository;
         this.memberService = memberService;
@@ -38,8 +42,12 @@ public class PlanService {
      * 일정 등록
      */
     public Plan createPlan(Plan plan) {
-        plan.setMember(memberService.getLoginMember());
+        PlanMember planMember = new PlanMember();
+        planMember.setPlan(plan);
+        planMember.setMember(memberService.getLoginMember());
         plan.setCity(cityService.findCity(plan.getCityName()));
+        plan.addPlanMember(planMember);
+
         return planRepository.save(plan);
     }
 
@@ -49,10 +57,8 @@ public class PlanService {
     public Plan updatePlan(Plan plan) {
         Plan findPlan = findVerifiedPlan(plan.getPlanId());
 
-        //작성자만 수정 가능
-        if (!findPlan.getMember().equals(memberService.getLoginMember())) {
-            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
-        }
+        //작성자 + 공유된 자만 수정 가능
+        containsMember(findPlan);
 
         Optional.ofNullable(plan.getPlanTitle())
                 .ifPresent(planTitle -> findPlan.setPlanTitle(planTitle));
@@ -113,14 +119,13 @@ public class PlanService {
     public void deletePlan(Long planId) {
         Plan findPlan = findVerifiedPlan(planId);
         //작성자만 삭제 가능
-        if (!findPlan.getMember().equals(memberService.getLoginMember())) {
-            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
-        }
+        containsMember(findPlan);
 
         //이 일정에 관련된 게시물이 있으면 게시물 삭제 먼저 하도록 예외 처리
         if(!boardService.findPlanBoards(findPlan.getPlanId()).isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.BOARD_CHECK_EXISTS);
         }
+        //TODO : 방장은 일정 삭제 / 나머지는 자신에게만 일정 삭제 처리
 
         planRepository.delete(findPlan);
     }
@@ -149,14 +154,41 @@ public class PlanService {
      * 해당 유저가 작성한 일정들 조회
      */
     public List<Plan> findPlans(Member member){
-        return planRepository.findAllByMember(member);
+        return member.getPlanMembers().stream().map(pm -> pm.getPlan()).collect(Collectors.toList());
     }
 
     /**
      * 해당 유저가 작성한 일정 조회
      */
-    public Plan findPlanAndMember(Long planId, Member member) {
-        Optional<Plan> optionalPlan = planRepository.findByPlanIdAndMember(planId, member);
-        return optionalPlan.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN));
+    public Plan findPlanAndMember(Long planId) {
+        Plan plan = planRepository.findById(planId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN));
+        containsMember(plan);
+
+        return plan;
+    }
+
+    //일정 공유
+    public void sharePlan(long planId, String email) {
+        Plan plan = findPlan(planId);
+        Member member = memberService.verifyExistsEmail(email);
+
+        if (plan.getPlanMembers().stream().anyMatch(member.getPlanMembers()::contains)) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+        }
+        containsMember(plan);
+
+        PlanMember planMember = new PlanMember();
+        member.addPlanMember(planMember);
+        plan.addPlanMember(planMember);
+        planRepository.save(plan);
+    }
+
+    private void containsMember(Plan plan) {
+        boolean contains = plan.getPlanMembers()
+                .stream().anyMatch(memberService.getLoginMember().getPlanMembers()::contains);
+
+        if (!contains) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
     }
 }

@@ -53,9 +53,12 @@ public class BudgetService {
 
     //자신의 예산이 아니면 수정 불가
     private void accessBudget(Budget findBudget) {
-        if (!findBudget.getPlan().getMember().equals(memberService.getLoginMember())) {
+        boolean contains = findBudget.getPlan().getPlanMembers()
+                .stream().anyMatch(memberService.getLoginMember().getPlanMembers()::contains);
+
+        if (!contains) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
-    }
 
+    }
 }

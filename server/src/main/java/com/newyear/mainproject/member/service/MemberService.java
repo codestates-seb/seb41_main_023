@@ -60,10 +60,10 @@ public class MemberService {
         }
 
         //이메일 인증 전 회원 가입 요청시 예외
-        if (redisUtil.get(member.getEmail() + "_confirm") == null) {
-            throw new BusinessLogicException(ExceptionCode.EMAIL_AUTH_REQUIRED);
-        }
-        redisUtil.delete(member.getEmail() + "_confirm");
+//        if (redisUtil.get(member.getEmail() + "_confirm") == null) {
+//            throw new BusinessLogicException(ExceptionCode.EMAIL_AUTH_REQUIRED);
+//        }
+//        redisUtil.delete(member.getEmail() + "_confirm");
 
         //패스워드 암호화
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
@@ -152,11 +152,9 @@ public class MemberService {
         }
     }
 
-    private void verifyExistsEmail(String email) {
+    public Member verifyExistsEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
-        if (optionalMember.isPresent()) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-        }
+        return optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     public Member findVerifiedMember(long memberId) {

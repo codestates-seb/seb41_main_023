@@ -1,5 +1,6 @@
 package com.newyear.mainproject.plan.mapper;
 
+import com.newyear.mainproject.plan.planmember.PlanMember;
 import com.newyear.mainproject.budget.dto.BudgetDto;
 import com.newyear.mainproject.budget.entity.Budget;
 import com.newyear.mainproject.city.City;
@@ -8,6 +9,7 @@ import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.expense.dto.ExpenseDto;
 import com.newyear.mainproject.expense.entity.Expenses;
+import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.place.dto.PlaceDto;
 import com.newyear.mainproject.place.entity.Place;
 import com.newyear.mainproject.plan.dto.PlanDto;
@@ -67,23 +69,27 @@ public interface PlanMapper {
         return plans
                 .stream()
                 .map(plan -> {
-                            try {
-                                return PlanDto.Response
-                                        .builder()
-                                        .planId(plan.getPlanId())
-                                        .planTitle(plan.getPlanTitle())
-                                        .startDate(DateUtil.convertStringToDateFormatV1(plan.getStartDate()))
-                                        .endDate(DateUtil.convertStringToDateFormatV1(plan.getEndDate()))
-                                        .cityName(plan.getCityName())
-                                        .placesCount(plan.getPlaces().size())
-                                        .city(cityImageResponseToCity(plan.getCity()))
-                                        .boardCheck(plan.getBoardCheck())
-                                        .build();
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                ).collect(Collectors.toList());
+                    try {
+                        PlanDto.Response response = PlanDto.Response
+                                .builder()
+                                .planId(plan.getPlanId())
+                                .planTitle(plan.getPlanTitle())
+                                .startDate(DateUtil.convertStringToDateFormatV1(plan.getStartDate()))
+                                .endDate(DateUtil.convertStringToDateFormatV1(plan.getEndDate()))
+                                .cityName(plan.getCityName())
+                                .placesCount(plan.getPlaces().size())
+                                .city(cityImageResponseToCity(plan.getCity()))
+                                .boardCheck(plan.getBoardCheck())
+                                .build();
+
+                        response.setMemberInfos(getMemberInfos(plan));
+
+                        return response;
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+
+        }).collect(Collectors.toList());
     }
     CityDto.ImageResponse cityImageResponseToCity(City city);
 
@@ -100,10 +106,21 @@ public interface PlanMapper {
         response.setCity(cityImageResponseToCity(plan.getCity()));
         Optional.ofNullable(plan.getBoard())
                 .ifPresent(board -> response.setBoardId(board.getBoardId()));
+
+        response.setMemberInfos(getMemberInfos(plan));
+
         return response;
     }
 
-
+    //일정의 회원
+    private static List<PlanDto.MemberInfos> getMemberInfos(Plan plan) {
+        List<PlanDto.MemberInfos> memberInfos = new ArrayList<>();
+        for (PlanMember pm : plan.getPlanMembers()) {
+            Member member = pm.getMember();
+            memberInfos.add(new PlanDto.MemberInfos(member.getMemberId(), member.getDisplayName(), member.getProfileImage()));
+        }
+        return memberInfos;
+    }
 
     //plan 에 planDates 넣어주기 위한 메소드(중복 방지)
     default List<PlanDates> planDatesToPlanPlanDates(Plan plan) {

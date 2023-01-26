@@ -32,9 +32,7 @@ public class BoardService {
         Member member = memberService.getLoginMember();
         Plan plan = planService.findPlan(planId);
         //해당 plan 작성자만 board 생성 가능
-        if (!plan.getMember().equals(member)) {
-            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
-        }
+        contains(plan);
 
         //만약 해당 일정에 게시판이 작성되어 있다면 예외
         boardRepository.findAll().forEach(oneBoard -> {
@@ -52,6 +50,15 @@ public class BoardService {
         board.setMember(member);
         board.setPlan(plan);
         return boardRepository.save(board);
+    }
+
+    private void contains(Plan plan) {
+        boolean contains = plan.getPlanMembers()
+                .stream().anyMatch(memberService.getLoginMember().getPlanMembers()::contains);
+
+        if (!contains) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
     }
 
     public Board updateBoard(Board board) {
@@ -92,9 +99,8 @@ public class BoardService {
     public Plan findPlan(long planId) {
         Plan findPlan = planService.findPlan(planId);
         //작성자만 접근 허용
-        if (!findPlan.getMember().getEmail().equals(memberService.getLoginMember().getEmail())) {
-            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
-        }
+        contains(findPlan);
+
         return findPlan;
     }
 

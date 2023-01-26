@@ -33,15 +33,23 @@ public class PlaceService {
     public Place createPlace(Place place) {
         //plan 작성자만 place 생성 가능
         Plan plan = planService.findPlan(place.getPlan().getPlanId());
-        if (!plan.getMember().equals(memberService.getLoginMember())) {
-            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
-        }
+        contains(plan);
 
-        if(place.getRatings() == null){
+
+        if (place.getRatings() == null) {
             place.setRatings(0.0);
         }
 
         return placeRepository.save(place);
+    }
+
+    private void contains(Plan plan) {
+        boolean contains = plan.getPlanMembers()
+                .stream().anyMatch(memberService.getLoginMember().getPlanMembers()::contains);
+
+        if (!contains) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
     }
 
     /**
@@ -51,9 +59,8 @@ public class PlaceService {
         Place findPlace = findVerifiedPlace(place.getPlaceId());
 
         //작성자만 수정 가능
-        if (!findPlace.getPlan().getMember().equals(memberService.getLoginMember())) {
-            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
-        }
+        contains(findPlace.getPlan());
+
 
         Optional.ofNullable(place.getPlaceName())
                 .ifPresent(placeName -> findPlace.setPlaceName(placeName));
@@ -88,9 +95,8 @@ public class PlaceService {
         Place findPlace = findVerifiedPlace(placeId);
 
         //작성자만 삭제 가능
-        if (!findPlace.getPlan().getMember().equals(memberService.getLoginMember())) {
-            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
-        }
+        contains(findPlace.getPlan());
+
         placeRepository.delete(findPlace);
     }
 

@@ -76,8 +76,12 @@ public class ExpenseService {
     }
 
     private void accessExpense(Expenses expenses) {
-        if (!expenses.getBudget().getPlan().getMember().equals(memberService.getLoginMember())) {
+        boolean contains = expenses.getBudget().getPlan().getPlanMembers()
+                .stream().anyMatch(memberService.getLoginMember().getPlanMembers()::contains);
+
+        if (!contains) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
+
     }
 }

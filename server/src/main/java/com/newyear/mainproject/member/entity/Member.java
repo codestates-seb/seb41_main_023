@@ -1,5 +1,6 @@
 package com.newyear.mainproject.member.entity;
 
+import com.newyear.mainproject.plan.planmember.PlanMember;
 import com.newyear.mainproject.board.entity.Board;
 import com.newyear.mainproject.comment.entity.Comment;
 import lombok.Getter;
@@ -54,6 +55,13 @@ public class Member{
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<PlanMember> planMembers = new ArrayList<>();
+
+    public void addPlanMember(PlanMember planMember) {
+        planMembers.add(planMember);
+        planMember.setMember(this);
+    }
     public enum MemberStatus{
         MEMBER_ACTIVE("활동중"),
         MEMBER_SLEEP("휴면 상태"),

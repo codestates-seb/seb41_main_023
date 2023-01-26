@@ -2,6 +2,7 @@ package com.newyear.mainproject.plan.controller;
 
 import com.newyear.mainproject.budget.service.BudgetService;
 import com.newyear.mainproject.dto.SingleResponseDto;
+import com.newyear.mainproject.member.email.EmailDto;
 import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.plan.dto.PlanDto;
 import com.newyear.mainproject.plan.entity.Plan;
@@ -64,7 +65,7 @@ public class PlanController {
         Plan patchPlan = planMapper.planPatchDtoToPlan(patch);
 
         //쓸데없는 delete 명령문 낭비를 방지하기 위해 PlanDate 값이 (하나 이상) 달라야 삭제 + 생성 처리
-        if(!originPlan.getStartDate().equals(patchPlan.getStartDate()) || !originPlan.getEndDate().equals(patchPlan.getEndDate())) {
+        if (!originPlan.getStartDate().equals(patchPlan.getStartDate()) || !originPlan.getEndDate().equals(patchPlan.getEndDate())) {
             planService.deletePlanDate(originPlan);
             planService.updatePlanDate(patchPlan); //PlanDates 생성 시, update 문 실행 방지 Plan 등록 후 - PlanDates 등록
         }
@@ -89,7 +90,7 @@ public class PlanController {
      */
     @GetMapping("/{plan-id}")
     public ResponseEntity getPlan(@PathVariable("plan-id") @Positive Long planId) throws ParseException {
-        Plan plan = planService.findPlanAndMember(planId, memberService.getLoginMember());
+        Plan plan = planService.findPlanAndMember(planId);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.planToPlaceDetailResponseDto(plan)), HttpStatus.OK);
@@ -99,7 +100,7 @@ public class PlanController {
      * 해당 유저가 작성한 일정 조회
      */
     @GetMapping
-    public ResponseEntity getPlans(){
+    public ResponseEntity getPlans() {
         List<Plan> planList = planService.findPlans(memberService.getLoginMember());
 
         return new ResponseEntity<>(
@@ -111,7 +112,6 @@ public class PlanController {
      */
     @PatchMapping("/date/title/{plan-date-id}")
     public ResponseEntity patchPlanDateSubTitle(@PathVariable("plan-date-id") @Positive Long planDateId,
-
                                                 @Valid @RequestBody PlanDto.PatchPlanDatesSubTitle patch) throws ParseException {
 
         patch.setPlanDateId(planDateId);
@@ -119,5 +119,12 @@ public class PlanController {
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(planMapper.planDatesToPlanDateResponseDto(planDates)), HttpStatus.OK);
+    }
+
+    @PostMapping("/{plan-id}/share")
+    public ResponseEntity sharePlan(@PathVariable("plan-id") @Positive long planId,
+                                    @RequestBody @Valid EmailDto emailDto) {
+        planService.sharePlan(planId, emailDto.getEmail());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

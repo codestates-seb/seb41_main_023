@@ -85,10 +85,10 @@ public class GlobalExceptionAdvice {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleExpiredJwtException(ExpiredJwtException e) {
+    public ResponseEntity handleExpiredJwtException(ExpiredJwtException e) {
         log.error("ExpiredJwtException", e);
-        return ErrorResponse.of(ExceptionCode.EXPIRED_JWT_TOKEN);
+        final ErrorResponse response = ErrorResponse.of(ExceptionCode.EXPIRED_JWT_TOKEN);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
     @ExceptionHandler

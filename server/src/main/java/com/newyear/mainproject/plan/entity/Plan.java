@@ -1,10 +1,10 @@
 package com.newyear.mainproject.plan.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.newyear.mainproject.plan.planmember.PlanMember;
 import com.newyear.mainproject.board.entity.Board;
 import com.newyear.mainproject.budget.entity.Budget;
 import com.newyear.mainproject.city.City;
-import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.place.entity.Place;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,13 +39,8 @@ public class Plan {
     @Column(nullable = false)
     private Boolean boardCheck; //게시물 작성 여부
 
-    @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+    private List<PlanMember> planMembers = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "plan", cascade = CascadeType.REMOVE)
@@ -64,5 +59,10 @@ public class Plan {
     @OneToOne
     @JoinColumn(name = "city_id")
     private City city;
+
+    public void addPlanMember(PlanMember planMember) {
+        planMembers.add(planMember);
+        planMember.setPlan(this);
+    }
 
 }
