@@ -300,7 +300,7 @@ const TopNavigation = props => {
           </button>
         </div>
       </Header>
-      <TripInfo ref={outSideRef}>
+      <TripInfo>
         <input
           onChange={e => setTitle(e.target.value)}
           value={title}
