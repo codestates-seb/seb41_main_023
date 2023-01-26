@@ -9,6 +9,7 @@ import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.plan.entity.Plan;
+import com.newyear.mainproject.plan.planmember.PlanMember;
 import com.newyear.mainproject.plan.service.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -54,7 +55,8 @@ public class BoardService {
 
     private void contains(Plan plan) {
         boolean contains = plan.getPlanMembers()
-                .stream().anyMatch(memberService.getLoginMember().getPlanMembers()::contains);
+                .stream().filter(PlanMember::isOwner)
+                .anyMatch(memberService.getLoginMember().getPlanMembers()::contains);
 
         if (!contains) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
