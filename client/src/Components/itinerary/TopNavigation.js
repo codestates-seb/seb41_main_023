@@ -49,7 +49,8 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 50px;
+  margin-right: 50px;
+  margin-left: 30px;
   height: 60px;
   width: calc(50vw - 100px);
   z-index: 100;
@@ -280,8 +281,8 @@ const TopNavigation = props => {
     <TopContainer cityImage={mainData.city?.cityImage}>
       <div className="top__gradient-bg"></div>
       <Header>
-        <div className="header__logo" onClick={() => navigate('/')}>
-          website name
+        <div className="header__logo back__button" onClick={() => navigate(-1)}>
+          Back
         </div>
         <div className={'button--container'}>
           <button

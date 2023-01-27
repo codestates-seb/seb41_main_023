@@ -6,7 +6,6 @@ const Container = styled.div`
   width: 100vw;
   height: 350px;
   background-color: var(--light-gray-1);
-  //z-index: -100;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -19,34 +18,80 @@ const Container = styled.div`
   }
 
   .about__us {
-    margin: 30px 50px 0 50px;
+    margin: 50px 50px 0 80px;
+
+    > div {
+      font-size: 23px;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .github_link {
+      margin-top: 70px;
+      font-size: 17px;
+      text-align: center;
+      font-weight: 600;
+      background-color: var(--light-gray-3);
+      color: rgba(0, 0, 0, 0.5);
+
+      padding: 15px;
+
+      :hover {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: whitesmoke;
+      }
+    }
 
     p {
-      margin: 10px 0;
+      margin: 30px 0;
+      font-size: 14px;
+    }
+
+    > * {
+      color: rgba(0, 0, 0, 0.8);
     }
   }
 
   .contact__us {
-    margin: 30px 50px 0 50px;
+    margin: 50px 50px 0 50px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+
+    > .title {
+      font-size: 23px;
+      font-weight: 600;
+      margin-top: 10px;
+    }
 
     .team__intro {
       display: flex;
       flex-direction: row;
 
-      div {
-        h3 {
-          font-size: 15px;
-          margin: 10px 0;
+      > div {
+        a {
+          font-size: 14px;
         }
+
+        .team__title {
+          margin-bottom: 20px;
+          font-size: 18px;
+        }
+
         margin-left: 10px;
         margin-right: 50px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
         align-items: center;
+        margin-top: 25px;
+
+        > * {
+          color: rgba(0, 0, 0, 0.8);
+
+          :hover {
+            color: darkgreen;
+          }
+        }
       }
     }
   }
@@ -56,21 +101,22 @@ function Footer(props) {
   return (
     <Container className="footer">
       <div className="about__us">
-        <h2>About Us</h2>
+        <div>About Us</div>
         <p>코드스테이츠 41기 23조 뉴이어의 프로젝트입니다</p>
         <a
+          className="github_link"
           href={'https://github.com/codestates-seb/seb41_main_023'}
           target="_blank"
           rel="noreferrer"
         >
-          Our GitHub
+          Our GitHub Repository
         </a>
       </div>
       <div className="contact__us">
-        <h2>Contact Us</h2>
+        <div className="title">Contact Us</div>
         <div className="team__intro">
           <div className="front__end">
-            <h3>Front-End</h3>
+            <h3 className="team__title">Front-End</h3>
             <a
               href={'https://github.com/seungheonkim'}
               target="_blank"
@@ -101,7 +147,7 @@ function Footer(props) {
             </a>
           </div>
           <div className="back__end">
-            <h3>Back-End</h3>
+            <h3 className="team__title">Back-End</h3>
             <a
               href={'https://github.com/kimmj13'}
               target="_blank"
