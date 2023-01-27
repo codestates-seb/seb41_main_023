@@ -121,7 +121,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("travel-logs.s3-website.ap-northeast-2.amazonaws.com")//S3주소로
+                .host("stackoverflow-preproject-y2k.s3-website.ap-northeast-2.amazonaws.com")//S3주소로
 //                .host("localhost")
 //                .port(8080)
                 .path("/loading")
