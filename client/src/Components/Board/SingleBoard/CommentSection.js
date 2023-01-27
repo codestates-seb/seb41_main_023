@@ -10,9 +10,12 @@ import Pagination from '../../../Util/Pagination';
 
 const CommentSection = ({ boardData }) => {
   const { boardId } = useParams();
+  const memberId = getCookie('memberId');
+  const [memberData, setMemberData] = useState({
+    profileImage: '',
+  });
   const [commentList, setCommentList] = useState([]);
   const [commentRefresh, setCommentRefresh] = useState(1);
-  const [comment, setComment] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(3);
   const offset = (page - 1) * limit;
@@ -61,6 +64,15 @@ const CommentSection = ({ boardData }) => {
       .catch(err => console.log(err));
   }, [boardId, commentRefresh]);
 
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`)
+      .then(res => {
+        setMemberData(res.data);
+      })
+      .catch(err => console.log(err));
+  }, []);
+
   return (
     <CommentWrapper>
       <h3 className="comment__heading">{commentList.length} Comments</h3>
@@ -82,8 +94,8 @@ const CommentSection = ({ boardData }) => {
         <CommentInputContainer>
           <div className="comment__user-image">
             <img
-              src={boardData.profileImage}
-              alt={`${boardData.displayName}의 이미지`}
+              src={memberData.profileImage}
+              alt={`${memberData.displayName}의 이미지`}
             />
           </div>
           <input
