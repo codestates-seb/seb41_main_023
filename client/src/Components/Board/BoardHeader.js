@@ -100,7 +100,7 @@ const TopContainer = styled.nav`
 `;
 
 const Header = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: space-between;
