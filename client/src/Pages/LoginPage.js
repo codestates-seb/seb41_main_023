@@ -5,12 +5,6 @@ import styled from 'styled-components';
 
 import { setCookie } from '../Util/Cookies';
 import bgImage from '../images/login-page_side-image.jpg';
-import img1 from '../images/1.jpg';
-import img2 from '../images/2.jpg';
-import img3 from '../images/3.jpg';
-
-const images = [img1, img2, img3, bgImage];
-const randomimg = images[Math.floor(Math.random() * images.length)];
 
 const LoginPage = () => {
   const eref = useRef();
@@ -356,7 +350,7 @@ const LeftContainer = styled.div`
 const RightContainer = styled.div`
   width: 50vw;
   height: 100vh;
-  background-image: url(${randomimg});
+  background-image: url(${bgImage});
   background-size: cover;
   background-position: center;
   float: right;
