@@ -136,6 +136,7 @@ const TripInfo = styled.div`
 `;
 
 const TopNavigation = props => {
+  console.log('??');
   const {
     startDate,
     setStartDate,
@@ -310,6 +311,7 @@ const TopNavigation = props => {
               return changeTitleHandler();
             }
           }}
+          onMouseOut={() => changeTitleHandler()}
         />
         <div className="trip__info-date">
           <button className="button__date" onClick={handleCalendar}>
