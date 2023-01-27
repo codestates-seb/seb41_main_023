@@ -85,10 +85,10 @@ public class GlobalExceptionAdvice {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleExpiredJwtException(ExpiredJwtException e) {
+    public ResponseEntity handleExpiredJwtException(ExpiredJwtException e) {
         log.error("ExpiredJwtException", e);
-        return ErrorResponse.of(ExceptionCode.EXPIRED_JWT_TOKEN);
+        final ErrorResponse response = ErrorResponse.of(ExceptionCode.EXPIRED_JWT_TOKEN);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
     @ExceptionHandler
@@ -98,7 +98,6 @@ public class GlobalExceptionAdvice {
         return ErrorResponse.of(e.getMessage());
     }
 
-    //일정 선택 후 게시글 작성 화
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleExpiredJwtException(MethodArgumentTypeMismatchException e) {

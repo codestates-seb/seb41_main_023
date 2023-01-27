@@ -52,6 +52,7 @@ public class MemberService {
     }
 
     public Member createMember(Member member) {
+        //추후 확장성을 위한 회원 삭제 설정
         if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
             Member findMember = memberRepository.findByEmail(member.getEmail()).get();
             if (findMember.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)) {
@@ -149,6 +150,11 @@ public class MemberService {
         //refresh token 삭제
         if (redisUtil.hasKey(member.getEmail())) {
             redisUtil.delete(member.getEmail());
+        }
+
+        //추후 확장성을 위한 소셜회원 삭제 설정
+        if (member.getPassword().equals("GOOGLE") || member.getPassword().equals("KAKAO") || member.getPassword().equals("FACEBOOK")) {
+            memberRepository.delete(member);
         }
     }
 
