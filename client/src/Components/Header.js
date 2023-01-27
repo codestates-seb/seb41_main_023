@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
+import blackRabbit from '../images/black_rabbit.png';
+import blueBird from '../images/blue_bird.png';
+import cuteRabbit from '../images/cute_rabbit.png';
+import cuteBird from '../images/cute_bird.png';
+import simpleRabbit from '../images/simple_rabbit.png';
+
 import { postData } from '../Util/api.js';
 import { getCookie, removeCookie } from '../Util/Cookies';
 
@@ -57,8 +63,22 @@ const Header = ({ login }) => {
   return (
     <HeadContainer className="header__container">
       <LeftSection>
+        <img src={blackRabbit} alt="Logo" onClick={() => handleNavigate('/')} />
+        <img src={cuteBird} alt="Logo" onClick={() => handleNavigate('/')} />
+        <img src={cuteRabbit} alt="Logo" onClick={() => handleNavigate('/')} />
+        <img
+          src={simpleRabbit}
+          alt="Logo"
+          onClick={() => handleNavigate('/')}
+        />
+        <img
+          src={blueBird}
+          alt="Logo2"
+          className="blue_bird"
+          onClick={() => handleNavigate('/')}
+        />
         <div className="header__logo" onClick={() => handleNavigate('/')}>
-          website name
+          Tridom
         </div>
         <button
           className="button--default button--subtle"
@@ -122,8 +142,23 @@ const LeftSection = styled.div`
   gap: 24px;
   margin-left: 50px;
 
+  > img {
+    margin-top: 7px;
+    width: 45px;
+    height: 45px;
+    padding: 5px;
+    margin-right: -10px;
+    cursor: pointer;
+    background-color: whitesmoke;
+    border-radius: 30%;
+  }
+
+  .blue_bird {
+    border-radius: 30%;
+  }
   .header__logo {
     cursor: pointer;
+    font-size: 15px;
   }
 `;
 
