@@ -8,7 +8,7 @@ import SingleComment from './SingleComment';
 import { getCookie } from '../../../Util/Cookies';
 import Pagination from '../../../Util/Pagination';
 
-const CommentSection = ({ boardData }) => {
+const CommentSection = () => {
   const { boardId } = useParams();
   const memberId = getCookie('memberId');
   const [memberData, setMemberData] = useState({
@@ -65,12 +65,14 @@ const CommentSection = ({ boardData }) => {
   }, [boardId, commentRefresh]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`)
-      .then(res => {
-        setMemberData(res.data);
-      })
-      .catch(err => console.log(err));
+    if (memberId) {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`)
+        .then(res => {
+          setMemberData(res.data);
+        })
+        .catch(err => console.log(err));
+    }
   }, []);
 
   return (
@@ -91,28 +93,30 @@ const CommentSection = ({ boardData }) => {
                 />
               ))}
         </CommentContainer>
-        <CommentInputContainer>
-          <div className="comment__user-image">
-            <img
-              src={memberData.profileImage}
-              alt={`${memberData.displayName}의 이미지`}
+        {memberId && (
+          <CommentInputContainer>
+            <div className="comment__user-image">
+              <img
+                src={memberData.profileImage}
+                alt={`${memberData.displayName}의 이미지`}
+              />
+            </div>
+            <input
+              className="input--default"
+              type={'text'}
+              placeholder={'Add a question or share your opinion!!'}
+              ref={commentRef}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  return handleCommentSubmit();
+                }
+              }}
             />
-          </div>
-          <input
-            className="input--default"
-            type={'text'}
-            placeholder={'Add a question or share your opinion!!'}
-            ref={commentRef}
-            onKeyUp={e => {
-              if (e.key === 'Enter') {
-                return handleCommentSubmit();
-              }
-            }}
-          />
-          <button className="button--primary" onClick={handleCommentSubmit}>
-            댓글 쓰기
-          </button>
-        </CommentInputContainer>
+            <button className="button--primary" onClick={handleCommentSubmit}>
+              댓글 쓰기
+            </button>
+          </CommentInputContainer>
+        )}
       </div>
       <Pagination
         total={commentList.length}

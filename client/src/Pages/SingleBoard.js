@@ -76,7 +76,7 @@ const SingleBoard = () => {
             handleGeoCode={handleGeoCode}
           />
           <BoardSection boardData={boardData} handleGeoCode={handleGeoCode} />
-          <CommentSection boardData={boardData} />
+          <CommentSection />
         </BoardWrapper>
       ) : null}
     </Fragment>
