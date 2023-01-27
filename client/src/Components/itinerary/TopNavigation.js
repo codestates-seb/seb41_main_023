@@ -136,7 +136,6 @@ const TripInfo = styled.div`
 `;
 
 const TopNavigation = props => {
-  console.log('??');
   const {
     startDate,
     setStartDate,
