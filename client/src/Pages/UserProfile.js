@@ -78,18 +78,18 @@ const UserProfile = () => {
               </button>
             </div>
           </div>
-          <div className="map">
-            <div className="meta_map">
-              <div>
-                <span>{userInfo.cities}</span>
-                cities
-              </div>
-              <div>
-                <span>{userInfo.trips}</span>
-                trips
-              </div>
-            </div>
-          </div>
+          {/*<div className="map">*/}
+          {/*  <div className="meta_map">*/}
+          {/*    <div>*/}
+          {/*      <span>{userInfo.cities}</span>*/}
+          {/*      cities*/}
+          {/*    </div>*/}
+          {/*    <div>*/}
+          {/*      <span>{userInfo.trips}</span>*/}
+          {/*      trips*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
         </div>
         <div className="bottom__container">
           <MyTrips mode="plan" />
