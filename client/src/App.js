@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { getCookie } from './Util/Cookies';
-import { getRefresh } from './Util/api';
+import { getAccessToken } from './Util/api';
 
 import Home from './Pages/Home';
 import Main from './Pages/Main';
@@ -31,13 +31,13 @@ function App() {
   useEffect(() => {
     const timer = setInterval(() => {
       if (document.hasFocus()) {
-        getRefresh();
+        getAccessToken();
       }
     }, 1800000);
 
     if (performance.navigation.type === 1) {
       setTimeout(() => {
-        getRefresh();
+        getAccessToken();
       }, 600000);
     }
 

@@ -18,6 +18,7 @@ const UserProfile = () => {
   const token = getCookie('accessToken');
   const memberId = getCookie('memberId');
 
+
   const getUserInfo = () => {
     axios
       .get(`https://www.sebmain41team23.shop/members/userProfile/${memberId}`, {

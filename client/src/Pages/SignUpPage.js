@@ -95,7 +95,7 @@ const SignUpPage = () => {
   // email
   const onChangeEmail = useCallback(e => {
     const emailRegex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+      /^[0-9a-zA-Z]{4,}([-_.]?[0-9a-zA-Z])*@[a-zA-Z]{3,}([-_.]?[a-zA-Z])*.[a-zA-Z]{2,}$/i;
     setEmail(e.target.value);
 
     if (!emailRegex.test(e.target.value)) {
@@ -218,7 +218,7 @@ const SignUpPage = () => {
           />
           {displayName.length > 0 && (
             <div
-              className={`input__message message${
+              className={`input__message message__${
                 isName ? 'success' : 'error'
               }`}
             >
@@ -237,7 +237,7 @@ const SignUpPage = () => {
           />
           {email.length > 0 && (
             <div
-              className={`email__message-container input__message message${
+              className={`email__message-container input__message message__${
                 isEmail ? 'success' : 'error'
               }`}
             >
@@ -275,7 +275,7 @@ const SignUpPage = () => {
           />
           {password.length > 0 && (
             <div
-              className={`input__message input__message-password message${
+              className={`input__message input__message-password message__${
                 isPassword ? 'success' : 'error'
               }`}
             >
@@ -464,7 +464,7 @@ const LeftContainer = styled.div`
       justify-content: space-between;
 
       > span {
-        color: var(--light);
+        color: green;
       }
 
       .email--pending {
@@ -497,6 +497,18 @@ const LeftContainer = styled.div`
     .signup__sub-message {
       text-align: center;
       color: var(--light);
+    }
+
+    .message__success {
+      margin-left: 4px;
+      padding-top: var(--spacing-2);
+      color: green;
+    }
+
+    .message__error {
+      margin-left: 4px;
+      padding-top: var(--spacing-2);
+      color: red;
     }
 
     .title {
