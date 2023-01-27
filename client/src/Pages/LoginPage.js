@@ -96,7 +96,7 @@ const LoginPage = () => {
   // email
   const onChangeEmail = useCallback(e => {
     const emailRegex =
-      /^[0-9a-zA-Z]{4,}([-_.]?[0-9a-zA-Z])*@[a-zA-Z]{3,}([-_.]?[a-zA-Z])*.[a-zA-Z]{2,}$/i;
+      /^[0-9a-zA-Z_]{4,}([-_.]?[0-9a-zA-Z])*@[a-zA-Z]{3,}([-_.]?[a-zA-Z])*.[a-zA-Z]{2,}$/i;
     setEmail(e.target.value);
 
     if (!emailRegex.test(e.target.value)) {
@@ -139,7 +139,7 @@ const LoginPage = () => {
     <>
       <Header>
         <Link to="/">
-          <div className="header__logo">website name</div>
+          <div className="header__logo">Tridom</div>
         </Link>
         <Link to="/board">
           <button className="button--default button--subtle">

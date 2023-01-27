@@ -125,7 +125,7 @@ const EditSingleBoard = () => {
               Authorization: token,
             },
             data: { placeDesc: placeNotes },
-          }).then(res => console.log(res));
+          });
         });
     }
   };

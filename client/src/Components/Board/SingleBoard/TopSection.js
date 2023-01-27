@@ -44,8 +44,8 @@ const TopSection = props => {
     <TopContainer cityImage={cityImage}>
       <div className="top__gradient-bg"></div>
       <Header>
-        <div className="header__logo" onClick={() => navigate('/')}>
-          website name
+        <div className="header__logo back__button" onClick={() => navigate(-1)}>
+          Back
         </div>
         <div className="edit__like">
           {memberId === Number(logInMemberId) && (
@@ -140,7 +140,7 @@ const TopContainer = styled.div`
 `;
 
 const Header = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -152,6 +152,7 @@ const Header = styled.div`
   > * {
     cursor: pointer;
   }
+
   > .edit__like {
     display: flex;
     justify-content: space-between;
