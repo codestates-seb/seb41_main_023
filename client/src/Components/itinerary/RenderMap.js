@@ -7,10 +7,9 @@ const mapContainerStyle = {
   height: '100vh',
   top: '0px',
   right: '0px',
-  // zIndex: '60',
 };
 
-const RenderMap = (props) => {
+const RenderMap = props => {
   const { mainData, searchedGeocode, handleGeoCode, zoom, handleZoom } = props;
 
   const placesInfo = mainData.planDatesAndPlace;
@@ -23,7 +22,7 @@ const RenderMap = (props) => {
       center={searchedGeocode}
     >
       {placesInfo !== null
-        ? placesInfo.map((place) => (
+        ? placesInfo.map(place => (
             <MarkerLists
               key={place.planDateId}
               data={place}

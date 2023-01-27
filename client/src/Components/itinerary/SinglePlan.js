@@ -171,9 +171,6 @@ const SinglePlan = props => {
           },
         })
         .then(res => {
-          console.log('삭제완료!');
-        })
-        .then(res => {
           handleRefresh();
           handleBudgetRefresh();
         })
