@@ -8,16 +8,11 @@ import Explore from '../Components/Board/Explore';
 import bgImg from '../images/login_background-image.jpg';
 
 const Board = () => {
-  console.log('Board!');
   const [login, setLogin] = useState(false);
   const [destination, setDestination] = useState('');
   const [searches, setSearches] = useState(false);
 
   const navigate = useNavigate();
-
-  // const url = searches
-  //     ? `/board/plan?city=${destination}&tab=boardId`
-  //     : `/board?page=${page.current}&size=5&tab=views`;
 
   useEffect(() => {
     if (getCookie('accessToken')) {
