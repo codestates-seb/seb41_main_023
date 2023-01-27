@@ -43,14 +43,11 @@ const SignUpPage = () => {
   // 회원가입 요청
   const signUp = async () => {
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/members/signup`,
-        {
-          email,
-          displayName,
-          password,
-        },
-      );
+      await axios.post(`${process.env.REACT_APP_API_URL}/members/signup`, {
+        email,
+        displayName,
+        password,
+      });
       alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
       navigate('/login', { replace: true });
     } catch (err) {

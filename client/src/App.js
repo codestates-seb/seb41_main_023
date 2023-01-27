@@ -17,6 +17,7 @@ import Board from './Pages/Board';
 import EditSingleBoard from './Pages/EditSingleBoard';
 import SingleBoard from './Pages/SingleBoard';
 import LoadingPage from './Pages/LoadingPage';
+import ErrorPage from './Pages/ErrorPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -65,6 +66,7 @@ function App() {
         <Route path="/board/edit/:boardId" element={<EditSingleBoard />} />
         {/*  /!*게시글 작성 페이지*!/*/}
         <Route path="/board/plan/:planId" element={<WriteSingleBoard />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>
   );

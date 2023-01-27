@@ -8,6 +8,7 @@ import Explore from '../Components/Board/Explore';
 import bgImg from '../images/login_background-image.jpg';
 
 const Board = () => {
+  console.log('Board!');
   const [login, setLogin] = useState(false);
   const [destination, setDestination] = useState('');
   const [searches, setSearches] = useState(false);

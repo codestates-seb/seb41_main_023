@@ -15,12 +15,6 @@ const Header = ({ login }) => {
 
   const [userInfo, setUserInfo] = useState({});
 
-  // const getUserInfo = async () => {
-  //   const data = await getData(`/members/userProfile/${memberId}`);
-  //   console.log(data.data);
-  //   // setUserInfo(data);
-  // };
-
   const getUserInfo = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/members/userProfile/${memberId}`, {
@@ -112,11 +106,10 @@ const Header = ({ login }) => {
 export default Header;
 
 const HeadContainer = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: space-between;
-  margin: 0 50px;
-  width: calc(100vw - 100px);
+  width: 100vw;
   height: 60px;
   z-index: 9999;
   top: 0;
@@ -127,6 +120,7 @@ const LeftSection = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
+  margin-left: 50px;
 
   .header__logo {
     cursor: pointer;
@@ -137,6 +131,7 @@ const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
+  margin-right: 50px;
 
   > img {
     width: 36px;

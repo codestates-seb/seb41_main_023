@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import { getCookie } from '../../Util/Cookies';
+import EditExpense from '../budget/EditExpense';
 
 const SectionWrapper = styled.div`
   position: relative;
@@ -143,11 +144,18 @@ const SinglePlan = props => {
     setCurrentPlaceId,
     handleRefresh,
     handleBudgetRefresh,
+    budget,
   } = props;
   const [delButtonIsShow, setDelButtonIsShow] = useState(false);
+  // 비용 수정
+  const [editExpenseModal, setEditExpenseModal] = useState(false);
 
   const handleExpenseModal = () => {
     setAddExpenseModal(true);
+  };
+
+  const editModal = () => {
+    setEditExpenseModal(true);
   };
 
   const onMouseHandler = () => {
@@ -163,14 +171,35 @@ const SinglePlan = props => {
           },
         })
         .then(res => {
-          console.log('삭제완료!');
-        })
-        .then(res => {
           handleRefresh();
           handleBudgetRefresh();
         })
         .catch(err => console.log(err));
     }
+  };
+
+  // 비용 수정 요청
+  const handleEditExpense = (price, selectedCategory, item, expenseId) => {
+    axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}/expenses/${expenseId}`,
+        {
+          category: selectedCategory,
+          item: item,
+          price: price,
+        },
+        {
+          headers: {
+            Authorization: getCookie('accessToken'),
+            withCredentials: true,
+          },
+        },
+      )
+      .then(res => {
+        setEditExpenseModal(false);
+        handleBudgetRefresh();
+      })
+      .catch(err => console.log(err));
   };
 
   return (
@@ -196,16 +225,31 @@ const SinglePlan = props => {
           <PlaceAddingButtons>
             <button
               onClick={() => {
-                handleExpenseModal();
-                setCurrentDate(planDate);
-                setCurrentPlace(data.placeName);
-                setCurrentPlaceId(data.placeId);
+                if (!data.expenses) {
+                  handleExpenseModal();
+                  setCurrentDate(planDate);
+                  setCurrentPlace(data.placeName);
+                  setCurrentPlaceId(data.placeId);
+                } else {
+                  editModal();
+                }
               }}
             >
               {moneySvg}
               {data.expenses ? data.expenses.price : 'Add Cost'}
             </button>
           </PlaceAddingButtons>
+          {editExpenseModal ? (
+            <EditExpense
+              expenses={data.expenses}
+              handleEditExpense={handleEditExpense}
+              setEditExpenseModal={setEditExpenseModal}
+              editExpenseModal={editExpenseModal}
+              handleRefresh={handleRefresh}
+              handleBudgetRefresh={handleBudgetRefresh}
+              budget={budget}
+            />
+          ) : null}
         </div>
       </PlaceInfoBox>
       <PlanDeleteContainer className="delete__container ">

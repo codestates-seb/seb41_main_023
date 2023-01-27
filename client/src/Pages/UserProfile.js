@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -16,14 +16,8 @@ const UserProfile = () => {
   const [userInfo, setUserInfo] = useState({});
 
   const token = getCookie('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
   const memberId = getCookie('memberId');
 
-  // 유저 정보 조회
-  // const getUserInfo = async () => {
-  //   const data = await getData(`/members/userProfile/${memberId}`);
-  //   setUserInfo(data);
-  // };
 
   const getUserInfo = () => {
     axios
@@ -85,18 +79,18 @@ const UserProfile = () => {
               </button>
             </div>
           </div>
-          <div className="map">
-            <div className="meta_map">
-              <div>
-                <span>{userInfo.cities}</span>
-                cities
-              </div>
-              <div>
-                <span>{userInfo.trips}</span>
-                trips
-              </div>
-            </div>
-          </div>
+          {/*<div className="map">*/}
+          {/*  <div className="meta_map">*/}
+          {/*    <div>*/}
+          {/*      <span>{userInfo.cities}</span>*/}
+          {/*      cities*/}
+          {/*    </div>*/}
+          {/*    <div>*/}
+          {/*      <span>{userInfo.trips}</span>*/}
+          {/*      trips*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
         </div>
         <div className="bottom__container">
           <MyTrips mode="plan" />

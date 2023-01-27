@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import styled from "styled-components";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
 
-import { getCookie } from "../../Util/Cookies";
-import { formatDateKo } from "../../Util/dayUtil";
+import { getCookie } from '../../Util/Cookies';
+import { formatDateKo } from '../../Util/dayUtil';
 
-const Explore = (props) => {
+const Explore = props => {
   const [exploreList, setExploreList] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const token = getCookie("accessToken");
+  const token = getCookie('accessToken');
   const navigate = useNavigate();
 
   const observerTargetEl = useRef(null);
@@ -27,17 +27,17 @@ const Explore = (props) => {
           headers: {
             Authorization: token,
           },
-        }
+        },
       )
-      .then((res) => {
+      .then(res => {
         setTimeout(() => {
-          setExploreList((prevState) => [...prevState, ...res.data.data]);
+          setExploreList(prevState => [...prevState, ...res.data.data]);
           setLoading(false);
         }, 1500);
         setHasNextPage(res.data.data.length === 5);
         if (res.data.data.length) page.current += 1;
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }, [page.current]);
 
   // 게시판 접근 시
@@ -48,10 +48,10 @@ const Explore = (props) => {
           Authorization: token,
         },
       })
-      .then((res) => {
+      .then(res => {
         setExploreList(res.data.data);
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -64,19 +64,19 @@ const Explore = (props) => {
             headers: {
               Authorization: token,
             },
-          }
+          },
         )
-        .then((res) => {
+        .then(res => {
           setExploreList(res.data.data);
         })
-        .catch((err) => console.log(err));
+        .catch(err => console.log(err));
     } else {
       // 게시판
-      if (window.location.pathname === "/board") {
+      if (window.location.pathname === '/board') {
         if (!observerTargetEl.current || !hasNextPage) return;
         const options = {
           root: null,
-          rootMargin: "0px 0px -30px 0px",
+          rootMargin: '0px 0px -30px 0px',
           threshold: 1,
         };
 
@@ -94,22 +94,22 @@ const Explore = (props) => {
         // 메인
         axios
           .get(
-            `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=boardId`,
+            `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=boardId`,
             {
               headers: {
                 Authorization: token,
               },
-            }
+            },
           )
-          .then((res) => {
+          .then(res => {
             setExploreList(res.data.data);
           })
-          .catch((err) => console.log(err));
+          .catch(err => console.log(err));
       }
     }
   }, [fetchMoreExplores, hasNextPage, token, props.destination]);
 
-  const handleNavigate = (explore) => {
+  const handleNavigate = explore => {
     navigate(`/board/${explore.boardId}`);
   };
 
@@ -130,8 +130,8 @@ const Explore = (props) => {
               />
               <div className="meta_title">{explore.title}</div>
               <div className="meta_content">
-                {formatDateKo(explore.travelPeriod.split("-")[0])} -{" "}
-                {formatDateKo(explore.travelPeriod.split("-")[1])}
+                {formatDateKo(explore.travelPeriod.split('-')[0])} -{' '}
+                {formatDateKo(explore.travelPeriod.split('-')[1])}
               </div>
               <div className="meta_profile">
                 <img
@@ -143,7 +143,7 @@ const Explore = (props) => {
               </div>
               <div
                 className={
-                  explore.checkLikes ? "meta_likes likes" : "meta_likes"
+                  explore.checkLikes ? 'meta_likes likes' : 'meta_likes'
                 }
               >
                 <svg viewBox="0 0 16 16">
@@ -157,7 +157,7 @@ const Explore = (props) => {
             </div>
           ))
         ) : (
-          <div className={"search__error"}>
+          <div className={'search__error'}>
             검색어와 일치하는 게시글이 없습니다
           </div>
         )}
@@ -265,13 +265,13 @@ const ExploreContainer = styled.div`
           stroke: var(--white);
         }
 
-        &:hover {
+        /* &:hover {
           svg path {
             color: rgba(202, 53, 53, 0.25);
             stroke-width: 1.5;
             stroke: var(--red-light-1);
           }
-        }
+        } */
 
         &.likes {
           svg path {

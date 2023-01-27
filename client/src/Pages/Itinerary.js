@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
@@ -74,7 +74,7 @@ const Itinerary = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <TopNavigation
         startDate={startDate}
         setStartDate={setStartDate}
@@ -87,7 +87,7 @@ const Itinerary = () => {
         handleRefresh={handleRefresh}
       />
       {isLoaded ? (
-        <Fragment>
+        <>
           <RenderMap
             searchedGeocode={searchedGeocode}
             mainData={mainData}
@@ -113,11 +113,11 @@ const Itinerary = () => {
             budgetRefresh={budgetRefresh}
             handleBudgetRefresh={handleBudgetRefresh}
           />
-        </Fragment>
+        </>
       ) : (
         <p>Loading</p>
       )}
-    </Fragment>
+    </>
   );
 };
 

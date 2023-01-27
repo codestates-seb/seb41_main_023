@@ -139,13 +139,13 @@ const MyLogsContainer = styled.div`
           stroke: var(--white);
         }
 
-        &:hover {
+        /* &:hover {
           svg path {
             color: rgba(202, 53, 53, 0.25);
             stroke-width: 1.5;
             stroke: var(--red-light-1);
           }
-        }
+        } */
 
         &.likes {
           svg path {
