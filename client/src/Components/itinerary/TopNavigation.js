@@ -303,7 +303,10 @@ const TopNavigation = props => {
         <div className={'button--container'}>
           <button
             className="button--primary"
-            onClick={() => navigate(`/`, { replace: true })}
+            onClick={() => {
+              changeTitleHandler();
+              navigate(`/`, { replace: true });
+            }}
           >
             Save Trip
           </button>
