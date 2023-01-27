@@ -173,7 +173,6 @@ const EditSingleBoard = () => {
     let findIndex = placeNotes.findIndex(
       placeNote => Number(placeNote.placeId) === Number(id),
     );
-    // console.log(findIndex);
     const placeId = Object.keys(memoRef.current).filter(
       key => Number(key) === id,
     );

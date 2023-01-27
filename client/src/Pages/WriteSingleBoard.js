@@ -112,7 +112,7 @@ const WriteSingleBoard = () => {
               Authorization: token,
             },
             data: { placeDesc: placeNotes },
-          }).then(res => console.log(res));
+          });
         });
     }
   };

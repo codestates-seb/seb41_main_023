@@ -16,9 +16,7 @@ const SingleBoardMarker = ({ day, handleZoom }) => {
     setActiveMarker(marker);
   };
 
-  const onLoad = marker => {
-    // console.log("marker: ", marker);
-  };
+  const onLoad = marker => {};
 
   const handleGeoCode = (lat, lng) => {
     setGeocode({ lat, lng });

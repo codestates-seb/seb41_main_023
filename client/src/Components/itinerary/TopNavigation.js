@@ -257,7 +257,6 @@ const TopNavigation = props => {
                 },
               })
               .then(res => {
-                console.log('deleted plan!!');
                 navigate('/', { replace: true });
               })
               .catch(err => console.log(err));
@@ -270,7 +269,6 @@ const TopNavigation = props => {
             },
           })
           .then(res => {
-            console.log('deleted plan!!');
             navigate('/', { replace: true });
           })
           .catch(err => console.log(err));
