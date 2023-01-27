@@ -72,10 +72,15 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofFacebook(String userNameAttributeName, Map<String,Object> attributes) {
-
+        String email = "";
+        if (attributes.get("email") == null) {
+            email = attributes.get("id").toString() + "@facebook.com";
+        } else {
+            email = attributes.get("email").toString();
+        }
         return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
+                .email(email)
                 .picture("https://seb41pre020.s3.ap-northeast-2.amazonaws.com/basic.png")
                 .nameAttributeKey(userNameAttributeName)
                 .attributes(attributes)

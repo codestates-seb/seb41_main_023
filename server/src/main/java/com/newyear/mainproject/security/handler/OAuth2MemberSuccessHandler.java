@@ -43,6 +43,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         if (kakao != null) {
             email = kakao.get("email").toString();
             clientId = "KAKAO";
+        } else if (attributes.get("email") == null) {
+            email = attributes.get("id").toString() + "@facebook.com";
+            clientId = "FACEBOOK";
         } else {
             email = attributes.get("email").toString();
             clientId = "FACEBOOK";
