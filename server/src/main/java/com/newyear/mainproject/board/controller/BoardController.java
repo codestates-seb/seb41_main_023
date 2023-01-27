@@ -65,6 +65,9 @@ public class BoardController {
             }
         } else {
             Cookie newCookie = new Cookie("visit_cookie", String.valueOf(boardId));
+            newCookie.setDomain("stackoverflow-preproject-y2k.s3-website.ap-northeast-2.amazonaws.com");
+            newCookie.setPath("/");
+            newCookie.setHttpOnly(false);
             newCookie.setMaxAge(60 * 60 * 2);
             response.addCookie(newCookie);
             boardService.viewCount(board);
