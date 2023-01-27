@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { useState, useEffect } from 'react';
-=======
 import { useEffect, useState } from 'react';
->>>>>>> 412d1ddb3585a71dadee8e646a8a8b79bb54fcdd
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -20,18 +16,7 @@ const UserProfile = () => {
   const [userInfo, setUserInfo] = useState({});
 
   const token = getCookie('accessToken');
-<<<<<<< HEAD
-  const refreshToken = localStorage.getItem('refreshToken');
   const memberId = getCookie('memberId');
-
-  // 유저 정보 조회
-  // const getUserInfo = async () => {
-  //   const data = await getData(`/members/userProfile/${memberId}`);
-  //   setUserInfo(data);
-  // };
-=======
-  const memberId = getCookie('memberId');
->>>>>>> 412d1ddb3585a71dadee8e646a8a8b79bb54fcdd
 
   const getUserInfo = () => {
     axios
