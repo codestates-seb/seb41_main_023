@@ -102,6 +102,28 @@ const TripInfo = styled.div`
 
     .button__date {
       background: transparent;
+      padding: 6px;
+      border: 1px solid var(--light-gray-4);
+      border-radius: 3px;
+
+      span {
+        font-size: var(--large-text-size);
+        line-height: var(--large-text-line-height);
+        color: var(--light-gray-3);
+      }
+
+      &:hover {
+        background-color: var(--white);
+        border-color: var(--light-gray-4);
+
+        .start__date {
+          color: var(--black);
+        }
+
+        .end__date {
+          color: var(--black);
+        }
+      }
     }
 
     .button__change-date {
@@ -116,12 +138,6 @@ const TripInfo = styled.div`
         color: var(--dark-gray-2);
         border-color: var(--light-gray-4);
       }
-    }
-
-    span {
-      font-size: var(--large-text-size);
-      line-height: var(--large-text-line-height);
-      color: var(--light-gray-3);
     }
   }
 
@@ -314,16 +330,20 @@ const TopNavigation = props => {
         />
         <div className="trip__info-date">
           <button className="button__date" onClick={handleCalendar}>
-            <span>{formatDateKo(mainData.startDate)} -</span>
-            <span> {formatDateKo(mainData.endDate)}</span>
+            <span className="start__date">
+              {formatDateKo(mainData.startDate)} -
+            </span>
+            <span className="end__date"> {formatDateKo(mainData.endDate)}</span>
           </button>
-          <button
-            className="button__change-date"
-            onClick={changeDateHandler}
-            disabled={showCalendar === false}
-          >
-            날짜 변경
-          </button>
+          {showCalendar && (
+            <button
+              className="button__change-date"
+              onClick={changeDateHandler}
+              disabled={!showCalendar}
+            >
+              날짜 변경
+            </button>
+          )}
         </div>
         <div>{showCalendar ? <Calendar handleDate={handleDate} /> : null}</div>
       </TripInfo>
