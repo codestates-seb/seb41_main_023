@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
-import { setCookie } from '../Util/Cookies';
+import { getCookie, setCookie } from '../Util/Cookies';
 import bgImage from '../images/login-page_side-image.jpg';
 
 const LoginPage = () => {
   const eref = useRef();
   const pref = useRef();
   const navigate = useNavigate();
-  const location = useLocation();
 
   // 이메일, 비밀번호
   const [email, setEmail] = useState('');
@@ -38,14 +37,35 @@ const LoginPage = () => {
           password,
         },
       );
-      console.log(response);
 
       if (response.status === 200) {
         setCookie('accessToken', response.headers.authorization);
         setCookie('memberId', response.data.memberId);
         localStorage.setItem('refreshToken', response.headers.refresh);
-        alert('로그인되었습니다. 메인 페이지로 이동합니다.');
-        window.location.replace('/');
+        if (localStorage.getItem('plan')) {
+          const getPlanData = JSON.parse(localStorage.getItem('plan'));
+          axios
+            .post(
+              `${process.env.REACT_APP_API_URL}/plans`,
+              {
+                cityName: getPlanData.cityName,
+                startDate: getPlanData.startDate,
+                endDate: getPlanData.endDate,
+              },
+              {
+                headers: {
+                  Authorization: getCookie('accessToken'),
+                },
+              },
+            )
+            .then(res => {
+              window.location.replace(`/itinerary/${res.data.data.planId}`);
+            })
+            .then(res => localStorage.removeItem('plan'))
+            .catch(err => console.log(err));
+        } else {
+          window.location.replace('/');
+        }
       }
     } catch (err) {
       console.error(err);
@@ -62,7 +82,6 @@ const LoginPage = () => {
 
   // 로그인, 모든 유효성 검사가 통과 되어야 login 가능
   const onLogin = e => {
-    //e.preventDefault();
     if (
       email.length !== 0 &&
       password.length !== 0 &&

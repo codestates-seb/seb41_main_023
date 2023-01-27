@@ -42,6 +42,7 @@ const Content = styled.div`
 `;
 
 const Main = () => {
+  console.log('main!');
   const TopMove = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
