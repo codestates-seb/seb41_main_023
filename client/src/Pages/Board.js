@@ -1,15 +1,15 @@
-import Header from "../Components/Header";
-import Autocomplete from "../Components/AutoComplete";
-import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getCookie } from "../Util/Cookies";
-import Explore from "../Components/Board/Explore";
-import bgImg from "../images/login_background-image.jpg";
+import Header from '../Components/Header';
+import Autocomplete from '../Components/AutoComplete';
+import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getCookie } from '../Util/Cookies';
+import Explore from '../Components/Board/Explore';
+import bgImg from '../images/login_background-image.jpg';
 
 const Board = () => {
   const [login, setLogin] = useState(false);
-  const [destination, setDestination] = useState("");
+  const [destination, setDestination] = useState('');
   const [searches, setSearches] = useState(false);
 
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Board = () => {
   //     : `/board?page=${page.current}&size=5&tab=views`;
 
   useEffect(() => {
-    if (getCookie("accessToken")) {
+    if (getCookie('accessToken')) {
       setLogin(true);
     }
   }, []);
@@ -28,20 +28,20 @@ const Board = () => {
     setSearches(true);
   };
 
-  const handleDestination = (destination) => {
+  const handleDestination = destination => {
     setDestination(destination);
   };
 
   const TopMove = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleWrite = () => {
     if (login) {
-      navigate("/board/plan");
+      navigate('/board/plan');
     } else {
-      alert("로그인 후 이용해주세요.");
-      navigate("/login");
+      alert('로그인 후 이용해주세요.');
+      navigate('/login');
     }
   };
 

@@ -1,14 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import Home from "./Home";
-import Footer from "./Footer";
-import MyTrips from "../Components/user/MyTrips";
-import MyLogs from "../Components/user/MyLogs";
-import Explore from "../Components/Board/Explore";
+import Home from './Home';
+import Footer from './Footer';
+import MyTrips from '../Components/user/MyTrips';
+import MyLogs from '../Components/user/MyLogs';
+import Explore from '../Components/Board/Explore';
 
 const MainContainer = styled.div`
   position: relative;
-  
+
   h2 {
     margin-bottom: var(--spacing-4);
     font-size: var(--large-heading-font-size);
@@ -43,7 +43,7 @@ const Content = styled.div`
 
 const Main = () => {
   const TopMove = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (

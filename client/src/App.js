@@ -1,28 +1,28 @@
-import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-import { getCookie } from "./Util/Cookies";
-import { getRefresh } from "./Util/api";
+import { getCookie } from './Util/Cookies';
+import { getAccessToken } from './Util/api';
 
-import Home from "./Pages/Home";
-import Main from "./Pages/Main";
-import Itinerary from "./Pages/Itinerary";
-import LoginPage from "./Pages/LoginPage";
-import SignUpPage from "./Pages/SignUpPage";
-import UserProfile from "./Pages/UserProfile";
-import UserProfileEdit from "./Pages/UserProfileEdit";
-import WriteBoard from "./Pages/WriteBoard";
-import WriteSingleBoard from "./Pages/WriteSingleBoard";
-import Board from "./Pages/Board";
-import EditSingleBoard from "./Pages/EditSingleBoard";
-import SingleBoard from "./Pages/SingleBoard";
-import LoadingPage from "./Pages/LoadingPage";
+import Home from './Pages/Home';
+import Main from './Pages/Main';
+import Itinerary from './Pages/Itinerary';
+import LoginPage from './Pages/LoginPage';
+import SignUpPage from './Pages/SignUpPage';
+import UserProfile from './Pages/UserProfile';
+import UserProfileEdit from './Pages/UserProfileEdit';
+import WriteBoard from './Pages/WriteBoard';
+import WriteSingleBoard from './Pages/WriteSingleBoard';
+import Board from './Pages/Board';
+import EditSingleBoard from './Pages/EditSingleBoard';
+import SingleBoard from './Pages/SingleBoard';
+import LoadingPage from './Pages/LoadingPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (getCookie("accessToken")) {
+    if (getCookie('accessToken')) {
       setIsLoggedIn(true);
     }
   }, []);
@@ -30,13 +30,13 @@ function App() {
   useEffect(() => {
     const timer = setInterval(() => {
       if (document.hasFocus()) {
-        getRefresh();
+        getAccessToken();
       }
     }, 1800000);
 
     if (performance.navigation.type === 1) {
       setTimeout(() => {
-        getRefresh();
+        getAccessToken();
       }, 600000);
     }
 

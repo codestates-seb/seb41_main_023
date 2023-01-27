@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import styled from "styled-components";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import styled from 'styled-components';
 
-import Header from "../Components/Header";
-import Footer from "./Footer";
-import MyTrips from "../Components/user/MyTrips";
-import MyLogs from "../Components/user/MyLogs";
+import Header from '../Components/Header';
+import Footer from './Footer';
+import MyTrips from '../Components/user/MyTrips';
+import MyLogs from '../Components/user/MyLogs';
 
-import { postData } from "../Util/api";
-import { getCookie, removeCookie } from "../Util/Cookies";
+import { postData } from '../Util/api';
+import { getCookie, removeCookie } from '../Util/Cookies';
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
 
-  const token = getCookie("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
-  const memberId = getCookie("memberId");
+  const token = getCookie('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+  const memberId = getCookie('memberId');
 
   // 유저 정보 조회
   // const getUserInfo = async () => {
@@ -32,7 +32,7 @@ const UserProfile = () => {
           Authorization: token,
         },
       })
-      .then((res) => setUserInfo(res.data));
+      .then(res => setUserInfo(res.data));
   };
 
   useEffect(() => {
@@ -41,16 +41,16 @@ const UserProfile = () => {
 
   // 로그아웃 요청
   const handleSignout = async () => {
-    if (window.confirm("로그아웃 하시겠습니까?")) {
-      await postData("/members/logout", {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      await postData('/members/logout', {
         headers: {
           Authorization: token,
-        }
-      }).then((res) => {
-        removeCookie("accessToken");
-        removeCookie("memberId");
-        localStorage.removeItem("refreshToken");
-        window.location.replace("/");
+        },
+      }).then(res => {
+        removeCookie('accessToken');
+        removeCookie('memberId');
+        localStorage.removeItem('refreshToken');
+        window.location.replace('/');
       });
     }
   };

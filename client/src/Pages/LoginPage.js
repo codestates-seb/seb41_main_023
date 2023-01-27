@@ -5,6 +5,12 @@ import styled from 'styled-components';
 
 import { setCookie } from '../Util/Cookies';
 import bgImage from '../images/login-page_side-image.jpg';
+import img1 from '../images/1.jpg';
+import img2 from '../images/2.jpg';
+import img3 from '../images/3.jpg';
+
+const images = [img1, img2, img3, bgImage];
+const randomimg = images[Math.floor(Math.random() * images.length)];
 
 const LoginPage = () => {
   const eref = useRef();
@@ -77,7 +83,7 @@ const LoginPage = () => {
   // email
   const onChangeEmail = useCallback(e => {
     const emailRegex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+      /^[0-9a-zA-Z]{4,}([-_.]?[0-9a-zA-Z])*@[a-zA-Z]{3,}([-_.]?[a-zA-Z])*.[a-zA-Z]{2,}$/i;
     setEmail(e.target.value);
 
     if (!emailRegex.test(e.target.value)) {
@@ -143,11 +149,7 @@ const LoginPage = () => {
             ref={eref}
           />
           {email.length > 0 && (
-            <div
-              className={`input__message message${
-                isEmail ? 'success' : 'error'
-              }`}
-            >
+            <div className={`input__message__${isEmail ? 'success' : 'error'}`}>
               {emailMessage}
             </div>
           )}
@@ -163,9 +165,7 @@ const LoginPage = () => {
           />
           {password.length > 0 && (
             <div
-              className={`input__message message${
-                isPassword ? 'success' : 'error'
-              }`}
+              className={`input__message__${isPassword ? 'success' : 'error'}`}
             >
               {passwordMessage}
             </div>
@@ -334,9 +334,16 @@ const LeftContainer = styled.div`
       }
     }
 
-    .input__message {
+    .input__message__success {
+      margin-left: 4px;
       padding-top: var(--spacing-2);
-      color: var(--light);
+      color: green;
+    }
+
+    .input__message__error {
+      margin-left: 4px;
+      padding-top: var(--spacing-2);
+      color: red;
     }
 
     .log-in__sub-message {
@@ -349,7 +356,7 @@ const LeftContainer = styled.div`
 const RightContainer = styled.div`
   width: 50vw;
   height: 100vh;
-  background-image: url(${bgImage});
+  background-image: url(${randomimg});
   background-size: cover;
   background-position: center;
   float: right;
