@@ -304,7 +304,6 @@ const TopNavigation = props => {
           <button
             className="button--primary"
             onClick={() => {
-              changeTitleHandler();
               navigate(`/`, { replace: true });
             }}
           >
