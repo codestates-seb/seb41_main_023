@@ -43,11 +43,14 @@ const Explore = props => {
   // 게시판 접근시
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=boardId`, {
-        headers: {
-          Authorization: token,
+      .get(
+        `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=boardId`,
+        {
+          headers: {
+            Authorization: token,
+          },
         },
-      })
+      )
       .then(res => {
         setExploreList(res.data.data);
       })
@@ -159,9 +162,7 @@ const Explore = props => {
             </div>
           ))
         ) : (
-          <div className={'search__error'}>
-            검색어와 일치하는 게시글이 없습니다
-          </div>
+          <div className={'search__error'}>게시글이 없습니다</div>
         )}
         {loading ? <div className="loader"></div> : <div></div>}
         <div ref={observerTargetEl} className="target">
