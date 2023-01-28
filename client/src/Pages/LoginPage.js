@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
 import { getCookie, setCookie } from '../Util/Cookies';
 import bgImage from '../images/login-page_side-image.jpg';
+import cuteBird from '../images/cute_bird.png';
 
 const LoginPage = () => {
   const eref = useRef();
@@ -138,13 +139,14 @@ const LoginPage = () => {
   return (
     <>
       <Header>
+        <img
+          src={cuteBird}
+          alt="Logo"
+          className="logo__image"
+          onClick={() => navigate('/')}
+        />
         <Link to="/">
           <div className="header__logo">Tridom</div>
-        </Link>
-        <Link to="/board">
-          <button className="button--default button--subtle">
-            Travel logs
-          </button>
         </Link>
       </Header>
       <LeftContainer>

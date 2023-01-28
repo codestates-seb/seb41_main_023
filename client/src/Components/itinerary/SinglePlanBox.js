@@ -34,7 +34,6 @@ const SinglePlanBox = props => {
             setCurrentPlaceId={setCurrentPlaceId}
             handleGeoCode={handleGeoCode}
             handleZoom={handleZoom}
-            expenses={expenses}
             refresh={refresh}
             handleRefresh={handleRefresh}
             handleBudgetRefresh={handleBudgetRefresh}

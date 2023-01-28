@@ -31,6 +31,9 @@ const LoadingPage = () => {
 
     if (getCookie('accessToken')) {
       window.location.replace('/');
+    } else {
+      alert('이미 가입된 계정입니다! 가입된 이메일로 로그인해주세요');
+      window.location.replace('/login');
     }
   }, []);
 
