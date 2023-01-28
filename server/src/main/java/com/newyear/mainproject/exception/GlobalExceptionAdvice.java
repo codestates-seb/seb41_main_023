@@ -63,12 +63,12 @@ public class GlobalExceptionAdvice {
         return ErrorResponse.of(e.getMessage());
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
-        log.error("MissingServletRequestParameterException", e);
-        return ErrorResponse.of(e.getMessage());
-    }
+//    @ExceptionHandler
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ErrorResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+//        log.error("MissingServletRequestParameterException", e);
+//        return ErrorResponse.of(e.getMessage());
+//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -91,12 +91,12 @@ public class GlobalExceptionAdvice {
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleExpiredJwtException(MissingRequestHeaderException e) {
-        log.error("MissingRequestHeaderException", e);
-        return ErrorResponse.of(e.getMessage());
-    }
+//    @ExceptionHandler
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ErrorResponse handleExpiredJwtException(MissingRequestHeaderException e) {
+//        log.error("MissingRequestHeaderException", e);
+//        return ErrorResponse.of(e.getMessage());
+//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
