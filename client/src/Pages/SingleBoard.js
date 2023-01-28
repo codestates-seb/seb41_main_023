@@ -13,7 +13,7 @@ import { getCookie } from '../Util/Cookies';
 const SingleBoard = () => {
   const { boardId } = useParams();
   const token = getCookie('accessToken');
-
+  //수정
   const [boardData, setBoardData] = useState({
     boardId: boardId,
     title: '',
