@@ -231,6 +231,7 @@ const Budget = ({
 
       {editExpenseModal ? (
         <EditExpense
+          allExpenses={expenses}
           expenseId={currentExpenseId}
           handleEditExpense={handleEditExpense}
           setEditExpenseModal={setEditExpenseModal}

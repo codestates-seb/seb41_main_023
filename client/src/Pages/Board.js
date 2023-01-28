@@ -36,8 +36,12 @@ const Board = () => {
     if (login) {
       navigate('/board/plan');
     } else {
-      alert('로그인 후 이용해주세요.');
-      navigate('/login');
+      if (
+        window.confirm(
+          '게시글 작성은 로그인 후에 사용 가능합니다. 로그인하시겠습니까?',
+        )
+      )
+        navigate('/login');
     }
   };
 

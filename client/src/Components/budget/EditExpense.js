@@ -5,7 +5,9 @@ import Category from './Category';
 
 const EditExpense = props => {
   const {
-    expenses,
+    expense,
+    allExpenses,
+    expenseId,
     editExpenseModal,
     setEditExpenseModal,
     handleEditExpense,
@@ -37,6 +39,10 @@ const EditExpense = props => {
       setInputs({ ...inputs, [e.target.name]: e.target.value });
     }
   };
+
+  const expenseData = allExpenses?.filter(
+    expense => expense.expenseId === expenseId,
+  )[0].price;
 
   return (
     <>
@@ -103,10 +109,12 @@ const EditExpense = props => {
               <button
                 className="button--primary"
                 onClick={() => {
+                  const submitId = expenseId ? expenseId : expense.expenseId;
+                  const priceSelect = expenseData ? expenseData : expense.price;
                   if (
                     budget.expectedBudget <
                     parseInt(budget.totalExpenses) -
-                      parseInt(expenses.price) +
+                      parseInt(priceSelect) +
                       parseInt(inputs.price)
                   ) {
                     alert('비용이 예산을 초과합니다!!');
@@ -117,7 +125,7 @@ const EditExpense = props => {
                       inputs.price,
                       selectedCategory,
                       inputs.item,
-                      expenses.expenseId,
+                      submitId,
                     );
                     handleBudgetRefresh();
                   }

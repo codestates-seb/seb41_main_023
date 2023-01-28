@@ -241,7 +241,8 @@ const SinglePlan = props => {
           </PlaceAddingButtons>
           {editExpenseModal ? (
             <EditExpense
-              expenses={data.expenses}
+              expense={data.expenses}
+              expenseId={data.expenses.expenseId}
               handleEditExpense={handleEditExpense}
               setEditExpenseModal={setEditExpenseModal}
               editExpenseModal={editExpenseModal}

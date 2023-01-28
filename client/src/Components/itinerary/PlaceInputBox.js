@@ -58,7 +58,7 @@ const PlaceInputBox = props => {
 
       let openingHours;
 
-      if (place.opening_hours !== undefined) {
+      if (place?.opening_hours !== undefined) {
         openingHours = `${place.opening_hours.weekday_text[0]}, ${place.opening_hours.weekday_text[1]},${place.opening_hours.weekday_text[2]},${place.opening_hours.weekday_text[3]},${place.opening_hours.weekday_text[4]},${place.opening_hours.weekday_text[5]},${place.opening_hours.weekday_text[6]}`;
       }
 
