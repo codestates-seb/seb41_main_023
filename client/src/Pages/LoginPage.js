@@ -11,7 +11,6 @@ const LoginPage = () => {
   const eref = useRef();
   const pref = useRef();
   const navigate = useNavigate();
-  const location = useLocation();
 
   // 이메일, 비밀번호
   const [email, setEmail] = useState('');
