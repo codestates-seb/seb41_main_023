@@ -10,44 +10,48 @@ import com.newyear.mainproject.member.entity.Member;
 import com.newyear.mainproject.member.service.MemberService;
 import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.service.PlanService;
+import com.newyear.mainproject.security.logout.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberService memberService;
     private final LikesRepository likesRepository;
     private final PlanService planService;
+    private final RedisUtil redisUtil;
 
     public Board createBoard(Board board, long planId) {
         Member member = memberService.getLoginMember();
         Plan plan = planService.findPlan(planId);
+
         //해당 plan 작성자만 board 생성 가능
         if (!plan.getMember().equals(member)) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
 
         //만약 해당 일정에 게시판이 작성되어 있다면 예외
-        boardRepository.findAll().forEach(oneBoard -> {
-            if (oneBoard.getPlan().getPlanId() == planId) {
-                throw new BusinessLogicException(ExceptionCode.BOARD_EXISTS);
-            }
-        });
-
+        if (!boardRepository.findAllByPlan(plan).isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.BOARD_EXISTS);
+        }
 
         //이 일정에 대한 게시물 등록하면 true 값으로 수정
         plan.setBoardCheck(true);
         planService.updatePlan(plan);
-
 
         board.setMember(member);
         board.setPlan(plan);
@@ -83,9 +87,13 @@ public class BoardService {
         boardRepository.delete(findBoard);
     }
 
-    @Transactional(readOnly = true)
     public Board findBoard(long boardId) {
-        return findExistsBoard(boardId);
+        Board findBoard = findExistsBoard(boardId);
+
+        if (isFirstRequest(boardId)) {
+            viewCount(findBoard);
+        }
+        return findBoard;
     }
 
     @Transactional(readOnly = true)
@@ -96,12 +104,6 @@ public class BoardService {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
         }
         return findPlan;
-    }
-
-    //조회수
-    public void viewCount(Board board) {
-        board.setViews(board.getViews() + 1);
-        boardRepository.save(board);
     }
 
     /*
@@ -128,19 +130,6 @@ public class BoardService {
     public List<Board> findBoards(String tab) {
         return boardRepository.findAll(Sort.by(tab).descending());
     }
-
-    // 지역으로 검색
-//    @Transactional(readOnly = true)
-//    public Page<Board> findCityBoards(int page, int size, String cityName, String tab) {
-//        List<Board> boards = boardRepository.findAll(Sort.by(tab).descending());
-//        List<Board> findBoards = boards.stream().filter(board -> board.getPlan().getCityName().equals(cityName)).collect(Collectors.toList());
-//
-//        Pageable pageable = PageRequest.of(page, size);
-//        int start = (int) pageable.getOffset();
-//        int end = (start + pageable.getPageSize()) > findBoards.size() ? findBoards.size() : (start + pageable.getPageSize());
-//
-//        return new PageImpl<>(findBoards.subList(start, end), pageable , findBoards.size());
-//    }
 
     //좋아요 등록 & 해제
     public void clickLikes(long boardId) {
@@ -174,5 +163,53 @@ public class BoardService {
     private Board findExistsBoard(long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+    }
+
+
+    /*
+    * 게시판
+    * 조회수
+    * */
+    private void viewCount(Board board) {
+        board.setViews(board.getViews() + 1);
+        boardRepository.save(board);
+    }
+
+    //방문한 게시판은 1시간 후에 조회수 증가 허용
+    private boolean isFirstRequest(long boardId) {
+        String key;
+        String add = "_" + boardId + "_";
+
+        try {
+            key = memberService.getLoginMember().getMemberId() + "_visit"; //회원인 경우 key 값
+        } catch (BusinessLogicException e) {
+            if (getIp() == null) return false;
+            key = getIp() + "_visit"; //비회원인 경우 key 값
+        }
+
+        if (redisUtil.hasKey(key)) {
+            String value = redisUtil.get(key).toString();
+            if (value.contains(add)) { //이미 방문한 게시판
+                return false;
+            }
+            redisUtil.set(key, value + boardId + "_", 60); //처음 방문하는 게시판
+            return true;
+        }
+        redisUtil.set(key, add, 60); //초기 세팅
+
+        return true;
+    }
+
+    //비회원인 경우 ip 주소로 식별
+    private String getIp() {
+
+        InetAddress ip = null;
+
+        try {
+            ip = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            log.info(e.getMessage());
+        }
+        return String.valueOf(ip);
     }
 }
