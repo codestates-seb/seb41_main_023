@@ -1,11 +1,9 @@
 package com.newyear.mainproject.member.service;
 
-import com.newyear.mainproject.comment.repository.CommentRepository;
-import com.newyear.mainproject.board.repository.BoardRepository;
-import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.member.entity.Member;
+import com.newyear.mainproject.member.repository.MemberRepository;
 import com.newyear.mainproject.plan.service.PlanService;
 import com.newyear.mainproject.security.logout.RedisUtil;
 import com.newyear.mainproject.security.utils.CustomAuthorityUtils;
@@ -32,32 +30,24 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
-    private final BoardRepository boardRepository;
-    private final CommentRepository commentRepository;
     private final S3Service s3Service;
     private final RedisUtil redisUtil;
     private final PlanService planService;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils,
-                         BoardRepository boardRepository, CommentRepository commentRepository, S3Service s3Service, RedisUtil redisUtil,
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils
+                         , S3Service s3Service, RedisUtil redisUtil,
                          @Lazy PlanService planService) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;
-        this.boardRepository = boardRepository;
-        this.commentRepository = commentRepository;
         this.s3Service = s3Service;
         this.redisUtil = redisUtil;
         this.planService = planService;
     }
 
     public Member createMember(Member member) {
-        //추후 확장성을 위한 회원 삭제 설정
         if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
-            Member findMember = memberRepository.findByEmail(member.getEmail()).get();
-            if (findMember.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)) {
-                memberRepository.delete(findMember);
-            } else throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
 
         //이메일 인증 전 회원 가입 요청시 예외
@@ -140,22 +130,15 @@ public class MemberService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_LOGIN);
         }
 
-        member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
-        memberRepository.save(member);
-
-        //회원 탈퇴시 board, comment 삭제
-        boardRepository.deleteAll(member.getBoards());
-        commentRepository.deleteAll(member.getComments());
+//        member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
+//        memberRepository.save(member);
 
         //refresh token 삭제
         if (redisUtil.hasKey(member.getEmail())) {
             redisUtil.delete(member.getEmail());
         }
 
-        //추후 확장성을 위한 소셜회원 삭제 설정
-        if (member.getPassword().equals("GOOGLE") || member.getPassword().equals("KAKAO") || member.getPassword().equals("FACEBOOK")) {
-            memberRepository.delete(member);
-        }
+        memberRepository.delete(member);
     }
 
     private void verifyExistsEmail(String email) {
