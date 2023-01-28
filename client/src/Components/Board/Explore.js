@@ -43,11 +43,14 @@ const Explore = props => {
   // 게시판 접근시
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=boardId`, {
-        headers: {
-          Authorization: token,
+      .get(
+        `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=boardId`,
+        {
+          headers: {
+            Authorization: token,
+          },
         },
-      })
+      )
       .then(res => {
         setExploreList(res.data.data);
       })
