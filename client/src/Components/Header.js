@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
-import { postData } from '../Util/api.js';
+import cuteBird from '../images/cute_bird.png';
 import { getCookie, removeCookie } from '../Util/Cookies';
+import { postData } from '../Util/api';
 
 const Header = ({ login }) => {
   const navigate = useNavigate();
@@ -38,27 +39,32 @@ const Header = ({ login }) => {
   };
 
   // 로그아웃
-  const handleSignout = () => {
+  const handleSignOut = async () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
-      postData('/members/logout', {
+      await postData('/members/logout', {
         headers: {
           Authorization: token,
         },
-      })
-        .then(res => {
-          removeCookie('accessToken');
-          removeCookie('memberId');
-          localStorage.removeItem('refreshToken');
-        })
-        .then(res => window.location.replace('/'));
+      }).then(res => {
+        removeCookie('accessToken');
+        removeCookie('memberId');
+        localStorage.removeItem('refreshToken');
+        window.location.replace('/');
+      });
     }
   };
 
   return (
     <HeadContainer className="header__container">
       <LeftSection>
+        <img
+          src={cuteBird}
+          alt="Logo"
+          className="logo__image"
+          onClick={() => handleNavigate('/')}
+        />
         <div className="header__logo" onClick={() => handleNavigate('/')}>
-          website name
+          Tridom
         </div>
         <button
           className="button--default button--subtle"
@@ -77,7 +83,7 @@ const Header = ({ login }) => {
             />
             <button
               className="button--default button--subtle"
-              onClick={handleSignout}
+              onClick={handleSignOut}
             >
               Sign out
             </button>
@@ -120,11 +126,7 @@ const LeftSection = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
-  margin-left: 50px;
-
-  .header__logo {
-    cursor: pointer;
-  }
+  margin-left: 40px;
 `;
 
 const RightSection = styled.div`

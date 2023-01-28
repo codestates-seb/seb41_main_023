@@ -8,11 +8,14 @@ import SingleComment from './SingleComment';
 import { getCookie } from '../../../Util/Cookies';
 import Pagination from '../../../Util/Pagination';
 
-const CommentSection = ({ boardData }) => {
+const CommentSection = () => {
   const { boardId } = useParams();
+  const memberId = getCookie('memberId');
+  const [memberData, setMemberData] = useState({
+    profileImage: '',
+  });
   const [commentList, setCommentList] = useState([]);
   const [commentRefresh, setCommentRefresh] = useState(1);
-  const [comment, setComment] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(3);
   const offset = (page - 1) * limit;
@@ -20,7 +23,7 @@ const CommentSection = ({ boardData }) => {
   const handleCommentRefresh = () => {
     setCommentRefresh(prevState => prevState * -1);
   };
-
+  //수정
   const handleCommentSubmit = () => {
     const commentData = { comment: commentRef.current?.value };
     axios
@@ -61,6 +64,17 @@ const CommentSection = ({ boardData }) => {
       .catch(err => console.log(err));
   }, [boardId, commentRefresh]);
 
+  useEffect(() => {
+    if (memberId) {
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`)
+        .then(res => {
+          setMemberData(res.data);
+        })
+        .catch(err => console.log(err));
+    }
+  }, []);
+
   return (
     <CommentWrapper>
       <h3 className="comment__heading">{commentList.length} Comments</h3>
@@ -79,28 +93,30 @@ const CommentSection = ({ boardData }) => {
                 />
               ))}
         </CommentContainer>
-        <CommentInputContainer>
-          <div className="comment__user-image">
-            <img
-              src={boardData.profileImage}
-              alt={`${boardData.displayName}의 이미지`}
+        {memberId && (
+          <CommentInputContainer>
+            <div className="comment__user-image">
+              <img
+                src={memberData.profileImage}
+                alt={`${memberData.displayName}의 이미지`}
+              />
+            </div>
+            <input
+              className="input--default"
+              type={'text'}
+              placeholder={'Add a question or share your opinion!!'}
+              ref={commentRef}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  return handleCommentSubmit();
+                }
+              }}
             />
-          </div>
-          <input
-            className="input--default"
-            type={'text'}
-            placeholder={'Add a question or share your opinion!!'}
-            ref={commentRef}
-            onKeyUp={e => {
-              if (e.key === 'Enter') {
-                return handleCommentSubmit();
-              }
-            }}
-          />
-          <button className="button--primary" onClick={handleCommentSubmit}>
-            댓글 쓰기
-          </button>
-        </CommentInputContainer>
+            <button className="button--primary" onClick={handleCommentSubmit}>
+              댓글 쓰기
+            </button>
+          </CommentInputContainer>
+        )}
       </div>
       <Pagination
         total={commentList.length}

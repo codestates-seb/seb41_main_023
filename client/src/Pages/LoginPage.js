@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
 import { setCookie } from '../Util/Cookies';
 import bgImage from '../images/login-page_side-image.jpg';
+import cuteBird from '../images/cute_bird.png';
 
 const LoginPage = () => {
   const eref = useRef();
@@ -77,7 +78,7 @@ const LoginPage = () => {
   // email
   const onChangeEmail = useCallback(e => {
     const emailRegex =
-      /^[0-9a-zA-Z]{4,}([-_.]?[0-9a-zA-Z])*@[a-zA-Z]{3,}([-_.]?[a-zA-Z])*.[a-zA-Z]{2,}$/i;
+      /^[0-9a-zA-Z_]{4,}([-_.]?[0-9a-zA-Z])*@[a-zA-Z]{3,}([-_.]?[a-zA-Z])*.[a-zA-Z]{2,}$/i;
     setEmail(e.target.value);
 
     if (!emailRegex.test(e.target.value)) {
@@ -119,13 +120,14 @@ const LoginPage = () => {
   return (
     <>
       <Header>
+        <img
+          src={cuteBird}
+          alt="Logo"
+          className="logo__image"
+          onClick={() => navigate('/')}
+        />
         <Link to="/">
-          <div className="header__logo">website name</div>
-        </Link>
-        <Link to="/board">
-          <button className="button--default button--subtle">
-            Travel logs
-          </button>
+          <div className="header__logo">Tridom</div>
         </Link>
       </Header>
       <LeftContainer>

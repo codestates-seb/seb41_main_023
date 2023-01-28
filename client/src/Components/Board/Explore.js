@@ -17,12 +17,12 @@ const Explore = props => {
   const observerTargetEl = useRef(null);
   const page = useRef(2);
 
-  // 무한 스크롤
+  // 무한 스크롤 수정
   const fetchMoreExplores = useCallback(async () => {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/board?page=${page.current}&size=5&tab=boardId`,
+        `${process.env.REACT_APP_API_URL}/board?page=${page.current}&size=10&tab=boardId`,
         {
           headers: {
             Authorization: token,
@@ -40,7 +40,7 @@ const Explore = props => {
       .catch(err => console.log(err));
   }, [page.current]);
 
-  // 게시판 접근 시
+  // 게시판 접근시
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=boardId`, {
@@ -94,7 +94,7 @@ const Explore = props => {
         // 메인
         axios
           .get(
-            `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=boardId`,
+            `${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=boardId`,
             {
               headers: {
                 Authorization: token,
@@ -141,19 +141,21 @@ const Explore = props => {
                 />
                 <span>{explore.displayName} </span>
               </div>
-              <div
-                className={
-                  explore.checkLikes ? 'meta_likes likes' : 'meta_likes'
-                }
-              >
-                <svg viewBox="0 0 16 16">
-                  <path
-                    fillRule="evenodd"
-                    fill="currentColor"
-                    d="M7.29583817,13.7871612 C7.68473613,14.1808512 8.31605486,14.1828078 8.70304958,13.7885531 C8.70304958,13.7885531 10.9002368,11.6291175 13,9.00215315 C15,6.50000023 15.5000002,3.49999998 13,2.00000001 C10.5031852,0.501911222 8.00000022,3.00000005 8.00000022,3.00000005 C8.00000022,3.00000005 5.49772957,0.501362336 3.00000005,2.00000001 C0.500000019,3.49999999 0.999999993,6.50000023 2.99999999,9.00215315 C5.09401769,11.6219294 7.29583817,13.7871612 7.29583817,13.7871612 Z"
-                  ></path>
-                </svg>
-              </div>
+              {token && (
+                <div
+                  className={
+                    explore.checkLikes ? 'meta_likes likes' : 'meta_likes'
+                  }
+                >
+                  <svg viewBox="0 0 16 16">
+                    <path
+                      fillRule="evenodd"
+                      fill="currentColor"
+                      d="M7.29583817,13.7871612 C7.68473613,14.1808512 8.31605486,14.1828078 8.70304958,13.7885531 C8.70304958,13.7885531 10.9002368,11.6291175 13,9.00215315 C15,6.50000023 15.5000002,3.49999998 13,2.00000001 C10.5031852,0.501911222 8.00000022,3.00000005 8.00000022,3.00000005 C8.00000022,3.00000005 5.49772957,0.501362336 3.00000005,2.00000001 C0.500000019,3.49999999 0.999999993,6.50000023 2.99999999,9.00215315 C5.09401769,11.6219294 7.29583817,13.7871612 7.29583817,13.7871612 Z"
+                    ></path>
+                  </svg>
+                </div>
+              )}
             </div>
           ))
         ) : (

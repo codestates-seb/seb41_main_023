@@ -19,8 +19,8 @@ const BoardHeader = ({
     <TopContainer>
       <div className="top__gradient-bg"></div>
       <Header>
-        <div className="header__logo" onClick={() => navigate('/')}>
-          website name
+        <div className="header__logo back__button" onClick={() => navigate(-1)}>
+          Back
         </div>
         <div className="top__button-container">
           {mode === Mode.Write ? (
@@ -100,7 +100,7 @@ const TopContainer = styled.nav`
 `;
 
 const Header = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: space-between;

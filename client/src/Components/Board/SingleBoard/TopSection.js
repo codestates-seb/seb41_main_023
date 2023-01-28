@@ -24,7 +24,7 @@ const TopSection = props => {
     boardId,
   } = boardData;
 
-  // 좋아요
+  // 좋아요 기능
   const changeLikes = boardId => {
     axios
       .post(
@@ -44,8 +44,8 @@ const TopSection = props => {
     <TopContainer cityImage={cityImage}>
       <div className="top__gradient-bg"></div>
       <Header>
-        <div className="header__logo" onClick={() => navigate('/')}>
-          website name
+        <div className="header__logo back__button" onClick={() => navigate(-1)}>
+          Back
         </div>
         <div className="edit__like">
           {memberId === Number(logInMemberId) && (
@@ -58,21 +58,23 @@ const TopSection = props => {
               </button>
             </div>
           )}
-          <div
-            className={checkLikes ? 'meta_likes likes' : 'meta_likes'}
-            onClick={e => {
-              e.stopPropagation();
-              changeLikes(boardId);
-            }}
-          >
-            <svg viewBox="0 0 16 16">
-              <path
-                fillRule="evenodd"
-                fill="currentColor"
-                d="M7.29583817,13.7871612 C7.68473613,14.1808512 8.31605486,14.1828078 8.70304958,13.7885531 C8.70304958,13.7885531 10.9002368,11.6291175 13,9.00215315 C15,6.50000023 15.5000002,3.49999998 13,2.00000001 C10.5031852,0.501911222 8.00000022,3.00000005 8.00000022,3.00000005 C8.00000022,3.00000005 5.49772957,0.501362336 3.00000005,2.00000001 C0.500000019,3.49999999 0.999999993,6.50000023 2.99999999,9.00215315 C5.09401769,11.6219294 7.29583817,13.7871612 7.29583817,13.7871612 Z"
-              ></path>
-            </svg>
-          </div>
+          {token && (
+            <div
+              className={checkLikes ? 'meta_likes likes' : 'meta_likes'}
+              onClick={e => {
+                e.stopPropagation();
+                changeLikes(boardId);
+              }}
+            >
+              <svg viewBox="0 0 16 16">
+                <path
+                  fillRule="evenodd"
+                  fill="currentColor"
+                  d="M7.29583817,13.7871612 C7.68473613,14.1808512 8.31605486,14.1828078 8.70304958,13.7885531 C8.70304958,13.7885531 10.9002368,11.6291175 13,9.00215315 C15,6.50000023 15.5000002,3.49999998 13,2.00000001 C10.5031852,0.501911222 8.00000022,3.00000005 8.00000022,3.00000005 C8.00000022,3.00000005 5.49772957,0.501362336 3.00000005,2.00000001 C0.500000019,3.49999999 0.999999993,6.50000023 2.99999999,9.00215315 C5.09401769,11.6219294 7.29583817,13.7871612 7.29583817,13.7871612 Z"
+                ></path>
+              </svg>
+            </div>
+          )}
         </div>
       </Header>
       <TripInfo>
@@ -140,7 +142,7 @@ const TopContainer = styled.div`
 `;
 
 const Header = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -152,6 +154,7 @@ const Header = styled.div`
   > * {
     cursor: pointer;
   }
+
   > .edit__like {
     display: flex;
     justify-content: space-between;

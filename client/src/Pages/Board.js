@@ -8,16 +8,11 @@ import Explore from '../Components/Board/Explore';
 import bgImg from '../images/login_background-image.jpg';
 
 const Board = () => {
-  console.log('Board!');
   const [login, setLogin] = useState(false);
   const [destination, setDestination] = useState('');
   const [searches, setSearches] = useState(false);
 
   const navigate = useNavigate();
-
-  // const url = searches
-  //     ? `/board/plan?city=${destination}&tab=boardId`
-  //     : `/board?page=${page.current}&size=5&tab=views`;
 
   useEffect(() => {
     if (getCookie('accessToken')) {
@@ -41,8 +36,12 @@ const Board = () => {
     if (login) {
       navigate('/board/plan');
     } else {
-      alert('로그인 후 이용해주세요.');
-      navigate('/login');
+      if (
+        window.confirm(
+          '게시글 작성은 로그인 후에 사용 가능합니다. 로그인하시겠습니까?',
+        )
+      )
+        navigate('/login');
     }
   };
 

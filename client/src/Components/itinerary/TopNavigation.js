@@ -49,7 +49,8 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 50px;
+  margin-right: 50px;
+  margin-left: 30px;
   height: 60px;
   width: calc(50vw - 100px);
   z-index: 100;
@@ -101,6 +102,28 @@ const TripInfo = styled.div`
 
     .button__date {
       background: transparent;
+      padding: 6px;
+      border: 1px solid var(--light-gray-4);
+      border-radius: 3px;
+
+      span {
+        font-size: var(--large-text-size);
+        line-height: var(--large-text-line-height);
+        color: var(--light-gray-3);
+      }
+
+      &:hover {
+        background-color: var(--white);
+        border-color: var(--light-gray-4);
+
+        .start__date {
+          color: var(--black);
+        }
+
+        .end__date {
+          color: var(--black);
+        }
+      }
     }
 
     .button__change-date {
@@ -115,12 +138,6 @@ const TripInfo = styled.div`
         color: var(--dark-gray-2);
         border-color: var(--light-gray-4);
       }
-    }
-
-    span {
-      font-size: var(--large-text-size);
-      line-height: var(--large-text-line-height);
-      color: var(--light-gray-3);
     }
   }
 
@@ -152,7 +169,7 @@ const TopNavigation = props => {
   const { itineraryId } = useParams();
   const navigate = useNavigate();
   const [showCalendar, setShowCalendar] = useState(false);
-
+  //수정
   const handleDate = date => {
     setStartDate(formatDate(date[0].startDate));
     setEndDate(formatDate(date[0].endDate));
@@ -257,7 +274,6 @@ const TopNavigation = props => {
                 },
               })
               .then(res => {
-                console.log('deleted plan!!');
                 navigate('/', { replace: true });
               })
               .catch(err => console.log(err));
@@ -270,7 +286,6 @@ const TopNavigation = props => {
             },
           })
           .then(res => {
-            console.log('deleted plan!!');
             navigate('/', { replace: true });
           })
           .catch(err => console.log(err));
@@ -282,13 +297,15 @@ const TopNavigation = props => {
     <TopContainer cityImage={mainData.city?.cityImage}>
       <div className="top__gradient-bg"></div>
       <Header>
-        <div className="header__logo" onClick={() => navigate('/')}>
-          website name
+        <div className="header__logo back__button" onClick={() => navigate(-1)}>
+          Back
         </div>
         <div className={'button--container'}>
           <button
             className="button--primary"
-            onClick={() => navigate(`/`, { replace: true })}
+            onClick={() => {
+              navigate(`/`, { replace: true });
+            }}
           >
             Save Trip
           </button>
@@ -300,7 +317,7 @@ const TopNavigation = props => {
           </button>
         </div>
       </Header>
-      <TripInfo>
+      <TripInfo ref={outSideRef}>
         <input
           onChange={e => setTitle(e.target.value)}
           value={title}
@@ -311,23 +328,26 @@ const TopNavigation = props => {
               return changeTitleHandler();
             }
           }}
+          onMouseOut={() => changeTitleHandler()}
         />
         <div className="trip__info-date">
           <button className="button__date" onClick={handleCalendar}>
-            <span>{formatDateKo(mainData.startDate)} -</span>
-            <span> {formatDateKo(mainData.endDate)}</span>
+            <span className="start__date">
+              {formatDateKo(mainData.startDate)} -
+            </span>
+            <span className="end__date"> {formatDateKo(mainData.endDate)}</span>
           </button>
-          <button
-            className="button__change-date"
-            onClick={changeDateHandler}
-            disabled={showCalendar === false}
-          >
-            날짜 변경
-          </button>
+          {showCalendar && (
+            <button
+              className="button__change-date"
+              onClick={changeDateHandler}
+              disabled={!showCalendar}
+            >
+              날짜 변경
+            </button>
+          )}
         </div>
-        <div ref={outSideRef}>
-          {showCalendar ? <Calendar handleDate={handleDate} /> : null}
-        </div>
+        <div>{showCalendar ? <Calendar handleDate={handleDate} /> : null}</div>
       </TripInfo>
     </TopContainer>
   );

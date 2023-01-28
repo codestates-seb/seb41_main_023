@@ -13,10 +13,12 @@ const SingleComment = ({
   const userMemberId = Number(getCookie('memberId'));
   const [isEdit, setIsEdit] = useState(false);
   const editRef = useRef();
+  const [editMode, setEditMode] = useState(false);
   const handleEditMode = () => {
-    setIsEdit(prevState => !prevState);
+    setIsEdit(!isEdit);
+    setEditMode(!editMode);
   };
-
+  //수정
   const handleEditComment = commentId => {
     const editedComment = { comment: editRef.current?.value };
     axios
@@ -32,6 +34,7 @@ const SingleComment = ({
       .then(res => {
         handleCommentRefresh();
         setIsEdit(false);
+        setEditMode(!editMode);
       })
       .catch(err => {
         if (err.response.status === 400) {
@@ -63,7 +66,7 @@ const SingleComment = ({
           alt={`${comment.displayName}의 이미지`}
         />
       </div>
-      <div className="comment__content" onClick={handleEditMode}>
+      <div className="comment__content">
         <div className="comment__main">
           <div className="comment__info">
             <span className="comment__owner">{comment.displayName}</span> ·
@@ -103,7 +106,7 @@ const SingleComment = ({
           <div className="comment__controls">
             <button
               onClick={() => {
-                handleEditComment(commentId);
+                editMode ? handleEditComment(commentId) : handleEditMode();
               }}
             >
               <svg viewBox="0 0 16 16" className="svg-icon--20 icon__edit">

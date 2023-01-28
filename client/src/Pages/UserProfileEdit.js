@@ -1,10 +1,10 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
 import Header from '../Components/Header';
 import Footer from './Footer';
-import { General, Password, DeleteAccount } from '../Components/user/Tab';
+import { DeleteAccount, General, Password } from '../Components/user/Tab';
 
 import { getCookie } from '../Util/Cookies';
 
@@ -126,7 +126,7 @@ const UserProfileEdit = () => {
           data: formData,
         }).then(res => {
           setUserInfo({ ...userInfo, profileImage: res.data.profileImage });
-          handleRefresh();
+          window.location.reload();
         });
       }
     };

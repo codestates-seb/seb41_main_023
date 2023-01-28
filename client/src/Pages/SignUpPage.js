@@ -7,6 +7,7 @@ import Modal from '../Components/user/Modal';
 
 import { getCookie } from '../Util/Cookies';
 import bgImage from '../images/signup-page_side-image.jpg';
+import cuteBird from '../images/cute_bird.png';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -95,7 +96,7 @@ const SignUpPage = () => {
   // email
   const onChangeEmail = useCallback(e => {
     const emailRegex =
-      /^[0-9a-zA-Z]{4,}([-_.]?[0-9a-zA-Z])*@[a-zA-Z]{3,}([-_.]?[a-zA-Z])*.[a-zA-Z]{2,}$/i;
+      /^[0-9a-zA-Z_]{4,}([-_.]?[0-9a-zA-Z])*@[a-zA-Z]{3,}([-_.]?[a-zA-Z])*.[a-zA-Z]{2,}$/i;
     setEmail(e.target.value);
 
     if (!emailRegex.test(e.target.value)) {
@@ -193,13 +194,14 @@ const SignUpPage = () => {
   return (
     <>
       <Header>
+        <img
+          src={cuteBird}
+          alt="Logo"
+          className="logo__image"
+          onClick={() => navigate('/')}
+        />
         <Link to="/">
-          <div className="header__logo">website name</div>
-        </Link>
-        <Link to="/board">
-          <button className="button--default button--subtle">
-            Travel logs
-          </button>
+          <div className="header__logo">Tridom</div>
         </Link>
       </Header>
       <LeftContainer>
@@ -302,7 +304,7 @@ const SignUpPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate('//sebmain41team23.shop/oauth2/authorization/google')
+              navigate(`${process.env.REACT_APP_API_SOCIAL_LOGIN}/google`)
             }
           >
             <svg
@@ -335,7 +337,7 @@ const SignUpPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate('//sebmain41team23.shop/oauth2/authorization/kakao')
+              navigate(`${process.env.REACT_APP_API_SOCIAL_LOGIN}/kakao`)
             }
           >
             <svg
@@ -362,7 +364,7 @@ const SignUpPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate('//sebmain41team23.shop/oauth2/authorization/facebook')
+              navigate(`${process.env.REACT_APP_API_SOCIAL_LOGIN}/facebook`)
             }
           >
             <svg

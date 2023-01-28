@@ -56,7 +56,6 @@ const PlanSection = props => {
 
   // 비용 추가 요청
   const handleAddExpense = (price, selectedCategory, item, placeId) => {
-    console.log(price, selectedCategory, item, placeId);
     if (budget.expectedBudget < 1) {
       return alert('예산을 설정해주세요.');
     } else if (

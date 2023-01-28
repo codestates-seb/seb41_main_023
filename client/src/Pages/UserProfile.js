@@ -33,7 +33,7 @@ const UserProfile = () => {
   }, []);
 
   // 로그아웃 요청
-  const handleSignout = async () => {
+  const handleSignOut = async () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
       await postData('/members/logout', {
         headers: {
@@ -72,7 +72,7 @@ const UserProfile = () => {
               </button>
               <button
                 className="button--default button--subtle"
-                onClick={handleSignout}
+                onClick={handleSignOut}
               >
                 Sign out
               </button>

@@ -56,8 +56,6 @@ const Home = ({ login }) => {
 
   // 일정 생성 요청
   const handleSubmit = async (destination, startDate, endDate) => {
-    // console.log(destination, startDate, endDate);
-
     //장소가 입력되지 않았을 때 포커싱
     if (destination.length <= 1) {
       inputRef.current.focus();

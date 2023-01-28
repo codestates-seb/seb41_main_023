@@ -13,7 +13,7 @@ import { getCookie } from '../Util/Cookies';
 const SingleBoard = () => {
   const { boardId } = useParams();
   const token = getCookie('accessToken');
-
+  //수정
   const [boardData, setBoardData] = useState({
     boardId: boardId,
     title: '',
@@ -76,7 +76,7 @@ const SingleBoard = () => {
             handleGeoCode={handleGeoCode}
           />
           <BoardSection boardData={boardData} handleGeoCode={handleGeoCode} />
-          <CommentSection boardData={boardData} />
+          <CommentSection />
         </BoardWrapper>
       ) : null}
     </Fragment>
