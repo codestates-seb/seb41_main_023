@@ -23,7 +23,7 @@ const CommentSection = () => {
   const handleCommentRefresh = () => {
     setCommentRefresh(prevState => prevState * -1);
   };
-
+  //수정
   const handleCommentSubmit = () => {
     const commentData = { comment: commentRef.current?.value };
     axios

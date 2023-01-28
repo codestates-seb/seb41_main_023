@@ -17,7 +17,7 @@ const Explore = props => {
   const observerTargetEl = useRef(null);
   const page = useRef(2);
 
-  // 무한 스크롤
+  // 무한 스크롤 수정
   const fetchMoreExplores = useCallback(async () => {
     setLoading(true);
     await axios

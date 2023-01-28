@@ -18,7 +18,7 @@ const SingleComment = ({
     setIsEdit(!isEdit);
     setEditMode(!editMode);
   };
-
+  //수정
   const handleEditComment = commentId => {
     const editedComment = { comment: editRef.current?.value };
     axios
