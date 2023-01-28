@@ -66,6 +66,9 @@ const PlanSection = props => {
       setAddExpenseModal(true);
     } else if (price < 1) {
       return alert('지출 금액은 1원 이상이어야 합니다.');
+    } else if (!selectedCategory) {
+      alert('카테고리를 선택해주세요!');
+      setAddExpenseModal(true);
     } else {
       axios
         .post(
@@ -89,7 +92,9 @@ const PlanSection = props => {
           handleRefresh();
           handleBudgetRefresh();
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+        });
     }
   };
 

@@ -28,7 +28,7 @@ const SingleBoardMarker = ({ day, handleZoom }) => {
     lng: 0,
   });
 
-  const makeColor = day => {
+  const makeColor = date => {
     if (date % 7 === 0) return 'deepskyblue';
     if (date % 7 === 1) return 'orchid';
     if (date % 7 === 2) return 'lightcoral';
@@ -38,7 +38,7 @@ const SingleBoardMarker = ({ day, handleZoom }) => {
     if (date % 7 === 6) return 'turquoise';
   };
 
-  const makeStrokeColor = day => {
+  const makeStrokeColor = date => {
     if (date % 7 === 0) return 'dodgerblue';
     if (date % 7 === 1) return 'mediumorchid';
     if (date % 7 === 2) return 'indianred';
@@ -48,7 +48,7 @@ const SingleBoardMarker = ({ day, handleZoom }) => {
     if (date % 7 === 6) return 'darkturquoise';
   };
 
-  const makeLabelColor = day => {
+  const makeLabelColor = date => {
     if (date % 7 === 0) return '#115496';
     if (date % 7 === 1) return '#7d1596';
     if (date % 7 === 2) return '#731717';

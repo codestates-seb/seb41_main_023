@@ -145,6 +145,9 @@ const AddExpense = props => {
                   ) {
                     setAddExpenseModal(true);
                     setInputs({ price: '', item: '' });
+                  } else if (!selectedCategory) {
+                    setAddExpenseModal(true);
+                    setInputs({ price: '', item: '' });
                   } else {
                     handleClear();
                     handleRefresh();
