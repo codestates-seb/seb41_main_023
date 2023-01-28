@@ -13,8 +13,10 @@ const SingleComment = ({
   const userMemberId = Number(getCookie('memberId'));
   const [isEdit, setIsEdit] = useState(false);
   const editRef = useRef();
+  const [editMode, setEditMode] = useState(false);
   const handleEditMode = () => {
-    setIsEdit(prevState => !prevState);
+    setIsEdit(!isEdit);
+    setEditMode(!editMode);
   };
 
   const handleEditComment = commentId => {
@@ -32,6 +34,7 @@ const SingleComment = ({
       .then(res => {
         handleCommentRefresh();
         setIsEdit(false);
+        setEditMode(!editMode);
       })
       .catch(err => {
         if (err.response.status === 400) {
@@ -63,7 +66,7 @@ const SingleComment = ({
           alt={`${comment.displayName}의 이미지`}
         />
       </div>
-      <div className="comment__content" onClick={handleEditMode}>
+      <div className="comment__content">
         <div className="comment__main">
           <div className="comment__info">
             <span className="comment__owner">{comment.displayName}</span> ·
@@ -101,21 +104,19 @@ const SingleComment = ({
         </div>
         {userMemberId === memberId ? (
           <div className="comment__controls">
-            {isEdit && (
-              <button
-                onClick={() => {
-                  handleEditComment(commentId);
-                }}
-              >
-                <svg viewBox="0 0 16 16" className="svg-icon--20 icon__edit">
-                  <path
-                    fillRule="evenodd"
-                    fill="currentColor"
-                    d="M2.35675466,10.6432453 L8.64324534,4.35675466 C8.84064305,4.15935695 9.1593509,4.15929778 9.3559202,4.35580156 L11.6440798,6.64319844 C11.838707,6.83776073 11.8402755,7.15874732 11.6432453,7.35580563 L5.35675466,13.6431944 C5.15935695,13.8406203 4.7782068,14 4.50461102,14 L2.49538898,14 C2.2157526,14 2,13.7782068 2,13.504611 L2,11.495389 C2,11.2157526 2.1597245,10.8402755 2.35675466,10.6432453 Z M12.7109951,1.71135812 L14.2896049,3.28944188 C14.6796404,3.67934745 14.6824243,4.31845743 14.2896881,4.71080116 L13.3483476,5.65120077 C13.1568151,5.84254182 12.8404491,5.84010222 12.6438798,5.64359844 L10.3557202,3.35620156 C10.161093,3.16163927 10.1557721,2.84442791 10.3481734,2.65202659 L11.2890435,1.71115654 C11.6873,1.3129 12.3182129,1.31870679 12.7109951,1.71135812 Z"
-                  ></path>
-                </svg>
-              </button>
-            )}
+            <button
+              onClick={() => {
+                editMode ? handleEditComment(commentId) : handleEditMode();
+              }}
+            >
+              <svg viewBox="0 0 16 16" className="svg-icon--20 icon__edit">
+                <path
+                  fillRule="evenodd"
+                  fill="currentColor"
+                  d="M2.35675466,10.6432453 L8.64324534,4.35675466 C8.84064305,4.15935695 9.1593509,4.15929778 9.3559202,4.35580156 L11.6440798,6.64319844 C11.838707,6.83776073 11.8402755,7.15874732 11.6432453,7.35580563 L5.35675466,13.6431944 C5.15935695,13.8406203 4.7782068,14 4.50461102,14 L2.49538898,14 C2.2157526,14 2,13.7782068 2,13.504611 L2,11.495389 C2,11.2157526 2.1597245,10.8402755 2.35675466,10.6432453 Z M12.7109951,1.71135812 L14.2896049,3.28944188 C14.6796404,3.67934745 14.6824243,4.31845743 14.2896881,4.71080116 L13.3483476,5.65120077 C13.1568151,5.84254182 12.8404491,5.84010222 12.6438798,5.64359844 L10.3557202,3.35620156 C10.161093,3.16163927 10.1557721,2.84442791 10.3481734,2.65202659 L11.2890435,1.71115654 C11.6873,1.3129 12.3182129,1.31870679 12.7109951,1.71135812 Z"
+                ></path>
+              </svg>
+            </button>
             <button
               onClick={() => {
                 handleDeleteComment(commentId);
