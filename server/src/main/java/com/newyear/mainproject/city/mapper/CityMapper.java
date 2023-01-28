@@ -1,5 +1,7 @@
-package com.newyear.mainproject.city;
+package com.newyear.mainproject.city.mapper;
 
+import com.newyear.mainproject.city.dto.CityDto;
+import com.newyear.mainproject.city.entity.City;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
