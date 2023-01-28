@@ -40,7 +40,7 @@ const Explore = props => {
       .catch(err => console.log(err));
   }, [page.current]);
 
-  // 게시판 접근 시
+  // 게시판 접근시
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=boardId`, {

@@ -24,7 +24,7 @@ const TopSection = props => {
     boardId,
   } = boardData;
 
-  // 좋아요
+  // 좋아요 기능
   const changeLikes = boardId => {
     axios
       .post(
