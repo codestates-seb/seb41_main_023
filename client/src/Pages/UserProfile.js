@@ -119,6 +119,10 @@ const UserProfileContainer = styled.div`
   margin: 0 50px;
   margin-top: 160px;
 
+  .button--subtle {
+    border: 1px solid var(--light-gray-4);
+  }
+
   .my-logs {
     margin-bottom: 100px;
   }
@@ -170,6 +174,7 @@ const UserProfileContainer = styled.div`
     .user_edit {
       display: flex;
       flex-direction: column;
+      margin-top: 50px;
       gap: 0;
 
       > button:first-child {
