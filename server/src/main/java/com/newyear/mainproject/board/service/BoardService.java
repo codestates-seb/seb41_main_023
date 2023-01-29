@@ -19,8 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,6 +114,10 @@ public class BoardService {
 
         List<Board> boards = boardRepository.findAll(Sort.by(tab).descending())
                 .stream().distinct().collect(Collectors.toList());
+
+        if (tab.equals("likes")) {
+            boards.sort(Collections.reverseOrder(Comparator.comparing(b -> b.getLikes().size())));
+        }
 
         if (city != null) {
             boards = boards.stream().filter(board -> board.getPlan().getCityName().equals(city)).collect(Collectors.toList());
