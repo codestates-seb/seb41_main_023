@@ -131,8 +131,7 @@ public class BoardService {
     }
 
     public List<Board> findBoards(String tab) {
-        return boardRepository.findAll(Sort.by(tab).descending())
-                .stream().distinct().collect(Collectors.toList());
+        return boardRepository.findAll(Sort.by(tab).descending());
     }
 
     //좋아요 등록 & 해제
