@@ -14,8 +14,6 @@ public class Likes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long likesId;
 
-    private int likes;
-
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;
@@ -24,8 +22,7 @@ public class Likes {
     @JoinColumn(name = "boardId")
     private Board board;
 
-    public Likes(int likes, Member member, Board board) {
-        this.likes = likes;
+    public Likes(Member member, Board board) {
         this.member = member;
         this.board = board;
     }
