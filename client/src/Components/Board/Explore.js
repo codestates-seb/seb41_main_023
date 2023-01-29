@@ -15,7 +15,7 @@ const Explore = props => {
   const navigate = useNavigate();
 
   const observerTargetEl = useRef(null);
-  const page = useRef(2);
+  const page = useRef(1);
 
   // 무한 스크롤 수정
   const fetchMoreExplores = useCallback(async () => {
@@ -33,29 +33,14 @@ const Explore = props => {
         setTimeout(() => {
           setExploreList(prevState => [...prevState, ...res.data.data]);
           setLoading(false);
-        }, 1500);
-        setHasNextPage(res.data.data.length === 5);
+        }, 1000);
+        setHasNextPage(res.data.data.length === 10);
         if (res.data.data.length) page.current += 1;
       })
       .catch(err => console.log(err));
-  }, [page.current, props.mode]);
+  }, []);
 
   // 게시판 접근시
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=${props.mode}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      )
-      .then(res => {
-        setExploreList(res.data.data);
-      })
-      .catch(err => console.log(err));
-  }, [props.mode]);
 
   useEffect(() => {
     // 검색
@@ -76,28 +61,44 @@ const Explore = props => {
     } else {
       // 게시판
       if (window.location.pathname === '/board') {
-        if (!observerTargetEl.current || !hasNextPage) return;
-        const options = {
-          root: null,
-          rootMargin: '0px 0px -30px 0px',
-          threshold: 1,
-        };
+        if (props.mode === 'boardId') {
+          if (!observerTargetEl.current || !hasNextPage) return;
+          const options = {
+            root: null,
+            rootMargin: '0px 0px -30px 0px',
+            threshold: 1,
+          };
 
-        const io = new IntersectionObserver((entries, observer) => {
-          if (entries[0].isIntersecting) {
-            fetchMoreExplores();
-          }
-        }, options);
-        io.observe(observerTargetEl.current);
+          const io = new IntersectionObserver((entries, observer) => {
+            if (entries[0].isIntersecting) {
+              fetchMoreExplores();
+            }
+          }, options);
+          io.observe(observerTargetEl.current);
 
-        return () => {
-          io.disconnect();
-        };
+          return () => {
+            io.disconnect();
+          };
+        } else {
+          axios
+            .get(
+              `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=${props.mode}`,
+              {
+                headers: {
+                  Authorization: token,
+                },
+              },
+            )
+            .then(res => {
+              setExploreList(res.data.data);
+            })
+            .catch(err => console.log(err));
+        }
       } else {
         // 메인
         axios
           .get(
-            `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=${props.mode}`,
+            `${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=${props.mode}`,
             {
               headers: {
                 Authorization: token,
@@ -110,7 +111,7 @@ const Explore = props => {
           .catch(err => console.log(err));
       }
     }
-  }, [fetchMoreExplores, hasNextPage, token, props.destination, props.mode]);
+  }, [hasNextPage, token, props.destination, props.mode, fetchMoreExplores]);
 
   const handleNavigate = explore => {
     navigate(`/board/${explore.boardId}`);
@@ -192,7 +193,7 @@ const Explore = props => {
             </div>
           ))
         ) : (
-          <div className={'search__error'}>게시글이 없습니다</div>
+          <div className={'search__error'}>Not Found...</div>
         )}
         {loading ? <div className="loader"></div> : <div></div>}
         <div ref={observerTargetEl} className="target"></div>
