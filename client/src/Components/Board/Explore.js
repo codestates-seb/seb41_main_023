@@ -114,6 +114,8 @@ const Explore = props => {
 
   const handleNavigate = explore => {
     navigate(`/board/${explore.boardId}`);
+
+    console.log('ex: ', exploreList);
   };
 
   return (
@@ -135,6 +137,36 @@ const Explore = props => {
               <div className="meta_content">
                 {formatDateKo(explore.travelPeriod.split('-')[0])} -{' '}
                 {formatDateKo(explore.travelPeriod.split('-')[1])}
+              </div>
+              <div className="meta_content">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.5em"
+                  height="1.5em"
+                  viewBox="0 0 45 45"
+                >
+                  <path
+                    fill="#F44336"
+                    d="M34 9c-4.2 0-7.9 2.1-10 5.4C21.9 11.1 18.2 9 14 9C7.4 9 2 14.4 2 21c0 11.9 22 24 22 24s22-12 22-24c0-6.6-5.4-12-12-12z"
+                  />
+                </svg>
+                <span>{explore.likes}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.5em"
+                  height="1.5em"
+                  viewBox="0 0 32 27"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M30.94 15.66A16.69 16.69 0 0 0 16 5A16.69 16.69 0 0 0 1.06 15.66a1 1 0 0 0 0 .68A16.69 16.69 0 0 0 16 27a16.69 16.69 0 0 0 14.94-10.66a1 1 0 0 0 0-.68ZM16 25c-5.3 0-10.9-3.93-12.93-9C5.1 10.93 10.7 7 16 7s10.9 3.93 12.93 9C26.9 21.07 21.3 25 16 25Z"
+                  />
+                  <path
+                    fill="currentColor"
+                    d="M16 10a6 6 0 1 0 6 6a6 6 0 0 0-6-6Zm0 10a4 4 0 1 1 4-4a4 4 0 0 1-4 4Z"
+                  />
+                </svg>
+                <span>{explore.views}</span>
               </div>
               <div className="meta_profile">
                 <img
@@ -247,10 +279,14 @@ const ExploreContainer = styled.div`
         margin-bottom: 2px;
         color: var(--light);
 
-        > div {
-          /* margin-bottom: 2px;
-          text-transform: capitalize;
-          color: var(--light); */
+        svg {
+          padding-top: 5px;
+          margin-right: 5px;
+        }
+
+        span {
+          display: inline-block;
+          margin-right: 10px;
         }
       }
 
