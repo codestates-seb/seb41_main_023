@@ -1,7 +1,7 @@
 import Header from '../Components/Header';
 import Autocomplete from '../Components/AutoComplete';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../Util/Cookies';
 import Explore from '../Components/Board/Explore';
@@ -12,7 +12,6 @@ const Board = () => {
   const [destination, setDestination] = useState('');
   const [searches, setSearches] = useState(false);
   const [mode, setMode] = useState('boardId');
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,26 +65,27 @@ const Board = () => {
           <h2>Explore</h2>
           <div className={'selection__tab'}>
             <button
-              className={`button--default button--subtle ${
-                mode === 'boardId' ? 'active' : ''
-              }`}
-              onClick={() => setMode('boardId')}
+              className={`button--default button--subtle`}
+              onClick={() => {
+                window.location.reload();
+                setMode('boardId');
+              }}
             >
               최신순
             </button>
             <button
-              className={`button--default button--subtle ${
-                mode === 'likes' ? 'active' : ''
-              }`}
-              onClick={() => setMode('likes')}
+              className={`button--default button--subtle`}
+              onClick={() => {
+                setMode('likes');
+              }}
             >
               좋아요순
             </button>
             <button
-              className={`button--default button--subtle ${
-                mode === 'views' ? 'active' : ''
-              }`}
-              onClick={() => setMode('views')}
+              className={`button--default button--subtle`}
+              onClick={() => {
+                setMode('views');
+              }}
             >
               조회수순
             </button>
