@@ -30,15 +30,18 @@ function App() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (document.hasFocus()) {
+      if (localStorage.getItem('refreshToken')) {
         getAccessToken();
       }
-    }, 1800000);
+    }, 1790000);
 
-    if (performance.navigation.type === 1) {
+    if (
+      localStorage.getItem('refreshToken') &&
+      performance.navigation.type === 1
+    ) {
       setTimeout(() => {
         getAccessToken();
-      }, 600000);
+      }, 60000);
     }
 
     return () => {
