@@ -131,8 +131,11 @@ public class BoardService {
     }
 
     public List<Board> findBoards(String tab) {
-        return boardRepository.findAll(Sort.by(tab).descending())
-                .stream().distinct().collect(Collectors.toList());
+        List<Board> boards = boardRepository.findAll(Sort.by(tab).descending());
+        if (tab.equals("likes")) {
+            boards.sort(Collections.reverseOrder(Comparator.comparing(b -> b.getLikes().size())));
+        }
+        return boards;
     }
 
     //좋아요 등록 & 해제
