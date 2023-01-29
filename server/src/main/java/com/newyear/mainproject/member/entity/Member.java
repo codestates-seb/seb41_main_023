@@ -2,6 +2,7 @@ package com.newyear.mainproject.member.entity;
 
 import com.newyear.mainproject.board.entity.Board;
 import com.newyear.mainproject.comment.entity.Comment;
+import com.newyear.mainproject.plan.entity.Plan;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,11 +49,14 @@ public class Member{
     @Column(nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Board> boards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Plan> plans = new ArrayList<>();
 
     public enum MemberStatus{
         MEMBER_ACTIVE("활동중"),
