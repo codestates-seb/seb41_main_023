@@ -134,6 +134,7 @@ public class BoardService {
         List<Board> boards = boardRepository.findAll(Sort.by(tab).descending());
         if (tab.equals("likes")) {
             boards.sort(Collections.reverseOrder(Comparator.comparing(b -> b.getLikes().size())));
+            boards = boards.stream().distinct().collect(Collectors.toList());
         }
         return boards;
     }
