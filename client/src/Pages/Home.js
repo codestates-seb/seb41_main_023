@@ -86,7 +86,8 @@ const Home = ({ login }) => {
           .then(res => navigate(`/itinerary/${res.data.data.planId}`));
       } else {
         localStorage.setItem('plan', JSON.stringify(data));
-        navigate('/login');
+        if (window.confirm('로그인 후 이용 가능합니다. 로그인 하시겠습니까?'))
+          navigate('/login');
       }
     }
   };

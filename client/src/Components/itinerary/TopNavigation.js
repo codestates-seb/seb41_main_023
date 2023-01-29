@@ -75,6 +75,10 @@ const TripInfo = styled.div`
   margin: 0 50px;
   z-index: 100;
 
+  .input__trip-to {
+    width: 500px;
+  }
+
   > input {
     display: block;
     font-size: var(--xx-large-heading-font-size);
@@ -319,6 +323,7 @@ const TopNavigation = props => {
       </Header>
       <TripInfo ref={outSideRef}>
         <input
+          className="input__trip-to"
           onChange={e => setTitle(e.target.value)}
           value={title}
           onKeyUp={e => {
