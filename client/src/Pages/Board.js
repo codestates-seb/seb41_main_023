@@ -66,8 +66,9 @@ const Board = () => {
           <div className={'selection__tab'}>
             <button
               className={`button--default button--subtle`}
-              onClick={() => {
-                window.location.reload();
+              onClick={e => {
+                if (searches) e.preventDefault();
+                else window.location.reload();
                 setMode('boardId');
               }}
             >
