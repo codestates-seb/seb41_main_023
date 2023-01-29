@@ -59,7 +59,7 @@ const Explore = props => {
 
   useEffect(() => {
     // 검색
-    if (props.searches) {
+    if (props.search) {
       axios
         .get(
           `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=boardId&city=${props.destination}`,

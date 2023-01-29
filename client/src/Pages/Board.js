@@ -10,7 +10,7 @@ import bgImg from '../images/login_background-image.jpg';
 const Board = () => {
   const [login, setLogin] = useState(false);
   const [destination, setDestination] = useState('');
-  const [searches, setSearches] = useState(false);
+  const [search, setSearch] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const Board = () => {
   }, []);
 
   const handleSearch = () => {
-    setSearches(true);
+    setSearch(true);
   };
 
   const handleDestination = destination => {
@@ -54,7 +54,7 @@ const Board = () => {
             <h1>Explore travel logs and itineraries</h1>
             <Autocomplete
               handleDestination={handleDestination}
-              setSearches={setSearches}
+              setSearch={setSearch}
               handleSearch={handleSearch}
             />
           </div>
@@ -67,7 +67,7 @@ const Board = () => {
             Write log
           </button>
         </div>
-        <Explore searches={searches} destination={destination} />
+        <Explore search={search} destination={destination} />
         <button
           className="button--default button--subtle button--top"
           onClick={TopMove}
