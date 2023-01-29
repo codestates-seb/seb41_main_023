@@ -111,24 +111,25 @@ public class BoardService {
      tab=likes : 좋아요순
      tab=views : 조회수순
      */
-    @Transactional(readOnly = true)
     public Page<Board> findOptionalBoards(int page, int size, String tab, String city) {
+
+        List<Board> boards = boardRepository.findAll(Sort.by(tab).descending())
+                .stream().distinct().collect(Collectors.toList());
+
         if (city != null) {
-            List<Board> boards = boardRepository.findAll(Sort.by(tab).descending());
-            List<Board> findBoards = boards.stream().filter(board -> board.getPlan().getCityName().equals(city)).collect(Collectors.toList());
-
-            Pageable pageable = PageRequest.of(page, size);
-            int start = (int) pageable.getOffset();
-            int end = Math.min((start + pageable.getPageSize()), findBoards.size());
-
-            return new PageImpl<>(findBoards.subList(start, end), pageable , findBoards.size());
+            boards = boards.stream().filter(board -> board.getPlan().getCityName().equals(city)).collect(Collectors.toList());
         }
-        return boardRepository.findAll(PageRequest.of(page, size, Sort.by(tab).descending()));
+
+        Pageable pageable = PageRequest.of(page, size);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), boards.size());
+
+        return new PageImpl<>(boards.subList(start, end), pageable , boards.size());
     }
 
-    @Transactional(readOnly = true)
     public List<Board> findBoards(String tab) {
-        return boardRepository.findAll(Sort.by(tab).descending());
+        return boardRepository.findAll(Sort.by(tab).descending())
+                .stream().distinct().collect(Collectors.toList());
     }
 
     //좋아요 등록 & 해제
