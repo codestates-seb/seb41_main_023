@@ -11,6 +11,7 @@ const Board = () => {
   const [login, setLogin] = useState(false);
   const [destination, setDestination] = useState('');
   const [searches, setSearches] = useState(false);
+  const [mode, setMode] = useState('boardId');
 
   const navigate = useNavigate();
 
@@ -63,11 +64,37 @@ const Board = () => {
       <MainContainer>
         <div className="main__header">
           <h2>Explore</h2>
+          <div className={'selection__tab'}>
+            <button
+              className={`button--default button--subtle ${
+                mode === 'boardId' ? 'active' : ''
+              }`}
+              onClick={() => setMode('boardId')}
+            >
+              최신순
+            </button>
+            <button
+              className={`button--default button--subtle ${
+                mode === 'likes' ? 'active' : ''
+              }`}
+              onClick={() => setMode('likes')}
+            >
+              좋아요순
+            </button>
+            <button
+              className={`button--default button--subtle ${
+                mode === 'views' ? 'active' : ''
+              }`}
+              onClick={() => setMode('views')}
+            >
+              조회수순
+            </button>
+          </div>
           <button className="button--primary" onClick={handleWrite}>
             Write log
           </button>
         </div>
-        <Explore searches={searches} destination={destination} />
+        <Explore searches={searches} destination={destination} mode={mode} />
         <button
           className="button--default button--subtle button--top"
           onClick={TopMove}
@@ -130,6 +157,14 @@ const MainContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--spacing-4);
+
+    .selection__tab {
+      margin-left: 75%;
+      button {
+        margin: 0 5px;
+        border: 1px solid var(--light-gray-5);
+      }
+    }
   }
 
   h2 {

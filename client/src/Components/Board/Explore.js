@@ -22,7 +22,7 @@ const Explore = props => {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/board?page=${page.current}&size=10&tab=boardId`,
+        `${process.env.REACT_APP_API_URL}/board?page=${page.current}&size=10&tab=${props.mode}`,
         {
           headers: {
             Authorization: token,
@@ -38,13 +38,13 @@ const Explore = props => {
         if (res.data.data.length) page.current += 1;
       })
       .catch(err => console.log(err));
-  }, [page.current]);
+  }, [page.current, props.mode]);
 
   // 게시판 접근시
   useEffect(() => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=boardId`,
+        `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=${props.mode}`,
         {
           headers: {
             Authorization: token,
@@ -55,14 +55,14 @@ const Explore = props => {
         setExploreList(res.data.data);
       })
       .catch(err => console.log(err));
-  }, []);
+  }, [props.mode]);
 
   useEffect(() => {
     // 검색
     if (props.searches) {
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=boardId&city=${props.destination}`,
+          `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=${props.mode}&city=${props.destination}`,
           {
             headers: {
               Authorization: token,
@@ -97,7 +97,7 @@ const Explore = props => {
         // 메인
         axios
           .get(
-            `${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=boardId`,
+            `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=${props.mode}`,
             {
               headers: {
                 Authorization: token,
@@ -110,12 +110,10 @@ const Explore = props => {
           .catch(err => console.log(err));
       }
     }
-  }, [fetchMoreExplores, hasNextPage, token, props.destination]);
+  }, [fetchMoreExplores, hasNextPage, token, props.destination, props.mode]);
 
   const handleNavigate = explore => {
     navigate(`/board/${explore.boardId}`);
-
-    console.log('ex: ', exploreList);
   };
 
   return (
@@ -197,9 +195,7 @@ const Explore = props => {
           <div className={'search__error'}>게시글이 없습니다</div>
         )}
         {loading ? <div className="loader"></div> : <div></div>}
-        <div ref={observerTargetEl} className="target">
-          t
-        </div>
+        <div ref={observerTargetEl} className="target"></div>
       </div>
     </ExploreContainer>
   );
