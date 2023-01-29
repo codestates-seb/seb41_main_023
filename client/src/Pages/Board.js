@@ -1,7 +1,7 @@
 import Header from '../Components/Header';
 import Autocomplete from '../Components/AutoComplete';
 import styled from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../Util/Cookies';
 import Explore from '../Components/Board/Explore';
@@ -161,6 +161,7 @@ const MainContainer = styled.div`
 
     .selection__tab {
       margin-left: 75%;
+
       button {
         margin: 0 5px;
         border: 1px solid var(--light-gray-5);
