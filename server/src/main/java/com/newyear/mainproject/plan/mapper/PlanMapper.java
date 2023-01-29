@@ -2,8 +2,8 @@ package com.newyear.mainproject.plan.mapper;
 
 import com.newyear.mainproject.budget.dto.BudgetDto;
 import com.newyear.mainproject.budget.entity.Budget;
-import com.newyear.mainproject.city.City;
-import com.newyear.mainproject.city.CityDto;
+import com.newyear.mainproject.city.entity.City;
+import com.newyear.mainproject.city.dto.CityDto;
 import com.newyear.mainproject.exception.BusinessLogicException;
 import com.newyear.mainproject.exception.ExceptionCode;
 import com.newyear.mainproject.expense.dto.ExpenseDto;

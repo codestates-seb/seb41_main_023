@@ -8,6 +8,7 @@ import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.entity.PlanDates;
 import com.newyear.mainproject.plan.mapper.PlanMapper;
 import com.newyear.mainproject.plan.service.PlanService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +24,12 @@ import java.util.List;
 @RequestMapping("/plans")
 @Slf4j
 @Validated
+@RequiredArgsConstructor
 public class PlanController {
     private final PlanService planService;
     private final PlanMapper planMapper;
     private final MemberService memberService;
     private final BudgetService budgetService;
-
-
-    public PlanController(PlanService planService, PlanMapper planMapper, MemberService memberService, BudgetService budgetService) {
-        this.planService = planService;
-        this.planMapper = planMapper;
-        this.memberService = memberService;
-        this.budgetService = budgetService;
-    }
 
     /**
      * 일정 등록
