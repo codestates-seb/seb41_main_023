@@ -9,23 +9,16 @@ const LoadingPage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    let getAccessToken = key => {
+    const getURLSearchParams = key => {
       return new URLSearchParams(location.search).get(key);
     };
-    let getRefreshToken = key => {
-      return new URLSearchParams(location.search).get(key);
-    };
-    let getMemberId = key => {
-      return new URLSearchParams(location.search).get(key);
-    };
-    const searchAccessToken = getAccessToken('accessToken');
-    const searchRefreshToken = getRefreshToken('refreshToken');
-    const searchMemberId = getMemberId('memberId');
-
-    setCookie('memberId', searchMemberId);
+    const searchAccessToken = getURLSearchParams('accessToken');
+    const searchRefreshToken = getURLSearchParams('refreshToken');
+    const searchMemberId = getURLSearchParams('memberId');
 
     if (searchAccessToken && searchRefreshToken) {
       setCookie('accessToken', searchAccessToken);
+      setCookie('memberId', searchMemberId);
       localStorage.setItem('refreshToken', searchRefreshToken);
     }
 
