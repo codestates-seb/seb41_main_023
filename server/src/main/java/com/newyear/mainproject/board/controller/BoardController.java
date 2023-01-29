@@ -13,11 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -47,31 +43,9 @@ public class BoardController {
 
     //한 게시물 조회
     @GetMapping("{board-id}")
-    public ResponseEntity getBoard(@PathVariable("board-id") @Positive long boardId,
-                                   HttpServletRequest request,
-                                   HttpServletResponse response) {
+    public ResponseEntity getOneBoard(@PathVariable("board-id") @Positive long boardId) {
         Board board = boardService.findBoard(boardId);
 
-        //조회수 로직 - 쿠키를 이용한 조회수 중복 방지
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (!cookie.getValue().contains(String.valueOf(boardId))) {
-                    cookie.setValue(cookie.getValue() + "_" + boardId);
-                    cookie.setMaxAge(60 * 60 * 2);
-                    response.addCookie(cookie);
-                    boardService.viewCount(board);
-                }
-            }
-        } else {
-            Cookie newCookie = new Cookie("visit_cookie", String.valueOf(boardId));
-            newCookie.setDomain("stackoverflow-preproject-y2k.s3-website.ap-northeast-2.amazonaws.com");
-            newCookie.setPath("/");
-            newCookie.setHttpOnly(false);
-            newCookie.setMaxAge(60 * 60 * 2);
-            response.addCookie(newCookie);
-            boardService.viewCount(board);
-        }
         return new ResponseEntity<>(mapper.boardToResponseDetailsDto(board), HttpStatus.OK);
     }
 
@@ -104,18 +78,6 @@ public class BoardController {
         List<Board> boards = boardService.findBoards(tab);
         return new ResponseEntity<>(mapper.boardsToBoardResponseDto(boards), HttpStatus.OK);
     }
-
-    // 도시 이름으로 조회
-//    @GetMapping("/plan")
-//    public ResponseEntity getBoardForCity(@RequestParam @NotBlank String city,
-//                                          @RequestParam(required = false) String tab,
-//                                          @RequestParam @Positive int page,
-//                                          @RequestParam @Positive int size) {
-//        if (tab == null) tab = "likes";
-//        Page<Board> pages = boardService.findCityBoards(page-1, size, city, tab);
-//        List<Board> boards = pages.getContent();
-//        return new ResponseEntity<>(new MultiResponseDto<>(mapper.boardsToBoardResponseDto(boards), pages), HttpStatus.OK);
-//    }
 
     // 좋아요 클릭
     @PostMapping("{board-id}/likes")
