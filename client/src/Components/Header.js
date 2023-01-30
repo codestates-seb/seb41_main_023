@@ -57,17 +57,12 @@ const Header = ({ login }) => {
   return (
     <HeadContainer className="header__container">
       <LeftSection>
-        <img
-          src={cuteBird}
-          alt="Logo"
-          className="logo__image"
-          onClick={() => handleNavigate('/')}
-        />
-        <div className="header__logo" onClick={() => handleNavigate('/')}>
-          Tridom
+        <div className="logo--area" onClick={() => handleNavigate('/')}>
+          <img src={cuteBird} alt="Logo" className="logo__image" />
+          <div className="header__logo">Tridom</div>
         </div>
         <button
-          className="button--default button--subtle"
+          className="button--default button--subtle button--logs"
           onClick={() => handleNavigate('/board')}
         >
           Travel Logs
@@ -125,8 +120,23 @@ const HeadContainer = styled.div`
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 30px;
   margin-left: 40px;
+
+  .logo--area {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+    cursor: pointer;
+
+    :hover {
+      filter: drop-shadow(4px 3px 3px var(--primary-blue-light-2));
+    }
+
+    > img {
+      margin-right: 10px;
+    }
+  }
 `;
 
 const RightSection = styled.div`
