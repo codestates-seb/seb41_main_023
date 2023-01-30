@@ -67,7 +67,7 @@ const Board = () => {
             <button
               className={`button--default button--subtle`}
               onClick={e => {
-                if (search) e.preventDefault();
+                if (destination) e.preventDefault();
                 else window.location.reload();
                 setMode('boardId');
               }}
@@ -95,7 +95,12 @@ const Board = () => {
             Write log
           </button>
         </div>
-        <Explore searches={search} destination={destination} mode={mode} />
+        <Explore
+          search={search}
+          setSearch={setSearch}
+          destination={destination}
+          mode={mode}
+        />
         <button
           className="button--default button--subtle button--top"
           onClick={TopMove}
