@@ -111,13 +111,7 @@ public class BoardService {
      tab=views : 조회수순
      */
     public Page<Board> findOptionalBoards(int page, int size, String tab, String city) {
-
-        List<Board> boards = boardRepository.findAll(Sort.by(tab).descending())
-                .stream().distinct().collect(Collectors.toList());
-
-        if (tab.equals("likes")) {
-            boards.sort(Collections.reverseOrder(Comparator.comparing(b -> b.getLikes().size())));
-        }
+        List<Board> boards = getOptionBoards(tab);
 
         if (city != null) {
             boards = boards.stream().filter(board -> board.getPlan().getCityName().equals(city)).collect(Collectors.toList());
@@ -131,10 +125,16 @@ public class BoardService {
     }
 
     public List<Board> findBoards(String tab) {
-        List<Board> boards = boardRepository.findAll(Sort.by(tab).descending());
+        return getOptionBoards(tab);
+    }
+
+    private List<Board> getOptionBoards(String tab) {
+        List<Board> boards;
         if (tab.equals("likes")) {
+            boards = boardRepository.findAll();
             boards.sort(Collections.reverseOrder(Comparator.comparing(b -> b.getLikes().size())));
-            boards = boards.stream().distinct().collect(Collectors.toList());
+        } else {
+            boards = boardRepository.findAll(Sort.by(tab).descending());
         }
         return boards;
     }
@@ -150,7 +150,7 @@ public class BoardService {
         }
         //좋아요
         else {
-            Likes likes = new Likes(1, member, findBoard);
+            Likes likes = new Likes(member, findBoard);
             findBoard.addLike(likes);
             likesRepository.save(likes);
             boardRepository.save(findBoard);
