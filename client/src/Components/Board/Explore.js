@@ -15,14 +15,14 @@ const Explore = props => {
   const navigate = useNavigate();
 
   const observerTargetEl = useRef(null);
-  const page = useRef(2);
+  const page = useRef(1);
 
   // 무한 스크롤 수정
   const fetchMoreExplores = useCallback(async () => {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/board?page=${page.current}&size=10&tab=boardId`,
+        `${process.env.REACT_APP_API_URL}/board?page=${page.current}&size=10&tab=${props.mode}`,
         {
           headers: {
             Authorization: token,
@@ -33,36 +33,21 @@ const Explore = props => {
         setTimeout(() => {
           setExploreList(prevState => [...prevState, ...res.data.data]);
           setLoading(false);
-        }, 1500);
-        setHasNextPage(res.data.data.length === 5);
+        }, 1000);
+        setHasNextPage(res.data.data.length === 10);
         if (res.data.data.length) page.current += 1;
       })
       .catch(err => console.log(err));
-  }, [page.current]);
+  }, []);
 
   // 게시판 접근시
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=boardId`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      )
-      .then(res => {
-        setExploreList(res.data.data);
-      })
-      .catch(err => console.log(err));
-  }, []);
 
   useEffect(() => {
     // 검색
     if (props.search) {
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=boardId&city=${props.destination}`,
+          `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=${props.mode}&city=${props.destination}`,
           {
             headers: {
               Authorization: token,
@@ -76,28 +61,44 @@ const Explore = props => {
     } else {
       // 게시판
       if (window.location.pathname === '/board') {
-        if (!observerTargetEl.current || !hasNextPage) return;
-        const options = {
-          root: null,
-          rootMargin: '0px 0px -30px 0px',
-          threshold: 1,
-        };
+        if (props.mode === 'boardId') {
+          if (!observerTargetEl.current || !hasNextPage) return;
+          const options = {
+            root: null,
+            rootMargin: '0px 0px -30px 0px',
+            threshold: 1,
+          };
 
-        const io = new IntersectionObserver((entries, observer) => {
-          if (entries[0].isIntersecting) {
-            fetchMoreExplores();
-          }
-        }, options);
-        io.observe(observerTargetEl.current);
+          const io = new IntersectionObserver((entries, observer) => {
+            if (entries[0].isIntersecting) {
+              fetchMoreExplores();
+            }
+          }, options);
+          io.observe(observerTargetEl.current);
 
-        return () => {
-          io.disconnect();
-        };
+          return () => {
+            io.disconnect();
+          };
+        } else {
+          axios
+            .get(
+              `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=${props.mode}`,
+              {
+                headers: {
+                  Authorization: token,
+                },
+              },
+            )
+            .then(res => {
+              setExploreList(res.data.data);
+            })
+            .catch(err => console.log(err));
+        }
       } else {
         // 메인
         axios
           .get(
-            `${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=boardId`,
+            `${process.env.REACT_APP_API_URL}/board?page=1&size=5&tab=${props.mode}`,
             {
               headers: {
                 Authorization: token,
@@ -110,7 +111,7 @@ const Explore = props => {
           .catch(err => console.log(err));
       }
     }
-  }, [fetchMoreExplores, hasNextPage, token, props.destination]);
+  }, [hasNextPage, token, props.destination, props.mode, fetchMoreExplores]);
 
   const handleNavigate = explore => {
     navigate(`/board/${explore.boardId}`);
@@ -135,6 +136,36 @@ const Explore = props => {
               <div className="meta_content">
                 {formatDateKo(explore.travelPeriod.split('-')[0])} -{' '}
                 {formatDateKo(explore.travelPeriod.split('-')[1])}
+              </div>
+              <div className="meta_content">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.5em"
+                  height="1.5em"
+                  viewBox="0 0 45 45"
+                >
+                  <path
+                    fill="#F44336"
+                    d="M34 9c-4.2 0-7.9 2.1-10 5.4C21.9 11.1 18.2 9 14 9C7.4 9 2 14.4 2 21c0 11.9 22 24 22 24s22-12 22-24c0-6.6-5.4-12-12-12z"
+                  />
+                </svg>
+                <span>{explore.likes}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.5em"
+                  height="1.5em"
+                  viewBox="0 0 32 27"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M30.94 15.66A16.69 16.69 0 0 0 16 5A16.69 16.69 0 0 0 1.06 15.66a1 1 0 0 0 0 .68A16.69 16.69 0 0 0 16 27a16.69 16.69 0 0 0 14.94-10.66a1 1 0 0 0 0-.68ZM16 25c-5.3 0-10.9-3.93-12.93-9C5.1 10.93 10.7 7 16 7s10.9 3.93 12.93 9C26.9 21.07 21.3 25 16 25Z"
+                  />
+                  <path
+                    fill="currentColor"
+                    d="M16 10a6 6 0 1 0 6 6a6 6 0 0 0-6-6Zm0 10a4 4 0 1 1 4-4a4 4 0 0 1-4 4Z"
+                  />
+                </svg>
+                <span>{explore.views}</span>
               </div>
               <div className="meta_profile">
                 <img
@@ -162,12 +193,10 @@ const Explore = props => {
             </div>
           ))
         ) : (
-          <div className={'search__error'}>게시글이 없습니다</div>
+          <div className={'search__error'}>Not Found...</div>
         )}
         {loading ? <div className="loader"></div> : <div></div>}
-        <div ref={observerTargetEl} className="target">
-          t
-        </div>
+        <div ref={observerTargetEl} className="target"></div>
       </div>
     </ExploreContainer>
   );
@@ -247,10 +276,14 @@ const ExploreContainer = styled.div`
         margin-bottom: 2px;
         color: var(--light);
 
-        > div {
-          /* margin-bottom: 2px;
-          text-transform: capitalize;
-          color: var(--light); */
+        svg {
+          padding-top: 5px;
+          margin-right: 5px;
+        }
+
+        span {
+          display: inline-block;
+          margin-right: 10px;
         }
       }
 
