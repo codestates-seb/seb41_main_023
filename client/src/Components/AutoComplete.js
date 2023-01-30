@@ -125,6 +125,7 @@ const Autocomplete = ({
   const handleKeyDown = e => {
     //enter 키를 누르면 input 값이 활성화된 옵션으로 변경
     if (e.keyCode === 13) {
+      if (inputValue === '') window.location.reload();
       setInputValue(options[activeSuggestion]);
       setActiveSuggestion(0);
       setHasText(false);

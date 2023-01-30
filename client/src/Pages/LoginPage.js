@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 import { setCookie } from '../Util/Cookies';
 import bgImage from '../images/login-page_side-image.jpg';
-import cuteBird from '../images/cute_bird.png';
 
 const LoginPage = () => {
   const eref = useRef();

@@ -15,7 +15,7 @@ const Explore = props => {
   const navigate = useNavigate();
 
   const observerTargetEl = useRef(null);
-  const page = useRef(2);
+  const page = useRef(1);
 
   // 무한 스크롤 수정
   const fetchMoreExplores = useCallback(async () => {
@@ -30,32 +30,18 @@ const Explore = props => {
         },
       )
       .then(res => {
-        setTimeout(() => {
-          setExploreList(prevState => [...prevState, ...res.data.data]);
-          setLoading(false);
-        }, 2000);
+        if (page.current === 1) setExploreList(res.data.data);
+        if (page.current > 1) {
+          setTimeout(() => {
+            setExploreList(prevState => [...prevState, ...res.data.data]);
+            setLoading(false);
+          }, 1500);
+        }
         setHasNextPage(res.data.data.length === 10);
         if (res.data.data.length) page.current += 1;
       })
       .catch(err => console.log(err));
   }, []);
-
-  // 게시판 접근시
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=${props.mode}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      )
-      .then(res => {
-        setExploreList(res.data.data);
-      })
-      .catch(err => console.log(err));
-  }, [props.mode]);
 
   useEffect(() => {
     // 검색
@@ -71,6 +57,7 @@ const Explore = props => {
         )
         .then(res => {
           setExploreList(res.data.data);
+          setLoading(false);
         })
         .catch(err => console.log(err));
     } else {
@@ -106,6 +93,7 @@ const Explore = props => {
             )
             .then(res => {
               setExploreList(res.data.data);
+              setLoading(false);
             })
             .catch(err => console.log(err));
         }
@@ -207,9 +195,9 @@ const Explore = props => {
               )}
             </div>
           ))
-        ) : (
-          <div className={'search__error'}>Not Found...</div>
-        )}
+        ) : props.search ? (
+          <div className={'search__error'}>검색 결과가 존재하지 않습니다</div>
+        ) : null}
         {loading ? <div className="loader"></div> : <div></div>}
         <div ref={observerTargetEl} className="target"></div>
       </div>
@@ -264,8 +252,13 @@ const ExploreContainer = styled.div`
     gap: var(--spacing-4);
 
     .search__error {
+      display: flex;
+      width: 100%;
       font-size: var(--large-text-size);
+      font-weight: bold;
       line-height: var(--large-text-line-height);
+      justify-content: center;
+      align-items: center;
     }
 
     .my-logs__card {

@@ -7,7 +7,6 @@ import Modal from '../Components/user/Modal';
 
 import { getCookie } from '../Util/Cookies';
 import bgImage from '../images/signup-page_side-image.jpg';
-import cuteBird from '../images/cute_bird.png';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
