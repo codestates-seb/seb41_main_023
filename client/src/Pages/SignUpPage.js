@@ -194,15 +194,12 @@ const SignUpPage = () => {
   return (
     <>
       <Header>
-        <img
-          src={cuteBird}
-          alt="Logo"
-          className="logo__image"
-          onClick={() => navigate('/')}
-        />
-        <Link to="/">
-          <div className="header__logo">Tridom</div>
-        </Link>
+        <div
+          className="button--default back__button"
+          onClick={() => navigate(-1)}
+        >
+          Back
+        </div>
       </Header>
       <LeftContainer>
         <div className="content">
@@ -402,7 +399,7 @@ const Header = styled.div`
   height: 60px;
   z-index: 9999;
 
-  .header__logo {
+  > div {
     cursor: pointer;
   }
 `;
