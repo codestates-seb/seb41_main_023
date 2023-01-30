@@ -44,7 +44,10 @@ const TopSection = props => {
     <TopContainer cityImage={cityImage}>
       <div className="top__gradient-bg"></div>
       <Header>
-        <div className="header__logo back__button" onClick={() => navigate(-1)}>
+        <div
+          className="button--default back__button"
+          onClick={() => navigate(-1)}
+        >
           Back
         </div>
         <div className="edit__like">
