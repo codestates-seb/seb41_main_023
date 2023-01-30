@@ -172,7 +172,7 @@ const LoginPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate(`//${process.env.REACT_APP_API_SOCIAL_LOGIN}/google`)
+              navigate(`${process.env.REACT_APP_API_SOCIAL_LOGIN}/google`)
             }
           >
             <svg
@@ -205,7 +205,7 @@ const LoginPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate(`//${process.env.REACT_APP_API_SOCIAL_LOGIN}/kakao`)
+              navigate(`${process.env.REACT_APP_API_SOCIAL_LOGIN}/kakao`)
             }
           >
             <svg
@@ -232,7 +232,7 @@ const LoginPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate(`//${process.env.REACT_APP_API_SOCIAL_LOGIN}/facebook`)
+              navigate(`${process.env.REACT_APP_API_SOCIAL_LOGIN}/facebook`)
             }
           >
             <svg
