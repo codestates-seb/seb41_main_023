@@ -1,6 +1,7 @@
 package com.newyear.mainproject.member.entity;
 
 import com.newyear.mainproject.board.entity.Board;
+import com.newyear.mainproject.board.likes.Likes;
 import com.newyear.mainproject.comment.entity.Comment;
 import com.newyear.mainproject.plan.entity.Plan;
 import lombok.Getter;
@@ -57,6 +58,9 @@ public class Member{
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Plan> plans = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Likes> likes = new ArrayList<>();
 
     public enum MemberStatus{
         MEMBER_ACTIVE("활동중"),
