@@ -206,8 +206,8 @@ const SignUpPage = () => {
       </Header>
       <LeftContainer>
         <div className="content">
-          <h2>Welcome to </h2>
-          <p>Sign up to save your trips in </p>
+          <h2 className="center">Welcome to </h2>
+          <p className="center">Sign up to save your trips in </p>
 
           <label>Username</label>
           <input
@@ -411,9 +411,14 @@ const LeftContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50vw;
+  width: 30vw;
   height: 100vh;
   float: left;
+
+  .center {
+    display: flex;
+    justify-content: center;
+  }
 
   .content {
     width: 350px;
@@ -534,7 +539,7 @@ const LeftContainer = styled.div`
 `;
 
 const RightContainer = styled.div`
-  width: 50vw;
+  width: 70vw;
   height: 100vh;
   background-image: url(${bgImage});
   background-size: cover;

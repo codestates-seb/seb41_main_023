@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
-import { getCookie, setCookie } from '../Util/Cookies';
+import { setCookie } from '../Util/Cookies';
 import bgImage from '../images/login-page_side-image.jpg';
 import cuteBird from '../images/cute_bird.png';
 
@@ -38,35 +38,14 @@ const LoginPage = () => {
           password,
         },
       );
+      console.log(response);
 
       if (response.status === 200) {
         setCookie('accessToken', response.headers.authorization);
         setCookie('memberId', response.data.memberId);
         localStorage.setItem('refreshToken', response.headers.refresh);
-        if (localStorage.getItem('plan')) {
-          const getPlanData = JSON.parse(localStorage.getItem('plan'));
-          axios
-            .post(
-              `${process.env.REACT_APP_API_URL}/plans`,
-              {
-                cityName: getPlanData.cityName,
-                startDate: getPlanData.startDate,
-                endDate: getPlanData.endDate,
-              },
-              {
-                headers: {
-                  Authorization: getCookie('accessToken'),
-                },
-              },
-            )
-            .then(res => {
-              window.location.replace(`/itinerary/${res.data.data.planId}`);
-            })
-            .then(res => localStorage.removeItem('plan'))
-            .catch(err => console.log(err));
-        } else {
-          window.location.replace('/');
-        }
+        alert('로그인되었습니다. 메인 페이지로 이동합니다.');
+        window.location.replace('/');
       }
     } catch (err) {
       console.error(err);
@@ -83,6 +62,7 @@ const LoginPage = () => {
 
   // 로그인, 모든 유효성 검사가 통과 되어야 login 가능
   const onLogin = e => {
+    //e.preventDefault();
     if (
       email.length !== 0 &&
       password.length !== 0 &&
@@ -151,8 +131,8 @@ const LoginPage = () => {
       </Header>
       <LeftContainer>
         <div className="content">
-          <h2>Welcome back!</h2>
-          <p>Log in to plan and save your trips in</p>
+          <h2 className="center">Welcome back!</h2>
+          <p className="center">Log in to plan and save your trips in</p>
 
           <label>Email</label>
           <input
@@ -192,7 +172,7 @@ const LoginPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate('//sebmain41team23.shop/oauth2/authorization/google')
+              navigate(`${process.env.REACT_APP_API_SOCIAL_LOGIN}/google`)
             }
           >
             <svg
@@ -225,7 +205,7 @@ const LoginPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate('//sebmain41team23.shop/oauth2/authorization/kakao')
+              navigate(`${process.env.REACT_APP_API_SOCIAL_LOGIN}/kakao`)
             }
           >
             <svg
@@ -252,7 +232,7 @@ const LoginPage = () => {
           <button
             className="button--google"
             onClick={() =>
-              navigate('//sebmain41team23.shop/oauth2/authorization/facebook')
+              navigate(`${process.env.REACT_APP_API_SOCIAL_LOGIN}/facebook`)
             }
           >
             <svg
@@ -299,9 +279,14 @@ const LeftContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50vw;
+  width: 30vw;
   height: 100vh;
   float: left;
+
+  .center {
+    display: flex;
+    justify-content: center;
+  }
 
   .content {
     width: 350px;
@@ -369,7 +354,7 @@ const LeftContainer = styled.div`
 `;
 
 const RightContainer = styled.div`
-  width: 50vw;
+  width: 70vw;
   height: 100vh;
   background-image: url(${bgImage});
   background-size: cover;

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Autocomplete = ({
   handleDestination,
   inputRef,
-  setSearches,
+  setSearch,
   handleSearch,
 }) => {
   const [city, setCity] = useState();
@@ -102,7 +102,7 @@ const Autocomplete = ({
     if (inputValue === '') {
       setHasText(false);
       setOptions([]);
-      setSearches && setSearches(false);
+      setSearch && setSearch(false);
     } else {
       setOptions(matchStock(city, inputValue));
       handleDestination(inputValue);

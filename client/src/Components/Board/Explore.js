@@ -15,7 +15,7 @@ const Explore = props => {
   const navigate = useNavigate();
 
   const observerTargetEl = useRef(null);
-  const page = useRef(1);
+  const page = useRef(2);
 
   // 무한 스크롤 수정
   const fetchMoreExplores = useCallback(async () => {
@@ -33,7 +33,7 @@ const Explore = props => {
         setTimeout(() => {
           setExploreList(prevState => [...prevState, ...res.data.data]);
           setLoading(false);
-        }, 1000);
+        }, 2000);
         setHasNextPage(res.data.data.length === 10);
         if (res.data.data.length) page.current += 1;
       })
@@ -41,10 +41,25 @@ const Explore = props => {
   }, []);
 
   // 게시판 접근시
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/board?page=1&size=10&tab=${props.mode}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      )
+      .then(res => {
+        setExploreList(res.data.data);
+      })
+      .catch(err => console.log(err));
+  }, [props.mode]);
 
   useEffect(() => {
     // 검색
-    if (props.searches) {
+    if (props.search) {
       axios
         .get(
           `${process.env.REACT_APP_API_URL}/board?page=1&size=100&tab=${props.mode}&city=${props.destination}`,
