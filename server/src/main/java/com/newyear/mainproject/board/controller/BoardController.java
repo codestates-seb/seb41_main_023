@@ -44,7 +44,7 @@ public class BoardController {
     //한 게시물 조회
     @GetMapping("{board-id}")
     public ResponseEntity getOneBoard(@PathVariable("board-id") @Positive long boardId) {
-        Board board = boardService.findBoard(boardId);
+        Board board = boardService.findOneBoard(boardId);
 
         return new ResponseEntity<>(mapper.boardToResponseDetailsDto(board), HttpStatus.OK);
     }

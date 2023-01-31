@@ -45,7 +45,7 @@ public class EmailService {
 
         createAuthCode();
         String setFrom = "newyearteam23@gmail.com";
-        String title = "[뉴이어] 이메일 인증 번호";
+        String title = "[Tridom] 이메일 인증 번호";
 
         MimeMessage message = javaMailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
