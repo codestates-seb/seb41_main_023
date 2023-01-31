@@ -3,7 +3,7 @@
 ### 🚆 프로젝트 소개
 
 ---
-<img src="https://cdn.discordapp.com/attachments/1059688528109383690/1069856576111915058/9D684A6C-8B11-44D3-9F6F-6AF0F8102066.jpeg">
+<img src="https://user-images.githubusercontent.com/95217370/215842925-37524a74-c2f4-454c-914f-3d19344bed16.png">
 
 > 나만의 여행을 기록하고 싶으신가요? </br>
 > 두근두근 설레는 나만의 여행 기록! 🗒️ </br>
@@ -152,7 +152,6 @@
 | 게시글 수정 | 게시글 삭제 |
 |:---:|:------:|
 |<img src="https://user-images.githubusercontent.com/95217370/215779727-b349dff7-859e-425a-b34c-b828cc3a0c79.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215833990-95a76565-7c63-41e3-96da-80a6f106bcaa.gif" width="450" height="300">|
-
 
 ## Conventions
 

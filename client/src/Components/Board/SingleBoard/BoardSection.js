@@ -11,7 +11,7 @@ const BoardSection = props => {
       <h3 className="section__title">Travel Experience</h3>
       <p className="travel-experience__content">
         {' '}
-        {content.split('\n').map((line, idx) => {
+        {content?.split('\n').map((line, idx) => {
           return (
             <span key={idx}>
               {line}
@@ -57,6 +57,7 @@ const Container = styled.div`
 
   > .travel-experience__content {
     margin-bottom: var(--spacing-5);
+    line-height: var(--large-text-line-height);
   }
 
   > .itinerary__container {
