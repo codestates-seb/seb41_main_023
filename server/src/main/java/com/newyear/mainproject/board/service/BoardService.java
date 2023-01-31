@@ -87,6 +87,10 @@ public class BoardService {
     }
 
     public Board findBoard(long boardId) {
+        return findExistsBoard(boardId);
+    }
+
+    public Board findOneBoard(long boardId) {
         Board findBoard = findExistsBoard(boardId);
 
         if (isFirstRequest(boardId)) {
@@ -190,21 +194,25 @@ public class BoardService {
 
         try {
             key = memberService.getLoginMember().getMemberId() + "_visit"; //회원인 경우 key 값
+            log.info("회원 방문 : {}", key);
         } catch (BusinessLogicException e) {
             if (getIp() == null) return false;
             key = getIp() + "_visit"; //비회원인 경우 key 값
+            log.info("비회원 방문 : {}", key);
         }
 
         if (redisUtil.hasKey(key)) {
             String value = redisUtil.get(key).toString();
             if (value.contains(add)) { //이미 방문한 게시판
+                log.info("이미 방문한 게시판 = 조회수 변동 X");
                 return false;
             }
-            redisUtil.set(key, value + boardId + "_", 60); //처음 방문하는 게시판
+            redisUtil.set(key, value + boardId + "_", 20); //처음 방문하는 게시판
+            log.info("처음 방문한 게시판 = 조회수 증가 !");
             return true;
         }
         redisUtil.set(key, add, 60); //초기 세팅
-
+        log.info("아예 처음 게시물 조회 = 조회수 증가 !");
         return true;
     }
 
