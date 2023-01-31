@@ -5,15 +5,13 @@
 ---
 <img src="https://cdn.discordapp.com/attachments/1059688528109383690/1069856576111915058/9D684A6C-8B11-44D3-9F6F-6AF0F8102066.jpeg">
 
-나만의 여행을 기록하고 싶으신가요?
-<br>
-두근두근 설레는 나만의 여행 기록! 🗒️
-<br>
-나의 즐거운 여행 기록 공유까지!
-<img src="https://cdn.discordapp.com/attachments/1059688528109383690/1069853776346873886/cute_bird.png" height="25px" width="25px">
-<span style ="color:#3A4CA8"><b> Tridom </b> </span>
-<img src="https://cdn.discordapp.com/attachments/1059688528109383690/1069853776346873886/cute_bird.png" height="25px" width="25px">
-에서 여행을 떠나보세요! ✈️
+> 나만의 여행을 기록하고 싶으신가요? </br>
+> 두근두근 설레는 나만의 여행 기록! 🗒️ </br>
+> 나의 즐거운 여행 기록 공유까지! </br>
+> <img src="https://cdn.discordapp.com/attachments/1059688528109383690/1069853776346873886/cute_bird.png" height="25px" width="25px">
+> <span style ="color:#3A4CA8"><b> Tridom </b> </span>
+> <img src="https://cdn.discordapp.com/attachments/1059688528109383690/1069853776346873886/cute_bird.png" height="25px" width="25px">
+> 에서 여행을 떠나보세요! ✈️
 
 
 ### 🔗 배포 링크
@@ -91,29 +89,71 @@
 
 ---
 
+### 로그인 및 회원가입
 
-| 회원가입 | 로그인 | 소셜 로그인 |
-|:----:|:---:|:------:|
-|      |     |        |
-
+---
 
 
+| 회원가입 | 로그인 |
+|:----:|:---:|
+|<img src="https://user-images.githubusercontent.com/95217370/215839745-c3c9e651-b43e-4878-b1df-75a2cb167e53.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215838707-6e1ee8f7-9402-4a83-bdc8-8c90b76160e0.gif" width="450" height="300">|
 
-|                                                                   게시글 작성                                                                   |
-|:------------------------------------------------------------------------------------------------------------------------------------------:|
-|  |
+| 소셜 로그인 | 로그아웃 |
+|:----:|:---:|
+|<img src="https://user-images.githubusercontent.com/95217370/215838305-33e7c9ae-32bc-4c6c-aad7-f086447af93c.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215838027-33939e1e-18de-4a0f-bbfd-7f57c8c8e6d8.gif" width="450" height="300">|
 
-|                                                                   게시글 작성                                                                    |
-|:-------------------------------------------------------------------------------------------------------------------------------------------:|
-| <img src="https://cdn.discordapp.com/attachments/1059642321207054386/1069903791001981018/dbd57109d53d12ce.gif" width="900px" height="100%"> |
+### 회원정보 수정 및 탈퇴
 
-|                                                                    비밀번호 변경                                                                    |
-|:---------------------------------------------------------------------------------------------------------------------------------------------:|
-|  <img src="https://cdn.discordapp.com/attachments/1059642321207054386/1069903791375257610/6d12c4ba1de20e8d.gif" width="900px" height="100%">  |
+---
 
-|                                                                   회원이름 수정                                                                   |
-|:-------------------------------------------------------------------------------------------------------------------------------------------:|
-| <img src="https://cdn.discordapp.com/attachments/1059642321207054386/1069903791735963669/7381f120c70ee35a.gif" width="900px" height="100%"> |
+| 이름 수정 | 비밀번호 수정| 
+|:----:|:---:|
+|<img src="https://user-images.githubusercontent.com/95217370/215779890-adab2d49-c3f1-4ef4-b0e9-0d8756837b76.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215779951-ead1e343-2d78-437d-b709-111c3a2326cb.gif" width="450" height="300">|
+
+| 프로필 이미지 수정 | 탈퇴 |
+|:------:|:--:|
+|<img src="https://user-images.githubusercontent.com/95217370/215781090-62d5105b-a416-4e16-86d3-404ef461fe52.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215781827-4aeb1fa8-5ddf-43b8-9c39-20f472e1a729.gif" width="450" height="300">|
+
+
+### 여행 일정
+
+---
+
+| 일정등록 | 일정삭제 |
+|:----:|:----:|
+|<img src="https://user-images.githubusercontent.com/95217370/215776874-688653c5-b9ab-4c87-8d24-e0b361159d04.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215841031-8be777d4-4850-445c-8382-dcb4ddabc818.gif" width="450" height="300">|
+
+
+| 제목 변경 | 기간 변경 |
+|:---:|:------:|
+|<img src="https://user-images.githubusercontent.com/95217370/215777112-e3b5369d-47ec-498b-9f0a-d580e3797a13.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215777317-9f09cb36-2388-411e-9de6-4445243609b3.gif" width="450" height="300">|
+
+| 장소등록 및 지도 정보 표시 | 장소삭제 |
+|:----:|:---:|
+|<img src="https://user-images.githubusercontent.com/95217370/215778046-d1db3b17-05d1-4657-8d50-311e6d3f0a22.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215778175-adf672f2-44b3-4df1-a4cd-6390c9624173.gif" width="450" height="300">|
+
+### 예산/비용 관리
+
+---
+
+| 예산등록,수정,비용등록,수정 | 비용삭제 |
+|:----:|:----:|
+|<img src="https://user-images.githubusercontent.com/95217370/215778895-29db1cad-aaa7-46af-a3ff-bc06bdc433f4.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215779154-0650653d-8ea2-4784-8113-24baa616fc66.gif" width="450" height="300">|
+
+
+### 게시판
+
+---
+
+| 전체 조회 | 게시글 작성 |
+|:----:|:----:|
+|<img src="https://user-images.githubusercontent.com/95217370/215782680-1665da83-1ba9-42e8-93af-8ae7717f8b31.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215779677-2c0a8ffd-1f76-4d0b-bedd-e94688f68ff1.gif" width="450" height="300">|
+
+| 게시글 수정 | 게시글 삭제 |
+|:---:|:------:|
+|<img src="https://user-images.githubusercontent.com/95217370/215779727-b349dff7-859e-425a-b34c-b828cc3a0c79.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215833990-95a76565-7c63-41e3-96da-80a6f106bcaa.gif" width="450" height="300">|
+
+
 ## Conventions
 
 ### 📌 Commit/Branch 분류 규칙
