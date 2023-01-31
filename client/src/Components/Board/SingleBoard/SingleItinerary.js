@@ -25,7 +25,14 @@ const SingleItinerary = props => {
                   <StarRate rating={place.ratings} />
                 </SingleInfoContainer>
                 <SingleDescriptionContainer>
-                  {place.description}
+                  {place.description.split('\n').map((line, idx) => {
+                    return (
+                      <span key={idx}>
+                        {line}
+                        <br />
+                      </span>
+                    );
+                  })}
                 </SingleDescriptionContainer>
               </div>
             </SinglePlanContainer>
