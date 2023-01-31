@@ -133,7 +133,7 @@ insert into city(city_name, city_image) values ('전라남도 고흥군', 'https
 insert into city(city_name, city_image) values ('전라북도 군산시', 'https://lh5.googleusercontent.com/p/AF1QipO41gvJXBDI6DLyN5R5qzj0kUH0ilk-mHSMBgK7=w408-h510-k-no');
 insert into city(city_name, city_image) values ('전라북도 익산시', 'https://lh5.googleusercontent.com/p/AF1QipPzA7dfMHiUXpu2R82mINK2dpuXF-nlCCcR2isR=w408-h306-k-no');
 insert into city(city_name, city_image) values ('전라북도 김제시', 'https://lh5.googleusercontent.com/p/AF1QipOUwv3zjOVK0SVQ3JbJpINYP6h42TtnIDSHHfjy=w426-h240-k-no');
-insert into city(city_name, city_image) values ('전라북도 전주시', 'https://lh3.googleusercontent.com/gps-proxy/AGL7lfDKLwEVle49hB9Miv1AYSUjiel-WGKLz13QAvwIgDrQJPmXXaC5wfZ7OxLbup7wq9I950Wn1m-q5S7HZszY1CFoRMGPevVAEyUmer1QtAdVSSJ_Sc-gedNZd3jjT8BbrAuSfa8Gy4ZUpKb-YRKtAIDJP0vinHHF97hY-C6_EyK8DN_Me7tqsPCA=w408-h272-k-no');
+insert into city(city_name, city_image) values ('전라북도 전주시', 'http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSr6lKfM5uZXmkjRIF9L9wgva9J4Hom6-A-LdZdMNIjS1PdI-SCti_VqTnZp7eQW-Wq');
 insert into city(city_name, city_image) values ('전라북도 정읍시', 'https://lh5.googleusercontent.com/p/AF1QipNNDMrswknbtXsll9q-VDF0KjYMg8A76aSPyx38=w426-h240-k-no');
 insert into city(city_name, city_image) values ('전라북도 남원시', 'https://lh5.googleusercontent.com/p/AF1QipNac3zmIBhq02e4yVs7i1NUUwf0SExtArdTpTJu=w408-h306-k-no');
 
