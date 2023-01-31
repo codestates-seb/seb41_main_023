@@ -1,0 +1,336 @@
+:root {
+  /* color - grayscale */
+  --white: white;
+  --light-gray-1: #fafafa;
+  --light-gray-2: #f2f2f2;
+  --light-gray-3: #e8e8e8;
+  --light-gray-4: #e0e0e0;
+  --light-gray-5: #d1d1d1;
+  --light: #757575;
+  --dark-gray-3: #5c5c5c;
+  --dark-gray-2: #424242;
+  --dark-gray-1: #292929;
+  --black: #0f0f0f;
+
+  /* color - primary */
+  --primary-blue-bright: #2d7ff9;
+  --primary-blue: #1283da;
+  --primary-blue-dark: #2750ae;
+  --primary-blue-light-1: #9cc7ff;
+  --primary-blue-light-2: #cfdfff;
+  --primary-blue-light-3: #eaf1ff;
+
+  /* color - danger, red */
+  --red: #ca3521;
+  --red-dark-1: #ae2a19;
+  --red-dark-2: #601e16;
+  --red-light-1: #e86b5a;
+
+  /* font-size - text */
+  --small-text-size: 11px;
+  --default-text-size: 13px;
+  --large-text-size: 15px;
+  --x-large-text-size: 17px;
+
+  /* line-height - text */
+  --small-text-line-height: 14px;
+  --default-text-line-height: 16px;
+  --large-text-line-height: 20px;
+  --x-large-text-line-height: 24px;
+
+  /* font-size - heading */
+  --x-small-heading-font-size: 15px;
+  --small-heading-font-size: 17px;
+  --default-heading-font-size: 21px;
+  --large-heading-font-size: 23px;
+  --x-large-heading-font-size: 27px;
+  --xx-large-heading-font-size: 35px;
+
+  /* line-height - heading */
+  --x-small-heading-line-height: 22px;
+  --small-heading-line-height: 24px;
+  --default-heading-line-height: 26px;
+  --large-heading-line-height: 29px;
+  --x-large-heading-line-height: 34px;
+  --xx-large-heading-line-height: 44px;
+
+  /* spacing */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 16px;
+  --spacing-4: 32px;
+  --spacing-5: 64px;
+  --spacing-6: 128px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: var(--default-text-size);
+  line-height: var(--default-text-line-height);
+  color: var(--dark-gray-2);
+}
+
+#root {
+  position: absolute;
+  top: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+input {
+  outline: 0;
+}
+
+input:focus {
+  border-color: var(--primary-blue-light-1);
+  box-shadow: 0 0 0 var(--spacing-1) rgba(156, 199, 255, 0.5);
+}
+
+input::placeholder {
+  color: var(--light);
+}
+
+.input {
+  padding: 10px;
+  width: 100%;
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px;
+}
+
+.input--large-icon {
+  padding: 15px 12px;
+  padding-left: 42px;
+  font-size: var(--large-text-size);
+  line-height: 18px;
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px;
+}
+
+.input--default-icon {
+  padding: 10px 14px;
+  padding-left: 36px;
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px;
+}
+
+.input--default {
+  padding: 10px 14px;
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px;
+}
+
+.svg-icon--20 {
+  display: flex;
+  justify-items: center;
+  position: absolute;
+  margin: auto 0;
+  margin-left: 12px;
+  height: 100%;
+  width: 24px;
+  top: 0;
+}
+
+button {
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+}
+
+.button--primary {
+  padding: 10px 14px;
+  font-weight: 500;
+  background-color: var(--primary-blue-bright);
+  color: var(--white);
+  border-radius: 3px;
+}
+
+.button--primary:hover {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+.button--primary:active {
+  background-color: var(--primary-blue-dark);
+  border-color: var(--primary-blue-dark);
+}
+
+.button--primary-large {
+  padding: 15px 18px;
+  font-size: var(--large-text-size);
+  line-height: 18px;
+  font-weight: 500;
+  border: 1px solid var(--primary-blue-bright);
+}
+
+.button--default {
+  padding: 10px 14px;
+  background-color: transparent;
+  font-weight: 500;
+  color: var(--dark-gray-1);
+  border-radius: 3px;
+}
+
+.button--google {
+  padding: 10px 14px;
+  font-weight: 500;
+  background-color: var(--white);
+  color: var(--dark-gray-1);
+  border: 1px solid var(--light-gray-4);
+  border-radius: 3px;
+}
+
+.button--google:hover {
+  background-color: var(--light-gray-1);
+}
+
+.button--default:hover {
+  background-color: var(--light-gray-3);
+}
+
+.button--default:active {
+  background-color: var(--light-gray-4);
+}
+
+.button--subtle {
+  font-weight: 400;
+}
+
+.button--subtle:hover {
+  background-color: var(--light-gray-2);
+}
+
+.button--subtle:active {
+  background-color: var(--light-gray-3);
+}
+
+.button--logs {
+  color: #10619f;
+  font-size: 25px;
+  letter-spacing: 2px;
+  margin-top: 15px;
+  font-family: KyoboHandwriting2021sjy;
+}
+
+a {
+  color: var(--primary-blue-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-blue);
+}
+
+.button--danger {
+  padding: 10px 14px;
+  font-weight: 500;
+  background-color: var(--red);
+  color: var(--white);
+  border-radius: 3px;
+}
+
+.button--danger:hover {
+  background-color: var(--red-dark-1);
+}
+
+.button--danger:active {
+  background-color: var(--red-dark-2);
+}
+
+#mapping {
+  position: fixed !important;
+}
+
+.poi-info-window div,
+.poi-info-window a {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+.gm-style .gm-style-iw-c {
+  padding: var(--spacing-3) !important;
+  min-width: 300px !important;
+  max-width: 400px !important;
+}
+
+.gm-ui-hover-effect {
+  top: 12px !important;
+  right: 12px !important;
+}
+
+.poi-info-window .title {
+  margin-bottom: var(--spacing-1);
+  margin-right: var(--spacing-4);
+  font-size: var(--small-heading-font-size);
+  line-height: var(--small-heading-line-height);
+  font-weight: 600;
+  color: var(--dark-gray-1);
+}
+
+.poi-info-window .address {
+  margin-bottom: var(--spacing-2);
+}
+
+.poi-info-window .address div {
+  color: var(--dark-gray-3) !important;
+}
+
+.poi-info-window .address > div {
+  width: 100%;
+}
+
+.poi-info-window .view-link a span {
+  color: var(--primary-blue-dark) !important;
+  text-decoration: none !important;
+}
+
+.poi-info-window .view-link:hover,
+.poi-info-window a:hover {
+  text-decoration: none !important;
+}
+
+.poi-info-window .view-link a span:hover {
+  color: var(--primary-blue) !important;
+  text-decoration: none !important;
+}
+
+#board-map {
+  position: fixed !important;
+}
+
+@font-face {
+  font-family: 'KyoboHandwriting2021sjy';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/KyoboHandwriting2021sjy.woff2')
+    format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+.header__logo {
+  cursor: pointer;
+  font-size: 30px;
+  letter-spacing: 2px;
+  color: #10619f;
+  padding-top: 30px;
+  border-radius: 3px;
+  font-family: KyoboHandwriting2021sjy;
+  -webkit-text-stroke: 2px #10619f;
+}
+
+.logo__image {
+  margin-top: 5px;
+  width: 60px;
+  height: 60px;
+  padding: 5px;
+  padding-right: 0;
+  cursor: pointer;
+  margin-right: -10px;
+}
+
+.back__button {
+  background-color: var(--light-gray-2);
+}
