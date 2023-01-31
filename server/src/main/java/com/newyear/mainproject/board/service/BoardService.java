@@ -12,6 +12,7 @@ import com.newyear.mainproject.plan.entity.Plan;
 import com.newyear.mainproject.plan.service.PlanService;
 import com.newyear.mainproject.security.logout.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -93,9 +94,8 @@ public class BoardService {
     public Board findOneBoard(long boardId) {
         Board findBoard = findExistsBoard(boardId);
 
-        if (isFirstRequest(boardId)) {
-            viewCount(findBoard);
-        }
+        isFirstRequest(boardId, findBoard);
+
         return findBoard;
     }
 
@@ -188,32 +188,29 @@ public class BoardService {
     }
 
     //방문한 게시판은 1시간 후에 조회수 증가 허용
-    private boolean isFirstRequest(long boardId) {
+    private void isFirstRequest(long boardId, Board board) {
         String key;
         String add = "_" + boardId + "_";
 
         try {
             key = memberService.getLoginMember().getMemberId() + "_visit"; //회원인 경우 key 값
-            log.info("회원 방문 : {}", key);
         } catch (BusinessLogicException e) {
-            if (getIp() == null) return false;
+            if (getIp() == null) return;
             key = getIp() + "_visit"; //비회원인 경우 key 값
-            log.info("비회원 방문 : {}", key);
         }
 
         if (redisUtil.hasKey(key)) {
             String value = redisUtil.get(key).toString();
-            if (value.contains(add)) { //이미 방문한 게시판
-                log.info("이미 방문한 게시판 = 조회수 변동 X");
-                return false;
+            if (!value.contains(add)) {
+                log.info("조회수 증가 : {}", "key : " + key + "value : " + value);
+                viewCount(board);
+                redisUtil.set(key, value + boardId + "_", 60); //처음 방문하는 게시판
             }
-            redisUtil.set(key, value + boardId + "_", 20); //처음 방문하는 게시판
-            log.info("처음 방문한 게시판 = 조회수 증가 !");
-            return true;
+        } else {
+            viewCount(board);
+            redisUtil.set(key, add, 60); //초기 세팅
+            log.info("조회수 증가 : {}", "key : " + key);
         }
-        redisUtil.set(key, add, 60); //초기 세팅
-        log.info("아예 처음 게시물 조회 = 조회수 증가 !");
-        return true;
     }
 
     //비회원인 경우 ip 주소로 식별
