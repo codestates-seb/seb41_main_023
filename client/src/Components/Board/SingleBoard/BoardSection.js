@@ -18,7 +18,6 @@ const BoardSection = props => {
             </span>
           );
         })}
-        }
       </p>
       <h3 className="section__title">Itinerary</h3>
       <div className="itinerary__container">
