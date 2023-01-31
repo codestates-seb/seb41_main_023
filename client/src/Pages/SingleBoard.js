@@ -12,7 +12,6 @@ import { getCookie } from '../Util/Cookies';
 
 const SingleBoard = () => {
   const { boardId } = useParams();
-  const token = getCookie('accessToken');
   //수정
   const [boardData, setBoardData] = useState({
     boardId: boardId,
@@ -41,7 +40,7 @@ const SingleBoard = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/board/${boardId}`, {
         headers: {
-          Authorization: token,
+          Authorization: getCookie('accessToken'),
         },
       })
       .then(res => {
