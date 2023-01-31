@@ -27,7 +27,6 @@ const CommentSection = () => {
   const handleCommentSubmit = () => {
     const commentData = { comment: commentRef.current?.value };
     axios
-
       .post(
         `${process.env.REACT_APP_API_URL}/comments/board/${boardId}`,
         commentData,
@@ -39,8 +38,8 @@ const CommentSection = () => {
       )
       .then(res => {
         handleCommentRefresh();
-        commentRef.current.value = '';
       })
+      .then(res => (commentRef.current.value = ''))
       .catch(err => {
         alert(
           `댓글은 ${err.response.data.fieldErrors[0].reason}. 최소 1글자 이상 입력해주세요!`,
@@ -106,11 +105,6 @@ const CommentSection = () => {
               type={'text'}
               placeholder={'Add a question or share your opinion!!'}
               ref={commentRef}
-              onKeyUp={e => {
-                if (e.key === 'Enter') {
-                  return handleCommentSubmit();
-                }
-              }}
             />
             <button className="button--primary" onClick={handleCommentSubmit}>
               댓글 쓰기
