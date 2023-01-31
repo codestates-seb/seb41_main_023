@@ -135,17 +135,6 @@ const WriteSingleBoard = () => {
     }
   };
 
-  // 장소별 note 삭제
-  // const handleDeleteNote = (e) => {
-  //   let findIndex = placeNotes.findIndex(
-  //     (comment) => Number(comment.placeId) === Number(e.target.name)
-  //   );
-
-  //   let changeNotes = [...placeNotes];
-  //   changeNotes[findIndex].description = "";
-  //   setPlaceNotes(changeNotes);
-  // };
-
   // 위도, 경도 변경
   const handleGeoCode = (lat, lng) => {
     setGeocode({ lat, lng });

@@ -9,7 +9,17 @@ const BoardSection = props => {
   return (
     <Container>
       <h3 className="section__title">Travel Experience</h3>
-      <p className="travel-experience__content">{content}</p>
+      <p className="travel-experience__content">
+        {' '}
+        {content.split('\n').map((line, idx) => {
+          return (
+            <span key={idx}>
+              {line}
+              <br />
+            </span>
+          );
+        })}
+      </p>
       <h3 className="section__title">Itinerary</h3>
       <div className="itinerary__container">
         {days
