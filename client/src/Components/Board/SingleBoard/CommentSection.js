@@ -160,7 +160,6 @@ const CommentInputContainer = styled.div`
     min-width: 50px;
     width: 50px;
     height: 50px;
-    background-color: var(--primary-blue-light-2);
     border-radius: 50%;
 
     > img {

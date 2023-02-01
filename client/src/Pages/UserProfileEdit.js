@@ -59,12 +59,12 @@ const UserProfileEdit = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const nameRegex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
+    const nameRegex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{1,20}$/;
 
     if (!submitInfo.id) {
       nameRef.current.focus();
     } else if (!nameRegex.test(submitInfo.id)) {
-      alert('영문과 한글 또는 숫자를 3~20자리로 입력하세요.');
+      alert('영문과 한글 또는 숫자를 1~20자리로 입력하세요.');
       return;
     } else {
       const data = {
@@ -233,7 +233,6 @@ const TopContainer = styled.div`
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    background-color: var(--primary-blue-bright);
 
     > img {
       width: 150px;

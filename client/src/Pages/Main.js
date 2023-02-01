@@ -45,6 +45,21 @@ const MainContainer = styled.div`
       border: 1px solid var(--light-gray-5);
       margin: 0 5px;
     }
+
+    > .selection__tab {
+      > .mode--button {
+        padding: 10px 14px;
+        font-weight: 500;
+        background-color: transparent;
+        border-radius: 3px;
+        font-weight: 400;
+      }
+
+      > .mode--selected {
+        background-color: var(--primary-blue-light-2);
+        color: var(--dark-gray-1);
+      }
+    }
   }
 `;
 
@@ -69,19 +84,31 @@ const Main = () => {
           <h2>Explore</h2>
           <div className={'selection__tab'}>
             <button
-              className={'button--default button--subtle'}
+              className={
+                mode === 'boardId'
+                  ? 'mode--selected mode--button'
+                  : 'mode--button'
+              }
               onClick={() => setMode('boardId')}
             >
               최신순
             </button>
             <button
-              className={'button--default button--subtle'}
+              className={
+                mode === 'likes'
+                  ? 'mode--selected mode--button'
+                  : 'mode--button'
+              }
               onClick={() => setMode('likes')}
             >
               좋아요순
             </button>
             <button
-              className={'button--default button--subtle'}
+              className={
+                mode === 'views'
+                  ? 'mode--selected mode--button'
+                  : 'mode--button'
+              }
               onClick={() => setMode('views')}
             >
               조회수순

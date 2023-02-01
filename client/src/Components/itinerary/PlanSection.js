@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 import Budget from '../budget/Buget';
+
 import AddExpense from '../budget/AddExpense';
 import SideDateBar from './SideDateBar';
 import PlaceInputBox from './PlaceInputBox';
@@ -32,6 +33,7 @@ const PlanSection = props => {
   const [currentDate, setCurrentDate] = useState(null);
   const [currentPlace, setCurrentPlace] = useState(null);
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
+  const [editBudget, setEditBudget] = useState(false);
 
   const singlePlanData = mainData.planDatesAndPlace;
 
@@ -50,6 +52,10 @@ const PlanSection = props => {
     ref.current.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleScroll = () => {
+    onTabClick(budgetingRef);
+  };
+
   const TopMove = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -57,7 +63,8 @@ const PlanSection = props => {
   // 비용 추가 요청
   const handleAddExpense = (price, selectedCategory, item, placeId) => {
     if (budget.expectedBudget < 1) {
-      return alert('예산을 설정해주세요.');
+      // return alert('예산을 설정해주세요.');
+      onTabClick(budgetingRef);
     } else if (
       budget.expectedBudget <
       parseInt(budget.totalExpenses) + parseInt(price)
@@ -163,6 +170,7 @@ const PlanSection = props => {
                         handleRefresh={handleRefresh}
                         handleBudgetRefresh={handleBudgetRefresh}
                         budget={budget}
+                        handleScroll={handleScroll}
                       />
                     </SectionComponent>
                   ))

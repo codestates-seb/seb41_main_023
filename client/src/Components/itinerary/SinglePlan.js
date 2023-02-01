@@ -145,6 +145,7 @@ const SinglePlan = props => {
     handleRefresh,
     handleBudgetRefresh,
     budget,
+    handleScroll,
   } = props;
   const [delButtonIsShow, setDelButtonIsShow] = useState(false);
   // 비용 수정
@@ -225,7 +226,10 @@ const SinglePlan = props => {
           <PlaceAddingButtons>
             <button
               onClick={() => {
-                if (!data.expenses) {
+                if (budget.expectedBudget < 1) {
+                  alert('예산을 설정해주세요.');
+                  handleScroll();
+                } else if (!data.expenses) {
                   handleExpenseModal();
                   setCurrentDate(planDate);
                   setCurrentPlace(data.placeName);

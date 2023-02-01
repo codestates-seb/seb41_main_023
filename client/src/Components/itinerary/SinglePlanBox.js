@@ -17,6 +17,7 @@ const SinglePlanBox = props => {
     handleRefresh,
     handleBudgetRefresh,
     budget,
+    handleScroll,
   } = props;
 
   return (
@@ -38,6 +39,7 @@ const SinglePlanBox = props => {
             handleRefresh={handleRefresh}
             handleBudgetRefresh={handleBudgetRefresh}
             budget={budget}
+            handleScroll={handleScroll}
           />
         ))}
     </Container>

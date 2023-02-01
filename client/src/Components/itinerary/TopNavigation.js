@@ -311,16 +311,29 @@ const TopNavigation = props => {
           <button
             className="button--primary"
             onClick={() => {
+              navigate(
+                mainData.boardId
+                  ? `/board/edit/${mainData?.boardId}`
+                  : `/board/plan/${mainData?.planId}`,
+                { replace: true },
+              );
+            }}
+          >
+            {mainData.boardId ? 'Edit' : 'Write'}
+          </button>
+          <button
+            className="button--primary"
+            onClick={() => {
               navigate(`/`, { replace: true });
             }}
           >
-            Save Trip
+            Save
           </button>
           <button
             className="button--primary"
             onClick={() => deletePlanHandler(itineraryId)}
           >
-            Delete Trip
+            Delete
           </button>
         </div>
       </Header>
