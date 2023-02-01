@@ -68,7 +68,7 @@
 ### 🏡 아키텍처
 
 ---
-<img src="https://cdn.discordapp.com/attachments/1059688528109383690/1069857230213632080/new_year_2.png">
+![tridom_architecture](https://user-images.githubusercontent.com/95217370/215953355-123a2a92-c009-4a44-a678-f45c8b274538.png)
 
 
 ### 📄 프로젝트 문서
