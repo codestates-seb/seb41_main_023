@@ -153,10 +153,10 @@ public class MemberService {
         Member member = optionalMember.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
-//        if (member.getMemberStatus() == Member.MemberStatus.MEMBER_QUIT
-//                || member.getMemberStatus() == Member.MemberStatus.MEMBER_SLEEP) {
-//            throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_STATUS);
-//        }
+        if (member.getMemberStatus() == Member.MemberStatus.MEMBER_QUIT
+                || member.getMemberStatus() == Member.MemberStatus.MEMBER_SLEEP) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_STATUS);
+        }
 
         return member;
     }
