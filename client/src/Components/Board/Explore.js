@@ -35,7 +35,7 @@ const Explore = props => {
           setTimeout(() => {
             setExploreList(prevState => [...prevState, ...res.data.data]);
             setLoading(false);
-          }, 1500);
+          }, 500);
         }
         setHasNextPage(res.data.data.length === 10);
         if (res.data.data.length) page.current += 1;
@@ -68,7 +68,7 @@ const Explore = props => {
           const options = {
             root: null,
             rootMargin: '0px 0px -30px 0px',
-            threshold: 1,
+            threshold: 0.5,
           };
 
           const io = new IntersectionObserver((entries, observer) => {
