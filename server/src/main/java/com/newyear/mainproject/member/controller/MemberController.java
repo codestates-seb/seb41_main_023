@@ -67,6 +67,10 @@ public class MemberController {
         Member findMember = memberService.findVerifiedMember(memberId);
         String findMemberPassword = findMember.getPassword();
 
+        if (!findMember.getEmail().equals(memberService.getLoginMember().getEmail())) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
+
         //소셜회원은 비밀번호 변경 불가
         if (findMemberPassword.equals("GOOGLE") || findMemberPassword.equals("FACEBOOK") || findMemberPassword.equals("KAKAO")) {
             throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
