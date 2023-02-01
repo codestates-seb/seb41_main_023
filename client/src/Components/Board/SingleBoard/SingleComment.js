@@ -149,7 +149,6 @@ const SingleCommentWrapper = styled.div`
   .comment__user-image {
     width: 50px;
     height: 50px;
-    background-color: var(--primary-blue-light-2);
     border-radius: 50%;
 
     > img {

@@ -80,11 +80,11 @@ const SignUpPage = () => {
 
   // userName
   const onChangeName = useCallback(e => {
-    const nameRegex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}$/;
+    const nameRegex = /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{1,20}$/;
     setDisplayName(e.target.value);
 
     if (!nameRegex.test(e.target.value)) {
-      setNameMessage('영문과 한글 또는 숫자를 3~20자리로 입력하세요.');
+      setNameMessage('영문과 한글 또는 숫자를 1~20자리로 입력하세요.');
       setIsName(false);
     } else {
       setNameMessage('올바른 이름입니다.');

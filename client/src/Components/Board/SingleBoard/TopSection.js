@@ -229,7 +229,6 @@ const TripInfo = styled.div`
     align-items: center;
 
     .writer-image {
-      background-color: var(--primary-blue-bright);
       width: 30px;
       height: 30px;
       border-radius: 50%;

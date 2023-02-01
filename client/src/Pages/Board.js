@@ -65,7 +65,11 @@ const Board = () => {
           <h2>Explore</h2>
           <div className={'selection__tab'}>
             <button
-              className={`button--default button--subtle`}
+              className={
+                mode === 'boardId'
+                  ? 'mode--selected mode--button'
+                  : 'mode--button'
+              }
               onClick={e => {
                 if (destination) e.preventDefault();
                 else window.location.reload();
@@ -75,7 +79,11 @@ const Board = () => {
               최신순
             </button>
             <button
-              className={`button--default button--subtle`}
+              className={
+                mode === 'likes'
+                  ? 'mode--selected mode--button'
+                  : 'mode--button'
+              }
               onClick={() => {
                 setMode('likes');
               }}
@@ -83,7 +91,11 @@ const Board = () => {
               좋아요순
             </button>
             <button
-              className={`button--default button--subtle`}
+              className={
+                mode === 'views'
+                  ? 'mode--selected mode--button'
+                  : 'mode--button'
+              }
               onClick={() => {
                 setMode('views');
               }}
@@ -165,11 +177,21 @@ const MainContainer = styled.div`
     margin-bottom: var(--spacing-4);
 
     .selection__tab {
-      margin-left: 75%;
+      margin-left: 60%;
 
-      button {
+      > .mode--button {
+        padding: 10px 14px;
+        font-weight: 500;
+        background-color: transparent;
+        border-radius: 3px;
+        font-weight: 400;
         margin: 0 5px;
         border: 1px solid var(--light-gray-5);
+      }
+
+      > .mode--selected {
+        background-color: var(--primary-blue-light-2);
+        color: var(--dark-gray-1);
       }
     }
   }
