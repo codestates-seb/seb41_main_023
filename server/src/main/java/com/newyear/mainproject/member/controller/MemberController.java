@@ -64,16 +64,21 @@ public class MemberController {
     public ResponseEntity patchPasswordMember(@PathVariable("member-id") @Positive long memberId,
                                               @Valid @RequestBody MemberDto.PatchPassword patch){
         patch.setMemberId(memberId);
+        Member findMember = memberService.findVerifiedMember(memberId);
+        String findMemberPassword = findMember.getPassword();
+
+        //소셜회원은 비밀번호 변경 불가
+        if (findMemberPassword.equals("GOOGLE") || findMemberPassword.equals("FACEBOOK") || findMemberPassword.equals("KAKAO")) {
+            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
+        }
 
         //matchs를 이용하여 받은 비밀번호와 원래비밀번호를 복호화후 비교해 true or false 반환
-        if(passwordEncoder.matches(patch.getOriginPassword(), memberService.findVerifiedMember(memberId).getPassword())){
+        if(passwordEncoder.matches(patch.getOriginPassword(), findMemberPassword)){
             memberService.updatePasswordMember(mapper.memberPatchPasswordToMember(patch));
         }
         else throw new BusinessLogicException(ExceptionCode.INVALID_PASSWORD);
 
-        Member member = memberService.findMember(patch.getMemberId());
-
-        MemberDto.Response response = mapper.memberToMemberResponseDto(member);
+        MemberDto.Response response = mapper.memberToMemberResponseDto(findMember);
 
         return new ResponseEntity(response, HttpStatus.CREATED); // 나중에 response 바꾸거나 안나오게 변경
     }

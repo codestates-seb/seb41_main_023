@@ -19,7 +19,7 @@ public class MemberDto {
         private String email;
 
         @NotBlank(message = "이름은 공백이 아니어야 합니다.")
-        @Pattern(regexp="[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}")
+        @Pattern(regexp="[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{1,20}")
         private String displayName;
 
         @NotBlank
@@ -57,7 +57,7 @@ public class MemberDto {
         private long memberId;
 
         @NotBlank(message = "이름은 공백이 아니어야 합니다.")
-        @Pattern(regexp="[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{3,20}")
+        @Pattern(regexp="[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{1,20}")
         private String displayName;
     }
 
