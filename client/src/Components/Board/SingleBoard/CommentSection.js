@@ -1,18 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import styled from "styled-components";
 
-import SingleComment from './SingleComment';
+import SingleComment from "./SingleComment";
 
-import { getCookie } from '../../../Util/Cookies';
-import Pagination from '../../../Util/Pagination';
+import { getCookie } from "../../../Util/Cookies";
+import Pagination from "../../../Util/Pagination";
 
 const CommentSection = () => {
   const { boardId } = useParams();
-  const memberId = getCookie('memberId');
+  const memberId = getCookie("memberId");
   const [memberData, setMemberData] = useState({
-    profileImage: '',
+    profileImage: "",
   });
   const [commentList, setCommentList] = useState([]);
   const [commentRefresh, setCommentRefresh] = useState(1);
@@ -21,7 +21,7 @@ const CommentSection = () => {
   const offset = (page - 1) * limit;
   const commentRef = useRef();
   const handleCommentRefresh = () => {
-    setCommentRefresh(prevState => prevState * -1);
+    setCommentRefresh((prevState) => prevState * -1);
   };
   //수정
   const handleCommentSubmit = () => {
@@ -32,17 +32,17 @@ const CommentSection = () => {
         commentData,
         {
           headers: {
-            Authorization: getCookie('accessToken'),
+            Authorization: getCookie("accessToken"),
           },
-        },
+        }
       )
-      .then(res => {
+      .then((res) => {
         handleCommentRefresh();
       })
-      .then(res => (commentRef.current.value = ''))
-      .catch(err => {
+      .then((res) => (commentRef.current.value = ""))
+      .catch((err) => {
         alert(
-          `댓글은 ${err.response.data.fieldErrors[0].reason}. 최소 1글자 이상 입력해주세요!`,
+          `댓글은 ${err.response.data.fieldErrors[0].reason}. 최소 1글자 이상 입력해주세요!`
         );
       });
   };
@@ -53,28 +53,24 @@ const CommentSection = () => {
         `${process.env.REACT_APP_API_URL}/comments/board/${boardId}?page=1&size=100`,
         {
           headers: {
-            Authorization: getCookie('accessToken'),
+            Authorization: getCookie("accessToken"),
           },
-        },
+        }
       )
-      .then(res => {
+      .then((res) => {
         setCommentList(res.data.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, [boardId, commentRefresh]);
 
   useEffect(() => {
     if (memberId) {
       axios
-        .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
-          headers: {
-            Authorization: getCookie('accessToken'),
-          },
-        })
-        .then(res => {
+        .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`)
+        .then((res) => {
           setMemberData(res.data);
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     }
   }, []);
 
@@ -86,7 +82,7 @@ const CommentSection = () => {
           {commentList &&
             commentList
               .slice(offset, offset + limit)
-              .map(comment => (
+              .map((comment) => (
                 <SingleComment
                   key={comment.commentId}
                   comment={comment}
@@ -106,8 +102,8 @@ const CommentSection = () => {
             </div>
             <input
               className="input--default"
-              type={'text'}
-              placeholder={'Add a question or share your opinion!!'}
+              type={"text"}
+              placeholder={"Add a question or share your opinion!!"}
               ref={commentRef}
             />
             <button className="button--primary" onClick={handleCommentSubmit}>
