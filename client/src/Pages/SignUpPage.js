@@ -200,7 +200,7 @@ const SignUpPage = () => {
       <Header>
         <div
           className="button--default back__button"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/')}
         >
           Back
         </div>
