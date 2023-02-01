@@ -66,7 +66,11 @@ const CommentSection = () => {
   useEffect(() => {
     if (memberId) {
       axios
-        .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`)
+        .get(`${process.env.REACT_APP_API_URL}/members/${memberId}`, {
+          headers: {
+            Authorization: getCookie('accessToken'),
+          },
+        })
         .then(res => {
           setMemberData(res.data);
         })
