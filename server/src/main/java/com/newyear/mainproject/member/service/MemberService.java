@@ -51,10 +51,10 @@ public class MemberService {
         }
 
         //이메일 인증 전 회원 가입 요청시 예외
-//        if (redisUtil.get(member.getEmail() + "_confirm") == null) {
-//            throw new BusinessLogicException(ExceptionCode.EMAIL_AUTH_REQUIRED);
-//        }
-//        redisUtil.delete(member.getEmail() + "_confirm");
+        if (redisUtil.get(member.getEmail() + "_confirm") == null) {
+            throw new BusinessLogicException(ExceptionCode.EMAIL_AUTH_REQUIRED);
+        }
+        redisUtil.delete(member.getEmail() + "_confirm");
 
         //패스워드 암호화
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
@@ -153,9 +153,6 @@ public class MemberService {
         Member member = optionalMember.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
-        if (!member.getEmail().equals(findLoginMemberEmail())) {
-            throw new BusinessLogicException(ExceptionCode.ACCESS_FORBIDDEN);
-        }
 //        if (member.getMemberStatus() == Member.MemberStatus.MEMBER_QUIT
 //                || member.getMemberStatus() == Member.MemberStatus.MEMBER_SLEEP) {
 //            throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_STATUS);
