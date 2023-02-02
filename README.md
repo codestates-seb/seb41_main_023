@@ -19,6 +19,11 @@
 ---
 [웹사이트 바로가기](http://tridom.s3-website.ap-northeast-2.amazonaws.com/)
 
+| 테스트 계정 |
+|:---:|
+| rikewip566@brandoza.com |
+| testtest12!@ |
+
 
 ### 📅 프로젝트 기간
 
@@ -52,7 +57,7 @@
 
 #### _FRONT-END_
 
-<img src="https://img.shields.io/badge/webstorm-143?style=for-the-badge&logo=webstorm&logoColor=white&color=black"> <img src="https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white"> <img src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"> <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white"> <img src="https://img.shields.io/badge/react_cookie-964b00?style=for-the-badge&logo=react-cookie&logoColor=white"> <img src="https://img.shields.io/badge/react_google_maps_api-00897B?style=for-the-badge&logo=react-google-maps-api&logoColor=white"> <img src="https://img.shields.io/badge/styled_components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white"> <img src="https://img.shields.io/badge/react_router_dom-4B32C3?style=for-the-badge&logo=react-router&logoColor=white"><img src="https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white"> <img src="https://img.shields.io/badge/dayjs-9347ff?style=for-the-badge&logo=dayjs&logoColor=white"> <img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"> <img src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white"><img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white">
+<img src="https://img.shields.io/badge/webstorm-143?style=for-the-badge&logo=webstorm&logoColor=white&color=black"> <img src="https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white"> <img src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"> <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white"> <img src="https://img.shields.io/badge/react_cookie-964b00?style=for-the-badge&logo=react-cookie&logoColor=white"> <img src="https://img.shields.io/badge/react_google_maps_api-00897B?style=for-the-badge&logo=react-google-maps-api&logoColor=white"> <img src="https://img.shields.io/badge/styled_components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white"> <img src="https://img.shields.io/badge/react_router_dom-4B32C3?style=for-the-badge&logo=react-router&logoColor=white"> <img src="https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white"> <img src="https://img.shields.io/badge/dayjs-9347ff?style=for-the-badge&logo=dayjs&logoColor=white"> <img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"> <img src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white">
 
 #### _BACK-END_
 
@@ -87,13 +92,11 @@
 
 ## 페이지 및 세부 기능
 
----
+<details>
+    <summary> 로그인 및 회원가입 </summary>
 
-### 로그인 및 회원가입
-
----
-
-
+<br>
+    
 | 회원가입 | 로그인 |
 |:----:|:---:|
 |<img src="https://user-images.githubusercontent.com/95217370/215839745-c3c9e651-b43e-4878-b1df-75a2cb167e53.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215838707-6e1ee8f7-9402-4a83-bdc8-8c90b76160e0.gif" width="450" height="300">|
@@ -101,10 +104,13 @@
 | 소셜 로그인 | 로그아웃 |
 |:----:|:---:|
 |<img src="https://user-images.githubusercontent.com/95217370/215838305-33e7c9ae-32bc-4c6c-aad7-f086447af93c.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215838027-33939e1e-18de-4a0f-bbfd-7f57c8c8e6d8.gif" width="450" height="300">|
+    
+</details>
 
-### 회원정보 수정 및 탈퇴
+<details>
+    <summary> 회원정보 수정 및 탈퇴 </summary>
 
----
+<br>
 
 | 이름 수정 | 비밀번호 수정| 
 |:----:|:---:|
@@ -114,11 +120,13 @@
 |:------:|:--:|
 |<img src="https://user-images.githubusercontent.com/95217370/215781090-62d5105b-a416-4e16-86d3-404ef461fe52.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215781827-4aeb1fa8-5ddf-43b8-9c39-20f472e1a729.gif" width="450" height="300">|
 
+</details>
 
-### 여행 일정
+<details>
+    <summary> 여행 일정 </summary>
 
----
-
+<br>
+    
 | 일정등록 | 일정삭제 |
 |:----:|:----:|
 |<img src="https://user-images.githubusercontent.com/95217370/215776874-688653c5-b9ab-4c87-8d24-e0b361159d04.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215841031-8be777d4-4850-445c-8382-dcb4ddabc818.gif" width="450" height="300">|
@@ -132,19 +140,25 @@
 |:----:|:---:|
 |<img src="https://user-images.githubusercontent.com/95217370/215778046-d1db3b17-05d1-4657-8d50-311e6d3f0a22.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215778175-adf672f2-44b3-4df1-a4cd-6390c9624173.gif" width="450" height="300">|
 
-### 예산/비용 관리
+</details>
 
----
+<details>
+    <summary> 예산/비용 관리 </summary>
+
+<br>
+
 
 | 예산등록,수정,비용등록,수정 | 비용삭제 |
 |:----:|:----:|
 |<img src="https://user-images.githubusercontent.com/95217370/215778895-29db1cad-aaa7-46af-a3ff-bc06bdc433f4.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215779154-0650653d-8ea2-4784-8113-24baa616fc66.gif" width="450" height="300">|
 
+</details>
+    
+<details>
+    <summary> 게시판 </summary>
 
-### 게시판
-
----
-
+<br>
+    
 | 전체 조회 | 게시글 작성 |
 |:----:|:----:|
 |<img src="https://user-images.githubusercontent.com/95217370/215782680-1665da83-1ba9-42e8-93af-8ae7717f8b31.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215779677-2c0a8ffd-1f76-4d0b-bedd-e94688f68ff1.gif" width="450" height="300">|
@@ -153,6 +167,8 @@
 |:---:|:------:|
 |<img src="https://user-images.githubusercontent.com/95217370/215779727-b349dff7-859e-425a-b34c-b828cc3a0c79.gif" width="450" height="300">|<img src="https://user-images.githubusercontent.com/95217370/215833990-95a76565-7c63-41e3-96da-80a6f106bcaa.gif" width="450" height="300">|
 
+</details>
+    
 ## Conventions
 
 ### 📌 Commit/Branch 분류 규칙
